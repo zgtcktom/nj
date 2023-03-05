@@ -12,7 +12,7 @@ export function broadcast_to(array, shape) {
 		new_strides[i] = j < 0 || array.shape[j] == 1 ? 0 : strides[j];
 	}
 
-	return new NDArray(shape, data, new_strides, offset, itemsize);
+	return new NDArray(shape, data, null, new_strides, offset, itemsize);
 }
 
 tester.add(

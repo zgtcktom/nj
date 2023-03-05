@@ -1,9 +1,18 @@
 export class Slice {
-	constructor(start, stop, step) {
+	static newaxis = null;
+	static ellipsis = new Slice();
+	static colon = new Slice();
+
+	static ['None'] = Slice.newaxis;
+	static ['...'] = Slice.ellipsis;
+	static [':'] = Slice.colon;
+
+	constructor(start = null, stop = null, step = null) {
 		this.start = start;
 		this.stop = stop;
 		this.step = step;
 	}
+
 	get(length) {
 		// https://svn.python.org/projects/python/branches/pep-0384/Objects/sliceobject.c
 		let { start, stop, step } = this;
@@ -40,14 +49,73 @@ export class Slice {
 		}
 		return { start, stop, step, slicelength };
 	}
+
+	toString() {
+		if (this == Slice.ellipsis) return '...';
+		if (this == Slice.colon) return ':';
+		let { start, stop, step } = this;
+		if (step == null) {
+			if (start == null && stop == null) return ':';
+			return `${start ?? ''}:${stop ?? ''}`;
+		}
+		return `${start ?? ''}:${stop ?? ''}:${step}`;
+	}
 }
 
 function slice(start, stop, step) {
+	if (start == null && stop == null && step == null) return Slice.colon;
+	if (typeof start == 'string') {
+		if (Object.hasOwn(Slice, start)) return Slice[start];
+		let args = start.split(':');
+		// console.log(args);
+		if (args.length == 1) {
+			let [start] = args;
+
+			if (start.length == 0) start = null;
+			else if (Number.isInteger(+start)) start = +start;
+			else throw `${start} cannot be cast to integer`;
+
+			return new Slice(start);
+		}
+		if (args.length == 2) {
+			let [start, stop] = args;
+
+			if (start.length == 0) start = null;
+			else if (Number.isInteger(+start)) start = +start;
+			else throw `${start} cannot be cast to integer`;
+
+			if (stop.length == 0) stop = null;
+			else if (Number.isInteger(+stop)) stop = +stop;
+			else throw `${stop} cannot be cast to integer`;
+
+			return new Slice(start, stop);
+		}
+		if (args.length == 3) {
+			let [start, stop, step] = args;
+
+			if (start.length == 0) start = null;
+			else if (Number.isInteger(+start)) start = +start;
+			else throw `${start} cannot be cast to integer`;
+
+			if (stop.length == 0) stop = null;
+			else if (Number.isInteger(+stop)) stop = +stop;
+			else throw `${stop} cannot be cast to integer`;
+
+			if (step.length == 0) step = null;
+			else if (Number.isInteger(+step)) step = +step;
+			else throw `${step} cannot be cast to integer`;
+
+			return new Slice(start, stop, step);
+		}
+		throw `invalid string slice representation ${start}`;
+	}
 	if (start?.length != undefined) {
 		({ 0: start, 1: stop, 2: step } = start);
 	}
 	return new Slice(start, stop, step);
 }
+
+Object.assign(slice, Slice);
 
 slice.is = function (obj) {
 	return obj instanceof Slice;

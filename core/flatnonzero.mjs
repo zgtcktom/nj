@@ -1,0 +1,15 @@
+import { arange, array, nonzero, ravel, tester } from './core.mjs';
+
+export function flatnonzero(a) {
+	return nonzero(ravel(a))[0];
+}
+
+tester.add(
+	flatnonzero,
+	() => {
+		let x;
+		x = arange(-2, 3);
+		return flatnonzero(x);
+	},
+	() => array([0, 1, 3, 4])
+);

@@ -39,6 +39,7 @@ export class Tester {
 		this.tasks = {};
 	}
 	add(name, test, expected, compare = this.compare) {
+		if (typeof name == 'function') name = name.name;
 		let tasks = this.tasks[name] ?? (this.tasks[name] = []);
 		tasks.push({ test, expected, compare });
 		return this;
@@ -50,7 +51,7 @@ export class Tester {
 				status = this.run(name) && status;
 			}
 			let color = (status ? '\x1b[32m' : '\x1b[31m') + '%s\x1b[0m';
-			console.log(color, `Status: ${status}`);
+			console.log(color, `Status: ${status}, Total: ${Object.keys(this.tasks).length}`);
 			return status;
 		}
 		let tasks = this.tasks[name];
