@@ -1,6 +1,8 @@
 import { tester, asarray, NDArray, array, ascontiguousarray, arange, slice, ndindex } from './core.mjs';
 
-export function even_strides(strides, shape, ndim) {
+export function even_strides(strides, shape, ndim = strides.length) {
+	// can .reshape(-1) without creating a copy
+	// can iterate through .data with a constant stride (no need ndindex)
 	let lastindex;
 	for (let i = ndim - 1; i > 0; i--) {
 		if (shape[i] > 1) {
@@ -53,6 +55,15 @@ export function reshape(a, newshape) {
 
 	return new NDArray(newshape, a.data, a, null, a.offset, a.itemsize);
 }
+
+let msg = await new Promise((resolve, reject) => {
+	setTimeout(() => resolve('ok'), 1);
+});
+
+console.log(msg);
+
+// https://rob-blackbourn.github.io/blog/webassembly/wasm/array/arrays/javascript/c/2020/06/07/wasm-arrays.html
+// https://nodejs.dev/en/learn/nodejs-with-webassembly/
 
 tester
 	.add(
