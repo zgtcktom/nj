@@ -18,13 +18,16 @@ export class Flatiter {
 	next() {
 		let { coords, base } = this;
 		let { shape, size } = base;
-		let value = base.item(coords);
+		let value;
+		let done = this.index >= size;
+		if (!done) {
+			value = base.item(coords);
+		}
 		for (let j = coords.length - 1; j >= 0; j--) {
 			coords[j] += 1;
 			if (coords[j] < shape[j]) break;
 			if (j > 0) coords[j] -= shape[j];
 		}
-		let done = this.index >= size;
 		this.index++;
 		return { value, done };
 	}

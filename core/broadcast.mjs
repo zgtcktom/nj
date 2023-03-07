@@ -18,7 +18,7 @@ export class Broadcast {
 	constructor(arrays) {
 		arrays = arrays.map(asarray);
 		this.numiter = arrays.length;
-		this.shape = broadcast_shapes(...arrays.map(shape));
+		this.shape = broadcast_shapes(...arrays.map(array => array.shape));
 		this.arrays = arrays.map(array => broadcast_to(array, this.shape));
 		this.ndim = this.shape.length;
 		this.size = _size(this.shape);

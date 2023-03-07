@@ -50,13 +50,13 @@ function _index(array, index) {
 		// console.log('sizes', sizes, indices);
 		index = indices;
 	} else if (!is_tuple(index)) throw `unexpected type '${type(index)}'`;
+	else if (index.length != array.ndim) throw 'incorrect number of indices for array';
 	return index;
 }
 
 function index_offset(index, strides, shape) {
 	let offset = 0;
-	for (let i = 0; i < index.length; i++)
-		offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
+	for (let i = 0; i < index.length; i++) offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
 	return offset;
 }
 
@@ -87,6 +87,8 @@ function _view(array, indices) {
 		if (index == null) {
 			shape.splice(ndim, 0, 1);
 			strides.splice(ndim, 0, 0);
+			ndim++;
+		} else if (index == slice[':']) {
 			ndim++;
 		} else if (slice.is(index)) {
 			let { start, step, slicelength } = index.get(shape[ndim]);
@@ -147,28 +149,75 @@ export class NDArray {
 	}
 
 	item(index) {
+		let { data, strides, shape, offset, ndim, size } = this;
 		if (index == undefined) {
-			let { size } = this;
 			if (size != 1) throw 'index cannot be empty if size != 1';
-			if (this.ndim == 0) return this.data[0];
-			index = 0;
+			return data[offset];
 		}
+		if (ndim == 0) {
+			if (index.length != undefined) {
+				if (index.length == 0) index = 0;
+				else if (index.length == 1) index = index[0];
+				else throw 'incorrect number of indices for array';
+			}
+			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
+			return data[offset];
+		}
+		if (ndim == 1) {
+			if (index.length != undefined) {
+				if (index.length != 1) throw 'incorrect number of indices for array';
+				index = index[0];
+			}
+			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
+			if (index < 0) index += size;
+			return data[offset + index * strides[0]];
+		}
+		if (index.length == 1) index = index[0];
+
 		index = _index(this, index);
 
-		let { data, strides, shape, offset } = this;
 		return data[offset + index_offset(index, strides, shape)];
 	}
 
 	itemset(index, scalar) {
-		let { size, offset, data, shape, strides } = this;
+		let { ndim, size, offset, data, shape, strides } = this;
 		if (scalar == undefined && size == 1) {
 			data[offset] = index;
 			return;
 		}
 
+		if (index == undefined) {
+			if (size != 1) throw 'index cannot be empty if size != 1';
+			data[offset] = scalar;
+			return this;
+		}
+		if (ndim == 0) {
+			if (index.length != undefined) {
+				if (index.length == 0) index = 0;
+				else if (index.length == 1) index = index[0];
+				else throw 'incorrect number of indices for array';
+			}
+			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
+			data[offset] = scalar;
+			return this;
+		}
+		if (ndim == 1) {
+			if (index.length != undefined) {
+				if (index.length != 1) throw 'incorrect number of indices for array';
+				index = index[0];
+			}
+			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
+			if (index < 0) index += size;
+			data[offset + index * strides[0]] = scalar;
+			return this;
+		}
+		if (index.length == 1) index = index[0];
+
 		index = _index(this, index);
 
 		data[offset + index_offset(index, strides, shape)] = scalar;
+
+		return this;
 	}
 
 	toarray() {

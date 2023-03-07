@@ -104,3 +104,16 @@ export class Tester {
 }
 
 export let tester = new Tester();
+export function timeit(func) {
+	let start = performance.now();
+	let end;
+	let count = 0;
+	while (true) {
+		func();
+		count++;
+		end = performance.now();
+		if (end - start >= 1000) break;
+	}
+	let ops = count / ((end - start) / 1000);
+	console.log(`ops: ${ops} per sec`, func);
+}

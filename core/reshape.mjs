@@ -1,6 +1,6 @@
 import { tester, asarray, NDArray, array, ascontiguousarray, arange, slice, ndindex } from './core.mjs';
 
-function even_strides(strides, shape, ndim) {
+export function even_strides(strides, shape, ndim) {
 	let lastindex;
 	for (let i = ndim - 1; i > 0; i--) {
 		if (shape[i] > 1) {

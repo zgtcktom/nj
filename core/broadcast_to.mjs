@@ -1,6 +1,16 @@
-import { tester, NDArray } from './core.mjs';
+import { tester, NDArray, asarray } from './core.mjs';
+
+export function broadcastable_to(srcshape, dstshape) {
+	if (srcshape.length > dstshape.length) return false;
+
+	for (let i = dstshape.length - 1, j = srcshape.length - 1; j >= 0; i--, j--) {
+		if (!(srcshape[j] == 1 || srcshape[j] == dstshape[i])) return false;
+	}
+	return true;
+}
 
 export function broadcast_to(array, shape) {
+	array = asarray(array);
 	if (array.shape.length > shape.length) throw 'broadcast shape has less dimensions than input array';
 
 	let { data, strides, offset, itemsize } = array;

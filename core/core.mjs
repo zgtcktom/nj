@@ -41,3 +41,6 @@ export * from './ravel.mjs';
 export * from './extract.mjs';
 export * from './flatnonzero.mjs';
 export * from './count_nonzero.mjs';
+export * from './numeric.mjs';
+
+export * from './math.mjs';
