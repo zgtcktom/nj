@@ -44,5 +44,7 @@ export * from './flatnonzero.mjs';
 export * from './count_nonzero.mjs';
 export * from './numeric.mjs';
 
+export * from './func.mjs';
+
 export * from './logic.mjs';
 export * from './math.mjs';

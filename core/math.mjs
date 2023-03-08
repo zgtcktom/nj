@@ -5,6 +5,7 @@ import {
 	broadcastable_to,
 	empty,
 	ones,
+	slice,
 	tester,
 	timeit,
 	wrap_map,
@@ -97,8 +98,34 @@ tester
 	)
 	.add(
 		sum,
-		() => sum([10], 5),
-		() => 15
+		() =>
+			sum(
+				[
+					[0, 1],
+					[0, 5],
+				],
+				0
+			),
+		() => array([0, 6])
+	)
+	.add(
+		sum,
+		() =>
+			sum(
+				[
+					[0, 1],
+					[0, 5],
+				],
+				1
+			),
+		() => array([1, 5])
+	)
+	.add(
+		sum,
+		// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
+		// np.sum(a, (0, -1))
+		() => sum(arange(100).reshape(5, -1, 1).get(slice('::-2'), slice('2:7')), [0, -1]),
+		() => array([126, 129, 132, 135, 138])
 	);
 
 // console.log(add2.toString(), add.toString());
@@ -131,6 +158,23 @@ tester
 // out = empty(x1.shape);
 // timeit(() => {
 // 	add3(x1, x2, out);
+// }, 3000);
+
+// out = empty(x1.shape);
+// timeit(() => {
+// 	sum(x1);
+// }, 3000);
+
+// let x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// timeit(() => {
+// 	let sum = 0;
+// 	for (let i = 0; i < x1.length; i++) sum += x1[i];
+// 	return sum;
+// }, 3000);
+// x1 = array(x1);
+// sum(x1);
+// timeit(() => {
+// 	return sum(x1);
 // }, 3000);
 
 tester
