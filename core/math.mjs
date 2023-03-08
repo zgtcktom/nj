@@ -1,4 +1,16 @@
-import { arange, array, broadcast, broadcastable_to, empty, map, ones, tester, timeit } from './core.mjs';
+import {
+	arange,
+	array,
+	broadcast,
+	broadcastable_to,
+	empty,
+	ones,
+	tester,
+	timeit,
+	wrap_map,
+	wrap_map_binary,
+	wrap_reduce_unary,
+} from './core.mjs';
 
 function tuple_eq(a, b) {
 	if (a.length != b.length) return false;
@@ -38,10 +50,13 @@ function _add(x1, x2) {
 	return x1 + x2;
 }
 
-export var add = binary_func(_add);
-export var add2 = map('add', _add);
-export var sin = map('sin', Math.sin);
-console.log(sin);
+export var add2 = binary_func(_add);
+export var add = wrap_map('add', _add);
+export var add3 = wrap_map_binary('add', _add);
+export var sin = wrap_map('sin', Math.sin);
+
+export var sum = wrap_reduce_unary('sum', _add, 0);
+// console.log(sum);
 
 tester.add(
 	sin,
@@ -65,32 +80,58 @@ tester.add(
 		])
 );
 
-console.log(add2.toString());
+tester
+	.add(
+		sum,
+		() => sum([0.5, 1.5]),
+		() => 2.0
+	)
+	.add(
+		sum,
+		() =>
+			sum([
+				[0, 1],
+				[0, 5],
+			]),
+		() => 6
+	)
+	.add(
+		sum,
+		() => sum([10], 5),
+		() => 15
+	);
 
-let x1, x2, out;
-x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
-x2 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
-out = Array(x1.length);
-timeit(() => {
-	for (let i = 0; i < x1.length; i++) {
-		out[i] = x1[i] + x2[i];
-	}
-});
-// x1 = ones([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-// x2 = ones([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-x1 = ones([1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10]);
-x2 = ones([1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10]);
-// x1 = ones([121, 40]);
-// x2 = ones([121, 40]);
-out = empty(x1.shape);
-timeit(() => {
-	add(x1, x2, out);
-});
+// console.log(add2.toString(), add.toString());
 
-out = empty(x1.shape);
-timeit(() => {
-	add2(x1, x2, out);
-});
+// let x1, x2, out;
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// x2 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// out = Array(x1.length);
+// timeit(() => {
+// 	for (let i = 0; i < x1.length; i++) {
+// 		out[i] = x1[i] + x2[i];
+// 	}
+// }, 3000);
+// // x1 = ones([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+// // x2 = ones([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+// x1 = ones([1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10]);
+// x2 = ones([1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10]);
+// // x1 = ones([121, 40]);
+// // x2 = ones([121, 40]);
+// out = empty(x1.shape);
+// timeit(() => {
+// 	add2(x1, x2, out);
+// }, 3000);
+
+// out = empty(x1.shape);
+// timeit(() => {
+// 	add(x1, x2, out);
+// }, 3000);
+
+// out = empty(x1.shape);
+// timeit(() => {
+// 	add3(x1, x2, out);
+// }, 3000);
 
 tester
 	.add(
