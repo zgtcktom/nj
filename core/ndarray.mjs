@@ -56,7 +56,8 @@ function _index(array, index) {
 
 function index_offset(index, strides, shape) {
 	let offset = 0;
-	for (let i = 0; i < index.length; i++) offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
+	for (let i = 0; i < index.length; i++)
+		offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
 	return offset;
 }
 
