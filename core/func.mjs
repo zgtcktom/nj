@@ -553,7 +553,7 @@ function _map_body(narg, ndim) {
 
 function _outer_body(narg, ndim) {}
 
-function _reduce_body(narg, ndim, ...axis) {
+function _reduce_body(narg, ndim, axis) {
 	// axis as bool(0, 1) mask
 
 	let out_ndim = ndim;
@@ -649,7 +649,7 @@ function _reduce_body(narg, ndim, ...axis) {
 function _accumulate_body(narg, ndim, axis) {}
 
 console.log(_map_body(2, 3));
-console.log(_reduce_body(2, 4, ...normalize_axis_mask([0, -1], 4)));
+console.log(_reduce_body(2, 4, normalize_axis_mask([0, -1], 4)));
 
 console.log(normalize_axis_mask([0, -1], 4));
 
@@ -661,8 +661,8 @@ let _outer = _cache((narg, ndims) => {
 	return new Function();
 });
 let _reduce = _cache((narg, ndim, axis) => {
-	console.log(new Function(..._reduce_body(narg, ndim, ...axis)).toString());
-	return new Function(..._reduce_body(narg, ndim, ...axis));
+	console.log(new Function(..._reduce_body(narg, ndim, axis)).toString());
+	return new Function(..._reduce_body(narg, ndim, axis));
 });
 let _accumulate = _cache((narg, ndim, ...axis) => {
 	return new Function();
