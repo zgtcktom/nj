@@ -11,6 +11,8 @@ import {
 	wrap_map,
 	wrap_map_binary,
 	wrap_reduce_unary,
+	_wrap_map,
+	_wrap_reduce,
 } from './core.mjs';
 
 function tuple_eq(a, b) {
@@ -54,9 +56,9 @@ function _add(x1, x2) {
 export var add2 = binary_func(_add);
 export var add = wrap_map('add', _add);
 export var add3 = wrap_map_binary('add', _add);
-export var sin = wrap_map('sin', Math.sin);
+export var sin = _wrap_map('sin', Math.sin);
 
-export var sum = wrap_reduce_unary('sum', _add, 0);
+export var sum = _wrap_reduce('sum', _add, 1, 0);
 // console.log(sum);
 
 tester.add(
@@ -130,7 +132,7 @@ tester
 
 // console.log(add2.toString(), add.toString());
 
-// let x1, x2, out;
+let x1, x2, out;
 // x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
 // x2 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
 // out = Array(x1.length);
@@ -165,16 +167,30 @@ tester
 // 	sum(x1);
 // }, 3000);
 
-// let x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
 // timeit(() => {
 // 	let sum = 0;
 // 	for (let i = 0; i < x1.length; i++) sum += x1[i];
 // 	return sum;
 // }, 3000);
 // x1 = array(x1);
+// out = empty([]);
 // sum(x1);
 // timeit(() => {
-// 	return sum(x1);
+// 	return sum(x1, null, out);
+// }, 3000);
+
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// out = Array(x1.length);
+// timeit(() => {
+// 	for (let i = 0; i < x1.length; i++) out[i] = Math.sin(x1[i]);
+// }, 3000);
+
+// x1 = array(x1);
+// out = empty(x1.shape);
+// sum(x1);
+// timeit(() => {
+// 	return sin(x1, out);
 // }, 3000);
 
 tester

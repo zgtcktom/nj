@@ -1,14 +1,4 @@
-import { asarray } from './asarray.mjs';
-import { ndindex } from './ndindex.mjs';
-import { slice } from './slice.mjs';
-
-export function normalize_axis_index(axis, ndim) {
-	if (!Number.isInteger(+axis)) throw `${axis} cannot be cast to integer`;
-	axis = +axis;
-	if (axis < -ndim || ndim <= axis) throw `axis ${axis} is out of bounds for array of dimension ${ndim}`;
-	if (axis < 0) axis += ndim;
-	return axis;
-}
+import { normalize_axis_index, asarray, ndindex, slice } from './core.mjs';
 
 export function normalize_axis(axis, ndim, allow_duplicate = false) {
 	// https://github.com/numpy/numpy/blob/857c64a95339bd937fbcc5398246fd2dcf78f3ab/numpy/core/numeric.py#L1331
