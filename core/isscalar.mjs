@@ -1,4 +1,4 @@
-import { tester, array } from './core.mjs';
+import { tester, array, _wrap_map } from './core.mjs';
 
 export function isscalar(element) {
 	switch (typeof element) {

@@ -1,9 +1,11 @@
-import { tester, array, slice, broadcast_to, isscalar, ndoffset, ndindex, asarray } from './core.mjs';
+import { tester, array, slice, broadcast_to, ndoffset, ndindex, asarray, NDArray } from './core.mjs';
 
 export function copyto(dst, src, where = true) {
 	if (where == true) {
-		if (isscalar(src)) {
-			for (let offset of ndoffset(dst)) dst.data[offset] = src;
+		if (!(src instanceof NDArray) && !Array.isArray(src)) {
+			for (let offset of ndoffset(dst.shape, dst.strides)) {
+				dst.data[dst.offset + offset] = src;
+			}
 		} else {
 			src = broadcast_to(asarray(src), dst.shape);
 			for (let index of ndindex(dst.shape)) {

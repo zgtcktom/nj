@@ -1,5 +1,23 @@
 import { tester } from './core.mjs';
 
+export function broadcastable(...shapes) {
+	// definitely can be optimized but whatever
+	let ndim = 0;
+	for (let shape of shapes) ndim = Math.max(ndim, shape.length);
+	if (ndim == 0) return [];
+
+	let broadcasted = Array(ndim).fill(1);
+	for (let shape of shapes) {
+		for (let i = shape.length - 1, j = ndim - 1; i >= 0; i--, j--) {
+			let dim = shape[i];
+			if (dim == 1) continue;
+			if (broadcasted[j] == 1) broadcasted[j] = dim;
+			else if (broadcasted[j] != dim) return false;
+		}
+	}
+	return true;
+}
+
 export function broadcast_shapes(...shapes) {
 	let ndim = 0;
 	for (let shape of shapes) ndim = Math.max(ndim, shape.length);

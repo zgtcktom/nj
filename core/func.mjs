@@ -38,12 +38,8 @@ function reduce_body(
 	}
 	let strides = range(outer_axis.length).map(i => `strides${i}`);
 
-	let outer_loop = outer_axis.map(
-		i => `for (let ${index[i]} = 0; ${index[i]} < ${shape[i]}; ${index[i]}++)`
-	);
-	let inner_loop = inner_axis.map(
-		i => `for (let ${index[i]} = 0; ${index[i]} < ${shape[i]}; ${index[i]}++)`
-	);
+	let outer_loop = outer_axis.map(i => `for (let ${index[i]} = 0; ${index[i]} < ${shape[i]}; ${index[i]}++)`);
+	let inner_loop = inner_axis.map(i => `for (let ${index[i]} = 0; ${index[i]} < ${shape[i]}; ${index[i]}++)`);
 
 	let x_start = nargs.map(i => `x${i + 1}_start`);
 	let x_start_decl = nargs.map(
@@ -64,9 +60,7 @@ function reduce_body(
 		.map((i, j) => `${index[i]} * ${strides[j]}`)
 		.join(' + ')}]`;
 
-	let inner_loop_body = `${inner_loop.join(' ')} {${accum} = ${func}(${accum}, ${inner_loop_x.join(
-		', '
-	)});}`;
+	let inner_loop_body = `${inner_loop.join(' ')} {${accum} = ${func}(${accum}, ${inner_loop_x.join(', ')});}`;
 
 	let outer_loop_body = `let ${accum} = ${initial};`;
 	outer_loop_body += x_start_decl.join('') + '';
@@ -230,7 +224,7 @@ ${out}.data[${out}.offset + ${outoffset}] = ${func}(${offsets
 
 	// signiture: f(func, ...args, out)
 
-	console.log(new Function(func, ...args, out, body).toString());
+	// console.log(new Function(func, ...args, out, body).toString());
 	return new Function(func, ...args, out, body);
 });
 
@@ -259,7 +253,7 @@ function cached_reduce(builder, self = Object.create(null)) {
 
 const reduce_func = cached_reduce((narg, ndim, axis) => {
 	let { args, out, body, func, initial } = reduce_body(axis, ndim, narg);
-	console.log(new Function(func, ...args, out, initial, body).toString());
+	// console.log(new Function(func, ...args, out, initial, body).toString());
 	return new Function(func, ...args, out, initial, body);
 });
 
@@ -270,9 +264,7 @@ export function wrap_map(name, func, narg = func.length) {
 	let shape;
 	if (out == null) {
 		shape = ${
-			narg > 1
-				? `this.broadcast_shapes(${args.map(arg => `${arg}.shape`).join(', ')})`
-				: `${args[0]}.shape`
+			narg > 1 ? `this.broadcast_shapes(${args.map(arg => `${arg}.shape`).join(', ')})` : `${args[0]}.shape`
 		};
 		out = this.empty(shape);
 	} else {
@@ -490,9 +482,7 @@ function declarations(obj, data, offset, strides) {
 	statements.push(assignment('let', data, dotAccess(obj, 'data')));
 	statements.push(assignment('let', offset, dotAccess(obj, 'offset')));
 	if (strides.length > 0)
-		statements.push(
-			destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length))
-		);
+		statements.push(destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length)));
 
 	return statements;
 }
@@ -522,10 +512,7 @@ function _map_body(narg, ndim) {
 						[
 							bracketAccess(
 								out_data,
-								sum(
-									out_offset,
-									...index.map((index, axis) => product(index, out_strides[axis]))
-								)
+								sum(out_offset, ...index.map((index, axis) => product(index, out_strides[axis])))
 							),
 						],
 						[
@@ -534,10 +521,7 @@ function _map_body(narg, ndim) {
 								...x_data.map((x_data, i) =>
 									bracketAccess(
 										x_data,
-										sum(
-											x_offset[i],
-											...index.map((index, axis) => product(index, x_strides[i][axis]))
-										)
+										sum(x_offset[i], ...index.map((index, axis) => product(index, x_strides[i][axis])))
 									)
 								)
 							),
@@ -559,7 +543,7 @@ function _reduce_body(narg, ndim, axis) {
 	let out_ndim = ndim;
 	for (let i = 0; i < ndim; i++) out_ndim -= axis[i];
 
-	console.log(axis);
+	// console.log(axis);
 
 	let { fn, out, x, out_offset, x_offset, out_data, x_data, out_strides, x_strides, index, shape } =
 		variableNames(narg, ndim, out_ndim);
@@ -648,20 +632,20 @@ function _reduce_body(narg, ndim, axis) {
 
 function _accumulate_body(narg, ndim, axis) {}
 
-console.log(_map_body(2, 3));
-console.log(_reduce_body(2, 4, normalize_axis_mask([0, -1], 4)));
+// console.log(_map_body(2, 3));
+// console.log(_reduce_body(2, 4, normalize_axis_mask([0, -1], 4)));
 
-console.log(normalize_axis_mask([0, -1], 4));
+// console.log(normalize_axis_mask([0, -1], 4));
 
 let _map = _cache((narg, ndim) => {
-	console.log('generate', narg, ndim);
+	// console.log('generate', narg, ndim);
 	return new Function(..._map_body(narg, ndim));
 });
 let _outer = _cache((narg, ndims) => {
 	return new Function();
 });
 let _reduce = _cache((narg, ndim, axis) => {
-	console.log(new Function(..._reduce_body(narg, ndim, axis)).toString());
+	// console.log(new Function(..._reduce_body(narg, ndim, axis)).toString());
 	return new Function(..._reduce_body(narg, ndim, axis));
 });
 let _accumulate = _cache((narg, ndim, ...axis) => {
@@ -709,7 +693,15 @@ const EMPTY_SHAPE = [];
 export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 	let func;
 	if (narg == 1)
-		func = (x1, axis = null, out = null, initial = defaultinitial) => {
+		func = (
+			x1,
+			axis = null,
+			out = null,
+			keepdims = false,
+			initial = defaultinitial,
+			return_scalar = true
+		) => {
+			if (out != null) return_scalar = false;
 			x1 = asarray(x1);
 			let { ndim, shape } = x1;
 			let outshape;
@@ -721,26 +713,52 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 				outshape = [];
 				for (let i = 0; i < ndim; i++) if (!axis[i]) outshape.push(shape[i]);
 			}
+			if (keepdims) {
+				// very hacky
+				// kinda force it to keepdims=false
+				// and force it back to original shape and strides (ndim is not used in the loop)
+
+				// maybe pass out_data, out_strides, out_shape instead of out to the generated function
+				// to avoid this?
+
+				// let { strides } = x1;
+				let sameshape = shape.slice();
+				// let outstrides = [];
+				for (let i = 0; i < ndim; i++) {
+					if (axis[i]) {
+						sameshape[i] = 1;
+					} else {
+						// outstrides.push(strides[i]);
+					}
+				}
+				if (out == null) out = empty(sameshape);
+				else if (!shallow_array_equals(sameshape, out.shape)) throw 'unmatch shape';
+				// else {
+				// 	sameshape = out.shape;
+				// 	strides = out.strides;
+				// }
+
+				// out.shape = outshape;
+				// out.strides = outstrides;
+
+				// out = _reduce(1, ndim, axis)(fn, x1, out, initial);
+
+				// out.shape = sameshape;
+				// out.strides = strides;
+
+				// how about reshape out as a non-copy view?
+				// if only interleaved 1s exist in the shape
+				// seems working
+				_reduce(1, ndim, axis)(fn, x1, out.reshape(outshape), initial);
+				return return_scalar && out.ndim == 0 ? out.item() : out;
+			}
+
 			if (out == null) out = empty(outshape);
 			else if (!shallow_array_equals(outshape, out.shape)) throw 'unmatch shape';
 
-			return _reduce(1, ndim, axis)(fn, x1, out, initial);
+			out = _reduce(1, ndim, axis)(fn, x1, out, initial);
+			return return_scalar && out.ndim == 0 ? out.item() : out;
 		};
 	else throw 'not support on narg > 1 yet';
 	return Object.defineProperty(func, 'name', { value: name });
-}
-function anonymous(fn, x1, out, initial) {
-	let out_data = out.data;
-	let out_offset = out.offset;
-	let x1_data = x1.data;
-	let x1_offset = x1.offset;
-	let [x1_strides_0] = x1.strides;
-	let [shape_0] = x1.shape;
-	let accum = initial;
-	let x1_start = x1_offset;
-	for (let i_0 = 0; i_0 < shape_0; i_0++) {
-		accum = fn(accum, x1_data[x1_start + i_0 * x1_strides_0]);
-	}
-	out_data[out_offset] = accum;
-	return out;
 }

@@ -11,6 +11,7 @@ function default_compare(a, b) {
 	}
 	if (typeof a == 'boolean' && typeof b == 'boolean') return a == b;
 	if (typeof a == 'number' && typeof b == 'number') return a == b;
+	if (Number.isNaN(a) && Number.isNaN(b)) return true;
 	if (typeof a == 'string' && typeof b == 'string') return a == b;
 
 	if (a?.toarray != undefined) return default_compare(a.toarray(), b);

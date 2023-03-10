@@ -43,8 +43,11 @@ export * from './extract.mjs';
 export * from './flatnonzero.mjs';
 export * from './count_nonzero.mjs';
 export * from './numeric.mjs';
+export * from './array_equal.mjs';
 
 export * from './func.mjs';
 
+export * from './arithmetic.mjs';
 export * from './logic.mjs';
 export * from './math.mjs';
+export * from './comparison.mjs';

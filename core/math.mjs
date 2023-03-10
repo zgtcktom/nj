@@ -45,7 +45,7 @@ function _binary_func(func, x1, x2, out) {
 	return out;
 }
 
-export function binary_func(func) {
+function binary_func(func) {
 	return (x1, x2, out = null) => _binary_func(func, x1, x2, out);
 }
 
@@ -53,9 +53,9 @@ function _add(x1, x2) {
 	return x1 + x2;
 }
 
-export var add2 = binary_func(_add);
-export var add = wrap_map('add', _add);
-export var add3 = wrap_map_binary('add', _add);
+var add2 = binary_func(_add);
+var add = wrap_map('add', _add);
+var add3 = wrap_map_binary('add', _add);
 export var sin = _wrap_map('sin', Math.sin);
 
 export var sum = _wrap_reduce('sum', _add, 1, 0);
@@ -128,6 +128,17 @@ tester
 		// np.sum(a, (0, -1))
 		() => sum(arange(100).reshape(5, -1, 1).get(slice('::-2'), slice('2:7')), [0, -1]),
 		() => array([126, 129, 132, 135, 138])
+	)
+	.add(
+		sum,
+		// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
+		// np.sum(a, (0, -1))
+		() => {
+			let a = arange(100);
+			a = a.get(slice(20, -20)).reshape([2, 1, -1, 2]).get(slice('...'), slice('::-1'));
+			return sum(a, [1, -2], null, true, -99);
+		},
+		() => array([[[[426, 411]]], [[[876, 861]]]])
 	);
 
 // console.log(add2.toString(), add.toString());
@@ -167,53 +178,39 @@ let x1, x2, out;
 // 	sum(x1);
 // }, 3000);
 
-x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
-out = [];
-timeit(() => {
-	let sum = 0;
-	for (let i = 0; i < x1.length; i++) sum = _add(sum, x1[i]);
-	out[0] = sum;
-}, 5000);
-x1 = array(x1);
-out = empty([]);
-sum(x1, null, out);
-timeit(() => {
-	sum(x1, null, out, 0);
-}, 5000);
-x1 = array(x1);
-out = empty([]);
-sum(x1, null, out);
-function generated(fn, x1, out, initial) {
-	let out_data = out.data;
-	let out_offset = out.offset;
-	let x1_data = x1.data;
-	let x1_offset = x1.offset;
-	let { 0: x1_strides_0 } = x1.strides;
-	let { 0: shape_0 } = x1.shape;
-	let accum = initial;
-	let x1_start = x1_offset;
-	for (let i_0 = 0; i_0 < shape_0; i_0++) {
-		accum = accum + x1_data[x1_start + i_0 * x1_strides_0];
-	}
-	out_data[out_offset] = accum;
-	return out;
-}
-timeit(() => {
-	generated(_add, x1, out, 0);
-}, 5000);
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// out = Array(x1.length);
+// timeit(() => {
+// 	for (let i = 0; i < x1.length; i++) out[i] = Math.sin(x1[i]);
+// });
 
-x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
-out = Array(x1.length);
-timeit(() => {
-	for (let i = 0; i < x1.length; i++) out[i] = Math.sin(x1[i]);
-}, 5000);
+// x1 = array(x1);
+// out = empty(x1.shape);
+// sum(x1);
+// timeit(() => {
+// 	return sin(x1, out);
+// });
 
-x1 = array(x1);
-out = empty(x1.shape);
-sum(x1);
-timeit(() => {
-	return sin(x1, out);
-}, 5000);
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// out = [];
+// timeit(() => {
+// 	let sum = 0;
+// 	for (let i = 0; i < x1.length; i++) sum = sum + x1[i];
+// 	out[0] = sum;
+// });
+// x1 = array(Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1));
+// out = empty([]);
+// sum(x1, null, out);
+// timeit(() => {
+// 	sum(x1, null, out, 0);
+// });
+// x1 = Array(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10).fill(1);
+// out = [];
+// timeit(() => {
+// 	let sum = 0;
+// 	for (let i = 0; i < x1.length; i++) sum = sum + x1[i];
+// 	out[0] = sum;
+// });
 
 tester
 	.add(

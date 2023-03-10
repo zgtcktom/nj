@@ -239,7 +239,9 @@ export class NDArray {
 			newdata = data.slice();
 		} else {
 			newdata = [];
-			for (let offset of ndoffset(this)) newdata.push(data[offset]);
+			for (let offset of ndoffset(this.shape, this.strides)) {
+				newdata.push(data[this.offset + offset]);
+			}
 		}
 
 		return new NDArray([size], newdata);

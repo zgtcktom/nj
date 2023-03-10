@@ -16,7 +16,9 @@ export function array(a) {
 		if (a.base == undefined) data = a.data.slice();
 		else {
 			data = [];
-			for (let offset of ndoffset(a)) data.push(a.data[offset]);
+			for (let offset of ndoffset(a.shape, a.strides)) {
+				data.push(a.data[a.offset + offset]);
+			}
 		}
 		return new NDArray(a.shape, data);
 	}

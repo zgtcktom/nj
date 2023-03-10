@@ -48,9 +48,31 @@ export function reshape(a, newshape) {
 		return new NDArray(newshape, a.data, a);
 	}
 
-	// how can it tell if the strides allows a view instead of a copy?
-	// no .ravel until this is resolved
-	// even_strides() should do the trick
+	if (true || newshape.length >= a.shape.length) {
+		// check (1, 1, x, -1, y, 1) to (x, y)
+		// or backward
+		let compatible = true;
+		let j = 0;
+		// console.log(0, newshape, a.shape);
+		for (let i = 0; i < newshape.length; i++) {
+			// console.log(1, newshape, a.shape, newshape[i], a.shape[j]);
+			if (newshape[i] == 1) continue;
+			for (; j < a.shape.length && a.shape[j] == 1; j++);
+			// console.log(2, newshape, a.shape, newshape[i], a.shape[j]);
+			if (j >= a.shape.length || newshape[i] != a.shape[j]) {
+				compatible = false;
+				break;
+			}
+			j++;
+		}
+		if (j != a.shape.length) compatible = false;
+		// console.log(3, compatible);
+		if (compatible) {
+			return new NDArray(newshape, a.data, a, null, a.offset, a.itemsize);
+		}
+	}
+
+	// for reshape(a, [-1])
 	if (!even_strides(a.strides, a.shape, a.ndim)) a = array(a);
 
 	return new NDArray(newshape, a.data, a, null, a.offset, a.itemsize);
@@ -117,4 +139,40 @@ tester
 				[-1]
 			),
 		() => array([1, 2, 3, 4, 5, 6])
+	)
+	.add(
+		'reshape',
+		() => {
+			`
+			b = np.arange(30)
+			a = b.reshape((10, 3))[::2]
+			c = a.reshape(a.shape)
+			a, a.reshape((1, 1, 5, -1, 3)).base is b, a.base is b, a.reshape(-1).base is b, c is a, c.base is b
+			`;
+			let b = arange(30);
+			let a = b.reshape([10, 3]).get(slice('::2'));
+			let c = a.reshape(a.shape);
+			return [
+				a.toarray(),
+				reshape(a, [1, 1, 5, -1, 3]).base === b,
+				a.base === b,
+				a.reshape(-1).base === b,
+				c === a,
+				c.base === b,
+			];
+		},
+		() => [
+			array([
+				[0, 1, 2],
+				[6, 7, 8],
+				[12, 13, 14],
+				[18, 19, 20],
+				[24, 25, 26],
+			]).toarray(),
+			true,
+			true,
+			false,
+			false,
+			true,
+		]
 	);
