@@ -1,15 +1,7 @@
-import { asarray, tester } from './core.mjs';
+import { asarray, isscalar, tester } from './core.mjs';
 
 export function ndim(a) {
-	if (a == undefined) return 0;
-	switch (typeof a) {
-		case 'boolean':
-		case 'function':
-		case 'number':
-		case 'string':
-			return 0;
-	}
-	return asarray(a).ndim;
+	return a == null || isscalar(a) ? 0 : asarray(a).ndim;
 }
 
 tester
@@ -36,5 +28,10 @@ tester
 	.add(
 		'ndim',
 		() => ndim(1),
+		() => 0
+	)
+	.add(
+		'ndim',
+		() => ndim(null),
 		() => 0
 	);

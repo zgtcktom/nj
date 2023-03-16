@@ -67,7 +67,8 @@ function toPrimitive() {
 
 function _view(array, indices) {
 	let { shape, strides, offset } = array;
-	indices = indices.slice();
+	// indices = indices.slice();
+	indices = indices.map(index => (typeof index == 'string' ? slice(index) : index));
 	shape = shape.slice();
 	strides = strides.slice();
 	let ndim = 0;
@@ -78,6 +79,7 @@ function _view(array, indices) {
 		indices = indices.slice();
 		let colons = Array(shape.length + newaxis_length - indices.length + 1).fill(slice(':'));
 		indices.splice(indices.indexOf(slice('...')), 1, ...colons);
+		// console.log(indices, indices.indexOf(slice('...')));
 	}
 	if (indices.length - newaxis_length > shape.length) throw 'too many indices for array';
 
@@ -105,17 +107,18 @@ function _view(array, indices) {
 		}
 		// console.log('offset', offset, indices);
 	}
-	return { strides, shape, offset };
+	let immutable = shape.length == 0 && ellipsis.length == 0;
+	return { strides, shape, offset, immutable };
 }
 
 export class NDArray {
-	constructor(shape, buffer = null, base = null, strides = null, offset = 0, itemsize = 1) {
+	constructor(shape, data = null, base = null, strides = null, offset = 0, itemsize = 1) {
 		// https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
 		this.size = get_size(shape);
 		this.ndim = shape.length;
 
 		this.shape = shape;
-		this.data = buffer ?? Array(this.size);
+		this.data = data ?? Array(this.size);
 		this.itemsize = itemsize;
 		this.strides = strides ?? get_strides(shape, itemsize);
 		this.offset = offset;
@@ -127,9 +130,9 @@ export class NDArray {
 	}
 
 	get(...indices) {
-		let { strides, shape, offset } = _view(this, indices);
+		let { strides, shape, offset, immutable } = _view(this, indices);
 		let { data, itemsize, base } = this;
-		if (shape.length == 0) {
+		if (immutable) {
 			// immutable scalar
 			return new NDArray(shape, [data[offset]], null, strides, 0, itemsize);
 		}

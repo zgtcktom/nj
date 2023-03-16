@@ -1,6 +1,6 @@
 import { all, array, asarray, broadcastable, equal, tester, _wrap_map } from './core.mjs';
 
-function shallow_array_equal(a, b) {
+export function shallow_array_equal(a, b) {
 	if (a === b) return true;
 	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;

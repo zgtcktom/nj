@@ -7,6 +7,13 @@ export const subtract = _wrap_map('subtract', (x1, x2) => x1 - x2, 2);
 export const multiply = _wrap_map('multiply', (x1, x2) => x1 * x2, 2);
 
 export const divide = _wrap_map('divide', (x1, x2) => x1 / x2, 2);
+export const true_divide = divide;
+export const floor_divide = _wrap_map('floor_divide', (x1, x2) => (x1 / x2) | 0, 2);
+
+export const mod = _wrap_map('mod', (x1, x2) => (Math.sign(x2) * Math.abs(x1)) % x2, 2);
+export const remainder = mod;
+
+export const power = _wrap_map('power', (x1, x2) => x1 ** x2, 2);
 
 tester.add(
 	add,
@@ -70,4 +77,47 @@ tester
 			])
 	);
 
-console.log(divide(arange(9.0).reshape([3, 3]), arange(3.0)).toarray());
+tester
+	.add(
+		mod,
+		() => mod([4, 7], [2, 3]),
+		() => array([0, 1])
+	)
+	.add(
+		mod,
+		() => mod(arange(7), 5),
+		() => array([0, 1, 2, 3, 4, 0, 1])
+	);
+
+tester
+	.add(
+		power,
+		() => power(arange(6), 3),
+		() => array([0, 1, 8, 27, 64, 125])
+	)
+	.add(
+		power,
+		() => power(arange(6), [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]),
+		() => array([0, 1, 8, 27, 16, 5])
+	)
+	.add(
+		power,
+		() =>
+			power(
+				arange(6),
+				array([
+					[1, 2, 3, 3, 2, 1],
+					[1, 2, 3, 3, 2, 1],
+				])
+			),
+		() =>
+			array([
+				[0, 1, 8, 27, 16, 5],
+				[0, 1, 8, 27, 16, 5],
+			])
+	)
+	.add(
+		power,
+		() => power(arange(6), array([1, 2, 3, 3, 2, 1])),
+		() => array([0, 1, 8, 27, 16, 5])
+	);

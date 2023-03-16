@@ -8,6 +8,8 @@ export function normalize_axis(axis, ndim, allow_duplicate = false) {
 	return axis;
 }
 
+export const normalize_axis_tuple = normalize_axis;
+
 export class Nditer {
 	constructor(a, axis = null) {
 		this.array = asarray(a);

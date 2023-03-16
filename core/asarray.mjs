@@ -1,8 +1,7 @@
 import { tester, NDArray, array } from './core.mjs';
 
 export function asarray(a) {
-	if (a instanceof NDArray) return a;
-	return array(a);
+	return a instanceof NDArray ? a : array(a);
 }
 
 tester

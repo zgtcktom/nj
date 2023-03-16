@@ -44,6 +44,8 @@ export * from './flatnonzero.mjs';
 export * from './count_nonzero.mjs';
 export * from './numeric.mjs';
 export * from './array_equal.mjs';
+export * from './concatenate.mjs';
+export * from './moveaxis.mjs';
 
 export * from './func.mjs';
 
@@ -51,3 +53,11 @@ export * from './arithmetic.mjs';
 export * from './logic.mjs';
 export * from './math.mjs';
 export * from './comparison.mjs';
+
+export * from './gradient.mjs';
+
+export * from './cross.mjs';
+export * from './trapz.mjs';
+export * from './convolve.mjs';
+export * from './clip.mjs';
+export * from './interp.mjs';

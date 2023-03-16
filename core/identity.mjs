@@ -7,18 +7,18 @@ export function identity(n) {
 	return new NDArray([n, n], data);
 }
 
-tester.add(
-	'identity',
-	() => identity(3).toarray(),
-	() => [
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-	]
-);
-
-tester.add(
-	'identity',
-	() => identity(0).toarray(),
-	() => []
-);
+tester
+	.add(
+		'identity',
+		() => identity(3),
+		() => [
+			[1, 0, 0],
+			[0, 1, 0],
+			[0, 0, 1],
+		]
+	)
+	.add(
+		'identity',
+		() => identity(0),
+		() => []
+	);
