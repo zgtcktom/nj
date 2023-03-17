@@ -15,6 +15,10 @@ export function empty(shape) {
 	return new NDArray(shape, Array(get_size(shape)));
 }
 
+export function empty_like(prototype) {
+	return empty(shape(prototype));
+}
+
 tester
 	.add(
 		'empty',
@@ -34,10 +38,6 @@ tester
 		() => empty([]),
 		() => undefined
 	);
-
-export function empty_like(prototype) {
-	return empty(shape(prototype));
-}
 
 tester
 	.add(

@@ -60,4 +60,5 @@ export * from './cross.mjs';
 export * from './trapz.mjs';
 export * from './convolve.mjs';
 export * from './clip.mjs';
+export * from './argsort.mjs';
 export * from './interp.mjs';

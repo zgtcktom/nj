@@ -10,7 +10,7 @@ export const divide = _wrap_map('divide', (x1, x2) => x1 / x2, 2);
 export const true_divide = divide;
 export const floor_divide = _wrap_map('floor_divide', (x1, x2) => (x1 / x2) | 0, 2);
 
-export const mod = _wrap_map('mod', (x1, x2) => (Math.sign(x2) * Math.abs(x1)) % x2, 2);
+export const mod = _wrap_map('mod', (x1, x2) => ((x1 % x2) + x2) % x2, 2);
 export const remainder = mod;
 
 export const power = _wrap_map('power', (x1, x2) => x1 ** x2, 2);

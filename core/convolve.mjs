@@ -44,7 +44,7 @@ export function convolve(a, v, mode = 'full') {
 	return new NDArray([length], data);
 }
 
-console.log(atleast_1d(10));
+// console.log(atleast_1d(10));
 
 tester
 	.add(

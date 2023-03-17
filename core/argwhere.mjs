@@ -1,4 +1,4 @@
-import { array, asarray, NDArray, ndenumerate, tester } from './core.mjs';
+import { arange, array, asarray, greater, NDArray, ndenumerate, tester } from './core.mjs';
 
 export function argwhere(a) {
 	a = asarray(a);
@@ -20,11 +20,7 @@ tester
 	)
 	.add(
 		argwhere,
-		() =>
-			argwhere([
-				[0 > 1, 1 > 1, 2 > 1],
-				[3 > 1, 4 > 1, 5 > 1],
-			]),
+		() => argwhere(greater(arange(6).reshape(2, 3), 1)),
 		() =>
 			array([
 				[0, 2],

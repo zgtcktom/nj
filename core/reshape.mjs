@@ -93,7 +93,7 @@ let msg = await new Promise((resolve, reject) => {
 	setTimeout(() => resolve('ok'), 1);
 });
 
-console.log(msg);
+// console.log(msg);
 
 // https://rob-blackbourn.github.io/blog/webassembly/wasm/array/arrays/javascript/c/2020/06/07/wasm-arrays.html
 // https://nodejs.dev/en/learn/nodejs-with-webassembly/
