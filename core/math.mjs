@@ -3,7 +3,6 @@ import {
 	array,
 	tester,
 	slice,
-	_wrap_map,
 	_wrap_reduce,
 	asarray,
 	ndoffset,
@@ -16,6 +15,8 @@ import {
 	reshape,
 	remainder,
 	eye,
+	_wrap_map_unary,
+	_wrap_map_binary,
 } from './core.mjs';
 
 export const e = Math.E;
@@ -24,20 +25,20 @@ export const pi = Math.PI;
 export const inf = Infinity;
 export const NINF = -Infinity;
 
-export const sin = _wrap_map('sin', Math.sin, 1);
-export const cos = _wrap_map('cos', Math.cos, 1);
-export const tan = _wrap_map('tan', Math.tan, 1);
+export const sin = _wrap_map_unary('sin', Math.sin);
+export const cos = _wrap_map_unary('cos', Math.cos);
+export const tan = _wrap_map_unary('tan', Math.tan);
 
-export const arcsin = _wrap_map('arcsin', Math.asin, 1);
-export const arccos = _wrap_map('arccos', Math.acos, 1);
-export const arctan = _wrap_map('arctan', Math.atan, 1);
+export const arcsin = _wrap_map_unary('arcsin', Math.asin);
+export const arccos = _wrap_map_unary('arccos', Math.acos);
+export const arctan = _wrap_map_unary('arctan', Math.atan);
 
-export const hypot = _wrap_map('hypot', Math.hypot, 1);
+export const hypot = _wrap_map_unary('hypot', Math.hypot);
 
-export const arctan2 = _wrap_map('arctan2', Math.atan2, 1);
+export const arctan2 = _wrap_map_unary('arctan2', Math.atan2);
 
-export const degrees = _wrap_map('degrees', x => (x * 180) / pi, 1);
-export const radians = _wrap_map('radians', x => (x / 180) * pi, 1);
+export const degrees = _wrap_map_unary('degrees', x => (x * 180) / pi);
+export const radians = _wrap_map_unary('radians', x => (x / 180) * pi);
 
 export function unwrap(p, period = 2 * pi, discont = period / 2) {
 	p = asarray(p);
@@ -66,18 +67,18 @@ export function unwrap(p, period = 2 * pi, discont = period / 2) {
 	return asarray(unwrapped);
 }
 
-export const rad2deg = _wrap_map('rad2deg', x => (x * 180) / pi, 1);
-export const deg2rad = _wrap_map('deg2rad', x => (x / 180) * pi, 1);
+export const rad2deg = _wrap_map_unary('rad2deg', x => (x * 180) / pi);
+export const deg2rad = _wrap_map_unary('deg2rad', x => (x / 180) * pi);
 
-export const sinh = _wrap_map('sinh', Math.sinh, 1);
-export const cosh = _wrap_map('cosh', Math.cosh, 1);
-export const tanh = _wrap_map('tanh', Math.tanh, 1);
+export const sinh = _wrap_map_unary('sinh', Math.sinh);
+export const cosh = _wrap_map_unary('cosh', Math.cosh);
+export const tanh = _wrap_map_unary('tanh', Math.tanh);
 
-export const arcsinh = _wrap_map('arcsinh', Math.asinh, 1);
-export const arccosh = _wrap_map('arccosh', Math.acosh, 1);
-export const arctanh = _wrap_map('arctanh', Math.atanh, 1);
+export const arcsinh = _wrap_map_unary('arcsinh', Math.asinh);
+export const arccosh = _wrap_map_unary('arccosh', Math.acosh);
+export const arctanh = _wrap_map_unary('arctanh', Math.atanh);
 
-const _around = _wrap_map(
+const _around = _wrap_map_unary(
 	'_around',
 	({ decimals }, x) => {
 		let multiplier = 10 ** decimals;
@@ -89,31 +90,27 @@ const _around = _wrap_map(
 		}
 		return m / multiplier;
 	},
-	1,
 	true
 );
+
 export const around = function (x, decimals = 0, out) {
 	return _around(x, out, { decimals });
 };
 
-export const rint = _wrap_map(
-	'rint',
-	x => {
-		let fraction = x % 1;
-		let n = Math.round(x);
-		if (fraction == 0.5 || fraction == -0.5) {
-			n = n % 2 ? n - 1 : n;
-		}
-		return n;
-	},
-	1
-);
+export const rint = _wrap_map_unary('rint', x => {
+	let fraction = x % 1;
+	let n = Math.round(x);
+	if (fraction == 0.5 || fraction == -0.5) {
+		n = n % 2 ? n - 1 : n;
+	}
+	return n;
+});
 
-export const fix = _wrap_map('fix', x => Math.sign(x) * Math.floor(Math.abs(x)), 1);
+export const fix = _wrap_map_unary('fix', x => Math.sign(x) * Math.floor(Math.abs(x)));
 
-export const floor = _wrap_map('floor', Math.floor, 1);
-export const ceil = _wrap_map('ceil', Math.ceil, 1);
-export const trunc = _wrap_map('trunc', Math.trunc, 1);
+export const floor = _wrap_map_unary('floor', Math.floor);
+export const ceil = _wrap_map_unary('ceil', Math.ceil);
+export const trunc = _wrap_map_unary('trunc', Math.trunc);
 
 export const prod = _wrap_reduce('prod', (x1, x2) => x1 * x2, 1, 1);
 export const sum = _wrap_reduce('sum', (x1, x2) => x1 + x2, 1, 0);
@@ -156,25 +153,25 @@ export function ediff1d(a, to_end = null, to_begin = null) {
 	return a;
 }
 
-export const exp = _wrap_map('exp', Math.exp, 1);
+export const exp = _wrap_map_unary('exp', Math.exp, 1);
 
-export const expm1 = _wrap_map('expm1', x => Math.exp(x) - 1, 1);
-export const exp2 = _wrap_map('exp2', x => 2 ** x, 1);
-export const log = _wrap_map('log', Math.log, 1);
-export const log10 = _wrap_map('log10', Math.log10, 1);
-export const log2 = _wrap_map('log2', Math.log2, 1);
-export const log1p = _wrap_map('log1p', Math.log1p, 1);
-export const logaddexp = _wrap_map('logaddexp', (x1, x2) => Math.log(Math.exp(x1) + Math.exp(x2)), 2);
+export const expm1 = _wrap_map_unary('expm1', x => Math.exp(x) - 1);
+export const exp2 = _wrap_map_unary('exp2', x => 2 ** x);
+export const log = _wrap_map_unary('log', Math.log);
+export const log10 = _wrap_map_unary('log10', Math.log10);
+export const log2 = _wrap_map_unary('log2', Math.log2);
+export const log1p = _wrap_map_unary('log1p', Math.log1p);
+export const logaddexp = _wrap_map_binary('logaddexp', (x1, x2) => Math.log(Math.exp(x1) + Math.exp(x2)));
 
-export const logaddexp2 = _wrap_map('logaddexp2', (x1, x2) => Math.log2(2 ** x1 + 2 ** x2), 2);
+export const logaddexp2 = _wrap_map_binary('logaddexp2', (x1, x2) => Math.log2(2 ** x1 + 2 ** x2));
 
-export const signbit = _wrap_map('signbit', x => x < 0, 1);
-export const copysign = _wrap_map('copysign', (x1, x2) => (x2 < 0 ? -Math.abs(x1) : Math.abs(x1)), 2);
+export const signbit = _wrap_map_unary('signbit', x => x < 0);
+export const copysign = _wrap_map_binary('copysign', (x1, x2) => (x2 < 0 ? -Math.abs(x1) : Math.abs(x1)));
 
-export const ldexp = _wrap_map('ldexp', (x1, x2) => x1 * 2 ** x2, 2);
+export const ldexp = _wrap_map_binary('ldexp', (x1, x2) => x1 * 2 ** x2);
 
-export const positive = _wrap_map('positive', x => +x, 1);
-export const negative = _wrap_map('negative', x => -x, 1);
+export const positive = _wrap_map_unary('positive', x => +x);
+export const negative = _wrap_map_unary('negative', x => -x);
 
 function _gcd(a, b) {
 	while (b != 0) {
@@ -189,42 +186,38 @@ function _lcm(a, b) {
 	return (a * b) / _gcd(a, b);
 }
 
-export const lcm = _wrap_map('lcm', _lcm, 2);
-export const gcd = _wrap_map('gcd', _gcd, 2);
+export const lcm = _wrap_map_binary('lcm', _lcm);
+export const gcd = _wrap_map_binary('gcd', _gcd);
 
-export const reciprocal = _wrap_map('reciprocal', x => 1 / x, 1);
+export const reciprocal = _wrap_map_unary('reciprocal', x => 1 / x);
 
-export const fmod = _wrap_map('fmod', (x1, x2) => x1 - ((x1 / x2) | 0) * x2, 2);
+export const fmod = _wrap_map_binary('fmod', (x1, x2) => x1 - ((x1 / x2) | 0) * x2);
 
-export const maximum = _wrap_map('maximum', Math.max, 2);
+export const maximum = _wrap_map_binary('maximum', Math.max);
 
-export const minimum = _wrap_map('minimum', Math.min, 2);
+export const minimum = _wrap_map_binary('minimum', Math.min);
 
 export const amax = _wrap_reduce('amax', Math.max, 1, -inf);
 
 export const amin = _wrap_reduce('amin', Math.min, 1, inf);
 
-export const sqrt = _wrap_map('sqrt', Math.sqrt, 1);
+export const sqrt = _wrap_map_unary('sqrt', Math.sqrt);
 
-export const cbrt = _wrap_map('cbrt', Math.cbrt, 1);
+export const cbrt = _wrap_map_unary('cbrt', Math.cbrt);
 
-export const square = _wrap_map('square', x => x ** 2, 1);
+export const square = _wrap_map_unary('square', x => x ** 2);
 
-export const abs = _wrap_map('abs', Math.abs, 1),
+export const abs = _wrap_map_unary('abs', Math.abs),
 	absolute = abs;
 
-export const sign = _wrap_map('sign', Math.sign, 1);
+export const sign = _wrap_map_unary('sign', Math.sign);
 
-export const nan_to_num = _wrap_map(
-	'nan_to_num',
-	x => {
-		if (isNaN(x)) return 0;
-		if (x == Infinity) return Number.MAX_VALUE;
-		if (x == -Infinity) return Number.MIN_VALUE;
-		return x;
-	},
-	1
-);
+export const nan_to_num = _wrap_map_unary('nan_to_num', x => {
+	if (isNaN(x)) return 0;
+	if (x == Infinity) return Number.MAX_VALUE;
+	if (x == -Infinity) return Number.MIN_VALUE;
+	return x;
+});
 
 tester
 	.add(

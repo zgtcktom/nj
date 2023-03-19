@@ -25,16 +25,19 @@ export class Broadcast {
 		this.index = 0;
 		this.reset();
 	}
+
 	[Symbol.iterator]() {
 		if (this.index != 0) this.reset();
 		return this;
 	}
+
 	next() {
 		let value = this.iters.map(iter => iter.next().value);
 		let done = this.index >= this.size;
 		this.index++;
 		return { value, done };
 	}
+
 	reset() {
 		this.iters = this.arrays.map(array => array.flat);
 		this.index = 0;
@@ -44,8 +47,6 @@ export class Broadcast {
 export function broadcast(...arrays) {
 	return new Broadcast(arrays);
 }
-
-// extend(broadcast, Broadcast);
 
 tester
 	.add(

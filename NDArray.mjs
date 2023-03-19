@@ -3,12 +3,13 @@ import { slice, isscalar } from './core/core.mjs';
 import * as nj from './core/core.mjs';
 
 let runTest = true;
+// runTest = false;
 
 function is_int(value) {
 	return Number.isInteger(value);
 }
 
-console.log(Object.keys(nj));
+// console.log(Object.keys(nj));
 
 function prod(a) {
 	let prod = 1;

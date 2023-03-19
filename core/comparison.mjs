@@ -1,16 +1,16 @@
-import { arange, array, ones, tester, _wrap_map } from './core.mjs';
+import { arange, array, ones, tester, _wrap_map_binary, _wrap_map_unary } from './core.mjs';
 
-export const equal = _wrap_map('equal', (x1, x2) => x1 == x2, 2);
+export const equal = _wrap_map_binary('equal', (x1, x2) => x1 == x2);
 
-export const not_equal = _wrap_map('not_equal', (x1, x2) => x1 != x2, 2);
+export const not_equal = _wrap_map_binary('not_equal', (x1, x2) => x1 != x2);
 
-export const less_equal = _wrap_map('less_equal', (x1, x2) => x1 <= x2, 2);
+export const less_equal = _wrap_map_binary('less_equal', (x1, x2) => x1 <= x2);
 
-export const less = _wrap_map('less_equal', (x1, x2) => x1 < x2, 2);
+export const less = _wrap_map_binary('less_equal', (x1, x2) => x1 < x2);
 
-export const greater_equal = _wrap_map('less_equal', (x1, x2) => x1 >= x2, 2);
+export const greater_equal = _wrap_map_binary('less_equal', (x1, x2) => x1 >= x2);
 
-export const greater = _wrap_map('less_equal', (x1, x2) => x1 > x2, 2);
+export const greater = _wrap_map_binary('less_equal', (x1, x2) => x1 > x2);
 
 tester
 	.add(

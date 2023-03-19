@@ -1,13 +1,23 @@
-import { tester } from './core.mjs';
+import { NDArray, tester } from './core.mjs';
 
 function nested_shape(array, shape, level) {
 	for (let i = 0; i < array.length; i++) {
-		if (array[i]?.length != shape[level]) {
+		let elem = array[i];
+		if (elem instanceof NDArray) {
+			for (let i = level, j = 0; i < shape.length; i++) {
+				if (shape[i] != elem.shape[j++]) {
+					shape.length = i;
+					return false;
+				}
+			}
+			return true;
+		}
+		if (elem?.length != shape[level]) {
 			shape.length = level;
 			return false;
 		}
-		if (array[i]?.length != undefined && shape.length > level + 1) {
-			if (!nested_shape(array[i], shape, level + 1)) return false;
+		if (elem?.length != undefined && shape.length > level + 1) {
+			if (!nested_shape(elem, shape, level + 1)) return false;
 		}
 	}
 	return true;
@@ -17,9 +27,14 @@ export function shape(array) {
 	if (array.shape != undefined) return array.shape;
 	let shape = [];
 	let elem = array;
-	while (elem?.length != undefined) {
-		shape.push(elem.length);
-		elem = elem[0];
+	while (true) {
+		if (elem instanceof NDArray) {
+			shape.push(...elem.shape);
+			break;
+		} else if (elem?.length != undefined) {
+			shape.push(elem.length);
+			elem = elem[0];
+		} else break;
 	}
 	if (array.length != undefined && shape.length > 1) nested_shape(array, shape, 1);
 	return shape;

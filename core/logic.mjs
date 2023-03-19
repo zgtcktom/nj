@@ -1,22 +1,21 @@
-import { array, tester, _wrap_map, _wrap_reduce } from './core.mjs';
+import { array, tester, _wrap_map_unary, _wrap_reduce } from './core.mjs';
 
 export const all = _wrap_reduce('all', (accum, value) => accum && !!value, 1, true);
 
 export const any = _wrap_reduce('any', (accum, value) => accum || !!value, 1, false);
 
-export const isfinite = _wrap_map('isfinite', Number.isFinite, 1);
+export const isfinite = _wrap_map_unary('isfinite', Number.isFinite);
 
-export const isinf = _wrap_map(
+export const isinf = _wrap_map_unary(
 	'isinf',
-	n => n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY,
-	1
+	n => n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
 );
 
-export const isna = _wrap_map('isinf', Number.isNaN, 1);
+export const isna = _wrap_map_unary('isinf', Number.isNaN);
 
-export const isneginf = _wrap_map('isinf', n => n == Number.NEGATIVE_INFINITY, 1);
+export const isneginf = _wrap_map_unary('isinf', n => n == Number.NEGATIVE_INFINITY);
 
-export const isposinf = _wrap_map('isinf', n => n == Number.POSITIVE_INFINITY, 1);
+export const isposinf = _wrap_map_unary('isinf', n => n == Number.POSITIVE_INFINITY);
 
 tester
 	.add(

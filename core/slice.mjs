@@ -115,7 +115,9 @@ function slice(start, stop, step) {
 	return new Slice(start, stop, step);
 }
 
-Object.assign(slice, Slice);
+Object.assign(slice, { colon: Slice.colon }, Slice);
+
+slice.colon = Slice.colon;
 
 slice.is = function (obj) {
 	return obj instanceof Slice;

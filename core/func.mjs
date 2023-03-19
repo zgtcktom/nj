@@ -1,4 +1,4 @@
-import { asarray, broadcast_shapes, broadcast_to, empty } from './core.mjs';
+import { asarray, broadcast_shapes, broadcast_to, empty, shallow_array_equal } from './core.mjs';
 
 // function getargs(narg) {
 // 	// ['x1', 'x2', ...]
@@ -491,7 +491,9 @@ function declarations(obj, data, offset, strides) {
 	statements.push(assignment('let', data, dotAccess(obj, 'data')));
 	statements.push(assignment('let', offset, dotAccess(obj, 'offset')));
 	if (strides.length > 0)
-		statements.push(destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length)));
+		statements.push(
+			destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length))
+		);
 
 	return statements;
 }
@@ -521,7 +523,10 @@ function _map_body(narg, ndim) {
 						[
 							bracketAccess(
 								out_data,
-								sum(out_offset, ...index.map((index, axis) => product(index, out_strides[axis])))
+								sum(
+									out_offset,
+									...index.map((index, axis) => product(index, out_strides[axis]))
+								)
 							),
 						],
 						[
@@ -530,7 +535,10 @@ function _map_body(narg, ndim) {
 								...x_data.map((x_data, i) =>
 									bracketAccess(
 										x_data,
-										sum(x_offset[i], ...index.map((index, axis) => product(index, x_strides[i][axis])))
+										sum(
+											x_offset[i],
+											...index.map((index, axis) => product(index, x_strides[i][axis]))
+										)
 									)
 								)
 							),
@@ -702,11 +710,49 @@ export function _wrap_map(name, fn, narg = fn.length, use_args = false) {
 	return Object.defineProperty(func, 'name', { value: name });
 }
 
-function shallow_array_equals(a, b) {
-	if (a === b) return true;
-	if (a.length !== b.length) return false;
-	for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
-	return true;
+export function _wrap_map_unary(name, fn, use_args = false) {
+	let func;
+	if (use_args) {
+		func = (x1, out = null, args = null) => {
+			x1 = asarray(x1);
+			if (out == null) {
+				out = empty(x1.shape);
+			} else {
+				x1 = broadcast_to(x1, out.shape);
+			}
+			return _map(1, out.ndim)(fn.bind(null, args), x1, out);
+		};
+	} else {
+		func = (x1, out = null) => {
+			x1 = asarray(x1);
+			if (out == null) {
+				out = empty(x1.shape);
+			} else {
+				x1 = broadcast_to(x1, out.shape);
+			}
+			return _map(1, out.ndim)(fn, x1, out);
+		};
+	}
+	return Object.defineProperty(func, 'name', { value: name });
+}
+
+export function _wrap_map_binary(name, fn) {
+	let func;
+
+	func = (x1, x2, out = null) => {
+		x1 = asarray(x1);
+		x2 = asarray(x2);
+		let shape;
+		if (out == null) {
+			shape = broadcast_shapes(x1.shape, x2.shape);
+			out = empty(shape);
+		} else shape = out.shape;
+		x1 = broadcast_to(x1, shape);
+		x2 = broadcast_to(x2, shape);
+		return _map(2, out.ndim)(fn, x1, x2, out);
+	};
+
+	return Object.defineProperty(func, 'name', { value: name });
 }
 
 const EMPTY_SHAPE = [];
@@ -753,7 +799,7 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 					}
 				}
 				if (out == null) out = empty(sameshape);
-				else if (!shallow_array_equals(sameshape, out.shape)) throw 'unmatch shape';
+				else if (!shallow_array_equal(sameshape, out.shape)) throw 'unmatch shape';
 				// else {
 				// 	sameshape = out.shape;
 				// 	strides = out.strides;
@@ -775,7 +821,7 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 			}
 
 			if (out == null) out = empty(outshape);
-			else if (!shallow_array_equals(outshape, out.shape)) throw 'unmatch shape';
+			else if (!shallow_array_equal(outshape, out.shape)) throw 'unmatch shape';
 
 			out = _reduce(1, ndim, axis)(fn, x1, out, initial);
 			return return_scalar && out.ndim == 0 ? out.item() : out;

@@ -2,7 +2,7 @@ import { tester, NDArray, shape, ndoffset } from './core.mjs';
 
 function flatten_with_shape(data, array, shape, level = 0) {
 	if (level == shape.length) {
-		data.push(array);
+		data.push(array instanceof NDArray ? array.item() : array);
 		return;
 	}
 	for (let i = 0; i < shape[level]; i++) {

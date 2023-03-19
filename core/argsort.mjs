@@ -1,20 +1,6 @@
-import {
-	tester,
-	arange,
-	array,
-	asarray,
-	ones,
-	zeros,
-	slice,
-	NDArray,
-	normalize_axis_index,
-	ravel,
-	ndindex,
-	empty,
-	empty_like,
-} from './core.mjs';
+import { tester, array, asarray, normalize_axis_index, ravel, ndindex, empty_like } from './core.mjs';
 
-export function argsort(a, axis = -1, key = null, kind = null) {
+export function argsort(a, axis = -1, key = null) {
 	a = asarray(a);
 	if (axis == null) {
 		a = ravel(a);
@@ -25,50 +11,54 @@ export function argsort(a, axis = -1, key = null, kind = null) {
 
 	let out = empty_like(a);
 
-	let Ni = a.shape.slice(0, axis);
-	let M = a.shape[axis];
-	let Nk = a.shape.slice(axis + 1);
+	// let Ni = a.shape.slice(0, axis);
+	// let M = a.shape[axis];
+	// let Nk = a.shape.slice(axis + 1);
 
-	let Si = a.strides.slice(0, axis);
-	let T = a.strides[axis];
-	let Sk = a.strides.slice(axis + 1);
+	// let Si = a.strides.slice(0, axis);
+	// let T = a.strides[axis];
+	// let Sk = a.strides.slice(axis + 1);
 
-	let _Si = out.strides.slice(0, axis);
-	let _T = out.strides[axis];
-	let _Sk = out.strides.slice(axis + 1);
+	// let _Si = out.strides.slice(0, axis);
+	// let _T = out.strides[axis];
+	// let _Sk = out.strides.slice(axis + 1);
 
-	let tmp = Array(M);
-	let indices = Array(M);
-	let cmp;
-	if (key == null) {
-		cmp = (i, j) => tmp[i] - tmp[j];
-	} else {
-		cmp = (i, j) => key(tmp[i]) - key(tmp[j]);
-	}
+	let tmp = Array(a.shape[axis]);
+	let indices = Array(a.shape[axis]);
+	let cmp = (i, j) => tmp[i] - tmp[j];
 
-	for (let ii of ndindex(Ni)) {
-		for (let kk of ndindex(Nk)) {
-			let { offset } = a;
-			let { offset: _offset } = out;
-			for (let i = 0; i < Si.length; i++) {
-				offset += ii[i] * Si[i];
-				_offset += ii[i] * _Si[i];
-			}
-			for (let i = 0; i < Sk.length; i++) {
-				offset += kk[i] * Sk[i];
-				_offset += kk[i] * _Sk[i];
-			}
-			for (let i = 0; i < M; i++) {
-				tmp[i] = a.data[offset + i * T];
-				indices[i] = i;
-			}
-			indices.sort(cmp);
-			// console.log(ii, M, kk, indices, offset);
-			for (let i = 0; i < M; i++) {
-				out.data[_offset + i * _T] = indices[i];
-			}
+	let shape = a.shape.slice();
+	shape[axis] = 1;
+
+	for (let ii of ndindex(shape)) {
+		// for (let ii of ndindex(Ni)) {
+		// 	for (let kk of ndindex(Nk)) {
+		let { offset } = a;
+		let { offset: _offset } = out;
+		for (let i = 0; i < shape.length; i++) {
+			offset += ii[i] * a.strides[i];
+			_offset += ii[i] * out.strides[i];
+		}
+
+		// for (let i = 0; i < Si.length; i++) {
+		// 	offset += ii[i] * Si[i];
+		// 	_offset += ii[i] * _Si[i];
+		// }
+		// for (let i = 0; i < Sk.length; i++) {
+		// 	offset += ii[i + Si.length + 1] * Sk[i];
+		// 	_offset += ii[i + Si.length + 1] * _Sk[i];
+		// }
+		for (let i = 0; i < a.shape[axis]; i++) {
+			let value = a.data[offset + i * a.strides[axis]];
+			tmp[i] = key != null ? key(value) : value;
+			indices[i] = i;
+		}
+		indices.sort(cmp);
+		for (let i = 0; i < a.shape[axis]; i++) {
+			out.data[_offset + i * out.strides[axis]] = indices[i];
 		}
 	}
+	// }
 
 	return out;
 }

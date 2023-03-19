@@ -1,19 +1,19 @@
-import { tester, _wrap_map, arange, array } from './core.mjs';
+import { tester, arange, array, _wrap_map_binary } from './core.mjs';
 
-export const add = _wrap_map('add', (x1, x2) => x1 + x2, 2);
+export const add = _wrap_map_binary('add', (x1, x2) => x1 + x2);
 
-export const subtract = _wrap_map('subtract', (x1, x2) => x1 - x2, 2);
+export const subtract = _wrap_map_binary('subtract', (x1, x2) => x1 - x2);
 
-export const multiply = _wrap_map('multiply', (x1, x2) => x1 * x2, 2);
+export const multiply = _wrap_map_binary('multiply', (x1, x2) => x1 * x2);
 
-export const divide = _wrap_map('divide', (x1, x2) => x1 / x2, 2);
+export const divide = _wrap_map_binary('divide', (x1, x2) => x1 / x2);
 export const true_divide = divide;
-export const floor_divide = _wrap_map('floor_divide', (x1, x2) => (x1 / x2) | 0, 2);
+export const floor_divide = _wrap_map_binary('floor_divide', (x1, x2) => (x1 / x2) | 0);
 
-export const mod = _wrap_map('mod', (x1, x2) => ((x1 % x2) + x2) % x2, 2);
+export const mod = _wrap_map_binary('mod', (x1, x2) => ((x1 % x2) + x2) % x2);
 export const remainder = mod;
 
-export const power = _wrap_map('power', (x1, x2) => x1 ** x2, 2);
+export const power = _wrap_map_binary('power', (x1, x2) => x1 ** x2);
 
 tester.add(
 	add,

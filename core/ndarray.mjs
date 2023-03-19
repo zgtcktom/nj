@@ -1,4 +1,19 @@
-import { tester, slice, copyto, array, Flatiter, ndoffset, reshape, transpose, swapaxes } from './core.mjs';
+import {
+	tester,
+	slice,
+	copyto,
+	array,
+	Flatiter,
+	ndoffset,
+	reshape,
+	transpose,
+	swapaxes,
+	Slice,
+	broadcast,
+	arange,
+	concatenate,
+	random,
+} from './core.mjs';
 
 function get_strides(shape, itemsize) {
 	let strides = [];
@@ -86,30 +101,111 @@ function _view(array, indices) {
 	// remove tail slice[':']?
 
 	for (let index of indices) {
-		if (shape.length == 0) throw 'invalid index to scalar variable';
 		if (index == null) {
 			shape.splice(ndim, 0, 1);
 			strides.splice(ndim, 0, 0);
 			ndim++;
-		} else if (index == slice[':']) {
-			ndim++;
-		} else if (slice.is(index)) {
-			let { start, step, slicelength } = index.get(shape[ndim]);
-			offset = offset + strides[ndim] * start;
-			shape.splice(ndim, 1, slicelength);
-			strides.splice(ndim, 1, strides[ndim] * step);
-			ndim++;
 		} else {
-			if (index < 0) index += shape[ndim];
-			offset = offset + strides[ndim] * index;
-			shape.splice(ndim, 1);
-			strides.splice(ndim, 1);
+			if (shape.length == 0) throw 'invalid index to scalar variable';
+			if (index == slice[':']) {
+				ndim++;
+			} else if (slice.is(index)) {
+				let { start, step, slicelength } = index.get(shape[ndim]);
+				offset = offset + strides[ndim] * start;
+				shape.splice(ndim, 1, slicelength);
+				strides.splice(ndim, 1, strides[ndim] * step);
+				ndim++;
+			} else {
+				if (index < 0) index += shape[ndim];
+				offset = offset + strides[ndim] * index;
+				shape.splice(ndim, 1);
+				strides.splice(ndim, 1);
+			}
 		}
 		// console.log('offset', offset, indices);
 	}
 	let immutable = shape.length == 0 && ellipsis.length == 0;
 	return { strides, shape, offset, immutable };
 }
+
+function use_advanced_indexing(indices) {
+	// console.log(indices);
+	for (let ind of indices)
+		if (typeof ind == 'object' && (Array.isArray(ind) || ind instanceof NDArray)) return true;
+	return false;
+}
+
+function array_indexing(indices) {
+	let simple = true;
+	let start = 0;
+	let stop = indices.length - 1;
+	let mask = indices.map(index => index instanceof Slice);
+	for (; start < stop && mask[start]; start++);
+	for (; stop > start && mask[stop]; stop--);
+
+	for (let i = start + 1; i < stop; i++) {
+		if (mask[i]) {
+			simple = false;
+			break;
+		}
+	}
+	let before, after;
+	let array_indices;
+	let shape = this.shape.map((dim, i) => (mask[i] ? indices[i].get(dim).slicelength : indices[i]));
+
+	if (simple) {
+		before = shape.slice(0, start);
+		after = shape.slice(stop + 1);
+		array_indices = indices.slice(start, stop + 1);
+	} else {
+		before = [];
+		after = shape.filter((_, i) => mask[i]);
+		array_indices = [];
+		for (let i = start; i <= stop; i++) {
+			if (!mask[i]) array_indices.push(indices[i]);
+		}
+	}
+
+	let b = broadcast(...array_indices);
+	let outshape = [...before, ...b.shape, ...after];
+	indices = indices.slice();
+
+	// let data = [];
+	let arrays = [];
+	for (let ind of b) {
+		for (let i = 0, j = 0; i < indices.length; i++) {
+			if (!mask[i]) indices[i] = ind[j++];
+		}
+		// console.log('asd', [...indices, null], this);
+		arrays.push(this.get(...indices, null));
+		// data.push(...this.get(...indices).flat);
+	}
+
+	// console.log(
+	// 	'simple',
+	// 	arrays.map(a => a.toarray()),
+	// 	simple,
+	// 	start,
+	// 	stop,
+	// 	before,
+	// 	after,
+	// 	outshape,
+	// 	new NDArray(outshape, concatenate(arrays, before.length).data)
+	// );
+	return new NDArray(outshape, concatenate(arrays, before.length).data);
+	// return new NDArray(outshape, data);
+}
+
+// tester.onload(() => {
+// 	let x = arange(120).reshape(4, 6, 5, 1);
+// 	_get.call(x, array([0, 2, 1]), slice(), array([0, 2, 4]), slice());
+// 	_get.call(x, array([0, 2, 1]), [0, 2, 1], slice(), slice());
+// 	_get.call(x, slice(), [0, 2, 1], array([0, 2, 4]), slice());
+// 	_get.call(x, slice(), [0, 2, 1], slice(), [0, 0, 0]);
+// 	_get.call(x, slice(), slice(), array([0, 2, 1]), array([0, 0, 0]));
+// 	_get.call(x, array([0, 2, 1]), slice(), slice(), [0, 0, 0]);
+// 	_get.call(x, array([0, 2, 1]), [0, 2, 1], slice(), [0, 0, 0]);
+// });
 
 export class NDArray {
 	constructor(shape, data = null, base = null, strides = null, offset = 0, itemsize = 1) {
@@ -129,7 +225,15 @@ export class NDArray {
 		else this[Symbol.toPrimitive] = toPrimitive;
 	}
 
+	*[Symbol.iterator]() {
+		for (let i = 0; i < this.shape[0]; i++) {
+			yield this.get(i);
+		}
+	}
+
 	get(...indices) {
+		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
+
 		let { strides, shape, offset, immutable } = _view(this, indices);
 		let { data, itemsize, base } = this;
 		if (immutable) {
@@ -145,6 +249,8 @@ export class NDArray {
 			copyto(this, value);
 			return this;
 		}
+		if (use_advanced_indexing(indices)) throw 'cannot use advanced indexing in .set()';
+
 		let { strides, shape, offset } = _view(this, indices);
 		let { data, itemsize, base } = this;
 
@@ -283,6 +389,197 @@ export class NDArray {
 }
 
 tester
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(array([0, 2, 1]), slice(), [0, 2, 4], slice());
+		},
+		() =>
+			array([
+				[[0], [5], [10], [15], [20], [25]],
+				[[62], [67], [72], [77], [82], [87]],
+				[[34], [39], [44], [49], [54], [59]],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(array([0, 2, 1]), array([0, 2, 1]), slice(), slice());
+		},
+		() =>
+			array([
+				[[0], [1], [2], [3], [4]],
+				[[70], [71], [72], [73], [74]],
+				[[35], [36], [37], [38], [39]],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(slice(), array([0, 2, 1]), array([0, 2, 4]), slice());
+		},
+		() =>
+			array([
+				[[0], [12], [9]],
+				[[30], [42], [39]],
+				[[60], [72], [69]],
+				[[90], [102], [99]],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(slice(), array([0, 2, 1]), slice(), [0, 0, 0]);
+		},
+		() =>
+			array([
+				[
+					[0, 1, 2, 3, 4],
+					[30, 31, 32, 33, 34],
+					[60, 61, 62, 63, 64],
+					[90, 91, 92, 93, 94],
+				],
+				[
+					[10, 11, 12, 13, 14],
+					[40, 41, 42, 43, 44],
+					[70, 71, 72, 73, 74],
+					[100, 101, 102, 103, 104],
+				],
+				[
+					[5, 6, 7, 8, 9],
+					[35, 36, 37, 38, 39],
+					[65, 66, 67, 68, 69],
+					[95, 96, 97, 98, 99],
+				],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(slice(), slice(), array([0, 2, 1]), array([0, 0, 0]));
+		},
+		() =>
+			array([
+				[
+					[0, 2, 1],
+					[5, 7, 6],
+					[10, 12, 11],
+					[15, 17, 16],
+					[20, 22, 21],
+					[25, 27, 26],
+				],
+				[
+					[30, 32, 31],
+					[35, 37, 36],
+					[40, 42, 41],
+					[45, 47, 46],
+					[50, 52, 51],
+					[55, 57, 56],
+				],
+				[
+					[60, 62, 61],
+					[65, 67, 66],
+					[70, 72, 71],
+					[75, 77, 76],
+					[80, 82, 81],
+					[85, 87, 86],
+				],
+				[
+					[90, 92, 91],
+					[95, 97, 96],
+					[100, 102, 101],
+					[105, 107, 106],
+					[110, 112, 111],
+					[115, 117, 116],
+				],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(array([0, 2, 1]), slice(), slice(), array([0, 0, 0]));
+		},
+		() =>
+			array([
+				[
+					[0, 1, 2, 3, 4],
+					[5, 6, 7, 8, 9],
+					[10, 11, 12, 13, 14],
+					[15, 16, 17, 18, 19],
+					[20, 21, 22, 23, 24],
+					[25, 26, 27, 28, 29],
+				],
+				[
+					[60, 61, 62, 63, 64],
+					[65, 66, 67, 68, 69],
+					[70, 71, 72, 73, 74],
+					[75, 76, 77, 78, 79],
+					[80, 81, 82, 83, 84],
+					[85, 86, 87, 88, 89],
+				],
+				[
+					[30, 31, 32, 33, 34],
+					[35, 36, 37, 38, 39],
+					[40, 41, 42, 43, 44],
+					[45, 46, 47, 48, 49],
+					[50, 51, 52, 53, 54],
+					[55, 56, 57, 58, 59],
+				],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(array([0, 2, 1]), array([0, 2, 1]), slice(), 0);
+		},
+		() =>
+			array([
+				[0, 1, 2, 3, 4],
+				[70, 71, 72, 73, 74],
+				[35, 36, 37, 38, 39],
+			])
+	)
+	.add(
+		'ndarray.get',
+		() => {
+			let x = arange(120).reshape(4, 6, 5, 1);
+			return x.get(array([0, 2, 1]), slice(), slice(), 0);
+		},
+		() =>
+			array([
+				[
+					[0, 1, 2, 3, 4],
+					[5, 6, 7, 8, 9],
+					[10, 11, 12, 13, 14],
+					[15, 16, 17, 18, 19],
+					[20, 21, 22, 23, 24],
+					[25, 26, 27, 28, 29],
+				],
+				[
+					[60, 61, 62, 63, 64],
+					[65, 66, 67, 68, 69],
+					[70, 71, 72, 73, 74],
+					[75, 76, 77, 78, 79],
+					[80, 81, 82, 83, 84],
+					[85, 86, 87, 88, 89],
+				],
+				[
+					[30, 31, 32, 33, 34],
+					[35, 36, 37, 38, 39],
+					[40, 41, 42, 43, 44],
+					[45, 46, 47, 48, 49],
+					[50, 51, 52, 53, 54],
+					[55, 56, 57, 58, 59],
+				],
+			])
+	)
 	.add(
 		'ndarray.get',
 		() => {

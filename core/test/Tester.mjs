@@ -38,6 +38,10 @@ export class Tester {
 	compare = default_compare;
 	constructor() {
 		this.tasks = {};
+		this._onload = [];
+	}
+	onload(fn) {
+		this._onload.push(fn);
 	}
 	add(name, test, expected, compare = this.compare) {
 		if (typeof name == 'function') name = name.name;
@@ -53,6 +57,8 @@ export class Tester {
 			}
 			let color = (status ? '\x1b[32m' : '\x1b[31m') + '%s\x1b[0m';
 			console.log(color, `Status: ${status}, Total: ${Object.keys(this.tasks).length}`);
+
+			this._onload.forEach(fn => fn());
 			return status;
 		}
 		let tasks = this.tasks[name];

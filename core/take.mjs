@@ -1,4 +1,4 @@
-import { array, asarray, empty, ndindex, slice, tester } from './core.mjs';
+import { array, asarray, empty, ndindex, shallow_array_equal, slice, tester } from './core.mjs';
 
 function clip(n, min, max) {
 	return n < min ? min : n > max ? max : n;
@@ -28,14 +28,6 @@ function _indices(indices, mode, size) {
 	return newindices;
 }
 
-function array_equal(a, b) {
-	if (a.length != b.length) return false;
-	for (let i = 0; i < a.length; i++) {
-		if (a[i] != b[i]) return false;
-	}
-	return true;
-}
-
 export function take(a, indices, axis = null, out = null, mode = 'raise') {
 	a = asarray(a);
 	indices = array(indices);
@@ -45,7 +37,7 @@ export function take(a, indices, axis = null, out = null, mode = 'raise') {
 		let newshape = indices.shape;
 
 		if (out == null) out = empty(newshape);
-		else if (!array_equal(out.shape, newshape))
+		else if (!shallow_array_equal(out.shape, newshape))
 			throw 'output array does not match result of ndarray.take';
 
 		for (let i = 0; i < indices.size; i++) {
@@ -62,7 +54,7 @@ export function take(a, indices, axis = null, out = null, mode = 'raise') {
 		newshape.splice(axis, 1, ...indices.shape);
 
 		if (out == null) out = empty(newshape);
-		else if (!array_equal(out.shape, newshape))
+		else if (!shallow_array_equal(out.shape, newshape))
 			throw 'output array does not match result of ndarray.take';
 
 		let rest = Array(axis).fill(slice());

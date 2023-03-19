@@ -8,9 +8,13 @@ export function copyto(dst, src, where = true) {
 			}
 		} else {
 			src = broadcast_to(asarray(src), dst.shape);
-			for (let index of ndindex(dst.shape)) {
-				dst.itemset(index, src.item(index));
+			let it = ndoffset(src.shape, src.strides);
+			for (let offset of ndoffset(dst.shape, dst.strides)) {
+				dst.data[dst.offset + offset] = src.data[src.offset + it.next().value];
 			}
+			// for (let index of ndindex(dst.shape)) {
+			// 	dst.itemset(index, src.item(index));
+			// }
 		}
 	}
 }

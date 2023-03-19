@@ -1,4 +1,4 @@
-import { all, array, asarray, broadcastable, equal, tester, _wrap_map } from './core.mjs';
+import { all, array, asarray, broadcastable, equal, tester, _wrap_map_binary } from './core.mjs';
 
 export function shallow_array_equal(a, b) {
 	if (a === b) return true;
@@ -7,10 +7,9 @@ export function shallow_array_equal(a, b) {
 	return true;
 }
 
-const equal_nan_map = _wrap_map(
+const equal_nan_map = _wrap_map_binary(
 	'nan_equal',
-	(x1, x2) => x1 == x2 || (Number.isNaN(x1) && Number.isNaN(x2)),
-	2
+	(x1, x2) => x1 == x2 || (Number.isNaN(x1) && Number.isNaN(x2))
 );
 
 export function array_equal(a1, a2, equal_nan = false) {
