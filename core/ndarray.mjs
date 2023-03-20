@@ -13,6 +13,7 @@ import {
 	arange,
 	concatenate,
 	random,
+	sort,
 } from './core.mjs';
 
 function get_strides(shape, itemsize) {
@@ -385,6 +386,10 @@ export class NDArray {
 
 	swapaxes(axis1, axis2) {
 		return swapaxes(this, axis1, axis2);
+	}
+
+	sort(axis = -1, key = null) {
+		this.set(sort(this, axis, key));
 	}
 }
 

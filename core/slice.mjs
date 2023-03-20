@@ -13,6 +13,23 @@ export class Slice {
 		this.step = step;
 	}
 
+	_get() {
+		let { start, stop, step } = this;
+		start ??= 0;
+		if (stop == null) throw `stop must not be null`;
+		step ??= 1;
+
+		let slicelength;
+		if (step == 0 || (step < 0 && stop >= start) || (step > 0 && start >= stop)) {
+			slicelength = 0;
+		} else if (step < 0) {
+			slicelength = ((stop - start + 1) / step + 1) | 0;
+		} else {
+			slicelength = ((stop - start - 1) / step + 1) | 0;
+		}
+		return { start, stop, step, slicelength };
+	}
+
 	get(length) {
 		// https://svn.python.org/projects/python/branches/pep-0384/Objects/sliceobject.c
 		let { start, stop, step } = this;
