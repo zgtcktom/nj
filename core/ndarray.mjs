@@ -231,6 +231,12 @@ export class NDArray {
 		}
 	}
 
+	_getview(indices) {
+		let { strides, shape, offset } = _view(this, indices);
+		let { data, itemsize, base } = this;
+		return new NDArray(shape, data, base ?? this, strides, offset, itemsize);
+	}
+
 	get(...indices) {
 		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
 

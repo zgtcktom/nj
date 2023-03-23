@@ -16,6 +16,8 @@ export function copyto(dst, src, where = true) {
 			// 	dst.itemset(index, src.item(index));
 			// }
 		}
+	} else {
+		throw `haven't implement`;
 	}
 }
 

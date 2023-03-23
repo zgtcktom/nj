@@ -63,6 +63,6 @@ export * from './clip.mjs';
 export * from './argsort.mjs';
 export * from './sort.mjs';
 export * from './interp.mjs';
-export * as random from './random.mjs';
+export * from './random.mjs';
 export * from './where.mjs';
 export * from './ogrid.mjs';
