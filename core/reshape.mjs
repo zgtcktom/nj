@@ -26,6 +26,12 @@ export function even_strides(strides, shape, ndim = strides.length) {
 	return true;
 }
 
+function get_size(shape) {
+	let size = 1;
+	for (let dim of shape) size *= dim;
+	return size;
+}
+
 export function reshape(a, newshape) {
 	a = asarray(a);
 	if (typeof newshape == 'number') newshape = [newshape];
@@ -44,6 +50,9 @@ export function reshape(a, newshape) {
 		if (size % rest != 0) throw `cannot reshape array of size ${size} into shape ${newshape}`;
 		newshape[unknown] = rest == 0 ? 0 : size / rest;
 	}
+	if (a.size != get_size(newshape))
+		throw `cannot reshape array of size ${a.size} into shape [${newshape.join(', ')}]`;
+
 	if (a.base == undefined) {
 		return new NDArray(newshape, a.data, a);
 	}

@@ -1,6 +1,6 @@
 import { array, asarray, tester, slice, ones } from './core.mjs';
 
-function contiguous(a) {
+export function contiguous(a) {
 	let { strides, shape, ndim, itemsize } = a;
 	if (ndim == 0) return false;
 	// if (shape[ndim - 1] != 1 && strides[ndim - 1] != itemsize) return false;

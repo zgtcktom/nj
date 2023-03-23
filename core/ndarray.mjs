@@ -12,7 +12,6 @@ import {
 	broadcast,
 	arange,
 	concatenate,
-	random,
 	sort,
 } from './core.mjs';
 
@@ -129,7 +128,7 @@ function _view(array, indices) {
 	return { strides, shape, offset, immutable };
 }
 
-function use_advanced_indexing(indices) {
+export function use_advanced_indexing(indices) {
 	// console.log(indices);
 	for (let ind of indices)
 		if (typeof ind == 'object' && (Array.isArray(ind) || ind instanceof NDArray)) return true;
@@ -339,6 +338,10 @@ export class NDArray {
 			array.push(this.get(i).toarray());
 		}
 		return array;
+	}
+
+	tolist() {
+		return this.toarray();
 	}
 
 	flatten() {

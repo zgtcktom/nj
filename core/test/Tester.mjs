@@ -111,7 +111,7 @@ export class Tester {
 }
 
 export let tester = new Tester();
-export function timeit(func, duration = 1000) {
+export function timeit2(func, duration = 1000) {
 	let start = performance.now();
 	let end;
 	let count = 0;
@@ -123,4 +123,53 @@ export function timeit(func, duration = 1000) {
 	}
 	let ops = count / ((end - start) / duration);
 	console.log(`ops: ${ops} per sec`, func);
+}
+
+export function timeit(
+	run,
+	{
+		name = 'test',
+		setup = null,
+		duration = 1000,
+		warmup = 100,
+		cycle = 'auto',
+		cycle_duration = 100,
+		repeat = 'auto',
+		verbose = false,
+	} = {}
+) {
+	let out = setup?.();
+	if (cycle_duration > duration) cycle_duration = duration;
+	if (repeat == 'auto') {
+		repeat = (duration / cycle_duration) | 0;
+	}
+	if (cycle == 'auto') {
+		let n = 1;
+		let interval;
+		while (true) {
+			let start = Date.now();
+			for (let i = 0; i < n; i++) run(out);
+			interval = Date.now() - start;
+			if (interval > cycle_duration) break;
+			n *= 2;
+		}
+		cycle = Math.max(((n / interval) * (duration / repeat)) | 0, 1);
+	}
+	let history = [];
+	for (let i = 0; i < warmup; i++) run(out);
+	for (let i = 0; i < repeat; i++) {
+		let start = Date.now();
+		for (let i = 0; i < cycle; i++) run(out);
+		let ops = cycle / ((Date.now() - start) / 1000);
+		history.push(ops);
+	}
+	let n = history.length;
+	let mean = history.reduce((a, b) => a + b) / n;
+	if (verbose) {
+		let max = Math.max(...history);
+		let min = Math.min(...history);
+		let diff = Math.max(max - mean, mean - min);
+		console.log(`#${name} ${mean | 0} ± ${((diff / mean) * 100).toFixed(2)}% ops/sec (${repeat} runs)`);
+	}
+	return mean;
 }
