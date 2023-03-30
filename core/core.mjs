@@ -52,6 +52,7 @@ export * from './func.mjs';
 export * from './arithmetic.mjs';
 export * from './logic.mjs';
 export * from './math.mjs';
+export * from './bitwise.mjs';
 export * from './comparison.mjs';
 
 export * from './gradient.mjs';
@@ -69,3 +70,7 @@ export * from './ogrid.mjs';
 export * from './statistics.mjs';
 export * from './indices.mjs';
 export * from './ix_.mjs';
+
+export * from './in1d.mjs';
+export * from './packbits.mjs';
+export * from './unpackbits.mjs';

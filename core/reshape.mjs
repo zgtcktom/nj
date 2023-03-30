@@ -98,9 +98,9 @@ export function reshape(a, newshape) {
 	return new NDArray(newshape, a.data, a, strides, a.offset, a.itemsize);
 }
 
-let msg = await new Promise((resolve, reject) => {
-	setTimeout(() => resolve('ok'), 1);
-});
+// let msg = await new Promise((resolve, reject) => {
+// 	setTimeout(() => resolve('ok'), 1);
+// });
 
 // console.log(msg);
 

@@ -1,3 +1,5 @@
+import { tester } from './core.mjs';
+
 export class Slice {
 	static newaxis = null;
 	static ellipsis = new Slice();
@@ -79,7 +81,7 @@ export class Slice {
 	}
 }
 
-function slice(start, stop, step) {
+export function slice(start, stop, step) {
 	if (start == null && stop == null && step == null) return Slice.colon;
 	if (typeof start == 'string') {
 		if (Object.hasOwn(Slice, start)) return Slice[start];
@@ -140,4 +142,6 @@ slice.is = function (obj) {
 	return obj instanceof Slice;
 };
 
-export { slice };
+tester.onload(() => {
+	console.log('asd');
+});

@@ -1,18 +1,32 @@
 const path = require('path');
 
-module.exports = {
-	entry: path.resolve(__dirname, './core/core.mjs'),
+let entry = path.resolve(__dirname, './core/core.mjs');
+let outputPath = path.resolve(__dirname, 'dist');
+let mode = 'production';
+
+let esmConfig = {
+	entry,
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'index_bundle.js',
-		library: '$',
-		libraryTarget: 'umd',
-	},
-	module: {
-		rules: [],
+		path: outputPath,
+		filename: 'bundle.mjs',
+		library: {
+			type: 'module',
+		},
 	},
 	experiments: {
-		topLevelAwait: true,
+		outputModule: true,
 	},
-	mode: ['development', 'production'][0],
+	mode,
 };
+
+let namedConfig = {
+	entry,
+	output: {
+		path: outputPath,
+		filename: 'nj.js',
+		library: 'nj',
+	},
+	mode,
+};
+
+module.exports = [esmConfig, namedConfig];
