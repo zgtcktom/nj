@@ -67,3 +67,5 @@ export * from './random.mjs';
 export * from './where.mjs';
 export * from './ogrid.mjs';
 export * from './statistics.mjs';
+export * from './indices.mjs';
+export * from './ix_.mjs';

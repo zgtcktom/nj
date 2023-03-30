@@ -17,7 +17,7 @@ export function random_sample(shape = null) {
 	return new NDArray(shape, data);
 }
 
-export const random = random_sample;
+// export const random = random_sample;
 export const ranf = random_sample;
 export const sample = random_sample;
 
