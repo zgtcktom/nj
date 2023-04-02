@@ -142,6 +142,6 @@ slice.is = function (obj) {
 	return obj instanceof Slice;
 };
 
-tester.onload(() => {
-	console.log('asd');
-});
+// tester.onload(() => {
+// 	console.log('asd');
+// });

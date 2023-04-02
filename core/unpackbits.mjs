@@ -16,7 +16,22 @@ import {
 	array_equal,
 } from './core.mjs';
 
-export function unpackbits(a, axis = null, bitorder = 'big') {
+function _unpackbits(n, out = [], bitorder = 'big') {
+	if (bitorder == 'big') {
+		for (let i = 7; i >= 0; i--) {
+			out[i] = n % 2;
+			n = (n / 2) | 0;
+		}
+	} else {
+		for (let i = 0; i <= 7; i++) {
+			out[i] = n % 2;
+			n = (n / 2) | 0;
+		}
+	}
+	return out;
+}
+
+export function unpackbits(a, axis = null, count = null, bitorder = 'big') {
 	a = asarray(a);
 	if (axis == null) {
 		a = ravel(a);
@@ -25,9 +40,31 @@ export function unpackbits(a, axis = null, bitorder = 'big') {
 		axis = normalize_axis_index(axis, a.ndim);
 	}
 
+	let start = 0;
+	let end = 8;
+	if (count != null)
+		if (count < 0) start = 8 - count;
+		else end = count;
+
 	let outshape = a.shape.slice();
-	outshape[axis] = Math.ceil(outshape[axis] / 8);
+	outshape[axis] = outshape[axis] * (end - start);
 	let out = empty(outshape);
+
+	let tmp = Array(8);
+
+	for (let ii of ndindex(a.shape)) {
+		let { offset } = a;
+		let { offset: _offset } = out;
+		for (let i = 0; i < a.shape.length; i++) {
+			offset += ii[i] * a.strides[i];
+			_offset += ii[i] * out.strides[i];
+		}
+
+		let value = a.data[offset];
+
+		_unpackbits(value, tmp, bitorder);
+		for (let i = start, j = 0; i < end; i++, j++) out.data[_offset + j * out.strides[axis]] = tmp[i];
+	}
 
 	return out;
 }

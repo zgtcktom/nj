@@ -74,3 +74,21 @@ export * from './ix_.mjs';
 export * from './in1d.mjs';
 export * from './packbits.mjs';
 export * from './unpackbits.mjs';
+
+export * from './stack.mjs';
+export * from './vstack.mjs';
+export * from './hstack.mjs';
+export * from './dstack.mjs';
+export * from './column_stack.mjs';
+export * from './row_stack.mjs';
+
+export * from './array_split.mjs';
+export * from './split.mjs';
+
+export * from './repeat.mjs';
+export * from './tile.mjs';
+export * from './diagonal.mjs';
+export * from './diag.mjs';
+
+export * from './flip.mjs';
+export * from './s_.mjs';

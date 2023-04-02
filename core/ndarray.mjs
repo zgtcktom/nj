@@ -13,6 +13,9 @@ import {
 	arange,
 	concatenate,
 	sort,
+	cumsum,
+	repeat,
+	tupleType,
 } from './core.mjs';
 
 function get_strides(shape, itemsize) {
@@ -181,37 +184,14 @@ function array_indexing(indices) {
 		// data.push(...this.get(...indices).flat);
 	}
 
-	// console.log(
-	// 	'simple',
-	// 	arrays.map(a => a.toarray()),
-	// 	simple,
-	// 	start,
-	// 	stop,
-	// 	before,
-	// 	after,
-	// 	outshape,
-	// 	new NDArray(outshape, concatenate(arrays, before.length).data)
-	// );
 	return new NDArray(outshape, concatenate(arrays, before.length).data);
-	// return new NDArray(outshape, data);
 }
-
-// tester.onload(() => {
-// 	let x = arange(120).reshape(4, 6, 5, 1);
-// 	_get.call(x, array([0, 2, 1]), slice(), array([0, 2, 4]), slice());
-// 	_get.call(x, array([0, 2, 1]), [0, 2, 1], slice(), slice());
-// 	_get.call(x, slice(), [0, 2, 1], array([0, 2, 4]), slice());
-// 	_get.call(x, slice(), [0, 2, 1], slice(), [0, 0, 0]);
-// 	_get.call(x, slice(), slice(), array([0, 2, 1]), array([0, 0, 0]));
-// 	_get.call(x, array([0, 2, 1]), slice(), slice(), [0, 0, 0]);
-// 	_get.call(x, array([0, 2, 1]), [0, 2, 1], slice(), [0, 0, 0]);
-// });
 
 export class NDArray {
 	constructor(shape, data = null, base = null, strides = null, offset = 0, itemsize = 1) {
 		// https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
-		this.size = get_size(shape);
 		this.ndim = shape.length;
+		this.size = get_size(shape);
 
 		this.shape = shape;
 		this.data = data ?? Array(this.size);
@@ -238,6 +218,10 @@ export class NDArray {
 	}
 
 	get(...indices) {
+		if (indices.length == 1 && indices[0]?.[tupleType]) {
+			indices = indices[0];
+		}
+
 		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
 
 		let { strides, shape, offset, immutable } = _view(this, indices);
@@ -399,6 +383,14 @@ export class NDArray {
 
 	sort(axis = -1, key = null) {
 		this.set(sort(this, axis, key));
+	}
+
+	cumsum(axis, out = null) {
+		return cumsum(this, axis, out);
+	}
+
+	repeat(repeats, axis = null) {
+		return repeat(this, repeats, axis);
 	}
 }
 

@@ -17,6 +17,7 @@ import {
 	eye,
 	_wrap_map_unary,
 	_wrap_map_binary,
+	_wrap_accum_unary,
 } from './core.mjs';
 
 export const e = Math.E;
@@ -118,8 +119,8 @@ export const sum = _wrap_reduce('sum', (x1, x2) => x1 + x2, 1, 0);
 export const nanprod = _wrap_reduce('nanprod', (x1, x2) => x1 * (isNaN(x2) ? 1 : x2), 1, 1);
 export const nansum = _wrap_reduce('nansum', (x1, x2) => x1 + (isNaN(x2) ? 0 : x2), 1, 0);
 
-export const cumprod = null;
-export const cumsum = null;
+export const cumprod = _wrap_accum_unary('cumprod', (x1, x2) => x1 * x2, 1);
+export const cumsum = _wrap_accum_unary('cumsum', (x1, x2) => x1 + x2, 0);
 
 export const nancumprod = null;
 export const nancumsum = null;
@@ -618,6 +619,101 @@ tester
 		nansum,
 		() => nansum([1, nan, NINF]),
 		() => -inf
+	);
+
+tester
+	.add(
+		cumprod,
+		() => cumprod(array([1, 2, 3])),
+		() => array([1, 2, 6])
+	)
+	.add(
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			),
+		() => array([1, 2, 6, 24, 120, 720])
+	)
+	.add(
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				0
+			),
+		() =>
+			array([
+				[1, 2, 3],
+				[4, 10, 18],
+			])
+	)
+	.add(
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 2, 6],
+				[4, 20, 120],
+			])
+	);
+
+tester
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			),
+		() => array([1, 3, 6, 10, 15, 21])
+	)
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				0
+			),
+		() =>
+			array([
+				[1, 2, 3],
+				[5, 7, 9],
+			])
+	)
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 3, 6],
+				[4, 9, 15],
+			])
 	);
 
 tester

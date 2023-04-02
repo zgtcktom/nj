@@ -1,28 +1,18 @@
 import { arange, slice, tester } from './core.mjs';
 
-// function index_offset(index, strides) {
-// 	let offset = 0;
-// 	for (let i = 0; i < index.length; i++) offset += index[i] * strides[i];
-// 	return offset;
-// }
-
-// export function* ndoffset(array) {
-// 	let { strides, shape, offset } = array;
-// 	for (let index of ndindex(shape)) {
-// 		yield offset + index_offset(index, strides);
-// 	}
-// }
+let _multiply = (a, b) => a * b;
 
 class Ndoffset {
-	constructor(shape, strides) {
+	constructor(shape, strides, start) {
 		let ndim = shape.length;
 		this.shape = shape;
 		this.strides = strides;
-		this.size = shape.reduce((a, b) => a * b, 1);
+		this.start = start;
+		this.size = shape.reduce(_multiply, 1);
 		this.ndim = ndim;
 
-		this.coords = Array(ndim).fill(0);
-		this.index = this.offset = this.done = null;
+		this.coords = Array(ndim);
+		this.index = this.offset = this.done = undefined;
 		this.reset();
 	}
 
@@ -67,12 +57,13 @@ class Ndoffset {
 		this.offset = offset;
 		this.done = this.index >= this.size;
 
+		value += this.start;
 		return { value, done: false };
 	}
 }
 
-export function ndoffset(shape, strides) {
-	return new Ndoffset(shape, strides);
+export function ndoffset(shape, strides, start = 0) {
+	return new Ndoffset(shape, strides, start);
 }
 
 tester.add(

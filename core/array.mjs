@@ -10,9 +10,15 @@ function flatten_with_shape(data, array, shape, level = 0) {
 	}
 }
 
-export function array(a) {
+export function array(a, copy = true, ndmin = 0) {
+	let data, _shape;
 	if (a instanceof NDArray) {
-		let data;
+		if (!copy) {
+			_shape = a.shape;
+			if (_shape.length < ndmin) _shape = [...Array(ndmin - _shape.length).fill(1), ..._shape];
+			let { data, base, strides, offset, itemsize } = a;
+			return new NDArray(_shape, data, base, strides, offset, itemsize);
+		}
 		if (a.base == undefined) data = a.data.slice();
 		else {
 			data = [];
@@ -20,11 +26,14 @@ export function array(a) {
 				data.push(a.data[a.offset + offset]);
 			}
 		}
-		return new NDArray(a.shape, data);
+		_shape = a.shape;
+	} else {
+		data = [];
+		_shape = shape(a);
+		flatten_with_shape(data, a, _shape);
 	}
-	let data = [];
-	flatten_with_shape(data, a, shape(a));
-	return new NDArray(shape(a), data);
+	if (_shape.length < ndmin) _shape = [...Array(ndmin - _shape.length).fill(1), ..._shape];
+	return new NDArray(_shape, data);
 }
 
 tester
