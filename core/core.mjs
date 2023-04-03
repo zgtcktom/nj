@@ -92,3 +92,8 @@ export * from './diag.mjs';
 
 export * from './flip.mjs';
 export * from './s_.mjs';
+
+export * from './put.mjs';
+export * from './resize.mjs';
+
+export * from './searchsorted.mjs';

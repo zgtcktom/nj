@@ -16,6 +16,28 @@ import {
 	cumsum,
 	repeat,
 	tupleType,
+	all,
+	argsort,
+	clip,
+	compress,
+	cumprod,
+	diagonal,
+	amax,
+	mean,
+	amin,
+	nonzero,
+	prod,
+	ptp,
+	put,
+	ravel,
+	contiguous,
+	around,
+	searchsorted,
+	squeeze,
+	std,
+	sum,
+	take,
+	variance,
 } from './core.mjs';
 
 function get_strides(shape, itemsize) {
@@ -321,10 +343,17 @@ export class NDArray {
 	}
 
 	toarray() {
-		let { ndim, offset, data, shape } = this;
-		if (ndim == 0) return data[offset];
+		let { ndim, strides, itemsize, offset, data, shape } = this;
+		if (ndim == 0) {
+			return data[offset];
+		}
+
+		let dim = shape[0];
+		if (ndim == 1 && strides[0] == itemsize) {
+			return data.slice(offset, offset + dim);
+		}
 		let array = [];
-		for (let i = 0; i < shape[0]; i++) {
+		for (let i = 0; i < dim; i++) {
 			array.push(this.get(i).toarray());
 		}
 		return array;
@@ -332,22 +361,6 @@ export class NDArray {
 
 	tolist() {
 		return this.toarray();
-	}
-
-	flatten() {
-		let { base, size, data } = this;
-
-		let newdata;
-		if (base == undefined) {
-			newdata = data.slice();
-		} else {
-			newdata = [];
-			for (let offset of ndoffset(this.shape, this.strides)) {
-				newdata.push(data[this.offset + offset]);
-			}
-		}
-
-		return new NDArray([size], newdata);
 	}
 
 	get flat() {
@@ -363,11 +376,7 @@ export class NDArray {
 	}
 
 	set T(value) {
-		transpose(this).set(value);
-	}
-
-	copy() {
-		return array(this);
+		this.T.set(value);
 	}
 
 	reshape(...shape) {
@@ -377,20 +386,222 @@ export class NDArray {
 		return reshape(this, shape);
 	}
 
-	swapaxes(axis1, axis2) {
-		return swapaxes(this, axis1, axis2);
+	// ndarray.[]
+
+	all(axis = null, out = null, keepdims = false) {
+		return all(this, axis, out, keepdims);
+	}
+
+	any(axis = null, out = null, keepdims = false) {
+		return any(this, axis, out, keepdims);
+	}
+
+	argmax(axis = null, out = null, keepdims = false) {
+		throw `not implemented`;
+	}
+
+	argmin(axis = null, out = null, keepdims = false) {
+		throw `not implemented`;
+	}
+
+	argpartition(kth, axis = -1, kind = 'introselect', order = null) {
+		throw `not implemented`;
+	}
+
+	argsort(axis = -1, key = null) {
+		return argsort(this, axis, key);
+	}
+
+	astype() {
+		throw `not implemented`;
+	}
+
+	byteswap() {
+		throw `not implemented`;
+	}
+
+	choose(choices, out = null, mode = 'raise') {
+		throw `not implemented`;
+	}
+
+	clip(a_min, a_max, out = null) {
+		return clip(this, a_min, a_max, out);
+	}
+
+	compress(condition, axis = null, out = null) {
+		return compress(condition, this, axis, out);
+	}
+
+	conj() {
+		throw `not implemented`;
+	}
+
+	conjugate() {
+		throw `not implemented`;
+	}
+
+	copy() {
+		return array(this);
+	}
+
+	cumprod(axis = null, out = null) {
+		return cumprod(this, axis, out);
+	}
+
+	cumsum(axis = null, out = null) {
+		return cumsum(this, axis, out);
+	}
+
+	diagonal(offset = 0, axis1 = 0, axis2 = 1) {
+		return diagonal(this, offset, axis1, axis2);
+	}
+
+	dump() {
+		throw `not implemented`;
+	}
+
+	dumps() {
+		throw `not implemented`;
+	}
+
+	fill(value) {
+		this.flat = value;
+		return this;
+	}
+
+	flatten() {
+		return new NDArray([this.size], [...this.flat]);
+	}
+
+	getfield() {
+		throw `not implemented`;
+	}
+
+	// item
+	// itemset
+
+	max(axis = null, out = null, keepdims = false, initial = null, return_scalar = true) {
+		return amax(this, axis, out, keepdims, initial, return_scalar);
+	}
+
+	mean(axis = null, out = null, keepdims = false) {
+		return mean(this, axis, out, keepdims);
+	}
+
+	min(axis = null, out = null, keepdims = false, initial = null, return_scalar = true) {
+		return amin(this, axis, out, keepdims, initial, return_scalar);
+	}
+
+	newbyteorder() {
+		throw `not implemented`;
+	}
+
+	nonzero() {
+		return nonzero(this);
+	}
+
+	partition(kth, axis = -1, kind = 'introselect', order = null) {
+		throw `not implemented`;
+	}
+
+	prod(axis = null, out = null, keepdims = false, initial = 0, return_scalar = true) {
+		return prod(this, axis, out, keepdims, initial, return_scalar);
+	}
+
+	ptp(axis = null, out = null, keepdims = false) {
+		return ptp(this, axis, out, keepdims);
+	}
+
+	put(indices, values, mode = 'raise') {
+		put(this, indices, values, mode);
+		return this;
+	}
+
+	ravel() {
+		return ravel(this);
+	}
+
+	repeat(repeats, axis = null) {
+		return repeat(this, repeats, axis);
+	}
+
+	// reshape
+
+	resize(new_shape) {
+		if (this.base != null) throw `cannot resize this array: it does not own its data`;
+		if (!contiguous(this)) throw `resize only works on single-segment arrays`;
+		let new_size = get_size(new_shape);
+		if (new_size <= this.size) {
+			this.data = [...this.data.slice(this.offset, new_size)];
+		} else {
+			this.data = [...this.data.slice(this.offset, new_size), ...Array(new_size - this.size).fill(0)];
+		}
+		this.shape = new_shape;
+		this.ndim = new_shape.length;
+		this.strides = get_strides(new_shape, this.itemsize);
+		this.offset = 0;
+	}
+
+	round(decimals = 0, out = null) {
+		return around(this, decimals, out);
+	}
+
+	searchsorted(v, side = 'left') {
+		return searchsorted(this, v, side);
+	}
+
+	setfield() {
+		throw `not implemented`;
+	}
+
+	setflags() {
+		throw `not implemented`;
 	}
 
 	sort(axis = -1, key = null) {
 		this.set(sort(this, axis, key));
 	}
 
-	cumsum(axis, out = null) {
-		return cumsum(this, axis, out);
+	squeeze(axis = null) {
+		return squeeze(this, axis);
 	}
 
-	repeat(repeats, axis = null) {
-		return repeat(this, repeats, axis);
+	std(axis = null, out = null, ddof = 0, keepdims = false) {
+		return std(this, axis, out, ddof, keepdims);
+	}
+
+	sum(axis = null, out = null, keepdims = false, initial = 0, return_scalar = true) {
+		return sum(this, axis, out, keepdims, initial, return_scalar);
+	}
+
+	swapaxes(axis1, axis2) {
+		return swapaxes(this, axis1, axis2);
+	}
+
+	take(indices, axis = null, out = null, mode = 'raise') {
+		return take(this, indices, axis, out, mode);
+	}
+
+	tobytes() {
+		throw `not implemented`;
+	}
+
+	tofile() {
+		throw `not implemented`;
+	}
+
+	// tolist
+
+	trace() {
+		throw `not implemented`;
+	}
+
+	transpose(axes = null) {
+		return transpose(this, axes);
+	}
+
+	variance(axis = null, out = null, ddof = 0, keepdims = false) {
+		return variance(this, axis, out, ddof, keepdims);
 	}
 }
 
@@ -763,4 +974,47 @@ tester
 			return [x, y];
 		},
 		() => [array([[1, 2, 3]]), array([[-1, 2, 3]])]
+	);
+
+tester
+	.add(
+		'ndarray.resize',
+		() => {
+			let a = array([
+				[0, 1],
+				[2, 3],
+			]);
+			a.resize([2, 1]);
+			return a;
+		},
+		() => array([[0], [1]])
+	)
+	.add(
+		'ndarray.resize',
+		() => {
+			let a = array([
+				[0, 1],
+				[2, 3],
+			]);
+			a.resize([2, 3]);
+			return a;
+		},
+		() =>
+			array([
+				[0, 1, 2],
+				[3, 0, 0],
+			])
+	)
+	.add(
+		'ndarray.resize',
+		() => {
+			let a = array([
+				[0, 1],
+				[2, 3],
+			]);
+			let c = a;
+			a.resize([1, 1]);
+			return [a, c];
+		},
+		() => [array([[0]]), array([[0]])]
 	);
