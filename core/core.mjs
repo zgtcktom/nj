@@ -97,3 +97,4 @@ export * from './put.mjs';
 export * from './resize.mjs';
 
 export * from './searchsorted.mjs';
+export * from './roll.mjs';
