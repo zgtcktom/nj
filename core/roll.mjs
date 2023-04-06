@@ -15,16 +15,13 @@ import {
 
 export class Product {
 	constructor(iterables) {
-		this.lengths = this.size = iterables.length;
-		let ndim = shape.length;
-		this.shape = shape;
-		this.strides = strides;
-		this.start = start;
-		this.size = shape.reduce(_multiply, 1);
-		this.ndim = ndim;
+		this.length = iterables.length;
+		this.elements = iterables.map(iterable => Array.from(iterable));
+		this.lengths = this.elements.map(element => element.length);
+		this.size = this.lengths.reduce((a, b) => a * b);
 
-		this.coords = Array(ndim);
-		this.index = this.offset = this.done = undefined;
+		this.coords = Array(this.length);
+		this.done = this.index = undefined;
 		this.reset();
 	}
 
@@ -34,7 +31,7 @@ export class Product {
 
 	reset() {
 		this.coords.fill(0);
-		this.index = this.offset = 0;
+		this.index = 0;
 		this.done = this.size == 0;
 		return this;
 	}
@@ -42,34 +39,31 @@ export class Product {
 	next() {
 		if (this.done) return { done: true };
 
-		let { offset, coords, shape, strides, ndim } = this;
-		let value = offset;
+		let { elements, coords, length, lengths } = this;
 
-		let ptr = ndim - 1;
+		let value = elements.map((e, i) => e[coords[i]]);
+
+		let ptr = length - 1;
 		let carry = true;
 		loop: while (ptr >= 0) {
-			switch (shape[ptr]) {
+			switch (lengths[ptr]) {
 				case 1:
 					ptr--;
 					break;
 				case coords[ptr]:
-					offset -= strides[ptr] * shape[ptr];
 					coords[ptr--] = 0;
 					carry = true;
 					break;
 				default:
 					if (!carry) break loop;
-					offset += strides[ptr];
 					coords[ptr] += 1;
 					carry = false;
 			}
 		}
 
 		this.index++;
-		this.offset = offset;
 		this.done = this.index >= this.size;
 
-		value += this.start;
 		return { value, done: false };
 	}
 }
@@ -90,7 +84,7 @@ export function roll(a, shift, axis = null) {
 			shifts[ax] += sh;
 		}
 
-		let rolls = Array(a.ndim).fill([slice(null), slice(null)]);
+		let rolls = Array(a.ndim).fill([[slice(null), slice(null)]]);
 
 		for (let [ax, offset] of shifts.entries()) {
 			offset %= a.shape[ax] || 1;
@@ -103,10 +97,19 @@ export function roll(a, shift, axis = null) {
 		}
 
 		let result = empty_like(a);
-		console.log(shifts, rolls);
-		for (indices of itertools.product(...rolls)) {
-			[arr_index, res_index] = zip(...indices);
-			result[res_index] = a[arr_index];
+		// console.log('rolls', rolls);
+		for (let indices of new Product(rolls)) {
+			let arr_index = indices.map(idx => idx[0]);
+			let res_index = indices.map(idx => idx[1]);
+			// for (let idx of indices) {
+			// 	// console.log('idx', idx);
+			// 	// if (!idx[0] || !idx[1]) break;
+			// 	arr_index.push(idx[0]);
+			// 	res_index.push(idx[1]);
+			// }
+
+			// console.log('?', res_index, arr_index);
+			result.set(res_index, a.get(...arr_index));
 		}
 		return result;
 	}
