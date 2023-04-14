@@ -1,5 +1,11 @@
-import { tester, empty, copyto } from './core.mjs';
+import { tester, empty, copyto, NDArray } from './core.mjs';
 
+/**
+ *
+ * @param {number[]} shape
+ * @param {*} fill_value
+ * @returns {NDArray}
+ */
 export function full(shape, fill_value) {
 	let array = empty(shape);
 	copyto(array, fill_value);

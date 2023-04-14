@@ -1,5 +1,10 @@
 import { tester, NDArray, array } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray|Array} a
+ * @returns {NDArray}
+ */
 export function asarray(a) {
 	return a instanceof NDArray ? a : array(a);
 }

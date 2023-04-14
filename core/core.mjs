@@ -98,3 +98,8 @@ export * from './resize.mjs';
 
 export * from './searchsorted.mjs';
 export * from './roll.mjs';
+
+export * from './map.mjs';
+
+export * from './matmul.mjs';
+export * from './dot.mjs';

@@ -10,6 +10,11 @@ function flatten_with_shape(data, array, shape, level = 0) {
 	}
 }
 
+/**
+ *
+ * @param {NDArray|Array} a
+ * @returns {NDArray}
+ */
 export function array(a, copy = true, ndmin = 0) {
 	let data, _shape;
 	if (a instanceof NDArray) {

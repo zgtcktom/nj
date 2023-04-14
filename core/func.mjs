@@ -18,7 +18,7 @@ export function normalize_axis_index(axis, ndim) {
 	// assume non null
 	let _axis = axis;
 	axis = +axis;
-	if (!Number.isInteger(axis)) throw `${_axis} cannot be cast to integer`;
+	if (!Number.isInteger(axis)) throw new Error(`${_axis} cannot be cast to integer`);
 	if (axis < 0) axis += ndim;
 	if (axis < 0 || ndim <= axis) throw `axis ${_axis} is out of bounds for array of dimension ${ndim}`;
 	return axis;
@@ -149,9 +149,7 @@ function declarations(obj, data, offset, strides) {
 	statements.push(assignment('let', data, dotAccess(obj, 'data')));
 	statements.push(assignment('let', offset, dotAccess(obj, 'offset')));
 	if (strides.length > 0)
-		statements.push(
-			destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length))
-		);
+		statements.push(destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length)));
 
 	return statements;
 }
@@ -181,10 +179,7 @@ function _map_body(narg, ndim) {
 						[
 							bracketAccess(
 								out_data,
-								sum(
-									out_offset,
-									...index.map((index, axis) => product(index, out_strides[axis]))
-								)
+								sum(out_offset, ...index.map((index, axis) => product(index, out_strides[axis])))
 							),
 						],
 						[
@@ -193,10 +188,7 @@ function _map_body(narg, ndim) {
 								...x_data.map((x_data, i) =>
 									bracketAccess(
 										x_data,
-										sum(
-											x_offset[i],
-											...index.map((index, axis) => product(index, x_strides[i][axis]))
-										)
+										sum(x_offset[i], ...index.map((index, axis) => product(index, x_strides[i][axis])))
 									)
 								)
 							),

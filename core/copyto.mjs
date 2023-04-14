@@ -1,5 +1,11 @@
 import { tester, array, slice, broadcast_to, ndoffset, ndindex, asarray, NDArray } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} dst
+ * @param {NDArray} src
+ * @param {boolean} where
+ */
 export function copyto(dst, src, where = true) {
 	if (where == true) {
 		if (!(src instanceof NDArray) && !Array.isArray(src)) {

@@ -92,7 +92,7 @@ export function slice(start, stop, step) {
 
 			if (start.length == 0) start = null;
 			else if (Number.isInteger(+start)) start = +start;
-			else throw `${start} cannot be cast to integer`;
+			else throw new Error(`${start} cannot be cast to integer`);
 
 			return new Slice(start);
 		}
@@ -101,11 +101,11 @@ export function slice(start, stop, step) {
 
 			if (start.length == 0) start = null;
 			else if (Number.isInteger(+start)) start = +start;
-			else throw `${start} cannot be cast to integer`;
+			else throw new Error(`${start} cannot be cast to integer`);
 
 			if (stop.length == 0) stop = null;
 			else if (Number.isInteger(+stop)) stop = +stop;
-			else throw `${stop} cannot be cast to integer`;
+			else throw new Error(`${stop} cannot be cast to integer`);
 
 			return new Slice(start, stop);
 		}
@@ -114,15 +114,15 @@ export function slice(start, stop, step) {
 
 			if (start.length == 0) start = null;
 			else if (Number.isInteger(+start)) start = +start;
-			else throw `${start} cannot be cast to integer`;
+			else throw new Error(`${start} cannot be cast to integer`);
 
 			if (stop.length == 0) stop = null;
 			else if (Number.isInteger(+stop)) stop = +stop;
-			else throw `${stop} cannot be cast to integer`;
+			else throw new Error(`${stop} cannot be cast to integer`);
 
 			if (step.length == 0) step = null;
 			else if (Number.isInteger(+step)) step = +step;
-			else throw `${step} cannot be cast to integer`;
+			else throw new Error(`${step} cannot be cast to integer`);
 
 			return new Slice(start, stop, step);
 		}

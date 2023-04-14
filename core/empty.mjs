@@ -10,6 +10,11 @@ function get_size(shape) {
 	return size;
 }
 
+/**
+ *
+ * @param {number[]} shape
+ * @returns
+ */
 export function empty(shape) {
 	if (is_int(shape)) shape = [shape];
 	return new NDArray(shape, Array(get_size(shape)));
