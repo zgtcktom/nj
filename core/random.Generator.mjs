@@ -13,7 +13,6 @@ import {
 	Slice,
 	use_advanced_indexing,
 	normalize_axis_index,
-	shape,
 	count_nonzero,
 	ndindex,
 	empty_like,

@@ -1,41 +1,30 @@
-import { NDArray, arange, array, tester } from './core.mjs';
+import { NDArray, arange, tester } from './core.mjs';
 
 /**
  * Determine the shape of a nested array given the nested first element as the initial guess.
  * @param {*} a
  * @param {number[]} shape
  * @param {number} level
- * @returns {boolean}
+ * @returns {void}
  */
-function nested_shape(a, shape, level) {
-	let nextLevel = level + 1 < shape.length;
-	for (let i = 0; i < a.length; i++) {
+function nested_shape(a, shape, level = 0) {
+	for (let i = 0; i < a.length && level < shape.length; i++) {
 		let item = a[i];
-		// case 1: scalar, exit early
-		if (item == null || typeof item != 'object') {
+		if (item == null || typeof item != 'object' || item.length != shape[level]) {
 			shape.length = level;
-			return false;
+			break;
 		}
-		// case 2: NDArray
 		if (item instanceof NDArray) {
-			console.log(level, shape, item.shape);
-			for (let i = level, j = 0; i < shape.length; i++) {
-				if (shape[i] != item.shape[j++]) {
-					shape.length = level;
-					return false;
+			for (let i = level, j = 0; i < shape.length && j < item.ndim; i++, j++) {
+				if (shape[i] != item.shape[j]) {
+					shape.length = i;
+					break;
 				}
 			}
-			return true;
-		}
-		if (item.length != shape[level]) {
-			shape.length = level;
-			return false;
-		}
-		if (nextLevel && !nested_shape(item, shape, level + 1)) {
-			return false;
+		} else if (level + 1 < shape.length) {
+			nested_shape(item, shape, level + 1);
 		}
 	}
-	return true;
 }
 
 /**
@@ -92,9 +81,9 @@ tester
 			shape([
 				arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
 				arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
-				arange(1 * 2 * 3 * 4).reshape(1, 2 * 3 * 4),
+				arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
 			]),
-		() => [3, 1, 3, 3]
+		() => [3, 1, 2]
 	)
 	.add(
 		'shape',

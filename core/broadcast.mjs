@@ -1,4 +1,4 @@
-import { broadcast_shapes, asarray, shape, tester, array, empty, broadcast_to } from './core.mjs';
+import { broadcast_shapes, asarray, tester, array, empty, broadcast_to } from './core.mjs';
 
 function _size(shape) {
 	let size = 1;
