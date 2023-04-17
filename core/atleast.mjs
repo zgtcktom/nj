@@ -1,5 +1,10 @@
 import { array, asarray, tester, arange, NDArray } from './core.mjs';
 
+/**
+ *
+ * @param  {...NDArray} arrays
+ * @returns {NDArray|NDArray[]}
+ */
 export function atleast_1d(...arrays) {
 	if (arrays.length != 1) {
 		let ret = [];
@@ -14,6 +19,11 @@ export function atleast_1d(...arrays) {
 	return new NDArray([1], data, array, [itemsize], 0, itemsize);
 }
 
+/**
+ *
+ * @param  {...NDArray|any} arrays
+ * @returns {NDArray|NDArray[]}
+ */
 export function atleast_2d(...arrays) {
 	if (arrays.length != 1) {
 		let ret = [];
@@ -31,6 +41,11 @@ export function atleast_2d(...arrays) {
 	return new NDArray([1, 1], array.data, array, [itemsize, itemsize], 0, itemsize);
 }
 
+/**
+ *
+ * @param  {...NDArray|any} arrays
+ * @returns {NDArray|NDArray[]}
+ */
 export function atleast_3d(...arrays) {
 	if (arrays.length != 1) {
 		let ret = [];

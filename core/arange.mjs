@@ -1,6 +1,13 @@
 import { tester, array, NDArray } from './core.mjs';
 
-export function arange(start, stop, step = 1) {
+/**
+ *
+ * @param {number} start
+ * @param {number} stop
+ * @param {number} step
+ * @returns {NDArray}
+ */
+export function arange(start, stop = undefined, step = 1) {
 	if (stop == undefined) {
 		stop = start;
 		start = 0;

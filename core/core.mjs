@@ -103,3 +103,5 @@ export * from './map.mjs';
 
 export * from './matmul.mjs';
 export * from './dot.mjs';
+
+export * from './array2string.mjs';

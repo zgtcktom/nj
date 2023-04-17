@@ -2,7 +2,7 @@ import { tester, NDArray, array } from './core.mjs';
 
 /**
  *
- * @param {NDArray|Array} a
+ * @param {NDArray|any} a
  * @returns {NDArray}
  */
 export function asarray(a) {

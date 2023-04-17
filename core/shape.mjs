@@ -23,6 +23,11 @@ function nested_shape(array, shape, level) {
 	return true;
 }
 
+/**
+ *
+ * @param {any} array
+ * @returns {number[]}
+ */
 export function shape(array) {
 	if (array.shape != undefined) return array.shape;
 	let shape = [];

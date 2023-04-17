@@ -21,9 +21,9 @@ export function contiguous(a) {
 }
 
 export function ascontiguousarray(a) {
-	a = asarray(a);
-	if (contiguous(a)) return a;
-	return array(a);
+	let arr = asarray(a);
+	if (contiguous(arr)) return arr;
+	return array(arr);
 }
 
 tester.add(

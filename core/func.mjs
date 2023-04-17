@@ -1,7 +1,18 @@
-import { asarray, broadcast_shapes, broadcast_to, empty, ravel, shallow_array_equal } from './core.mjs';
+import {
+	NDArray,
+	asarray,
+	broadcast_shapes,
+	broadcast_to,
+	empty,
+	ravel,
+	shallow_array_equal,
+} from './core.mjs';
 
 let range = length => [...Array(length).keys()];
 
+/**
+ * @returns {(...key) => NDArray}
+ */
 function _cache(builder) {
 	let create = () => Object.create(null);
 
@@ -149,7 +160,9 @@ function declarations(obj, data, offset, strides) {
 	statements.push(assignment('let', data, dotAccess(obj, 'data')));
 	statements.push(assignment('let', offset, dotAccess(obj, 'offset')));
 	if (strides.length > 0)
-		statements.push(destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length)));
+		statements.push(
+			destructuringObject('let', strides, dotAccess(obj, 'strides'), range(strides.length))
+		);
 
 	return statements;
 }
@@ -179,7 +192,10 @@ function _map_body(narg, ndim) {
 						[
 							bracketAccess(
 								out_data,
-								sum(out_offset, ...index.map((index, axis) => product(index, out_strides[axis])))
+								sum(
+									out_offset,
+									...index.map((index, axis) => product(index, out_strides[axis]))
+								)
 							),
 						],
 						[
@@ -188,7 +204,10 @@ function _map_body(narg, ndim) {
 								...x_data.map((x_data, i) =>
 									bracketAccess(
 										x_data,
-										sum(x_offset[i], ...index.map((index, axis) => product(index, x_strides[i][axis])))
+										sum(
+											x_offset[i],
+											...index.map((index, axis) => product(index, x_strides[i][axis]))
+										)
 									)
 								)
 							),
@@ -452,9 +471,15 @@ export function _wrap_map(name, fn, narg = fn.length, use_args = false) {
 }
 
 export function _wrap_map_unary(name, fn, use_args = false) {
-	let func;
 	if (use_args) {
-		func = (x1, out = null, args = null) => {
+		/**
+		 *
+		 * @param {NDArray} x1
+		 * @param {NDArray} out
+		 * @param {{}} args
+		 * @returns {NDArray}
+		 */
+		function func(x1, out = null, args = null) {
 			x1 = asarray(x1);
 			if (out == null) {
 				out = empty(x1.shape);
@@ -462,25 +487,36 @@ export function _wrap_map_unary(name, fn, use_args = false) {
 				x1 = broadcast_to(x1, out.shape);
 			}
 			return _map(1, out.ndim)(fn.bind(null, args), x1, out);
-		};
-	} else {
-		func = (x1, out = null) => {
-			x1 = asarray(x1);
-			if (out == null) {
-				out = empty(x1.shape);
-			} else {
-				x1 = broadcast_to(x1, out.shape);
-			}
-			return _map(1, out.ndim)(fn, x1, out);
-		};
+		}
+		return Object.defineProperty(func, 'name', { value: name });
+	}
+	/**
+	 *
+	 * @param {NDArray} x1
+	 * @param {NDArray} out
+	 * @returns {NDArray}
+	 */
+	function func(x1, out = null) {
+		x1 = asarray(x1);
+		if (out == null) {
+			out = empty(x1.shape);
+		} else {
+			x1 = broadcast_to(x1, out.shape);
+		}
+		return _map(1, out.ndim)(fn, x1, out);
 	}
 	return Object.defineProperty(func, 'name', { value: name });
 }
 
 export function _wrap_map_binary(name, fn) {
-	let func;
-
-	func = (x1, x2, out = null) => {
+	/**
+	 *
+	 * @param {NDArray} x1
+	 * @param {NDArray} x2
+	 * @param {NDArray} out
+	 * @returns {NDArray}
+	 */
+	function func(x1, x2, out = null) {
 		x1 = asarray(x1);
 		x2 = asarray(x2);
 		let shape;
@@ -491,13 +527,21 @@ export function _wrap_map_binary(name, fn) {
 		x1 = broadcast_to(x1, shape);
 		x2 = broadcast_to(x2, shape);
 		return _map(2, out.ndim)(fn, x1, x2, out);
-	};
+	}
 
 	return Object.defineProperty(func, 'name', { value: name });
 }
 
 export function _wrap_accum_unary(name, fn, defaultinitial) {
-	let func = (x1, axis = null, out = null, initial = defaultinitial) => {
+	/**
+	 *
+	 * @param {ArrayLike} x1
+	 * @param {number} axis
+	 * @param {NDArray} out
+	 * @param {any} initial
+	 * @returns {NDArray}
+	 */
+	function func(x1, axis = null, out = null, initial = defaultinitial) {
 		x1 = asarray(x1);
 		if (axis == null) {
 			x1 = ravel(x1);
@@ -509,81 +553,89 @@ export function _wrap_accum_unary(name, fn, defaultinitial) {
 
 		_accumulate(1, ndim, axis)(fn, x1, out, initial);
 		return out;
-	};
+	}
 	return Object.defineProperty(func, 'name', { value: name });
 }
 
 const EMPTY_SHAPE = [];
 
 export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
-	let func;
-	if (narg == 1)
-		func = (
-			x1,
-			axis = null,
-			out = null,
-			keepdims = false,
-			initial = defaultinitial,
-			return_scalar = true
-		) => {
-			if (out != null) return_scalar = false;
-			x1 = asarray(x1);
-			let { ndim, shape } = x1;
-			let outshape;
-			if (axis == null) {
-				axis = normalize_axis_mask(axis, ndim);
-				outshape = EMPTY_SHAPE;
-			} else {
-				axis = normalize_axis_mask(axis, ndim);
-				outshape = [];
-				for (let i = 0; i < ndim; i++) if (!axis[i]) outshape.push(shape[i]);
-			}
-			if (keepdims) {
-				// very hacky
-				// kinda force it to keepdims=false
-				// and force it back to original shape and strides (ndim is not used in the loop)
+	if (narg != 1) throw 'not support on narg > 1 yet';
+	/**
+	 *
+	 * @param {NDArray} x1
+	 * @param {number} axis
+	 * @param {NDArray} out
+	 * @param {boolean} keepdims
+	 * @param {any} initial
+	 * @param {boolean} return_scalar
+	 * @returns {NDArray}
+	 */
+	function func(
+		x1,
+		axis = null,
+		out = null,
+		keepdims = false,
+		initial = defaultinitial,
+		return_scalar = true
+	) {
+		if (out != null) return_scalar = false;
+		x1 = asarray(x1);
+		let { ndim, shape } = x1;
+		let outshape;
+		if (axis == null) {
+			axis = normalize_axis_mask(axis, ndim);
+			outshape = EMPTY_SHAPE;
+		} else {
+			axis = normalize_axis_mask(axis, ndim);
+			outshape = [];
+			for (let i = 0; i < ndim; i++) if (!axis[i]) outshape.push(shape[i]);
+		}
+		if (keepdims) {
+			// very hacky
+			// kinda force it to keepdims=false
+			// and force it back to original shape and strides (ndim is not used in the loop)
 
-				// maybe pass out_data, out_strides, out_shape instead of out to the generated function
-				// to avoid this?
+			// maybe pass out_data, out_strides, out_shape instead of out to the generated function
+			// to avoid this?
 
-				// let { strides } = x1;
-				let sameshape = shape.slice();
-				// let outstrides = [];
-				for (let i = 0; i < ndim; i++) {
-					if (axis[i]) {
-						sameshape[i] = 1;
-					} else {
-						// outstrides.push(strides[i]);
-					}
+			// let { strides } = x1;
+			let sameshape = shape.slice();
+			// let outstrides = [];
+			for (let i = 0; i < ndim; i++) {
+				if (axis[i]) {
+					sameshape[i] = 1;
+				} else {
+					// outstrides.push(strides[i]);
 				}
-				if (out == null) out = empty(sameshape);
-				else if (!shallow_array_equal(sameshape, out.shape)) throw 'unmatch shape';
-				// else {
-				// 	sameshape = out.shape;
-				// 	strides = out.strides;
-				// }
-
-				// out.shape = outshape;
-				// out.strides = outstrides;
-
-				// out = _reduce(1, ndim, axis)(fn, x1, out, initial);
-
-				// out.shape = sameshape;
-				// out.strides = strides;
-
-				// how about reshape out as a non-copy view?
-				// if only interleaved 1s exist in the shape
-				// seems working
-				_reduce(1, ndim, axis)(fn, x1, out.reshape(outshape), initial);
-				return return_scalar && out.ndim == 0 ? out.item() : out;
 			}
+			if (out == null) out = empty(sameshape);
+			else if (!shallow_array_equal(sameshape, out.shape)) throw 'unmatch shape';
+			// else {
+			// 	sameshape = out.shape;
+			// 	strides = out.strides;
+			// }
 
-			if (out == null) out = empty(outshape);
-			else if (!shallow_array_equal(outshape, out.shape)) throw 'unmatch shape';
+			// out.shape = outshape;
+			// out.strides = outstrides;
 
-			out = _reduce(1, ndim, axis)(fn, x1, out, initial);
+			// out = _reduce(1, ndim, axis)(fn, x1, out, initial);
+
+			// out.shape = sameshape;
+			// out.strides = strides;
+
+			// how about reshape out as a non-copy view?
+			// if only interleaved 1s exist in the shape
+			// seems working
+			_reduce(1, ndim, axis)(fn, x1, out.reshape(outshape), initial);
 			return return_scalar && out.ndim == 0 ? out.item() : out;
-		};
-	else throw 'not support on narg > 1 yet';
+		}
+
+		if (out == null) out = empty(outshape);
+		else if (!shallow_array_equal(outshape, out.shape)) throw 'unmatch shape';
+
+		out = _reduce(1, ndim, axis)(fn, x1, out, initial);
+		return return_scalar && out.ndim == 0 ? out.item() : out;
+	}
 	return Object.defineProperty(func, 'name', { value: name });
 }

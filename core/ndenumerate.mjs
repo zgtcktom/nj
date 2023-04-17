@@ -1,9 +1,15 @@
-import { ndindex, tester, array, asarray } from './core.mjs';
+import { ndindex, tester, array, asarray, NDArray } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} a
+ */
 export function* ndenumerate(a) {
 	a = asarray(a);
 	for (let index of ndindex(a.shape)) {
-		yield [index, a.item(index)];
+		/** @type {[number[], any]} */
+		let value = [index, a.item(index)];
+		yield value;
 	}
 }
 

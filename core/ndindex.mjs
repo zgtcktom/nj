@@ -4,7 +4,14 @@ function prod(a) {
 	return prod;
 }
 
+/**
+ *
+ * @param {number[]} shape
+ * @param {boolean} reuse
+ * @returns
+ */
 export function* ndindex(shape, reuse = true) {
+	/** @type {number[]} */
 	let index = Array(shape.length).fill(0);
 	let size = prod(shape);
 	if (size == 0) return;

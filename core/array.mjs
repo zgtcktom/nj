@@ -12,7 +12,9 @@ function flatten_with_shape(data, array, shape, level = 0) {
 
 /**
  *
- * @param {NDArray|Array} a
+ * @param {any} a
+ * @param {boolean} copy
+ * @param {number} ndmin
  * @returns {NDArray}
  */
 export function array(a, copy = true, ndmin = 0) {

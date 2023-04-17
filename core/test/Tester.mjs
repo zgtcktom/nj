@@ -91,9 +91,9 @@ export class Tester {
 			stored.push([
 				color,
 				`#${caseNo}: ${passed ? 'passed' : 'fail'}`,
-				`\n\tTest=`,
+				`\n\tTest=\n`,
 				_print(a),
-				`\n\tExpected=`,
+				`\n\tExpected=\n`,
 				_print(b),
 			]);
 			caseNo++;

@@ -38,6 +38,8 @@ import {
 	sum,
 	take,
 	variance,
+	array_repr,
+	array_str,
 } from './core.mjs';
 
 function get_strides(shape, itemsize) {
@@ -103,6 +105,13 @@ function index_offset(index, strides, shape) {
 
 function toPrimitive() {
 	return this.item();
+}
+
+function toRepr(hint) {
+	if (hint == 'string') return array_str(this);
+	if (hint == 'default') {
+		return array_repr(this);
+	}
 }
 
 function _view(array, indices) {
@@ -210,6 +219,15 @@ function array_indexing(indices) {
 }
 
 export class NDArray {
+	/**
+	 *
+	 * @param {number[]} shape
+	 * @param {any[]} data
+	 * @param {NDArray} base
+	 * @param {number[]} strides
+	 * @param {number} offset
+	 * @param {number} itemsize
+	 */
 	constructor(shape, data = null, base = null, strides = null, offset = 0, itemsize = 1) {
 		// https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
 		this.ndim = shape.length;
@@ -223,8 +241,10 @@ export class NDArray {
 
 		this.base = base?.base ?? base;
 
-		if (this.ndim > 0) this.length = this.shape[0];
-		else this[Symbol.toPrimitive] = toPrimitive;
+		if (this.ndim > 0) {
+			this.length = this.shape[0];
+			this[Symbol.toPrimitive] = toRepr;
+		} else this[Symbol.toPrimitive] = toPrimitive;
 	}
 
 	*[Symbol.iterator]() {
@@ -239,6 +259,11 @@ export class NDArray {
 		return new NDArray(shape, data, base ?? this, strides, offset, itemsize);
 	}
 
+	/**
+	 *
+	 * @param  {...number|Slice|number[]|boolean[]} indices
+	 * @returns {NDArray}
+	 */
 	get(...indices) {
 		if (indices.length == 1 && indices[0]?.[tupleType]) {
 			indices = indices[0];
@@ -255,6 +280,12 @@ export class NDArray {
 		return new NDArray(shape, data, base ?? this, strides, offset, itemsize);
 	}
 
+	/**
+	 *
+	 * @param  {(number|Slice)[]} indices
+	 * @param  {any} value
+	 * @returns {NDArray}
+	 */
 	set(indices, value = null) {
 		if (value == null) {
 			value = indices;
@@ -270,7 +301,13 @@ export class NDArray {
 		return this;
 	}
 
+	/**
+	 *
+	 * @param {number|number[]} index
+	 * @returns {any}
+	 */
 	item(index) {
+		if (index == 0) return this.data[this.offset];
 		let { data, strides, shape, offset, ndim, size } = this;
 		if (index == undefined) {
 			if (size != 1) throw 'index cannot be empty if size != 1';
@@ -301,11 +338,16 @@ export class NDArray {
 		return data[offset + index_offset(index, strides, shape)];
 	}
 
+	/**
+	 *
+	 * @param {number[]} index
+	 * @param {any} scalar
+	 */
 	itemset(index, scalar) {
 		let { ndim, size, offset, data, shape, strides } = this;
 		if (scalar == undefined && size == 1) {
 			data[offset] = index;
-			return;
+			return this;
 		}
 
 		if (index == undefined) {
@@ -342,6 +384,10 @@ export class NDArray {
 		return this;
 	}
 
+	/**
+	 *
+	 * @returns {any[]}
+	 */
 	toarray() {
 		let { ndim, strides, itemsize, offset, data, shape } = this;
 		if (ndim == 0) {

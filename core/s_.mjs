@@ -1,7 +1,8 @@
-import { tester, arange, array, slice } from './core.mjs';
+import { tester, arange, array, slice, Slice } from './core.mjs';
 
 let _index_exp = arg => {
 	if (typeof arg == 'number') return arg;
+	if (arg instanceof Slice) return arg;
 	return slice(arg);
 };
 
