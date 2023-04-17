@@ -6,8 +6,7 @@ function _axes(axes, ndim) {
 	let unique = {};
 	for (let i = 0; i < ndim; i++) {
 		let axis = axes[i];
-		if (axis < -ndim || ndim <= axis)
-			throw `axis ${axis} is out of bounds for array of dimension ${i + 1}`;
+		if (axis < -ndim || ndim <= axis) throw `axis ${axis} is out of bounds for array of dimension ${i + 1}`;
 		if (axis < 0) axis += ndim;
 		if (unique[axis]) throw 'repeated axis in transpose';
 		unique[axis] = true;
@@ -17,7 +16,7 @@ function _axes(axes, ndim) {
 }
 
 export function transpose(a, axes = null) {
-	let { ndim, shape, strides, data, base, offset, itemsize } = a;
+	let { ndim, shape, strides, data, dtype, base, offset, itemsize } = a;
 	let newshape, newstrides;
 	if (axes == null) {
 		newshape = shape.slice().reverse();
@@ -31,7 +30,7 @@ export function transpose(a, axes = null) {
 			newstrides[i] = strides[axes[i]];
 		}
 	}
-	return new NDArray(newshape, data, base ?? a, newstrides, offset, itemsize);
+	return new NDArray(newshape, data, dtype, base ?? a, newstrides, offset, itemsize);
 }
 
 tester

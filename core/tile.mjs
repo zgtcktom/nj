@@ -5,9 +5,9 @@ export function tile(a, reps) {
 	let d = reps.length;
 
 	if (reps.every(x => x == 1) && a instanceof NDArray) {
-		return array(a, true, d);
+		return array(a, null, true, d);
 	}
-	let c = array(a, false, d);
+	let c = array(a, null, false, d);
 	if (d < c.ndim) {
 		reps = [...Array(c.ndim - d).fill(1), ...reps];
 	}

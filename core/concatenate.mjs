@@ -22,7 +22,9 @@ export function concatenate(arrays, axis = 0, out = null) {
 	for (let i = 1; i < arrays.length; i++) {
 		let array = arrays[i];
 		if (array.ndim != ndim) {
-			throw `all the input arrays must have same number of dimensions, but the array at index 0 has ${ndim} dimension(s) and the array at index ${i} has ${arrays[i].ndim} dimension(s)`;
+			throw new Error(
+				`all the input arrays must have same number of dimensions, but the array at index 0 has ${ndim} dimension(s) and the array at index ${i} has ${arrays[i].ndim} dimension(s)`
+			);
 		}
 		for (let j = 0; j < ndim; j++) {
 			if (j != axis && array.shape[j] != shape[j]) {

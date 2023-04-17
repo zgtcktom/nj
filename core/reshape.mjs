@@ -54,7 +54,7 @@ export function reshape(a, newshape) {
 		throw `cannot reshape array of size ${a.size} into shape [${newshape.join(', ')}]`;
 
 	if (a.base == undefined) {
-		return new NDArray(newshape, a.data, a);
+		return new NDArray(newshape, a.data, a.dtype, a);
 	}
 
 	// check (1, 1, x, -1, y, 1) to (x, y)
@@ -82,7 +82,7 @@ export function reshape(a, newshape) {
 				strides.push(a.strides[j]);
 			}
 			// console.log(strides);
-			return new NDArray(newshape, a.data, a, strides, a.offset, a.itemsize);
+			return new NDArray(newshape, a.data, a.dtype, a, strides, a.offset, a.itemsize);
 		}
 	}
 
@@ -95,7 +95,7 @@ export function reshape(a, newshape) {
 		a = array(a);
 	}
 
-	return new NDArray(newshape, a.data, a, strides, a.offset, a.itemsize);
+	return new NDArray(newshape, a.data, a.dtype, a, strides, a.offset, a.itemsize);
 }
 
 // let msg = await new Promise((resolve, reject) => {

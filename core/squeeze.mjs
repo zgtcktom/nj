@@ -6,7 +6,7 @@ export function squeeze(a, axis = null) {
 	if (axis != null) {
 		axis = normalize_axis(axis);
 	}
-	let { shape, strides, data, ndim, offset, itemsize } = a;
+	let { shape, strides, data, dtype, ndim, offset, itemsize } = a;
 	let newshape = [];
 	let newstrides = [];
 	for (let i = 0; i < ndim; i++) {
@@ -14,7 +14,7 @@ export function squeeze(a, axis = null) {
 		newshape.push(shape[i]);
 		newstrides.push(strides[i]);
 	}
-	return new NDArray(newshape, data, a, newstrides, offset, itemsize);
+	return new NDArray(newshape, data, dtype, a, newstrides, offset, itemsize);
 }
 
 tester

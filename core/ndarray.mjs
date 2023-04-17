@@ -40,6 +40,8 @@ import {
 	variance,
 	array_repr,
 	array_str,
+	_dtype,
+	Dtype,
 } from './core.mjs';
 
 function get_strides(shape, itemsize) {
@@ -103,16 +105,16 @@ function index_offset(index, strides, shape) {
 	return offset;
 }
 
-function toPrimitive() {
-	return this.item();
-}
+// function toPrimitive() {
+// 	return this.item();
+// }
 
-function toRepr(hint) {
-	if (hint == 'string') return array_str(this);
-	if (hint == 'default') {
-		return array_repr(this);
-	}
-}
+// function toRepr(hint) {
+// 	if (hint == 'string') return array_str(this);
+// 	if (hint == 'default') {
+// 		return array_repr(this);
+// 	}
+// }
 
 function _view(array, indices) {
 	let { shape, strides, offset } = array;
@@ -218,17 +220,20 @@ function array_indexing(indices) {
 	return new NDArray(outshape, concatenate(arrays, before.length).data);
 }
 
+const default_dtype = _dtype('object');
+
 export class NDArray {
 	/**
 	 *
 	 * @param {number[]} shape
 	 * @param {any[]} data
+	 * @param {Dtype} dtype
 	 * @param {NDArray} base
 	 * @param {number[]} strides
 	 * @param {number} offset
 	 * @param {number} itemsize
 	 */
-	constructor(shape, data = null, base = null, strides = null, offset = 0, itemsize = 1) {
+	constructor(shape, data = null, dtype = null, base = null, strides = null, offset = 0, itemsize = 1) {
 		// https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
 		this.ndim = shape.length;
 		this.size = get_size(shape);
@@ -239,12 +244,21 @@ export class NDArray {
 		this.strides = strides ?? get_strides(shape, itemsize);
 		this.offset = offset;
 
+		this.dtype = dtype ?? _dtype(data.constructor);
+
 		this.base = base?.base ?? base;
 
 		if (this.ndim > 0) {
 			this.length = this.shape[0];
-			this[Symbol.toPrimitive] = toRepr;
-		} else this[Symbol.toPrimitive] = toPrimitive;
+		}
+	}
+
+	toString() {
+		return array_str(this);
+	}
+
+	valueOf() {
+		return this.ndim == 0 ? this.item() : array_repr(this);
 	}
 
 	*[Symbol.iterator]() {
@@ -255,8 +269,8 @@ export class NDArray {
 
 	_getview(indices) {
 		let { strides, shape, offset } = _view(this, indices);
-		let { data, itemsize, base } = this;
-		return new NDArray(shape, data, base ?? this, strides, offset, itemsize);
+		let { data, itemsize, base, dtype } = this;
+		return new NDArray(shape, data, dtype, base ?? this, strides, offset, itemsize);
 	}
 
 	/**
@@ -272,12 +286,12 @@ export class NDArray {
 		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
 
 		let { strides, shape, offset, immutable } = _view(this, indices);
-		let { data, itemsize, base } = this;
+		let { data, itemsize, base, dtype } = this;
 		if (immutable) {
 			// immutable scalar
-			return new NDArray(shape, [data[offset]], null, strides, 0, itemsize);
+			return new NDArray(shape, [data[offset]], dtype, null, strides, 0, itemsize);
 		}
-		return new NDArray(shape, data, base ?? this, strides, offset, itemsize);
+		return new NDArray(shape, data, dtype, base ?? this, strides, offset, itemsize);
 	}
 
 	/**
@@ -295,9 +309,9 @@ export class NDArray {
 		if (use_advanced_indexing(indices)) throw 'cannot use advanced indexing in .set()';
 
 		let { strides, shape, offset } = _view(this, indices);
-		let { data, itemsize, base } = this;
+		let { data, itemsize, dtype, base } = this;
 
-		new NDArray(shape, data, base ?? this, strides, offset, itemsize).set(value);
+		new NDArray(shape, data, dtype, base ?? this, strides, offset, itemsize).set(value);
 		return this;
 	}
 
@@ -650,6 +664,20 @@ export class NDArray {
 		return variance(this, axis, out, ddof, keepdims);
 	}
 }
+
+import util from 'util';
+NDArray.prototype[util?.inspect?.custom] = function () {
+	return this.valueOf();
+};
+
+tester.onload(() => {
+	console.log(arange(0, 10));
+	console.log(array([0, 'strss', 6.3]));
+
+	console.log(array([false, 2.3, 3, 4, { ok: 5 }], 'int8'));
+
+	console.dir(array([false, true]).dtype == _dtype('boolean'));
+});
 
 tester
 	.add(

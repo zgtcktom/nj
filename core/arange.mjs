@@ -1,4 +1,4 @@
-import { tester, array, NDArray } from './core.mjs';
+import { tester, array, NDArray, _dtype } from './core.mjs';
 
 /**
  *
@@ -12,12 +12,13 @@ export function arange(start, stop = undefined, step = 1) {
 		stop = start;
 		start = 0;
 	}
-	let size = (stop - start) / step;
-	let data = [];
+	let size = Math.max(0, ((stop - start) / step) | 0);
+	let dtype = _dtype('number');
+	let data = dtype.new(size);
 	for (let i = 0; i < size; i++) {
 		data[i] = start + i * step;
 	}
-	return new NDArray([size], data);
+	return new NDArray([size], data, dtype);
 }
 
 tester

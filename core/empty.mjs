@@ -1,4 +1,4 @@
-import { tester, NDArray, shape } from './core.mjs';
+import { tester, NDArray, shape, _dtype, Dtype } from './core.mjs';
 
 function is_int(value) {
 	return Number.isInteger(value);
@@ -13,11 +13,13 @@ function get_size(shape) {
 /**
  *
  * @param {number[]} shape
+ * @param {Dtype} dtype
  * @returns
  */
-export function empty(shape) {
+export function empty(shape, dtype = undefined) {
+	dtype = _dtype(dtype);
 	if (is_int(shape)) shape = [shape];
-	return new NDArray(shape, Array(get_size(shape)));
+	return new NDArray(shape, dtype.new(get_size(shape)), dtype);
 }
 
 export function empty_like(prototype) {

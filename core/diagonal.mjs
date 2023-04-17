@@ -76,6 +76,7 @@ export function diagonal(a, offset = 0, axis1 = 0, axis2 = 1) {
 	return new NDArray(
 		[...a.shape.slice(0, -2), count],
 		a.data,
+		a.dtype,
 		a.base ?? a,
 		[...a.strides.slice(0, -2), step * a.strides[ndim - 1]],
 		a.offset + start,

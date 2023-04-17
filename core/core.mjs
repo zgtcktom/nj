@@ -1,5 +1,7 @@
 export * from './test/Tester.mjs';
 
+export * from './dtype.mjs';
+
 export * from './slice.mjs';
 export * from './isscalar.mjs';
 export * from './ndarray.mjs';

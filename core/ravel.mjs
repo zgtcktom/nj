@@ -2,8 +2,8 @@ import { tester, array, ascontiguousarray, NDArray, arange, slice } from './core
 
 export function ravel(a) {
 	a = ascontiguousarray(a);
-	let { size, data, offset, itemsize } = a;
-	return new NDArray([size], data, a.base, undefined, offset, itemsize);
+	let { size, data, dtype, offset, itemsize } = a;
+	return new NDArray([size], data, dtype, a.base, undefined, offset, itemsize);
 }
 
 tester

@@ -4,7 +4,7 @@ export function column_stack(arrs) {
 	let arrays = [];
 	for (let arr of arrs) {
 		arr = asarray(arr);
-		if (arr.ndim < 2) arr = array(arr, false, 2).T;
+		if (arr.ndim < 2) arr = array(arr, null, false, 2).T;
 		arrays.push(arr);
 	}
 	return concatenate(arrays, 1);

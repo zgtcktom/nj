@@ -15,8 +15,8 @@ export function atleast_1d(...arrays) {
 	if (array.ndim >= 1) return array;
 	// scalar array
 	array = array.copy();
-	let { data, itemsize } = array;
-	return new NDArray([1], data, array, [itemsize], 0, itemsize);
+	let { data, itemsize, dtype } = array;
+	return new NDArray([1], data, dtype, array, [itemsize], 0, itemsize);
 }
 
 /**
@@ -32,13 +32,13 @@ export function atleast_2d(...arrays) {
 	}
 	let array = asarray(arrays[0]);
 	if (array.ndim >= 2) return array;
-	let { shape, data, strides, offset, itemsize, ndim } = array;
+	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
 	if (ndim == 1) {
-		return new NDArray([1, shape[0]], data, array, [0, strides[0]], offset, itemsize);
+		return new NDArray([1, shape[0]], data, dtype, array, [0, strides[0]], offset, itemsize);
 	}
 	// scalar array
 	array = array.copy();
-	return new NDArray([1, 1], array.data, array, [itemsize, itemsize], 0, itemsize);
+	return new NDArray([1, 1], array.data, dtype, array, [itemsize, itemsize], 0, itemsize);
 }
 
 /**
@@ -54,11 +54,12 @@ export function atleast_3d(...arrays) {
 	}
 	let array = asarray(arrays[0]);
 	if (array.ndim >= 3) return array;
-	let { shape, data, strides, offset, itemsize, ndim } = array;
+	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
 	if (ndim == 2) {
 		return new NDArray(
 			[shape[0], shape[1], 1],
 			data,
+			dtype,
 			array,
 			[strides[0], strides[1], 0],
 			offset,
@@ -66,11 +67,11 @@ export function atleast_3d(...arrays) {
 		);
 	}
 	if (ndim == 1) {
-		return new NDArray([1, shape[0], 1], data, array, [0, strides[0], 0], offset, itemsize);
+		return new NDArray([1, shape[0], 1], data, dtype, array, [0, strides[0], 0], offset, itemsize);
 	}
 	// scalar array
 	array = array.copy();
-	return new NDArray([1, 1, 1], array.data, array, [itemsize, itemsize, itemsize], 0, itemsize);
+	return new NDArray([1, 1, 1], array.data, dtype, array, [itemsize, itemsize, itemsize], 0, itemsize);
 }
 
 tester
@@ -101,15 +102,7 @@ tester
 			let y = x.get(0);
 			let z = atleast_1d(y);
 			z.set([0], -96);
-			return [
-				x.toarray(),
-				y.toarray(),
-				z.toarray(),
-				x.base === null,
-				y.base === null,
-				z.base != y,
-				z.base,
-			];
+			return [x.toarray(), y.toarray(), z.toarray(), x.base === null, y.base === null, z.base != y, z.base];
 		},
 		() => [array([1]), 1, array([-96]), true, true, true, array(-96)]
 	);

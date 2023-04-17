@@ -1,4 +1,4 @@
-import { tester, NDArray, shape, ndoffset } from './core.mjs';
+import { tester, NDArray, shape, ndoffset, _dtype, Dtype } from './core.mjs';
 
 function flatten_with_shape(data, array, shape, level = 0) {
 	if (level == shape.length) {
@@ -10,21 +10,36 @@ function flatten_with_shape(data, array, shape, level = 0) {
 	}
 }
 
+export function guess_dtype(array) {
+	let type = typeof array[0];
+	for (let n of array) {
+		if (type != typeof n) {
+			type = 'object';
+			break;
+		}
+	}
+	if (type == 'number' || type == 'string' || type == 'boolean') return _dtype(type);
+	return _dtype('object');
+}
+
 /**
  *
  * @param {any} a
+ * @param {Dtype} dtype
  * @param {boolean} copy
  * @param {number} ndmin
  * @returns {NDArray}
  */
-export function array(a, copy = true, ndmin = 0) {
+export function array(a, dtype = null, copy = true, ndmin = 0) {
 	let data, _shape;
+	if (dtype != null) dtype = _dtype(dtype);
 	if (a instanceof NDArray) {
 		if (!copy) {
 			_shape = a.shape;
 			if (_shape.length < ndmin) _shape = [...Array(ndmin - _shape.length).fill(1), ..._shape];
 			let { data, base, strides, offset, itemsize } = a;
-			return new NDArray(_shape, data, base, strides, offset, itemsize);
+			dtype ??= a.dtype;
+			return new NDArray(_shape, data, dtype, base, strides, offset, itemsize);
 		}
 		if (a.base == undefined) data = a.data.slice();
 		else {
@@ -34,13 +49,16 @@ export function array(a, copy = true, ndmin = 0) {
 			}
 		}
 		_shape = a.shape;
+		dtype ??= a.dtype;
 	} else {
 		data = [];
 		_shape = shape(a);
 		flatten_with_shape(data, a, _shape);
+		dtype ??= guess_dtype(data);
 	}
 	if (_shape.length < ndmin) _shape = [...Array(ndmin - _shape.length).fill(1), ..._shape];
-	return new NDArray(_shape, data);
+
+	return new NDArray(_shape, dtype.new(data.length, data), dtype);
 }
 
 tester

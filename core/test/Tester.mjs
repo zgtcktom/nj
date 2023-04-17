@@ -29,7 +29,10 @@ function default_compare(a, b) {
 }
 
 function _print(a) {
-	if (a instanceof NDArray) a = `NDArray(${JSON.stringify(a.toarray())})`;
+	if (a instanceof NDArray) {
+		// console.log(a);
+		a = a.toString();
+	}
 	if (Array.isArray(a)) return JSON.stringify(a);
 	return a;
 }
@@ -91,9 +94,9 @@ export class Tester {
 			stored.push([
 				color,
 				`#${caseNo}: ${passed ? 'passed' : 'fail'}`,
-				`\n\tTest=\n`,
+				`\nTest=\n`,
 				_print(a),
-				`\n\tExpected=\n`,
+				`\nExpected=\n`,
 				_print(b),
 			]);
 			caseNo++;

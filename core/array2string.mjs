@@ -8,6 +8,8 @@ import {
 	concatenate,
 	Slice,
 	shallow_array_equal,
+	guess_dtype,
+	_dtype,
 } from './core.mjs';
 
 /**
@@ -164,6 +166,7 @@ class FloatingFormat extends Callable {
  * @param {*} x
  */
 function default_format(x) {
+	if (typeof x == 'string') return `'${x}'`;
 	return `${x}`;
 }
 
@@ -192,9 +195,18 @@ function _get_formatdict(data, options) {
 	return formatdict;
 }
 
+function all_integer(array) {
+	for (let n of array) {
+		if (!Number.isInteger(n)) return false;
+	}
+	return true;
+}
+
 function _get_format_function(data, options) {
 	let formatdict = _get_formatdict(data, options);
-	let dtype = Number.isInteger(data.item(0)) ? 'int' : typeof data.item(0) == 'number' ? 'float' : 'object';
+	let array = data.flat.copy().data;
+	let type = guess_dtype(array);
+	let dtype = type == _dtype('number') ? (all_integer(array) ? 'int' : 'float') : 'object';
 	return formatdict[dtype](options);
 }
 
@@ -448,6 +460,10 @@ export function array_str(a, linewidth = null, precision = null) {
 	return array2string(a, { linewidth, precision });
 }
 
+function dtype_is_implied(dtype) {
+	return ['number', 'boolean'].includes(dtype.name);
+}
+
 /**
  *
  * @param {NDArray} a
@@ -463,7 +479,7 @@ export function array_repr(a, linewidth = null, precision = null) {
 
 	let class_name = a instanceof NDArray ? 'array' : typeof a;
 
-	let skipdtype = a.size > 0;
+	let skipdtype = dtype_is_implied(a.dtype) && a.size > 0;
 
 	let prefix = class_name + '(';
 	let suffix = skipdtype ? ')' : ',';
@@ -472,14 +488,14 @@ export function array_repr(a, linewidth = null, precision = null) {
 	if (a.size > 0 || shallow_array_equal(a.shape, [0])) {
 		lst = array2string(a, { linewidth, precision, separator: ', ', prefix });
 	} else {
-		lst = `[], shape=[${arr.shape.join(', ')}]`;
+		lst = `[], shape=[${a.shape.join(', ')}]`;
 	}
 
 	let arr_str = prefix + lst + suffix;
 
 	if (skipdtype) return arr_str;
 
-	let dtype_str = `dtype=${arr.dtype})`;
+	let dtype_str = `dtype=${a.dtype.name})`;
 
 	let last_line_len = arr_str.length - (arr_str.lastIndexOf('\n') + 1);
 	let spacer = ' ';
@@ -520,3 +536,8 @@ tester
 		() => '' + array([1.1, 100.2, 50.6]),
 		() => 'array([  1.1, 100.2,  50.6])'
 	);
+
+// tester.onload(() => {
+// 	console.log(array([10.22, 12.9, 66.3]).valueOf());
+// 	console.log(array(99));
+// });

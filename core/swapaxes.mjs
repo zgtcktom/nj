@@ -1,7 +1,7 @@
 import { array, tester, NDArray } from './core.mjs';
 
 export function swapaxes(a, axis1, axis2) {
-	let { strides, shape, data, offset, base, itemsize } = a;
+	let { strides, shape, data, dtype, offset, base, itemsize } = a;
 
 	strides = strides.slice();
 	shape = shape.slice();
@@ -15,7 +15,7 @@ export function swapaxes(a, axis1, axis2) {
 	strides[axis2] = x;
 	shape[axis2] = y;
 
-	return new NDArray(shape, data, base, strides, offset, itemsize);
+	return new NDArray(shape, data, dtype, base, strides, offset, itemsize);
 }
 
 tester.add(
