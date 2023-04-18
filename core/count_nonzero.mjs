@@ -12,7 +12,6 @@ import {
 	even_strides,
 	timeit,
 } from './core.mjs';
-import { nditer } from './numeric.mjs';
 
 export function axisfunc(func, array, axis /*: nonNull*/, keepdims, out) {
 	// func(...) : scalar
@@ -26,7 +25,7 @@ export function axisfunc(func, array, axis /*: nonNull*/, keepdims, out) {
 	let indices = [];
 	for (let i = 0, j = 0; i < ndim; i++) {
 		if (mask[i]) {
-			indices[i] = slice[':'];
+			indices[i] = slice(':');
 			if (keepdims) outshape[j++] = 1;
 		} else {
 			outshape[j++] = shape[i];

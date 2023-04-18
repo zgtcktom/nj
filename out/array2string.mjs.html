@@ -1,4 +1,32 @@
-import {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: array2string.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: array2string.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
 	tester,
 	arange,
 	array,
@@ -38,7 +66,7 @@ let _formatOptions = {
  *
  * @param {NDArray} a
  * @param {number} edgeitems
- * @param {Array<number|Slice>} index
+ * @param {Array&lt;number|Slice>} index
  * @returns {NDArray}
  */
 function _leading_trailing(a, edgeitems, index = []) {
@@ -131,7 +159,7 @@ class FloatingFormat extends Callable {
 				}
 			}
 
-			if (any_non_zero_finite && (max_val >= 1e8 || min_val < 0.0001 || max_val / min_val > 1000)) {
+			if (any_non_zero_finite &amp;&amp; (max_val >= 1e8 || min_val &lt; 0.0001 || max_val / min_val > 1000)) {
 				exp_format = true;
 			}
 		}
@@ -223,7 +251,7 @@ function _get_format_function(data, options) {
 function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
 	let needs_wrap = line.length + word.length > line_width;
 	if (legacy > 113) {
-		if (line.length <= next_line_prefix.length) {
+		if (line.length &lt;= next_line_prefix.length) {
 			needs_wrap = false;
 		}
 	}
@@ -248,13 +276,13 @@ function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
  */
 function _extendLine_pretty(s, line, word, line_width, next_line_prefix, legacy) {
 	let words = word.split(/\r?\n/);
-	if (words.length === 1 || legacy <= 113) {
+	if (words.length === 1 || legacy &lt;= 113) {
 		return _extendLine(s, line, word, line_width, next_line_prefix, legacy);
 	}
 
 	let max_word_length = Math.max(...words.map(w => w.length));
 	let indent;
-	if (line.length + max_word_length > line_width && line.length > next_line_prefix.length) {
+	if (line.length + max_word_length > line_width &amp;&amp; line.length > next_line_prefix.length) {
 		s += line.trimEnd() + '\n';
 		line = next_line_prefix + words[0];
 		indent = next_line_prefix;
@@ -263,7 +291,7 @@ function _extendLine_pretty(s, line, word, line_width, next_line_prefix, legacy)
 		line += words[0];
 	}
 
-	for (let i = 1; i < words.length; i++) {
+	for (let i = 1; i &lt; words.length; i++) {
 		s += line.trimEnd() + '\n';
 		line = indent + words[i];
 	}
@@ -286,7 +314,7 @@ function _formatArray(
 ) {
 	/**
 	 *
-	 * @param {Array<number|Slice>} index
+	 * @param {Array&lt;number|Slice>} index
 	 * @param {string} hanging_indent
 	 * @param {number} curr_width
 	 * @returns {string}
@@ -301,14 +329,14 @@ function _formatArray(
 
 		let next_hanging_indent = hanging_indent + ' ';
 		let next_width;
-		if (legacy <= 113) {
+		if (legacy &lt;= 113) {
 			next_width = curr_width;
 		} else {
 			next_width = curr_width - ']'.length;
 		}
 
 		let a_len = a.shape[axis];
-		let show_summary = summary_insert && 2 * edge_items < a_len;
+		let show_summary = summary_insert &amp;&amp; 2 * edge_items &lt; a_len;
 		let leading_items, trailing_items;
 
 		if (show_summary) {
@@ -324,14 +352,14 @@ function _formatArray(
 		if (axes_left === 1) {
 			let elem_width;
 			let seqlen = separator.trimEnd().length;
-			if (legacy <= 113) {
+			if (legacy &lt;= 113) {
 				elem_width = curr_width - seqlen;
 			} else {
 				elem_width = curr_width - Math.max(seqlen, ']'.length);
 			}
 
 			let line = hanging_indent;
-			for (let i = 0; i < leading_items; i++) {
+			for (let i = 0; i &lt; leading_items; i++) {
 				let word = recurser([...index, i], next_hanging_indent, next_width);
 				[s, line] = _extendLine_pretty(s, line, word, elem_width, hanging_indent, legacy);
 				line += separator;
@@ -339,7 +367,7 @@ function _formatArray(
 
 			if (show_summary) {
 				[s, line] = _extendLine(s, line, summary_insert, elem_width, hanging_indent, legacy);
-				if (legacy <= 113) line += ', ';
+				if (legacy &lt;= 113) line += ', ';
 				else line += separator;
 			}
 
@@ -349,7 +377,7 @@ function _formatArray(
 				line += separator;
 			}
 
-			if (legacy <= 113) elem_width = curr_width;
+			if (legacy &lt;= 113) elem_width = curr_width;
 			let word = recurser([...index, -1], next_hanging_indent, next_width);
 			[s, line] = _extendLine_pretty(s, line, word, elem_width, hanging_indent, legacy);
 
@@ -358,14 +386,14 @@ function _formatArray(
 			s = '';
 			let line_sep = separator.trimEnd() + '\n'.repeat(axes_left - 1);
 
-			for (let i = 0; i < leading_items; i++) {
+			for (let i = 0; i &lt; leading_items; i++) {
 				let nested = recurser([...index, i], next_hanging_indent, next_width);
 				s += hanging_indent + nested + line_sep;
 			}
 
 			if (show_summary) {
 				s += hanging_indent + summary_insert;
-				if (legacy <= 113) s += ', \n';
+				if (legacy &lt;= 113) s += ', \n';
 				else s += line_sep;
 			}
 
@@ -479,7 +507,7 @@ export function array_repr(a, linewidth = null, precision = null) {
 
 	let class_name = a instanceof NDArray ? 'array' : typeof a;
 
-	let skipdtype = dtype_is_implied(a.dtype) && a.size > 0;
+	let skipdtype = dtype_is_implied(a.dtype) &amp;&amp; a.size > 0;
 
 	let prefix = class_name + '(';
 	let suffix = skipdtype ? ')' : ',';
@@ -541,3 +569,26 @@ tester
 // 	console.log(array([10.22, 12.9, 66.3]).valueOf());
 // 	console.log(array(99));
 // });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nested_shape">nested_shape</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 18 2023 12:37:19 GMT+0800 (Hong Kong Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

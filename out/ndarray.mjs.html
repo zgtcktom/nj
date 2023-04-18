@@ -1,4 +1,32 @@
-import {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ndarray.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ndarray.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
 	tester,
 	slice,
 	copyto,
@@ -76,14 +104,14 @@ function is_tuple(value) {
 function _index(array, index) {
 	if (is_int(index)) {
 		let { ndim, shape, size } = array;
-		if (index < 0) index += size;
+		if (index &lt; 0) index += size;
 		if (index >= size) throw `index ${index} out of bound for size ${size}`;
 		let sizes = [...shape];
 		for (let i = sizes.length - 2; i >= 1; i--) {
 			sizes[i] *= sizes[i + 1];
 		}
 		let indices = Array(ndim).fill(0);
-		for (let i = 0; i < indices.length - 1; i++) {
+		for (let i = 0; i &lt; indices.length - 1; i++) {
 			let size = sizes[i + 1];
 			if (index >= size) {
 				indices[i] = (index / size) | 0;
@@ -100,8 +128,8 @@ function _index(array, index) {
 
 function index_offset(index, strides, shape) {
 	let offset = 0;
-	for (let i = 0; i < index.length; i++)
-		offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
+	for (let i = 0; i &lt; index.length; i++)
+		offset += (index[i] &lt; 0 ? index[i] + shape[i] : index[i]) * strides[i];
 	return offset;
 }
 
@@ -152,7 +180,7 @@ function _view(array, indices) {
 				strides.splice(ndim, 1, strides[ndim] * step);
 				ndim++;
 			} else {
-				if (index < 0) index += shape[ndim];
+				if (index &lt; 0) index += shape[ndim];
 				offset = offset + strides[ndim] * index;
 				shape.splice(ndim, 1);
 				strides.splice(ndim, 1);
@@ -160,14 +188,14 @@ function _view(array, indices) {
 		}
 		// console.log('offset', offset, indices);
 	}
-	let immutable = shape.length == 0 && ellipsis.length == 0;
+	let immutable = shape.length == 0 &amp;&amp; ellipsis.length == 0;
 	return { strides, shape, offset, immutable };
 }
 
 export function use_advanced_indexing(indices) {
 	// console.log(indices);
 	for (let ind of indices)
-		if (typeof ind == 'object' && (Array.isArray(ind) || ind instanceof NDArray)) return true;
+		if (typeof ind == 'object' &amp;&amp; (Array.isArray(ind) || ind instanceof NDArray)) return true;
 	return false;
 }
 
@@ -176,10 +204,10 @@ function array_indexing(indices) {
 	let start = 0;
 	let stop = indices.length - 1;
 	let mask = indices.map(index => index instanceof Slice);
-	for (; start < stop && mask[start]; start++);
-	for (; stop > start && mask[stop]; stop--);
+	for (; start &lt; stop &amp;&amp; mask[start]; start++);
+	for (; stop > start &amp;&amp; mask[stop]; stop--);
 
-	for (let i = start + 1; i < stop; i++) {
+	for (let i = start + 1; i &lt; stop; i++) {
 		if (mask[i]) {
 			simple = false;
 			break;
@@ -197,7 +225,7 @@ function array_indexing(indices) {
 		before = [];
 		after = shape.filter((_, i) => mask[i]);
 		array_indices = [];
-		for (let i = start; i <= stop; i++) {
+		for (let i = start; i &lt;= stop; i++) {
 			if (!mask[i]) array_indices.push(indices[i]);
 		}
 	}
@@ -209,7 +237,7 @@ function array_indexing(indices) {
 	// let data = [];
 	let arrays = [];
 	for (let ind of b) {
-		for (let i = 0, j = 0; i < indices.length; i++) {
+		for (let i = 0, j = 0; i &lt; indices.length; i++) {
 			if (!mask[i]) indices[i] = ind[j++];
 		}
 		// console.log('asd', [...indices, null], this);
@@ -265,7 +293,7 @@ export class NDArray {
 	}
 
 	*[Symbol.iterator]() {
-		for (let i = 0; i < this.shape[0]; i++) {
+		for (let i = 0; i &lt; this.shape[0]; i++) {
 			yield this.get(i);
 		}
 	}
@@ -282,7 +310,7 @@ export class NDArray {
 	 * @returns {NDArray}
 	 */
 	get(...indices) {
-		if (indices.length == 1 && indices[0]?.[tupleType]) {
+		if (indices.length == 1 &amp;&amp; indices[0]?.[tupleType]) {
 			indices = indices[0];
 		}
 
@@ -299,7 +327,7 @@ export class NDArray {
 
 	/**
 	 *
-	 * @param  {Array<number|Slice>} indices
+	 * @param  {Array&lt;number|Slice>} indices
 	 * @param  {any} value
 	 * @returns {NDArray}
 	 */
@@ -336,7 +364,7 @@ export class NDArray {
 				else if (index.length == 1) index = index[0];
 				else throw 'incorrect number of indices for array';
 			}
-			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
+			if (index != 0 &amp;&amp; index != -1) throw `index ${index} out of bound for size ${size}`;
 			return data[offset];
 		}
 		if (ndim == 1) {
@@ -344,8 +372,8 @@ export class NDArray {
 				if (index.length != 1) throw 'incorrect number of indices for array';
 				index = index[0];
 			}
-			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
-			if (index < 0) index += size;
+			if (index &lt; -size || size &lt;= index) throw `index ${index} out of bound for size ${size}`;
+			if (index &lt; 0) index += size;
 			return data[offset + index * strides[0]];
 		}
 		if (index.length == 1) index = index[0];
@@ -362,7 +390,7 @@ export class NDArray {
 	 */
 	itemset(index, scalar) {
 		let { ndim, size, offset, data, shape, strides } = this;
-		if (scalar == undefined && size == 1) {
+		if (scalar == undefined &amp;&amp; size == 1) {
 			data[offset] = index;
 			return this;
 		}
@@ -378,7 +406,7 @@ export class NDArray {
 				else if (index.length == 1) index = index[0];
 				else throw 'incorrect number of indices for array';
 			}
-			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
+			if (index != 0 &amp;&amp; index != -1) throw `index ${index} out of bound for size ${size}`;
 			data[offset] = scalar;
 			return this;
 		}
@@ -387,8 +415,8 @@ export class NDArray {
 				if (index.length != 1) throw 'incorrect number of indices for array';
 				index = index[0];
 			}
-			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
-			if (index < 0) index += size;
+			if (index &lt; -size || size &lt;= index) throw `index ${index} out of bound for size ${size}`;
+			if (index &lt; 0) index += size;
 			data[offset + index * strides[0]] = scalar;
 			return this;
 		}
@@ -412,11 +440,11 @@ export class NDArray {
 		}
 
 		let dim = shape[0];
-		if (ndim == 1 && strides[0] == itemsize) {
+		if (ndim == 1 &amp;&amp; strides[0] == itemsize) {
 			return data.slice(offset, offset + dim);
 		}
 		let array = [];
-		for (let i = 0; i < dim; i++) {
+		for (let i = 0; i &lt; dim; i++) {
 			array.push(this.get(i).toarray());
 		}
 		return array;
@@ -594,7 +622,7 @@ export class NDArray {
 		if (this.base != null) throw `cannot resize this array: it does not own its data`;
 		if (!contiguous(this)) throw `resize only works on single-segment arrays`;
 		let new_size = get_size(new_shape);
-		if (new_size <= this.size) {
+		if (new_size &lt;= this.size) {
 			this.data = [...this.data.slice(this.offset, new_size)];
 		} else {
 			this.data = [...this.data.slice(this.offset, new_size), ...Array(new_size - this.size).fill(0)];
@@ -1095,3 +1123,26 @@ tester
 		},
 		() => [array([[0]]), array([[0]])]
 	);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nested_shape">nested_shape</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 18 2023 12:37:19 GMT+0800 (Hong Kong Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

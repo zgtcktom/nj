@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: atleast.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: atleast.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { array, asarray, tester, arange, NDArray } from './core.mjs';
+
+/**
+ *
+ * @param  {...NDArray} arrays
+ * @returns {NDArray|NDArray[]}
+ */
+export function atleast_1d(...arrays) {
+	if (arrays.length != 1) {
+		let ret = [];
+		for (let array of arrays) ret.push(atleast_1d(array));
+		return ret;
+	}
+	let array = asarray(arrays[0]);
+	if (array.ndim >= 1) return array;
+	// scalar array
+	array = array.copy();
+	let { data, itemsize, dtype } = array;
+	return new NDArray([1], data, dtype, array, [itemsize], 0, itemsize);
+}
+
+/**
+ *
+ * @param  {...NDArray|any} arrays
+ * @returns {NDArray|NDArray[]}
+ */
+export function atleast_2d(...arrays) {
+	if (arrays.length != 1) {
+		let ret = [];
+		for (let array of arrays) ret.push(atleast_2d(array));
+		return ret;
+	}
+	let array = asarray(arrays[0]);
+	if (array.ndim >= 2) return array;
+	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
+	if (ndim == 1) {
+		return new NDArray([1, shape[0]], data, dtype, array, [0, strides[0]], offset, itemsize);
+	}
+	// scalar array
+	array = array.copy();
+	return new NDArray([1, 1], array.data, dtype, array, [itemsize, itemsize], 0, itemsize);
+}
+
+/**
+ *
+ * @param  {...NDArray|any} arrays
+ * @returns {NDArray|NDArray[]}
+ */
+export function atleast_3d(...arrays) {
+	if (arrays.length != 1) {
+		let ret = [];
+		for (let array of arrays) ret.push(atleast_3d(array));
+		return ret;
+	}
+	let array = asarray(arrays[0]);
+	if (array.ndim >= 3) return array;
+	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
+	if (ndim == 2) {
+		return new NDArray(
+			[shape[0], shape[1], 1],
+			data,
+			dtype,
+			array,
+			[strides[0], strides[1], 0],
+			offset,
+			itemsize
+		);
+	}
+	if (ndim == 1) {
+		return new NDArray([1, shape[0], 1], data, dtype, array, [0, strides[0], 0], offset, itemsize);
+	}
+	// scalar array
+	array = array.copy();
+	return new NDArray([1, 1, 1], array.data, dtype, array, [itemsize, itemsize, itemsize], 0, itemsize);
+}
+
+tester
+	.add(
+		atleast_1d,
+		() => atleast_1d(1.0),
+		() => array([1])
+	)
+	.add(
+		atleast_1d,
+		() => atleast_1d(1, [3, 4]),
+		() => [array([1]), array([3, 4])]
+	)
+	.add(
+		atleast_1d,
+		() => atleast_1d(arange(9.0).reshape([3, 3])),
+		() =>
+			array([
+				[0, 1, 2],
+				[3, 4, 5],
+				[6, 7, 8],
+			])
+	)
+	.add(
+		atleast_1d,
+		() => {
+			let x = array([1]);
+			let y = x.get(0);
+			let z = atleast_1d(y);
+			z.set([0], -96);
+			return [x.toarray(), y.toarray(), z.toarray(), x.base === null, y.base === null, z.base != y, z.base];
+		},
+		() => [array([1]), 1, array([-96]), true, true, true, array(-96)]
+	);
+
+tester
+	.add(
+		atleast_2d,
+		() => atleast_2d(3.0),
+		() => array([[3]])
+	)
+	.add(
+		atleast_2d,
+		() => {
+			let x = arange(3.0);
+			return [atleast_2d(x), atleast_2d(x).base === x];
+		},
+		() => [array([[0, 1, 2]]), true]
+	)
+	.add(
+		atleast_2d,
+		() => atleast_2d(1, [1, 2], [[1, 2]]),
+		() => [array([[1]]), array([[1, 2]]), array([[1, 2]])]
+	);
+
+tester
+	.add(
+		atleast_3d,
+		() => atleast_3d(3.0),
+		() => array([[[3]]])
+	)
+	.add(
+		atleast_3d,
+		() => atleast_3d(arange(3.0)).shape,
+		() => [1, 3, 1]
+	)
+	.add(
+		atleast_3d,
+		() => {
+			let x = arange(12.0).reshape(4, 3);
+			return [atleast_3d(x).shape, atleast_3d(x).base === x.base];
+		},
+		() => [[4, 3, 1], true]
+	)
+	.add(
+		atleast_3d,
+		() => atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]),
+		() => [[[[1], [2]]], [[[1], [2]]], [[[1, 2]]]]
+	);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nested_shape">nested_shape</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 18 2023 12:37:19 GMT+0800 (Hong Kong Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -7,7 +7,6 @@ import { ndindex, tester, array, asarray, NDArray } from './core.mjs';
 export function* ndenumerate(a) {
 	a = asarray(a);
 	for (let index of ndindex(a.shape)) {
-		/** @type {[number[], any]} */
 		let value = [index, a.item(index)];
 		yield value;
 	}

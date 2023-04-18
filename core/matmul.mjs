@@ -19,7 +19,7 @@ import {
  * @param {*} x1
  * @param {*} x2
  * @param {NDArray} out
- * @returns
+ * @returns {NDArray}
  */
 export function matmul(x1, x2, out = null) {
 	x1 = asarray(x1);

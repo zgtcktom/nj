@@ -1,4 +1,32 @@
-import {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: func.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: func.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
 	NDArray,
 	asarray,
 	broadcast_shapes,
@@ -34,8 +62,8 @@ export function normalize_axis_index(axis, ndim) {
 	let _axis = axis;
 	axis = +axis;
 	if (!Number.isInteger(axis)) throw new Error(`${_axis} cannot be cast to integer`);
-	if (axis < 0) axis += ndim;
-	if (axis < 0 || ndim <= axis) throw `axis ${_axis} is out of bounds for array of dimension ${ndim}`;
+	if (axis &lt; 0) axis += ndim;
+	if (axis &lt; 0 || ndim &lt;= axis) throw `axis ${_axis} is out of bounds for array of dimension ${ndim}`;
 	return axis;
 }
 
@@ -48,12 +76,12 @@ export function normalize_axis_mask(axis, ndim, allow_duplicate = false) {
 	}
 	let mask = Array(ndim).fill(0);
 	if (Array.isArray(axis)) {
-		for (let i = 0; i < axis.length; i++) {
+		for (let i = 0; i &lt; axis.length; i++) {
 			mask[normalize_axis_index(axis[i], ndim)] = 1;
 		}
 		if (!allow_duplicate) {
 			let count = 0;
-			for (let i = 0; i < ndim; i++) count += mask[i];
+			for (let i = 0; i &lt; ndim; i++) count += mask[i];
 			if (count != axis.length) throw `repeated axis`;
 		}
 	} else {
@@ -74,7 +102,7 @@ let destructuringArray = (declaration = null, variables, array) => {
 };
 let destructuringObject = (declaration = null, variables, object, keys = variables) => {
 	let pair = [];
-	for (let i = 0; i < variables.length; i++) {
+	for (let i = 0; i &lt; variables.length; i++) {
 		pair.push(keys[i] == variables[i] ? `${keys[i]}` : `${keys[i]}: ${variables[i]}`);
 	}
 	if (declaration != null) {
@@ -89,7 +117,7 @@ let assignment = (declaration = null, variables, values) => {
 		values = [values];
 	}
 	let pair = [];
-	for (let i = 0; i < variables.length; i++) {
+	for (let i = 0; i &lt; variables.length; i++) {
 		pair.push(`${variables[i]} = ${values[i]}`);
 	}
 	if (declaration != null) {
@@ -98,7 +126,7 @@ let assignment = (declaration = null, variables, values) => {
 	return `${pair.join(', ')}`;
 };
 let forLoop = (index, length, body) => {
-	return `for(let ${index} = 0; ${index} < ${length}; ${index}++) {${body}}`;
+	return `for(let ${index} = 0; ${index} &lt; ${length}; ${index}++) {${body}}`;
 };
 let body = (...statements) => {
 	return `${statements.join('; ')}`;
@@ -223,7 +251,7 @@ function _reduce_body(narg, ndim, axis) {
 	// axis as bool(0, 1) mask
 
 	let out_ndim = ndim;
-	for (let i = 0; i < ndim; i++) out_ndim -= axis[i];
+	for (let i = 0; i &lt; ndim; i++) out_ndim -= axis[i];
 
 	let { fn, out, x, out_offset, x_offset, out_data, x_data, out_strides, x_strides, index, shape } =
 		variableNames(narg, ndim, out_ndim);
@@ -585,7 +613,7 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 		} else {
 			axis = normalize_axis_mask(axis, ndim);
 			outshape = [];
-			for (let i = 0; i < ndim; i++) if (!axis[i]) outshape.push(shape[i]);
+			for (let i = 0; i &lt; ndim; i++) if (!axis[i]) outshape.push(shape[i]);
 		}
 		if (keepdims) {
 			// very hacky
@@ -598,7 +626,7 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 			// let { strides } = x1;
 			let sameshape = shape.slice();
 			// let outstrides = [];
-			for (let i = 0; i < ndim; i++) {
+			for (let i = 0; i &lt; ndim; i++) {
 				if (axis[i]) {
 					sameshape[i] = 1;
 				} else {
@@ -624,14 +652,37 @@ export function _wrap_reduce(name, fn, narg = fn.length - 1, defaultinitial) {
 			// if only interleaved 1s exist in the shape
 			// seems working
 			_reduce(1, ndim, axis)(fn, x1, out.reshape(outshape), initial);
-			return return_scalar && out.ndim == 0 ? out.item() : out;
+			return return_scalar &amp;&amp; out.ndim == 0 ? out.item() : out;
 		}
 
 		if (out == null) out = empty(outshape);
 		else if (!shallow_array_equal(outshape, out.shape)) throw 'unmatch shape';
 
 		out = _reduce(1, ndim, axis)(fn, x1, out, initial);
-		return return_scalar && out.ndim == 0 ? out.item() : out;
+		return return_scalar &amp;&amp; out.ndim == 0 ? out.item() : out;
 	}
 	return Object.defineProperty(func, 'name', { value: name });
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nested_shape">nested_shape</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 18 2023 12:37:19 GMT+0800 (Hong Kong Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

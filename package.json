@@ -5,7 +5,8 @@
   "main": "./core/core.js",
   "scripts": {
     "build": "npx webpack build && npx babel --plugins @babel/plugin-transform-modules-commonjs  ./dist/bundle.mjs --out-dir ./dist",
-    "test": "node ./NDArray.mjs"
+    "test": "node ./NDArray.mjs",
+    "jsdoc": "npx jsdoc ./core -c ./jsdoc_conf.json"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.3",
     "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "jsdoc": "^4.0.2",
     "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1"
   }

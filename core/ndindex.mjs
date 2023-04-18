@@ -8,7 +8,7 @@ function prod(a) {
  *
  * @param {number[]} shape
  * @param {boolean} reuse
- * @returns
+ * @returns {Generator}
  */
 export function* ndindex(shape, reuse = true) {
 	/** @type {number[]} */

@@ -14,7 +14,7 @@ function get_size(shape) {
  *
  * @param {number[]} shape
  * @param {Dtype} dtype
- * @returns
+ * @returns {NDArray}
  */
 export function empty(shape, dtype = undefined) {
 	dtype = _dtype(dtype);
