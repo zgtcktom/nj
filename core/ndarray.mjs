@@ -44,81 +44,105 @@ import {
 	Dtype,
 } from './core.mjs';
 
-function get_strides(shape, itemsize) {
-	let strides = [];
-	if (shape.length > 0) {
-		strides[shape.length - 1] = itemsize;
-		for (let i = shape.length - 2; i >= 0; i--) {
-			strides[i] = strides[i + 1] * shape[i + 1];
-		}
+/**
+ * @param {number[]} shape
+ * @param {number} ndim
+ * @param {number} itemsize
+ * @returns {number[]}
+ * @ignore
+ */
+function get_strides(shape, ndim, itemsize) {
+	if (ndim == 0) return [];
+
+	let strides = Array(ndim);
+	strides[ndim - 1] = itemsize;
+	for (let i = ndim - 1; i > 0; i--) {
+		strides[i - 1] = strides[i] * shape[i];
 	}
 	return strides;
 }
 
+/**
+ * @param {number[]} shape
+ * @returns {number}
+ * @ignore
+ */
 function get_size(shape) {
 	let size = 1;
 	for (let dim of shape) size *= dim;
 	return size;
 }
 
-function type(value) {
-	return value?.constructor.name;
-}
-
-function is_int(value) {
-	return Number.isInteger(value);
-}
-
-function is_tuple(value) {
-	return value?.length != undefined;
-}
-
-function _index(array, index) {
-	if (is_int(index)) {
-		let { ndim, shape, size } = array;
-		if (index < 0) index += size;
-		if (index >= size) throw `index ${index} out of bound for size ${size}`;
-		let sizes = [...shape];
-		for (let i = sizes.length - 2; i >= 1; i--) {
-			sizes[i] *= sizes[i + 1];
+/**
+ * Converts flatten index to multi-dimensional indices.
+ * @param {number|number[]} index
+ * @param {number[]} shape
+ * @param {number} ndim
+ * @param {number} size
+ * @returns {number[]}
+ * @ignore
+ */
+function get_indices(index, shape, ndim, size) {
+	if (Number.isInteger(index)) {
+		let idx = index;
+		if (idx < 0) idx += size;
+		if (idx < 0 || idx >= size) {
+			throw new Error(`index ${index} out of bound for size ${size}`);
 		}
-		let indices = Array(ndim).fill(0);
-		for (let i = 0; i < indices.length - 1; i++) {
-			let size = sizes[i + 1];
-			if (index >= size) {
-				indices[i] = (index / size) | 0;
-				index %= size;
-			}
+
+		if (ndim == 0) return [0];
+
+		let indices = Array(ndim);
+		for (let i = ndim - 1; i >= 0; i--) {
+			indices[i] = idx % shape[i];
+			idx = (idx / shape[i]) | 0;
 		}
-		indices[indices.length - 1] = index;
-		// console.log('sizes', sizes, indices);
-		index = indices;
-	} else if (!is_tuple(index)) throw `unexpected type '${type(index)}'`;
-	else if (index.length != array.ndim) throw 'incorrect number of indices for array';
+		return indices;
+	}
+
+	if (index.length != ndim) {
+		throw new Error('incorrect number of indices for array');
+	}
+
 	return index;
 }
 
-function index_offset(index, strides, shape) {
-	let offset = 0;
-	for (let i = 0; i < index.length; i++)
-		offset += (index[i] < 0 ? index[i] + shape[i] : index[i]) * strides[i];
+/**
+ * Converts NDArray index to array index.
+ * @param {NDArray} a
+ * @param {number|number[]|undefined} index
+ * @returns {number}
+ * @ignore
+ */
+function get_idx(a, index) {
+	let { shape, strides, ndim, size, offset } = a;
+
+	if (index == 0) return offset;
+
+	if (index == undefined) {
+		if (size != 1) {
+			throw new Error('index cannot be empty if size != 1');
+		}
+		return offset;
+	}
+
+	let indices = get_indices(index, shape, ndim, size);
+
+	for (let i = 0; i < indices.length; i++) {
+		let idx = indices[i];
+		let dim = shape[i];
+		if (idx < 0) idx += dim;
+		if (idx < 0 || idx >= dim) {
+			throw new Error(`index ${indices[i]} out of bound for dimension ${dim}`);
+		}
+		offset += idx * strides[i];
+	}
+
 	return offset;
 }
 
-// function toPrimitive() {
-// 	return this.item();
-// }
-
-// function toRepr(hint) {
-// 	if (hint == 'string') return array_str(this);
-// 	if (hint == 'default') {
-// 		return array_repr(this);
-// 	}
-// }
-
 function _view(array, indices) {
 	let { shape, strides, offset } = array;
-	// indices = indices.slice();
 	indices = indices.map(index => (typeof index == 'string' ? slice(index) : index));
 	shape = shape.slice();
 	strides = strides.slice();
@@ -130,7 +154,6 @@ function _view(array, indices) {
 		indices = indices.slice();
 		let colons = Array(shape.length + newaxis_length - indices.length + 1).fill(slice(':'));
 		indices.splice(indices.indexOf(slice('...')), 1, ...colons);
-		// console.log(indices, indices.indexOf(slice('...')));
 	}
 	if (indices.length - newaxis_length > shape.length) throw 'too many indices for array';
 
@@ -164,10 +187,17 @@ function _view(array, indices) {
 	return { strides, shape, offset, immutable };
 }
 
+/**
+ * @param {any[]} indices
+ * @returns {boolean}
+ * @ignore
+ */
 export function use_advanced_indexing(indices) {
-	// console.log(indices);
-	for (let ind of indices)
-		if (typeof ind == 'object' && (Array.isArray(ind) || ind instanceof NDArray)) return true;
+	for (let index of indices) {
+		if (typeof index == 'object' && (Array.isArray(index) || index instanceof NDArray)) {
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -220,14 +250,18 @@ function array_indexing(indices) {
 	return new NDArray(outshape, concatenate(arrays, before.length).data);
 }
 
-const default_dtype = _dtype('object');
+tester.onload(() => {
+	console.log(arange(0, 10));
+	console.log(array([0, 'strss', 6.3]));
 
-/**
- * @class
- */
+	console.log(array([false, 2.3, 3, 4, { ok: 5 }], 'int8'));
+
+	console.dir(array([false, true]).dtype == _dtype('boolean'));
+});
+
+/** @class */
 export class NDArray {
 	/**
-	 *
 	 * @param {number[]} shape
 	 * @param {any[]} data
 	 * @param {Dtype} dtype
@@ -238,28 +272,45 @@ export class NDArray {
 	 */
 	constructor(shape, data = null, dtype = null, base = null, strides = null, offset = 0, itemsize = 1) {
 		// https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
+		/** @member {number} */
 		this.ndim = shape.length;
+		/** @member {number} */
 		this.size = get_size(shape);
 
+		/** @member {number[]} */
 		this.shape = shape;
+		/** @member {any[]} */
 		this.data = data ?? Array(this.size);
+		/** @member {number} */
 		this.itemsize = itemsize;
-		this.strides = strides ?? get_strides(shape, itemsize);
+		/** @member {number[]} */
+		this.strides = strides ?? get_strides(shape, this.ndim, itemsize);
+		/** @member {number} */
 		this.offset = offset;
 
+		/** @member {Dtype} */
 		this.dtype = dtype ?? _dtype(data.constructor);
 
+		/** @member {NDArray|null} */
 		this.base = base?.base ?? base;
-
-		if (this.ndim > 0) {
-			this.length = this.shape[0];
-		}
 	}
 
+	/** @member {number} */
+	get length() {
+		let { ndim, shape } = this;
+		if (ndim != 0) return shape[0];
+	}
+
+	/**
+	 * @returns {string}
+	 */
 	toString() {
 		return array_str(this);
 	}
 
+	/**
+	 * @returns {*|string}
+	 */
 	valueOf() {
 		return this.ndim == 0 ? this.item() : array_repr(this);
 	}
@@ -268,6 +319,14 @@ export class NDArray {
 		for (let i = 0; i < this.shape[0]; i++) {
 			yield this.get(i);
 		}
+	}
+
+	/**
+	 * @param  {...number|Slice|string|null|number[]|boolean[]} indices
+	 * @returns {NDArray}
+	 */
+	at(...indices) {
+		return this.get(indices);
 	}
 
 	_getview(indices) {
@@ -319,91 +378,31 @@ export class NDArray {
 	}
 
 	/**
+	 * Returns an element of the array.
 	 *
-	 * @param {number|number[]} index
-	 * @returns {any}
+	 * index can be undefined only if a.size == 1.
+	 * @param {number|number[]|undefined} index
+	 * @returns {*}
 	 */
 	item(index) {
-		if (index == 0) return this.data[this.offset];
-		let { data, strides, shape, offset, ndim, size } = this;
-		if (index == undefined) {
-			if (size != 1) throw 'index cannot be empty if size != 1';
-			return data[offset];
-		}
-		if (ndim == 0) {
-			if (index.length != undefined) {
-				if (index.length == 0) index = 0;
-				else if (index.length == 1) index = index[0];
-				else throw 'incorrect number of indices for array';
-			}
-			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
-			return data[offset];
-		}
-		if (ndim == 1) {
-			if (index.length != undefined) {
-				if (index.length != 1) throw 'incorrect number of indices for array';
-				index = index[0];
-			}
-			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
-			if (index < 0) index += size;
-			return data[offset + index * strides[0]];
-		}
-		if (index.length == 1) index = index[0];
-
-		index = _index(this, index);
-
-		return data[offset + index_offset(index, strides, shape)];
+		return this.data[get_idx(this, index)];
 	}
 
 	/**
+	 * Sets an element of the array.
 	 *
-	 * @param {number[]} index
-	 * @param {any} scalar
+	 * index can be undefined only if a.size == 1.
+	 * @param {number|number[]|undefined} index
+	 * @param {*} scalar
+	 * @returns {NDArray}
 	 */
 	itemset(index, scalar) {
-		let { ndim, size, offset, data, shape, strides } = this;
-		if (scalar == undefined && size == 1) {
-			data[offset] = index;
-			return this;
-		}
-
-		if (index == undefined) {
-			if (size != 1) throw 'index cannot be empty if size != 1';
-			data[offset] = scalar;
-			return this;
-		}
-		if (ndim == 0) {
-			if (index.length != undefined) {
-				if (index.length == 0) index = 0;
-				else if (index.length == 1) index = index[0];
-				else throw 'incorrect number of indices for array';
-			}
-			if (index != 0 && index != -1) throw `index ${index} out of bound for size ${size}`;
-			data[offset] = scalar;
-			return this;
-		}
-		if (ndim == 1) {
-			if (index.length != undefined) {
-				if (index.length != 1) throw 'incorrect number of indices for array';
-				index = index[0];
-			}
-			if (index < -size || size <= index) throw `index ${index} out of bound for size ${size}`;
-			if (index < 0) index += size;
-			data[offset + index * strides[0]] = scalar;
-			return this;
-		}
-		if (index.length == 1) index = index[0];
-
-		index = _index(this, index);
-
-		data[offset + index_offset(index, strides, shape)] = scalar;
-
+		this.data[get_idx(this, index)] = scalar;
 		return this;
 	}
 
 	/**
-	 *
-	 * @returns {any[]}
+	 * @returns {any[]|any}
 	 */
 	toarray() {
 		let { ndim, strides, itemsize, offset, data, shape } = this;
@@ -422,10 +421,14 @@ export class NDArray {
 		return array;
 	}
 
+	/**
+	 * @returns {any[]|any}
+	 */
 	tolist() {
 		return this.toarray();
 	}
 
+	/** @member {Flatiter} */
 	get flat() {
 		return new Flatiter(this);
 	}
@@ -434,6 +437,7 @@ export class NDArray {
 		this.flat.set([...Array(this.size).keys()], value);
 	}
 
+	/** @member {NDArray} */
 	get T() {
 		return transpose(this);
 	}
@@ -601,7 +605,7 @@ export class NDArray {
 		}
 		this.shape = new_shape;
 		this.ndim = new_shape.length;
-		this.strides = get_strides(new_shape, this.itemsize);
+		this.strides = get_strides(new_shape, this.ndim, this.itemsize);
 		this.offset = 0;
 	}
 
@@ -672,15 +676,6 @@ import util from 'util';
 NDArray.prototype[util?.inspect?.custom] = function () {
 	return this.valueOf();
 };
-
-tester.onload(() => {
-	console.log(arange(0, 10));
-	console.log(array([0, 'strss', 6.3]));
-
-	console.log(array([false, 2.3, 3, 4, { ok: 5 }], 'int8'));
-
-	console.dir(array([false, true]).dtype == _dtype('boolean'));
-});
 
 tester
 	.add(

@@ -1,33 +1,40 @@
 import { arange, slice, tester } from './core.mjs';
 
+/** @class */
 class Ndoffset {
 	/**
-	 *
 	 * @param {number[]} shape
 	 * @param {number[]} strides
 	 * @param {number} initial
 	 */
 	constructor(shape, strides, initial) {
 		let ndim = shape.length;
+		/** @member {number} */
 		this.ndim = ndim;
 
+		/** @member {number[]} */
 		this.shape = shape;
+		/** @member {number[]} */
 		this.strides = strides;
 
 		let dim_strides = Array(ndim);
 		for (let i = 0; i < ndim; i++) {
 			dim_strides[i] = shape[i] * strides[i];
 		}
+		/** @member {number[]} */
 		this.dim_strides = dim_strides;
 
+		/** @member {number} */
 		this.initial = initial;
 
 		let size = 1;
 		for (let dim of shape) {
 			size *= dim;
 		}
+		/** @member {number} */
 		this.size = size;
 
+		/** @member {number[]} */
 		this.coords = Array(ndim);
 		this.reset();
 	}
@@ -39,14 +46,22 @@ class Ndoffset {
 
 	reset() {
 		this.coords.fill(0);
+		/** @member {number} */
 		this.index = 0;
+		/** @member {number} */
 		this.offset = this.initial;
+		/** @member {boolean}  */
 		this.done = this.size == 0;
 	}
 
 	/**
-	 *
-	 * @returns {{value: number, done: boolean}}
+	 * @typedef {Object} NdoffsetResult
+	 * @property {number} value
+	 * @property {boolean} done
+	 */
+
+	/**
+	 * @returns {NdoffsetResult}
 	 */
 	next() {
 		// micro-optimized
@@ -85,7 +100,7 @@ class Ndoffset {
  *
  * @param {number[]} shape
  * @param {number[]} strides
- * @param {number} initial
+ * @param {number} [initial]
  * @returns {Ndoffset}
  */
 export function ndoffset(shape, strides, initial = 0) {

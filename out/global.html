@@ -4442,7 +4442,7 @@
     
 
     
-    <h4 class="name" id="ndoffset"><span class="type-signature"></span>ndoffset<span class="signature">(shape, strides, initial)</span><span class="type-signature"> &rarr; {<a href="Ndoffset.html">Ndoffset</a>}</span></h4>
+    <h4 class="name" id="ndoffset"><span class="type-signature"></span>ndoffset<span class="signature">(shape, strides, initial<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Ndoffset.html">Ndoffset</a>}</span></h4>
     
 
     
@@ -4470,6 +4470,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -4495,6 +4497,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4518,6 +4528,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4540,6 +4558,16 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -4585,7 +4613,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line91">line 91</a>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -4622,223 +4650,6 @@
     <dd>
         
 <span class="param-type"><a href="Ndoffset.html">Ndoffset</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="nested_shape"><span class="type-signature"></span>nested_shape<span class="signature">(a, shape, level)</span><span class="type-signature"> &rarr; {void}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Determine the shape of a nested array given the nested first element as the initial guess.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>shape</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>level</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shape.mjs.html">shape.mjs</a>, <a href="shape.mjs.html#line10">line 10</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">void</span>
 
 
     </dd>
@@ -5413,7 +5224,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shape.mjs.html">shape.mjs</a>, <a href="shape.mjs.html#line35">line 35</a>
+        <a href="shape.mjs.html">shape.mjs</a>, <a href="shape.mjs.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -5467,7 +5278,7 @@
     
 
     
-    <h4 class="name" id="slice"><span class="type-signature"></span>slice<span class="signature">(start, stop<span class="signature-attributes">opt</span>, step<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Slice.html">Slice</a>}</span></h4>
+    <h4 class="name" id="slice"><span class="type-signature"></span>slice<span class="signature">(start<span class="signature-attributes">opt</span>, stop<span class="signature-attributes">opt</span>, step<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Slice.html">Slice</a>}</span></h4>
     
 
     
@@ -5536,6 +5347,8 @@
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
@@ -5653,7 +5466,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="slice.mjs.html">slice.mjs</a>, <a href="slice.mjs.html#line186">line 186</a>
+        <a href="slice.mjs.html">slice.mjs</a>, <a href="slice.mjs.html#line194">line 194</a>
     </li></ul></dd>
     
 
@@ -5704,7 +5517,9 @@
     
     <pre class="prettyprint"><code>// returns Slice.ellipsisslice('...')</code></pre>
 
-    <pre class="prettyprint"><code>// returns new Slice(1, null, null) or Slice.colonslice(1)</code></pre>
+    <pre class="prettyprint"><code>// returns Slice.colonslice()</code></pre>
+
+    <pre class="prettyprint"><code>// returns new Slice(1, null, null)slice(1)</code></pre>
 
     <pre class="prettyprint"><code>// returns slice(null, null, -1)slice('::-1')</code></pre>
 
@@ -5721,6 +5536,149 @@
         <h3 class="subsection-title">Type Definitions</h3>
 
         
+                
+<h4 class="name" id="FlatiterResult">FlatiterResult</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>done</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="flat.mjs.html">flat.mjs</a>, <a href="flat.mjs.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
                 
 <h4 class="name" id="FormatOptions">FormatOptions</h4>
 
@@ -5986,6 +5944,149 @@
 
             
                 
+<h4 class="name" id="NdoffsetResult">NdoffsetResult</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>done</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
 <h4 class="name" id="SliceIteratorResult">SliceIteratorResult</h4>
 
 
@@ -6111,7 +6212,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="slice.mjs.html">slice.mjs</a>, <a href="slice.mjs.html#line139">line 139</a>
+        <a href="slice.mjs.html">slice.mjs</a>, <a href="slice.mjs.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -6141,13 +6242,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nested_shape">nested_shape</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 18 2023 12:37:19 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 19 2023 04:13:50 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

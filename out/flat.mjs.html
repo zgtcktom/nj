@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: array.mjs</title>
+    <title>JSDoc: Source: flat.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: array.mjs</h1>
+    <h1 class="page-title">Source: flat.mjs</h1>
 
     
 
@@ -26,85 +26,158 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, _shape, ndoffset, _dtype, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, NDArray, slice, array, asarray, ndoffset } from './core.mjs';
 
-function flatten_with_shape(data, array, shape, level = 0) {
-	if (level == shape.length) {
-		data.push(array instanceof NDArray ? array.toarray() : array);
-		return;
-	}
-	for (let i = 0; i &lt; shape[level]; i++) {
-		flatten_with_shape(data, array instanceof NDArray ? array.get(i) : array[i], shape, level + 1);
-	}
+function is_tuple(value) {
+	return value?.length != undefined;
 }
 
-export function guess_dtype(array) {
-	let type = typeof array[0];
-	for (let n of array) {
-		if (type != typeof n) {
-			type = 'object';
-			break;
-		}
-	}
-	if (type == 'number' || type == 'string' || type == 'boolean') return _dtype(type);
-	return _dtype('object');
-}
+/** @class */
+export class Flatiter {
+	#offsetiter;
 
-/**
- *
- * @param {any} a
- * @param {Dtype} dtype
- * @param {boolean} copy
- * @param {number} ndmin
- * @returns {NDArray}
- */
-export function array(a, dtype = null, copy = true, ndmin = 0) {
-	let data, shape;
-	if (dtype != null) dtype = _dtype(dtype);
-	if (a instanceof NDArray) {
-		if (!copy) {
-			shape = a.shape;
-			if (shape.length &lt; ndmin) shape = [...Array(ndmin - shape.length).fill(1), ...shape];
-			let { data, base, strides, offset, itemsize } = a;
-			dtype ??= a.dtype;
-			return new NDArray(shape, data, dtype, base, strides, offset, itemsize);
-		}
-		if (a.base == undefined) data = a.data.slice();
-		else {
-			data = [];
-			for (let offset of ndoffset(a.shape, a.strides)) {
-				data.push(a.data[a.offset + offset]);
+	/**
+	 * @param {NDArray} base
+	 */
+	constructor(base) {
+		/** @member {NDArray} */
+		this.base = base;
+
+		let { shape, strides, offset } = base;
+		this.#offsetiter = ndoffset(shape, strides, offset);
+	}
+
+	/** @member {number} */
+	get index() {
+		return this.#offsetiter.index;
+	}
+
+	/** @member {number[]} */
+	get coords() {
+		return this.#offsetiter.coords;
+	}
+
+	[Symbol.iterator]() {
+		this.reset();
+		return this;
+	}
+
+	reset() {
+		this.#offsetiter.reset();
+	}
+
+	/**
+	 * @typedef {Object} FlatiterResult
+	 * @property {*} value
+	 * @property {boolean} done
+	 */
+
+	/**
+	 * @returns {FlatiterResult}
+	 */
+	next() {
+		let offsetiter = this.#offsetiter;
+		if (offsetiter.done) return { done: true };
+
+		let offset = offsetiter.next().value;
+		let value = this.base.data[offset];
+		return { value, done: false };
+	}
+
+	get(index) {
+		if (is_tuple(index)) {
+			let data = [];
+			for (let i = 0; i &lt; index.length; i++) {
+				data[i] = this.base.item(index[i]);
 			}
+			return new NDArray([index.length], data);
 		}
-		shape = a.shape;
-		dtype ??= a.dtype;
-	} else {
-		data = [];
-		shape = _shape(a);
-		flatten_with_shape(data, a, shape);
-		dtype ??= guess_dtype(data);
+		return this.base.item(index);
 	}
-	if (shape.length &lt; ndmin) _shape = [...Array(ndmin - shape.length).fill(1), ...shape];
 
-	return new NDArray(shape, dtype.new(data.length, data), dtype);
+	set(index, value) {
+		if (is_tuple(index)) {
+			if (is_tuple(value)) {
+				value = asarray(value).flatten().data;
+				for (let i = 0; i &lt; index.length; i++) this.base.itemset(index[i], value[i % value.length]);
+			} else {
+				for (let i = 0; i &lt; index.length; i++) this.base.itemset(index[i], value);
+			}
+			return;
+		}
+		if (is_tuple(value)) throw 'Error setting single item of array';
+		this.base.itemset(index, value);
+	}
+
+	/**
+	 * Returns a copy of the flatten array
+	 * @returns {NDArray}
+	 */
+	copy() {
+		return new NDArray([this.base.size], [...this]);
+	}
 }
+
+tester.add(
+	'Flatiter',
+	() => {
+		let array = new NDArray([2, 3], [0, 1, 2, 3, 4, 5]);
+		let a = new Flatiter(array);
+		let out = [];
+		// console.log(a.next());
+		for (let item of a) {
+			out.push(item);
+		}
+		return out;
+	},
+	() => [0, 1, 2, 3, 4, 5]
+);
 
 tester
 	.add(
-		'array',
-		() => array([3.1, 9]),
-		() => [3.1, 9]
+		'Flatiter.get',
+		() =>
+			new Flatiter(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			).get(3),
+		() => 4
 	)
 	.add(
-		'array',
-		() => array([[9, 6], 3.1, 9]).shape,
-		() => [3]
-	)
-	.add(
-		'array',
-		() => array(5),
-		() => 5
+		'Flatiter.get',
+		() =>
+			new Flatiter(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			).get([3, 4, -1]),
+		() => [4, 5, 6]
 	);
+
+tester.add(
+	'Flatiter.set',
+	() => {
+		let x = array([
+			[3, 3, 3],
+			[3, 3, 3],
+		]);
+		new Flatiter(x).set([1, -1], [[1], [2]]);
+		return x;
+	},
+	() => [
+		[3, 1, 3],
+		[3, 3, 2],
+	]
+);
+
+tester.add(
+	'Flatiter.copy',
+	() => new Flatiter(new NDArray([2, 3], [0, 1, 2, 3, 4, 5]).get(slice([, , -1]))).copy(),
+	() => [3, 4, 5, 0, 1, 2]
+);
 </code></pre>
         </article>
     </section>

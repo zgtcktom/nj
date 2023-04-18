@@ -30,7 +30,7 @@ export class Slice {
 	 *
 	 * Refer to: https://svn.python.org/projects/python/branches/pep-0384/Objects/sliceobject.c.
 	 *
-	 * @param {number|null} length
+	 * @param {number|null} [length]
 	 * @returns {SliceIterator}
 	 * @example
 	 * // returns [0, 2, 4, 6]
@@ -91,11 +91,6 @@ export class Slice {
 	}
 }
 
-tester.onload(() => {
-	console.log([...slice(0, 10, 2).indices(7)]);
-	console.log(slice(0, 10, 2).indices(7).slicelength);
-});
-
 /** @class */
 class SliceIterator {
 	/** @type {number} */
@@ -123,11 +118,11 @@ class SliceIterator {
 	}
 
 	[Symbol.iterator]() {
-		this.#reset();
+		this.reset();
 		return this;
 	}
 
-	#reset() {
+	reset() {
 		let { start, slicelength } = this;
 		this.#index = 0;
 		this.#done = slicelength == 0;
@@ -159,9 +154,21 @@ let lookup = Object.assign(Object.create(null), {
 	[':']: Slice.colon,
 });
 
+let _sliceArg = arg => {
+	arg = arg.trim();
+	return arg.length == 0 ? null : +arg;
+};
+
+let _normalize = (arg, argName) => {
+	if (arg != null && !Number.isInteger((arg = +arg))) {
+		throw new Error(`${argName} must be either null or able to convert to integer`);
+	}
+	return arg;
+};
+
 /**
  * Create a Slice instance
- * @param {number|string|null|Array<number|null>} start
+ * @param {number|string|null|Array<number|null>} [start]
  * @param {number} [stop]
  * @param {number} [step]
  * @returns {Slice}
@@ -169,7 +176,10 @@ let lookup = Object.assign(Object.create(null), {
  * // returns Slice.ellipsis
  * slice('...')
  * @example
- * // returns new Slice(1, null, null) or Slice.colon
+ * // returns Slice.colon
+ * slice()
+ * @example
+ * // returns new Slice(1, null, null)
  * slice(1)
  * @example
  * // returns slice(null, null, -1)
@@ -181,63 +191,40 @@ let lookup = Object.assign(Object.create(null), {
  * // returns slice(null, null, 1)
  * slice([,,1])
  */
-export function slice(start, stop, step) {
-	if (start == null && stop == null && step == null) return Slice.colon;
+export function slice(start = null, stop = null, step = null) {
 	if (typeof start == 'string') {
 		if (Object.hasOwn(lookup, start)) return lookup[start];
 		let args = start.split(':');
-		if (args.length == 1) {
-			let [start] = args;
 
-			if (start.length == 0) start = null;
-			else if (Number.isInteger(+start)) start = +start;
-			else throw new Error(`${start} cannot be cast to integer`);
+		if (args.length == 0 || args.length > 3)
+			throw new Error(`invalid string slice representation ${start}`);
 
-			return new Slice(start, null, null);
-		}
-
-		if (args.length == 2) {
-			let [start, stop] = args;
-
-			if (start.length == 0) start = null;
-			else if (Number.isInteger(+start)) start = +start;
-			else throw new Error(`${start} cannot be cast to integer`);
-
-			if (stop.length == 0) stop = null;
-			else if (Number.isInteger(+stop)) stop = +stop;
-			else throw new Error(`${stop} cannot be cast to integer`);
-
-			return new Slice(start, stop, null);
-		}
-
-		if (args.length == 3) {
-			let [start, stop, step] = args;
-
-			if (start.length == 0) start = null;
-			else if (Number.isInteger(+start)) start = +start;
-			else throw new Error(`${start} cannot be cast to integer`);
-
-			if (stop.length == 0) stop = null;
-			else if (Number.isInteger(+stop)) stop = +stop;
-			else throw new Error(`${stop} cannot be cast to integer`);
-
-			if (step.length == 0) step = null;
-			else if (Number.isInteger(+step)) step = +step;
-			else throw new Error(`${step} cannot be cast to integer`);
-
-			return new Slice(start, stop, step);
-		}
-		throw `invalid string slice representation ${start}`;
+		start = _sliceArg(args[0]);
+		stop = args.length > 1 ? _sliceArg(args[1]) : null;
+		step = args.length > 2 ? _sliceArg(args[2]) : null;
+	} else if (start && typeof start == 'object') {
+		if (start[Symbol.iterator] != undefined) [start = null, stop = null, step = null] = start;
+		else if (start.length != undefined) ({ 0: start = null, 1: stop = null, 2: step = null } = start);
+		else ({ start = null, stop = null, step = null } = start);
 	}
-	if (start?.length != undefined) {
-		({ 0: start, 1: stop, 2: step } = start);
-	}
+
+	if (start == null && stop == null && step == null) return Slice.colon;
+
+	start = _normalize(start, 'start');
+	stop = _normalize(stop, 'stop');
+	step = _normalize(step, 'step');
+
 	return new Slice(start, stop, step);
 }
 
 slice.newaxis = Slice.newaxis;
 slice.ellipsis = Slice.ellipsis;
 slice.colon = Slice.colon;
+
+// tester.onload(() => {
+// 	console.log([...slice(0, 10, 2).indices(7)]);
+// 	console.log(slice(0, 10, 2).indices(7).slicelength);
+// });
 
 tester
 	.add(

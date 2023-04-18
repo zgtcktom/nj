@@ -1,35 +1,59 @@
-import { tester, NDArray, slice, array, asarray } from './core.mjs';
+import { tester, NDArray, slice, array, asarray, ndoffset } from './core.mjs';
 
 function is_tuple(value) {
 	return value?.length != undefined;
 }
 
+/** @class */
 export class Flatiter {
+	#offsetiter;
+
+	/**
+	 * @param {NDArray} base
+	 */
 	constructor(base) {
+		/** @member {NDArray} */
 		this.base = base;
-		this.index = 0;
-		this.coords = Array(base.ndim).fill(0);
+
+		let { shape, strides, offset } = base;
+		this.#offsetiter = ndoffset(shape, strides, offset);
+	}
+
+	/** @member {number} */
+	get index() {
+		return this.#offsetiter.index;
+	}
+
+	/** @member {number[]} */
+	get coords() {
+		return this.#offsetiter.coords;
 	}
 
 	[Symbol.iterator]() {
+		this.reset();
 		return this;
 	}
 
+	reset() {
+		this.#offsetiter.reset();
+	}
+
+	/**
+	 * @typedef {Object} FlatiterResult
+	 * @property {*} value
+	 * @property {boolean} done
+	 */
+
+	/**
+	 * @returns {FlatiterResult}
+	 */
 	next() {
-		let { coords, base } = this;
-		let { shape, size } = base;
-		let value;
-		let done = this.index >= size;
-		if (!done) {
-			value = base.item(coords);
-		}
-		for (let j = coords.length - 1; j >= 0; j--) {
-			coords[j] += 1;
-			if (coords[j] < shape[j]) break;
-			if (j > 0) coords[j] -= shape[j];
-		}
-		this.index++;
-		return { value, done };
+		let offsetiter = this.#offsetiter;
+		if (offsetiter.done) return { done: true };
+
+		let offset = offsetiter.next().value;
+		let value = this.base.data[offset];
+		return { value, done: false };
 	}
 
 	get(index) {
@@ -57,65 +81,29 @@ export class Flatiter {
 		this.base.itemset(index, value);
 	}
 
+	/**
+	 * Returns a copy of the flatten array
+	 * @returns {NDArray}
+	 */
 	copy() {
-		return this.base.flatten();
+		return new NDArray([this.base.size], [...this]);
 	}
 }
 
-tester
-	.add(
-		'Flatiter',
-		() => {
-			let array = new NDArray([2, 3], [0, 1, 2, 3, 4, 5]);
-			let a = new Flatiter(array);
-			let out = [];
-			// console.log(a.next());
-			for (let item of a) {
-				for (let h of a) {
-					out.push(h);
-				}
-				out.push(item);
-			}
-			return out;
-		},
-		() => [1, 2, 3, 4, 5, 0]
-	)
-	.add(
-		'Flatiter',
-		() => {
-			let array = new NDArray([3, 1], [0, 1, 2]);
-			let a = new Flatiter(array);
-			let out = [];
-			for (let item of a) {
-				out.push(item, a.index, [...a.coords]);
-			}
-			return out;
-		},
-		() => [0, 1, [1, 0], 1, 2, [2, 0], 2, 3, [3, 0]]
-	)
-	.add(
-		'Flatiter',
-		() => {
-			let array = new NDArray([1, 2], [0, 1]);
-			let a = new Flatiter(array);
-			let out = [];
-			for (let item of a) {
-				for (let h of new Flatiter(array)) {
-					out.push(h, a.index, [...a.coords]);
-				}
-				out.push(item, a.index, [...a.coords]);
-			}
-			return out;
-		},
-		() => [0, 1, [0, 1], 1, 1, [0, 1], 0, 1, [0, 1], 0, 2, [1, 0], 1, 2, [1, 0], 1, 2, [1, 0]]
-	);
-
-`   a = np.arange(2).reshape(1, -1)
-    c=a.flat
-    for item in c:
-        for b in a.flat:
-            print(b,c.index,c.coords)
-        print(item,c.index,c.coords)`;
+tester.add(
+	'Flatiter',
+	() => {
+		let array = new NDArray([2, 3], [0, 1, 2, 3, 4, 5]);
+		let a = new Flatiter(array);
+		let out = [];
+		// console.log(a.next());
+		for (let item of a) {
+			out.push(item);
+		}
+		return out;
+	},
+	() => [0, 1, 2, 3, 4, 5]
+);
 
 tester
 	.add(

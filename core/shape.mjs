@@ -6,6 +6,7 @@ import { NDArray, arange, tester } from './core.mjs';
  * @param {number[]} shape
  * @param {number} level
  * @returns {void}
+ * @ignore
  */
 function nested_shape(a, shape, level = 0) {
 	for (let i = 0; i < a.length && level < shape.length; i++) {

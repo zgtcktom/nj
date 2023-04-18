@@ -7,7 +7,7 @@ import { NDArray, Slice } from './core/core.mjs';
 
 /**
  * Array indexing.
- * @typedef {(number|Slice|string|null|number[]|boolean[])[]} index
+ * @typedef {number|Slice|string|null|number[]|boolean[]} index
  */
 
 /**
