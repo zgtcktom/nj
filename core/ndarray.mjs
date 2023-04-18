@@ -146,7 +146,7 @@ function _view(array, indices) {
 			if (index == slice[':']) {
 				ndim++;
 			} else if (slice.is(index)) {
-				let { start, step, slicelength } = index.get(shape[ndim]);
+				let { start, step, slicelength } = index.indices(shape[ndim]);
 				offset = offset + strides[ndim] * start;
 				shape.splice(ndim, 1, slicelength);
 				strides.splice(ndim, 1, strides[ndim] * step);
@@ -187,7 +187,7 @@ function array_indexing(indices) {
 	}
 	let before, after;
 	let array_indices;
-	let shape = this.shape.map((dim, i) => (mask[i] ? indices[i].get(dim).slicelength : indices[i]));
+	let shape = this.shape.map((dim, i) => (mask[i] ? indices[i].indices(dim).slicelength : indices[i]));
 
 	if (simple) {
 		before = shape.slice(0, start);

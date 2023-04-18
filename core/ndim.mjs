@@ -1,8 +1,18 @@
-import { asarray, isscalar, tester } from './core.mjs';
+import { asarray, shape, tester } from './core.mjs';
 
+/**
+ * Return the ndim of an array without invoking array creation.
+ * @param {*} a
+ * @returns {number}
+ */
 export function ndim(a) {
-	return a == null || isscalar(a) ? 0 : asarray(a).ndim;
+	if (a == null || typeof a != 'object') return 0;
+	if (a.ndim != undefined) return a.ndim;
+
+	return shape(a).length;
 }
+
+export const _ndim = ndim;
 
 tester
 	.add(

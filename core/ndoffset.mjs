@@ -52,7 +52,7 @@ class Ndoffset {
 		// micro-optimized
 		if (this.done) return { done: true };
 
-		let { offset, coords, shape, strides, ndim, dim_strides } = this;
+		let { offset, coords, shape, strides, ndim, dim_strides, size } = this;
 
 		let value = offset;
 
@@ -75,7 +75,7 @@ class Ndoffset {
 		}
 
 		this.offset = offset;
-		this.done = ++this.index >= this.size;
+		this.done = ++this.index >= size;
 
 		return { value, done: false };
 	}

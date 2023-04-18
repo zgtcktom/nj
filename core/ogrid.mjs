@@ -3,7 +3,7 @@ import { tester, arange, array, asarray, ones, zeros, slice, NDArray } from './c
 export function ogrid(...slices) {
 	let out = [];
 	for (let i = 0; i < slices.length; i++) {
-		let { start, stop, step, slicelength } = slices[i]._get();
+		let { start, stop, step, slicelength } = slices[i].indices();
 		let data = Array(slicelength);
 		for (let i = 0; i < slicelength; i++) {
 			data[i] = start + i * step;

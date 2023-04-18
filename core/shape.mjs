@@ -28,7 +28,7 @@ function nested_shape(a, shape, level = 0) {
 }
 
 /**
- * Return the shape of an array.
+ * Return the shape of an array without invoking array creation.
  * @param {*} a
  * @returns {number[]}
  */
