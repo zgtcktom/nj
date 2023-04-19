@@ -26,7 +26,7 @@ tester
 				[3, 0, 0],
 				[0, 4, 0],
 				[5, 6, 0],
-			]).get(slice('...'), null);
+			]).at(slice('...'), null);
 			return nonzero(x);
 		},
 		() => [array([0, 1, 2, 2]), array([0, 1, 0, 1]), array([0, 0, 0, 0])]

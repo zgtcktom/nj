@@ -6,7 +6,7 @@ function flatten_with_shape(data, array, shape, level = 0) {
 		return;
 	}
 	for (let i = 0; i < shape[level]; i++) {
-		flatten_with_shape(data, array instanceof NDArray ? array.get(i) : array[i], shape, level + 1);
+		flatten_with_shape(data, array instanceof NDArray ? array.at(i) : array[i], shape, level + 1);
 	}
 }
 

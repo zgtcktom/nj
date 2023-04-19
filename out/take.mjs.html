@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: matmul.mjs</title>
+    <title>JSDoc: Source: take.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: matmul.mjs</h1>
+    <h1 class="page-title">Source: take.mjs</h1>
 
     
 
@@ -26,136 +26,214 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-	tester,
-	arange,
-	array,
-	asarray,
-	slice,
-	empty,
-	assert,
-	shallow_array_equal,
-	ndindex,
-	dot,
-	broadcast_to,
-	broadcast_shapes,
-	NDArray,
-} from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { NDArray, array, asarray, empty, ndindex, shallow_array_equal, slice, tester } from './core.mjs';
+
+function clip(n, min, max) {
+	return n &lt; min ? min : n > max ? max : n;
+}
+
+function _indices(indices, mode, size) {
+	let newindices = [];
+	if (mode == 'wrap') {
+		for (let index of indices) {
+			index = index % size;
+			index = index &lt; 0 ? index + size : index;
+			newindices.push(index);
+		}
+	} else if (mode == 'clip') {
+		for (let index of indices) {
+			index = clip(index, 0, size - 1);
+			newindices.push(index);
+		}
+	} else if (mode == 'raise') {
+		for (let index of indices) {
+			if (index &lt; -size || index >= size)
+				throw `index ${index} is out of bounds for axis 0 with size ${size}`;
+			index = index &lt; 0 ? index + a.size : index;
+			newindices.push(index);
+		}
+	} else throw `unexpected mode = ${mode}`;
+	return newindices;
+}
 
 /**
  *
- * @param {*} x1
- * @param {*} x2
+ * @param {NDArray} a
+ * @param {any[]} indices
+ * @param {number|undefined} axis
  * @param {NDArray} out
+ * @param {string} mode
  * @returns {NDArray}
  */
-export function matmul(x1, x2, out = null) {
-	x1 = asarray(x1);
-	x2 = asarray(x2);
+export function take(a, indices, axis = null, out = null, mode = 'raise') {
+	a = asarray(a);
+	indices = array(indices);
+	if (axis == null) {
+		indices.data = _indices(indices.data, mode, a.size);
 
-	assert(x1.ndim > 0, `x1 does not have enough dimensions`);
-	assert(x2.ndim > 0, `x2 does not have enough dimensions`);
+		let newshape = indices.shape;
 
-	let x11d = x1.ndim == 1;
-	let x21d = x2.ndim == 1;
-	let any1d = x11d || x21d;
+		if (out == null) out = empty(newshape);
+		else if (!shallow_array_equal(out.shape, newshape))
+			throw 'output array does not match result of ndarray.take';
 
-	if (x11d) x1 = x1.at(null, slice(':'));
+		for (let i = 0; i &lt; indices.size; i++) {
+			out.data[i] = a.item(indices.data[i]);
+		}
 
-	if (x21d) x2 = x2.at(slice(':'), null);
+		return out;
+	} else {
+		if (axis &lt; 0) axis += a.ndim;
 
-	if (x1.ndim == 2 &amp;&amp; x2.ndim == 2) {
-		assert(x1.shape[1] == x2.shape[0], `input shape mismatch`);
+		indices.data = _indices(indices.data, mode, a.shape[axis]);
 
-		let n = x1.shape[0];
-		let m = x2.shape[1];
+		let newshape = a.shape.slice();
+		newshape.splice(axis, 1, ...indices.shape);
 
-		let _shape = [n, m];
-		let shape = any1d ? _shape.slice(x11d ? 1 : 0, x21d ? -1 : undefined) : _shape;
+		if (out == null) out = empty(newshape);
+		else if (!shallow_array_equal(out.shape, newshape))
+			throw 'output array does not match result of ndarray.take';
 
-		if (out == null) out = empty(shape);
-		else assert(shallow_array_equal(shape, out.shape), `out shape mismatch`);
-
-		let _out = any1d ? out.reshape(_shape) : out;
-
-		let x2T = x2.T;
-		for (let [i, j] of ndindex(_shape)) {
-			_out.set([i, j], dot(x1.at(i), x2T.at(j)));
+		let rest = Array(axis).fill(slice());
+		for (let index of ndindex(indices.shape)) {
+			out.get(rest.concat(index)).set(a.get([...rest, indices.item(index)]));
 		}
 
 		return out;
 	}
-
-	let _shape = broadcast_shapes(x1.shape.slice(0, -2), x2.shape.slice(0, -2));
-	x1 = broadcast_to(x1, [..._shape, ...x1.shape.slice(-2)]);
-	x2 = broadcast_to(x2, [..._shape, ...x2.shape.slice(-2)]);
-
-	assert(x1.shape.at(-1) == x2.shape.at(-2), `input shape mismatch`);
-
-	let n = x1.shape.at(-2);
-	let m = x2.shape.at(-1);
-	let shape = [..._shape, n, m];
-
-	if (out == null) out = empty(shape);
-	else assert(shallow_array_equal(shape, out.shape), `out shape mismatch`);
-
-	for (let index of ndindex(_shape)) {
-		matmul(x1.get(index), x2.get(index), out.get(index));
-	}
-
-	return out;
 }
 
 tester
 	.add(
-		matmul,
+		'take',
 		() => {
-			let a = array([
-				[1, 0],
+			let a = [4, 3, 5, 7, 6, 8];
+			let indices = [0, 1, 4];
+			return take(a, indices);
+		},
+		() => array([4, 3, 6])
+	)
+	.add(
+		'take',
+		() => {
+			let a = [4, 3, 5, 7, 6, 8];
+			return take(a, [
 				[0, 1],
+				[2, 3],
 			]);
-			let b = array([
-				[4, 1],
-				[2, 2],
-			]);
-			return matmul(a, b);
 		},
 		() =>
 			array([
-				[4, 1],
-				[2, 2],
+				[4, 3],
+				[5, 7],
 			])
 	)
 	.add(
-		matmul,
+		'take',
 		() => {
 			let a = array([
-				[1, 0],
-				[0, 1],
+				[1, 2],
+				[3, 4],
+				[5, 6],
+				[7, 8],
 			]);
-			let b = array([1, 2]);
-			return [matmul(a, b), matmul(b, a)];
-		},
-		() => [array([1, 2]), array([1, 2])]
-	)
-	.add(
-		matmul,
-		() => {
-			let a = arange(2 * 2 * 4).reshape([2, 2, 4]);
-			let b = arange(2 * 2 * 4).reshape([2, 4, 2]);
-			return matmul(a, b);
+			return take(
+				a,
+				[
+					[0, 1],
+					[2, 3],
+				],
+				0
+			);
 		},
 		() =>
 			array([
 				[
-					[28, 34],
-					[76, 98],
+					[1, 2],
+					[3, 4],
 				],
+
 				[
-					[428, 466],
-					[604, 658],
+					[5, 6],
+					[7, 8],
 				],
 			])
+	)
+	.add(
+		'take',
+		() => {
+			let a = array([
+				[1, 2],
+				[3, 4],
+				[5, 6],
+				[7, 8],
+			]);
+			return take(
+				a,
+				array([
+					[
+						[
+							[0, 1],
+							[0, 1],
+						],
+					],
+				]),
+				1
+			);
+		},
+		() =>
+			array([
+				[
+					[
+						[
+							[1, 2],
+							[1, 2],
+						],
+					],
+				],
+
+				[
+					[
+						[
+							[3, 4],
+							[3, 4],
+						],
+					],
+				],
+
+				[
+					[
+						[
+							[5, 6],
+							[5, 6],
+						],
+					],
+				],
+
+				[
+					[
+						[
+							[7, 8],
+							[7, 8],
+						],
+					],
+				],
+			])
+	)
+	.add(
+		'take',
+		() => {
+			let a = [
+				[5, 6, 2, 7, 1],
+				[4, 9, 2, 9, 3],
+			];
+			let indices = [0, 4];
+			return take(a, indices, 1);
+		},
+		() => [
+			[5, 1],
+			[4, 3],
+		]
 	);
 </code></pre>
         </article>

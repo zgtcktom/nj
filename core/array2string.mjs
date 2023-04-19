@@ -43,7 +43,7 @@ let _formatOptions = {
  */
 function _leading_trailing(a, edgeitems, index = []) {
 	let axis = index.length;
-	if (axis == a.ndim) return a.get(...index);
+	if (axis == a.ndim) return a.get(index);
 
 	if (a.shape[axis] > 2 * edgeitems) {
 		let leftIndex = index.concat(index_exp([, edgeitems]));

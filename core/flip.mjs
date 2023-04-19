@@ -24,19 +24,19 @@ export function flip(a, axis = null) {
 			indexer[ax] = slice('::-1');
 		}
 	}
-	return a.get(...indexer);
+	return a.get(indexer);
 }
 
 export function fliplr(a) {
 	a = asarray(a);
 	if (a.ndim < 2) throw `Input must be >= 2-d.`;
-	return a.get(...index_exp(':', '::-1'));
+	return a.get(index_exp(':', '::-1'));
 }
 
 export function flipud(a) {
 	a = asarray(a);
 	if (a.ndim < 1) throw `Input must be >= 1-d.`;
-	return a.get(slice('::-1'));
+	return a.at(slice('::-1'));
 }
 
 tester
@@ -103,7 +103,7 @@ tester
 		flip,
 		() => {
 			let A = random.normal(0, 1, [3, 4, 5]);
-			return all(equal(flip(A, 2), A.get(slice(':'), slice(':'), slice('::-1'), slice('...'))));
+			return all(equal(flip(A, 2), A.at(slice(':'), slice(':'), slice('::-1'), slice('...'))));
 		},
 		() => true
 	);
@@ -123,7 +123,7 @@ tester
 		fliplr,
 		() => {
 			let A = random.normal(0, 1, [2, 4, 5]);
-			return all(equal(fliplr(A), A.get(slice(':'), slice('::-1'), slice('...'))));
+			return all(equal(fliplr(A), A.at(slice(':'), slice('::-1'), slice('...'))));
 		},
 		() => true
 	);
@@ -143,7 +143,7 @@ tester
 		flipud,
 		() => {
 			let A = random.normal(0, 1, [2, 3, 5]);
-			return all(equal(flipud(A), A.get(slice('::-1'), slice('...'))));
+			return all(equal(flipud(A), A.at(slice('::-1'), slice('...'))));
 		},
 		() => true
 	)

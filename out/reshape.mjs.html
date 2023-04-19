@@ -1,4 +1,32 @@
-import { tester, asarray, NDArray, array, ascontiguousarray, arange, slice, ndindex } from './core.mjs';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: reshape.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: reshape.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { tester, asarray, NDArray, array, ascontiguousarray, arange, slice, ndindex } from './core.mjs';
 
 /**
  * Determines whether the array can `.reshape(-1)` without creating a copy.
@@ -43,7 +71,7 @@ export function reshape(a, newshape) {
 	if (typeof newshape == 'number') newshape = [newshape];
 	let unknown = -1;
 	let rest = 1;
-	for (let i = 0; i < newshape.length; i++) {
+	for (let i = 0; i &lt; newshape.length; i++) {
 		if (newshape[i] == -1) {
 			if (unknown != -1) {
 				throw new Error('can only specify one unknown dimension');
@@ -71,9 +99,9 @@ export function reshape(a, newshape) {
 	if (true || newshape.length >= a.shape.length) {
 		let compatible = true;
 		let j = 0;
-		for (let i = 0; i < newshape.length; i++) {
+		for (let i = 0; i &lt; newshape.length; i++) {
 			if (newshape[i] == 1) continue;
-			for (; j < a.shape.length && a.shape[j] == 1; j++);
+			for (; j &lt; a.shape.length &amp;&amp; a.shape[j] == 1; j++);
 			if (j >= a.shape.length || newshape[i] != a.shape[j]) {
 				compatible = false;
 				break;
@@ -84,9 +112,9 @@ export function reshape(a, newshape) {
 		// console.log(a.shape, compatible, newshape, a.data);
 		if (compatible) {
 			let strides = [];
-			for (let i = 0, j = 0; i < newshape.length; i++) {
+			for (let i = 0, j = 0; i &lt; newshape.length; i++) {
 				if (newshape[i] != 1) {
-					for (; j < a.shape.length && a.shape[j] == 1; j++);
+					for (; j &lt; a.shape.length &amp;&amp; a.shape[j] == 1; j++);
 				}
 				strides.push(a.strides[j]);
 			}
@@ -99,7 +127,7 @@ export function reshape(a, newshape) {
 	// for reshape(a, [-1])
 	let strides = null;
 
-	if (newshape.length == 1 && even_strides(a.shape, a.strides, a.ndim)) {
+	if (newshape.length == 1 &amp;&amp; even_strides(a.shape, a.strides, a.ndim)) {
 		strides = [a.strides[0]];
 	} else if (newshape.length != 0) {
 		a = array(a);
@@ -229,3 +257,26 @@ tester
 			true,
 		]
 	);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 19 2023 18:05:29 GMT+0800 (Hong Kong Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

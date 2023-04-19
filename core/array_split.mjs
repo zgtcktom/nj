@@ -33,7 +33,7 @@ export function array_split(a, indices_or_sections, axis = 0) {
 	for (let i = 0; i < n_sections; i++) {
 		let st = div_points[i];
 		let end = div_points[i + 1];
-		sub_arys.push(swapaxes(sary.get(slice(st, end)), axis, 0));
+		sub_arys.push(swapaxes(sary.at(slice(st, end)), axis, 0));
 	}
 
 	return sub_arys;

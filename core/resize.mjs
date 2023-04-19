@@ -16,7 +16,7 @@ export function resize(a, new_shape) {
 	}
 
 	let repeats = Math.ceil(new_size / a.size);
-	a = concatenate(Array(repeats).fill(a)).get(slice(0, new_size));
+	a = concatenate(Array(repeats).fill(a)).at(slice(0, new_size));
 
 	return reshape(a, new_shape);
 }

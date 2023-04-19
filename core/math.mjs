@@ -136,7 +136,7 @@ export function diff(a, n = 1, axis = -1) {
 	slices1[axis] = slice(1, null);
 	slices2[axis] = slice(null, -1);
 
-	for (let i = 0; i < n; i++) a = subtract(a.get(...slices1), a.get(...slices2));
+	for (let i = 0; i < n; i++) a = subtract(a.get(slices1), a.get(slices2));
 
 	return a;
 }
@@ -516,7 +516,7 @@ tester
 		sum,
 		// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
 		// np.sum(a, (0, -1))
-		() => sum(arange(100).reshape(5, -1, 1).get(slice('::-2'), slice('2:7')), [0, -1]),
+		() => sum(arange(100).reshape(5, -1, 1).at(slice('::-2'), slice('2:7')), [0, -1]),
 		() => array([126, 129, 132, 135, 138])
 	)
 	.add(
@@ -525,7 +525,7 @@ tester
 		// np.sum(a, (0, -1))
 		() => {
 			let a = arange(100);
-			a = a.get(slice(20, -20)).reshape([2, 1, -1, 2]).get(slice('...'), slice('::-1'));
+			a = a.at(slice(20, -20)).reshape([2, 1, -1, 2]).at(slice('...'), slice('::-1'));
 			return sum(a, [1, -2], null, true, -99);
 		},
 		() => array([[[[426, 411]]], [[[876, 861]]]])

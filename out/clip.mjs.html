@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: ndindex.mjs</title>
+    <title>JSDoc: Source: clip.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: ndindex.mjs</h1>
+    <h1 class="page-title">Source: clip.mjs</h1>
 
     
 
@@ -26,34 +26,76 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>function prod(a) {
-	let prod = 1;
-	for (let n of a) prod *= n;
-	return prod;
-}
+            <pre class="prettyprint source linenums"><code>import {
+	tester,
+	arange,
+	array,
+	asarray,
+	NDArray,
+	empty_like,
+	shallow_array_equal,
+	broadcast_to,
+	ndoffset,
+	isscalar,
+} from './core.mjs';
 
 /**
- *
- * @param {number[]} shape
- * @param {boolean} reuse
- * @returns {Generator}
+ * @param {NDArray} a
+ * @param {number|NDArray} a_min
+ * @param {number|NDArray} a_max
+ * @param {NDArray} out
+ * @returns {NDArray}
  */
-export function* ndindex(shape, reuse = true) {
-	/** @type {number[]} */
-	let index = Array(shape.length).fill(0);
-	let size = prod(shape);
-	if (size == 0) return;
-
-	yield reuse ? index : index.slice();
-	for (let i = 1; i &lt; size; i++) {
-		for (let j = index.length - 1; j >= 0; j--) {
-			index[j] += 1;
-			if (index[j] &lt; shape[j]) break;
-			index[j] -= shape[j];
+export function clip(a, a_min, a_max, out = null) {
+	a = asarray(a);
+	if (out == null) out = empty_like(a);
+	else if (!shallow_array_equal(a.shape, out.shape)) throw `out shape does not match input shape`;
+	if (isscalar(a_min) &amp;&amp; isscalar(a_max)) {
+		let a_offset = ndoffset(a.shape, a.strides);
+		for (let offset of ndoffset(out.shape, out.strides)) {
+			out.data[offset] = Math.min(Math.max(a_min, a.data[a_offset.next().value]), a_max);
 		}
-		yield reuse ? index : index.slice();
+		return out;
 	}
+	a_min = broadcast_to(a_min, a.shape);
+	a_max = broadcast_to(a_max, a.shape);
+	let a_offset = ndoffset(a.shape, a.strides);
+	let a_min_offset = ndoffset(a_min.shape, a_min.strides);
+	let a_max_offset = ndoffset(a_max.shape, a_max.strides);
+	for (let offset of ndoffset(out.shape, out.strides)) {
+		out.data[offset] = Math.min(
+			Math.max(a_min.data[a_min_offset.next().value], a.data[a_offset.next().value]),
+			a_max.data[a_max_offset.next().value]
+		);
+	}
+	return out;
 }
+
+tester
+	.add(
+		clip,
+		() => clip(arange(10), 1, 8),
+		() => array([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])
+	)
+	.add(
+		clip,
+		() => clip(arange(10), 8, 1),
+		() => array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+	)
+	.add(
+		clip,
+		() => {
+			let a = arange(10);
+
+			return [clip(a, 3, 6, a), a];
+		},
+		() => [array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6]), array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])]
+	)
+	.add(
+		clip,
+		() => clip(arange(10), [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8),
+		() => array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
+	);
 </code></pre>
         </article>
     </section>

@@ -7,7 +7,7 @@ export function diag(v, k = 0) {
 		let n = s[0] + Math.abs(k);
 		let res = zeros([n, n]);
 		let i = k >= 0 ? k : -k * n;
-		let view = res.get(slice(null, n - k));
+		let view = res.at(slice(null, n - k));
 		for (let j = 0; j < v.size; j++, i += n + 1) {
 			view.itemset(i, v.item(j));
 		}

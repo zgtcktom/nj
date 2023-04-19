@@ -106,12 +106,12 @@ tester
 	)
 	.add(
 		diagonal,
-		() => diagonal(arange(8).reshape(2, 2, 2).get(slice(':'), slice(':'), 0), 0, 0, 1),
+		() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 0), 0, 0, 1),
 		() => array([0, 6])
 	)
 	.add(
 		diagonal,
-		() => diagonal(arange(8).reshape(2, 2, 2).get(slice(':'), slice(':'), 1), 0, 0, 1),
+		() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 1), 0, 0, 1),
 		() => array([1, 7])
 	)
 	.add(

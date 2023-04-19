@@ -11,7 +11,6 @@ import {
 	contiguous,
 	empty,
 	Slice,
-	use_advanced_indexing,
 	normalize_axis_index,
 	count_nonzero,
 	ndindex,

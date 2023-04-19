@@ -3,9 +3,6 @@ import {
 	arange,
 	array,
 	asarray,
-	ones,
-	zeros,
-	slice,
 	NDArray,
 	empty_like,
 	shallow_array_equal,
@@ -14,6 +11,13 @@ import {
 	isscalar,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number|NDArray} a_min
+ * @param {number|NDArray} a_max
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export function clip(a, a_min, a_max, out = null) {
 	a = asarray(a);
 	if (out == null) out = empty_like(a);

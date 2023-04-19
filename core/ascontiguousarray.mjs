@@ -29,7 +29,7 @@ export function ascontiguousarray(a) {
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([3, 1, 5]).get(slice(), slice([, , 3]), slice());
+		let a = ones([3, 1, 5]).at(slice(), slice([, , 3]), slice());
 		// console.log(a.shape, a.strides, a.itemsize);
 		return ascontiguousarray(a) === a;
 	},
@@ -38,7 +38,7 @@ tester.add(
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([3, 4, 5]).get(slice(), slice([, , 1]), slice());
+		let a = ones([3, 4, 5]).at(slice(), slice([, , 1]), slice());
 		return ascontiguousarray(a) === a;
 	},
 	() => true
@@ -46,7 +46,7 @@ tester.add(
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([3, 4, 5]).get(slice(), slice(), slice(1));
+		let a = ones([3, 4, 5]).at(slice(), slice(), slice(1));
 		return ascontiguousarray(a) === a;
 	},
 	() => false
@@ -54,7 +54,7 @@ tester.add(
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([3]).get(slice([, , -3]));
+		let a = ones([3]).at(slice([, , -3]));
 		return ascontiguousarray(a) === a;
 	},
 	() => true
@@ -62,7 +62,7 @@ tester.add(
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([2]).get(slice([, , 2]));
+		let a = ones([2]).at(slice([, , 2]));
 		return ascontiguousarray(a) === a;
 	},
 	() => true
@@ -70,7 +70,7 @@ tester.add(
 tester.add(
 	ascontiguousarray,
 	() => {
-		let a = ones([3]).get(slice([, , 2]));
+		let a = ones([3]).at(slice([, , 2]));
 		return ascontiguousarray(a) === a;
 	},
 	() => false
@@ -79,7 +79,7 @@ tester
 	.add(
 		ascontiguousarray,
 		() => {
-			let a = ones([3]).get(slice([1, 2]));
+			let a = ones([3]).at(slice([1, 2]));
 			return ascontiguousarray(a) === a;
 		},
 		() => true

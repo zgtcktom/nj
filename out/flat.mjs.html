@@ -26,21 +26,20 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, slice, array, asarray, ndoffset } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, NDArray, slice, array, asarray, ndoffset, Slice, empty, empty_like } from './core.mjs';
 
-function is_tuple(value) {
-	return value?.length != undefined;
-}
-
-/** @class */
+/**
+ * @class
+ * @template T
+ */
 export class Flatiter {
 	#offsetiter;
 
 	/**
-	 * @param {NDArray} base
+	 * @param {NDArray&lt;T>} base
 	 */
 	constructor(base) {
-		/** @member {NDArray} */
+		/** @member {NDArray&lt;T>} */
 		this.base = base;
 
 		let { shape, strides, offset } = base;
@@ -68,12 +67,13 @@ export class Flatiter {
 
 	/**
 	 * @typedef {Object} FlatiterResult
-	 * @property {*} value
+	 * @property {T} value
 	 * @property {boolean} done
 	 */
 
 	/**
 	 * @returns {FlatiterResult}
+	 * @ignore
 	 */
 	next() {
 		let offsetiter = this.#offsetiter;
@@ -84,37 +84,74 @@ export class Flatiter {
 		return { value, done: false };
 	}
 
-	get(index) {
-		if (is_tuple(index)) {
-			let data = [];
-			for (let i = 0; i &lt; index.length; i++) {
-				data[i] = this.base.item(index[i]);
-			}
-			return new NDArray([index.length], data);
-		}
-		return this.base.item(index);
+	/**
+	 * @param {number|Slice|string|number[]} index
+	 * @returns {NDArray&lt;T>}
+	 */
+	at(index) {
+		return this.get(index);
 	}
 
-	set(index, value) {
-		if (is_tuple(index)) {
-			if (is_tuple(value)) {
-				value = asarray(value).flatten().data;
-				for (let i = 0; i &lt; index.length; i++) this.base.itemset(index[i], value[i % value.length]);
-			} else {
-				for (let i = 0; i &lt; index.length; i++) this.base.itemset(index[i], value);
-			}
-			return;
+	/**
+	 * @param {number|Slice|string|number[]} index
+	 * @returns {NDArray&lt;T>}
+	 */
+	get(index) {
+		let { base } = this;
+		if (typeof index == 'number') {
+			return array(base.item(index), base.dtype);
 		}
-		if (is_tuple(value)) throw 'Error setting single item of array';
-		this.base.itemset(index, value);
+		if (typeof index == 'string') index = slice(index);
+
+		let it, out;
+		if (index instanceof Slice) {
+			it = index.indices(base.size);
+			out = empty([it.slicelength], base.dtype);
+		} else {
+			it = asarray(index).flat;
+			out = empty_like(index);
+		}
+
+		let i = 0;
+		for (let idx of it) {
+			out.data[i++] = base.item(idx);
+		}
+		return out;
+	}
+
+	/**
+	 * `Flatiter.set` repeats and flattens `value` to match the number of elements being set.
+	 *
+	 * `NDArray.set` broadcasts the value to match the shape of the selection
+	 * @param {number|Slice|string|number[]} index
+	 * @param {T[]|T} value
+	 * @returns {Flatiter&lt;T>} this
+	 */
+	set(index, value) {
+		let { base } = this;
+		if (typeof index == 'number') {
+			base.itemset(index, value);
+			return this;
+		}
+		if (typeof index == 'string') index = slice(index);
+
+		value = asarray(value).flatten().data;
+
+		let it = index instanceof Slice ? index.indices(base.size) : asarray(index).flat;
+
+		let i = 0;
+		for (let idx of it) {
+			base.itemset(idx, value[i++ % value.length]);
+		}
+		return this;
 	}
 
 	/**
 	 * Returns a copy of the flatten array
-	 * @returns {NDArray}
+	 * @returns {NDArray&lt;T>}
 	 */
 	copy() {
-		return new NDArray([this.base.size], [...this]);
+		return array([...this], this.base.dtype);
 	}
 }
 
@@ -142,8 +179,19 @@ tester
 					[1, 2, 3],
 					[4, 5, 6],
 				])
-			).get(3),
+			).at(3),
 		() => 4
+	)
+	.add(
+		'Flatiter.get',
+		() =>
+			new Flatiter(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			).at(slice(2, -2)),
+		() => array([3, 4])
 	)
 	.add(
 		'Flatiter.get',
@@ -157,25 +205,83 @@ tester
 		() => [4, 5, 6]
 	);
 
-tester.add(
-	'Flatiter.set',
-	() => {
-		let x = array([
-			[3, 3, 3],
-			[3, 3, 3],
-		]);
-		new Flatiter(x).set([1, -1], [[1], [2]]);
-		return x;
-	},
-	() => [
-		[3, 1, 3],
-		[3, 3, 2],
-	]
-);
+tester
+	.add(
+		'Flatiter.set',
+		() => {
+			let x = array([
+				[3, 3, 3],
+				[3, 3, 3],
+			]);
+			new Flatiter(x).set([1, -1], [[1], [2]]);
+			return x;
+		},
+		() => [
+			[3, 1, 3],
+			[3, 3, 2],
+		]
+	)
+	.add(
+		'Flatiter.set',
+		() => {
+			let x = array([
+				[1, 2, 3],
+				[4, 5, 6],
+			]);
+			x.flat.set(
+				[1, 0, 1],
+				[
+					[1, 2, 3],
+					[5, 6, 7],
+				]
+			);
+			return x;
+		},
+		() =>
+			array([
+				[2, 3, 3],
+				[4, 5, 6],
+			])
+	)
+	.add(
+		'Flatiter.set',
+		() => {
+			let x = array([
+				[1, 2, 3],
+				[4, 5, 6],
+			]);
+			x.flat.set(slice(1, -1), [
+				[1, 2, 3],
+				[5, 6, 7],
+			]);
+			return x;
+		},
+		() =>
+			array([
+				[1, 1, 2],
+				[3, 5, 6],
+			])
+	)
+	.add(
+		'Flatiter.set',
+		() => {
+			let x = array([
+				[1, 2, 3],
+				[4, 5, 6],
+			]);
+			x.flat.set(':', [[1, 2]]);
+			return x;
+		},
+		() =>
+			array([
+				[1, 2, 1],
+				[2, 1, 2],
+			])
+	);
 
 tester.add(
 	'Flatiter.copy',
-	() => new Flatiter(new NDArray([2, 3], [0, 1, 2, 3, 4, 5]).get(slice([, , -1]))).copy(),
+	() => new Flatiter(new NDArray([2, 3], [0, 1, 2, 3, 4, 5]).at(slice([, , -1]))).copy(),
 	() => [3, 4, 5, 0, 1, 2]
 );
 </code></pre>
@@ -188,13 +294,13 @@ tester.add(
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 19 2023 04:13:50 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 19 2023 18:05:29 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

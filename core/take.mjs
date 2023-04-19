@@ -1,4 +1,4 @@
-import { array, asarray, empty, ndindex, shallow_array_equal, slice, tester } from './core.mjs';
+import { NDArray, array, asarray, empty, ndindex, shallow_array_equal, slice, tester } from './core.mjs';
 
 function clip(n, min, max) {
 	return n < min ? min : n > max ? max : n;
@@ -28,6 +28,15 @@ function _indices(indices, mode, size) {
 	return newindices;
 }
 
+/**
+ *
+ * @param {NDArray} a
+ * @param {any[]} indices
+ * @param {number|undefined} axis
+ * @param {NDArray} out
+ * @param {string} mode
+ * @returns {NDArray}
+ */
 export function take(a, indices, axis = null, out = null, mode = 'raise') {
 	a = asarray(a);
 	indices = array(indices);
@@ -59,7 +68,7 @@ export function take(a, indices, axis = null, out = null, mode = 'raise') {
 
 		let rest = Array(axis).fill(slice());
 		for (let index of ndindex(indices.shape)) {
-			out.get(...rest, ...index).set(a.get(...rest, indices.item(index)));
+			out.get(rest.concat(index)).set(a.get([...rest, indices.item(index)]));
 		}
 
 		return out;

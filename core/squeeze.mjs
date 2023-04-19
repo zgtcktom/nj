@@ -52,7 +52,7 @@ b.reshape((5, -1)).base is a, b.reshape(-1).base is a, np.squeeze(b).base is a, 
 			let x, y, z, a, b;
 			x = arange(20);
 			y = x.reshape([5, -1]);
-			z = y.get(slice([, , -1]));
+			z = y.at(slice([, , -1]));
 			a = ascontiguousarray(z);
 			b = a.reshape([5, 1, 1, -1]);
 			return [

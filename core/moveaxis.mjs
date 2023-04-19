@@ -1,27 +1,26 @@
-import {
-	tester,
-	arange,
-	array,
-	asarray,
-	ones,
-	zeros,
-	slice,
-	normalize_axis_tuple,
-	transpose,
-} from './core.mjs';
+import { tester, asarray, zeros, normalize_axis_tuple, transpose, NDArray } from './core.mjs';
 
-export function moveaxis(a, source, destination) {
-	source = normalize_axis_tuple(source, a.ndim);
-	destination = normalize_axis_tuple(destination, a.ndim);
+/**
+ * @param {NDArray<T>} a
+ * @param {number|number[]} src
+ * @param {number|number[]} dst
+ * @returns {NDArray<T>}
+ */
+export function moveaxis(a, src, dst) {
+	a = asarray(a);
 
-	if (source.length != destination.length) {
-		throw `'source' and 'destination' arguments must have the same number of elements`;
+	let { ndim } = a;
+	src = normalize_axis_tuple(src, ndim);
+	dst = normalize_axis_tuple(dst, ndim);
+
+	if (src.length != dst.length) {
+		throw new Error(`'src' and 'dst' arguments must have the same number of elements`);
 	}
 
-	let order = [...Array(a.ndim).keys()].filter(x => !source.includes(x));
+	let order = [...Array(ndim).keys()].filter(x => !src.includes(x));
 
-	for (let i = 0; i < source.length; i++) {
-		order.splice(destination[i], 0, source[i]);
+	for (let i = 0; i < src.length; i++) {
+		order.splice(dst[i], 0, src[i]);
 	}
 
 	return transpose(a, order);

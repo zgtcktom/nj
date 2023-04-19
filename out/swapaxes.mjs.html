@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: ndindex.mjs</title>
+    <title>JSDoc: Source: swapaxes.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: ndindex.mjs</h1>
+    <h1 class="page-title">Source: swapaxes.mjs</h1>
 
     
 
@@ -26,34 +26,59 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>function prod(a) {
-	let prod = 1;
-	for (let n of a) prod *= n;
-	return prod;
-}
+            <pre class="prettyprint source linenums"><code>import { array, tester, NDArray, asarray, transpose } from './core.mjs';
 
 /**
- *
- * @param {number[]} shape
- * @param {boolean} reuse
- * @returns {Generator}
+ * @param {NDArray&lt;T>} a
+ * @param {number} axis1
+ * @param {number} axis2
+ * @returns {NDArray&lt;T>}
  */
-export function* ndindex(shape, reuse = true) {
-	/** @type {number[]} */
-	let index = Array(shape.length).fill(0);
-	let size = prod(shape);
-	if (size == 0) return;
+export function swapaxes(a, axis1, axis2) {
+	a = asarray(a);
 
-	yield reuse ? index : index.slice();
-	for (let i = 1; i &lt; size; i++) {
-		for (let j = index.length - 1; j >= 0; j--) {
-			index[j] += 1;
-			if (index[j] &lt; shape[j]) break;
-			index[j] -= shape[j];
-		}
-		yield reuse ? index : index.slice();
-	}
+	let axes = [...Array(a.ndim).keys()];
+	[axes[axis1], axes[axis2]] = [axes[axis2], axes[axis1]];
+
+	return transpose(a, axes);
 }
+
+tester
+	.add(
+		swapaxes,
+		() => {
+			let x = array([[1, 2, 3]]);
+			return swapaxes(x, 0, 1);
+		},
+		() => array([[1], [2], [3]])
+	)
+	.add(
+		swapaxes,
+		() => {
+			let x = array([
+				[
+					[0, 1],
+					[2, 3],
+				],
+				[
+					[4, 5],
+					[6, 7],
+				],
+			]);
+			return swapaxes(x, 0, 2);
+		},
+		() =>
+			array([
+				[
+					[0, 4],
+					[2, 6],
+				],
+				[
+					[1, 5],
+					[3, 7],
+				],
+			])
+	);
 </code></pre>
         </article>
     </section>

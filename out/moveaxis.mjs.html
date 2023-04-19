@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: ndindex.mjs</title>
+    <title>JSDoc: Source: moveaxis.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: ndindex.mjs</h1>
+    <h1 class="page-title">Source: moveaxis.mjs</h1>
 
     
 
@@ -26,34 +26,45 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>function prod(a) {
-	let prod = 1;
-	for (let n of a) prod *= n;
-	return prod;
-}
+            <pre class="prettyprint source linenums"><code>import { tester, asarray, zeros, normalize_axis_tuple, transpose, NDArray } from './core.mjs';
 
 /**
- *
- * @param {number[]} shape
- * @param {boolean} reuse
- * @returns {Generator}
+ * @param {NDArray&lt;T>} a
+ * @param {number|number[]} src
+ * @param {number|number[]} dst
+ * @returns {NDArray&lt;T>}
  */
-export function* ndindex(shape, reuse = true) {
-	/** @type {number[]} */
-	let index = Array(shape.length).fill(0);
-	let size = prod(shape);
-	if (size == 0) return;
+export function moveaxis(a, src, dst) {
+	a = asarray(a);
 
-	yield reuse ? index : index.slice();
-	for (let i = 1; i &lt; size; i++) {
-		for (let j = index.length - 1; j >= 0; j--) {
-			index[j] += 1;
-			if (index[j] &lt; shape[j]) break;
-			index[j] -= shape[j];
-		}
-		yield reuse ? index : index.slice();
+	let { ndim } = a;
+	src = normalize_axis_tuple(src, ndim);
+	dst = normalize_axis_tuple(dst, ndim);
+
+	if (src.length != dst.length) {
+		throw new Error(`'src' and 'dst' arguments must have the same number of elements`);
 	}
+
+	let order = [...Array(ndim).keys()].filter(x => !src.includes(x));
+
+	for (let i = 0; i &lt; src.length; i++) {
+		order.splice(dst[i], 0, src[i]);
+	}
+
+	return transpose(a, order);
 }
+
+tester
+	.add(
+		moveaxis,
+		() => moveaxis(zeros([3, 4, 5]), 0, -1).shape,
+		() => [4, 5, 3]
+	)
+	.add(
+		moveaxis,
+		() => moveaxis(zeros([3, 4, 5]), -1, 0).shape,
+		() => [5, 3, 4]
+	);
 </code></pre>
         </article>
     </section>

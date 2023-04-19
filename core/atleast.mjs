@@ -99,12 +99,12 @@ tester
 		atleast_1d,
 		() => {
 			let x = array([1]);
-			let y = x.get(0);
+			let y = x.at(0);
 			let z = atleast_1d(y);
 			z.set([0], -96);
 			return [x.toarray(), y.toarray(), z.toarray(), x.base === null, y.base === null, z.base != y, z.base];
 		},
-		() => [array([1]), 1, array([-96]), true, true, true, array(-96)]
+		() => [array([1]), 1, array([-96]), true, false, true, array(-96)]
 	);
 
 tester

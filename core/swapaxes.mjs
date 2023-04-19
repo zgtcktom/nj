@@ -1,55 +1,53 @@
-import { array, tester, NDArray } from './core.mjs';
+import { array, tester, NDArray, asarray, transpose } from './core.mjs';
 
+/**
+ * @param {NDArray<T>} a
+ * @param {number} axis1
+ * @param {number} axis2
+ * @returns {NDArray<T>}
+ */
 export function swapaxes(a, axis1, axis2) {
-	let { strides, shape, data, dtype, offset, base, itemsize } = a;
+	a = asarray(a);
 
-	strides = strides.slice();
-	shape = shape.slice();
+	let axes = [...Array(a.ndim).keys()];
+	[axes[axis1], axes[axis2]] = [axes[axis2], axes[axis1]];
 
-	let x = strides[axis1];
-	let y = shape[axis1];
-
-	strides[axis1] = strides[axis2];
-	shape[axis1] = shape[axis2];
-
-	strides[axis2] = x;
-	shape[axis2] = y;
-
-	return new NDArray(shape, data, dtype, base, strides, offset, itemsize);
+	return transpose(a, axes);
 }
 
-tester.add(
-	swapaxes,
-	() => {
-		let x = array([[1, 2, 3]]);
-		return swapaxes(x, 0, 1);
-	},
-	() => array([[1], [2], [3]])
-);
-tester.add(
-	swapaxes,
-	() => {
-		let x = array([
-			[
-				[0, 1],
-				[2, 3],
-			],
-			[
-				[4, 5],
-				[6, 7],
-			],
-		]);
-		return swapaxes(x, 0, 2);
-	},
-	() =>
-		array([
-			[
-				[0, 4],
-				[2, 6],
-			],
-			[
-				[1, 5],
-				[3, 7],
-			],
-		])
-);
+tester
+	.add(
+		swapaxes,
+		() => {
+			let x = array([[1, 2, 3]]);
+			return swapaxes(x, 0, 1);
+		},
+		() => array([[1], [2], [3]])
+	)
+	.add(
+		swapaxes,
+		() => {
+			let x = array([
+				[
+					[0, 1],
+					[2, 3],
+				],
+				[
+					[4, 5],
+					[6, 7],
+				],
+			]);
+			return swapaxes(x, 0, 2);
+		},
+		() =>
+			array([
+				[
+					[0, 4],
+					[2, 6],
+				],
+				[
+					[1, 5],
+					[3, 7],
+				],
+			])
+	);

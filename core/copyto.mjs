@@ -64,7 +64,7 @@ tester
 				[0, 1, 2],
 				[3, 4, 5],
 			]);
-			copyto(b.get(slice(), 1), [-1, -2]);
+			copyto(b.at(slice(), 1), [-1, -2]);
 			return b;
 		},
 		() => [

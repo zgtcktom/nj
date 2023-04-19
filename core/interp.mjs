@@ -28,10 +28,10 @@ export function interp(x, xp, fp, left = null, right = null, period = null) {
 		xp = mod(xp, period);
 		let asort_xp = argsort(xp);
 		// console.log(xp, asort_xp);
-		xp = xp.get(asort_xp);
-		fp = fp.get(asort_xp);
-		xp = concatenate([subtract(xp.get(slice(-1)), period), xp, add(xp.get(slice(0, 1)), period)]);
-		fp = concatenate([fp.get(slice(-1)), fp, fp.get(slice(0, 1))]);
+		xp = xp.at(asort_xp);
+		fp = fp.at(asort_xp);
+		xp = concatenate([subtract(xp.at(slice(-1)), period), xp, add(xp.at(slice(0, 1)), period)]);
+		fp = concatenate([fp.at(slice(-1)), fp, fp.at(slice(0, 1))]);
 	}
 
 	left ??= fp.item(0);

@@ -10,7 +10,6 @@ export * from './shape.mjs';
 export * from './broadcast_to.mjs';
 export * from './copyto.mjs';
 export * from './ndindex.mjs';
-export * from './ndoffset.mjs';
 export * from './asarray.mjs';
 export * from './empty.mjs';
 export * from './reshape.mjs';
@@ -107,3 +106,5 @@ export * from './matmul.mjs';
 export * from './dot.mjs';
 
 export * from './array2string.mjs';
+
+export * from './ndoffset.mjs';

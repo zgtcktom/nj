@@ -109,7 +109,7 @@ export function roll(a, shift, axis = null) {
 			// }
 
 			// console.log('?', res_index, arr_index);
-			result.set(res_index, a.get(...arr_index));
+			result.set(res_index, a.get(arr_index));
 		}
 		return result;
 	}

@@ -39,7 +39,7 @@ tester
 		() => {
 			let x, y;
 			x = arange(40).reshape([5, -1]).copy();
-			y = x.get(null, slice(':'), null, null, slice('::2'), null);
+			y = x.at(null, slice(':'), null, null, slice('::2'), null);
 			return [y.reshape(-1).base == x, ravel(y).base];
 		},
 		() => [true, null]
@@ -49,7 +49,7 @@ tester
 		() => {
 			let x, y;
 			x = arange(40).reshape([5, -1]).copy();
-			y = x.get(null, slice(':'), null, null, slice('::3'), null);
+			y = x.at(null, slice(':'), null, null, slice('::3'), null);
 			return [y.reshape(-1).base == x, ravel(y).base];
 		},
 		() => [false, null]

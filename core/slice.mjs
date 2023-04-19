@@ -2,11 +2,11 @@ import { tester } from './core.mjs';
 
 /** @class */
 export class Slice {
-	/** @type {null} */
+	/** @member {null} */
 	static newaxis = null;
-	/** @type {Slice} */
+	/** @member {Slice} */
 	static ellipsis = new Slice();
-	/** @type {Slice} */
+	/** @member {Slice} */
 	static colon = new Slice();
 
 	/**
@@ -196,8 +196,7 @@ export function slice(start = null, stop = null, step = null) {
 		if (Object.hasOwn(lookup, start)) return lookup[start];
 		let args = start.split(':');
 
-		if (args.length == 0 || args.length > 3)
-			throw new Error(`invalid string slice representation ${start}`);
+		if (args.length == 0 || args.length > 3) throw new Error(`invalid string slice representation ${start}`);
 
 		start = _sliceArg(args[0]);
 		stop = args.length > 1 ? _sliceArg(args[1]) : null;

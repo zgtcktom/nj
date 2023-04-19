@@ -51,7 +51,7 @@ export class Nditer {
 				}
 			}
 			// console.log(indices);
-			yield [index, array.get(...indices)];
+			yield [index, array.get(indices)];
 		}
 	}
 }

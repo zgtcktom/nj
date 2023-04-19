@@ -33,7 +33,7 @@ export function trapz(y, x = null, dx = 1.0, axis = -1) {
 	slice1[axis] = slice(1, null);
 	slice2[axis] = slice(null, -1);
 	let tmp;
-	tmp = add(y.get(...slice1), y.get(...slice2));
+	tmp = add(y.get(slice1), y.get(slice2));
 	multiply(d, tmp, tmp);
 	divide(tmp, 2.0, tmp);
 

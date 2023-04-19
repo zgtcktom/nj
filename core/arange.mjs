@@ -1,11 +1,17 @@
-import { tester, array, NDArray, _dtype } from './core.mjs';
+import { tester, array, NDArray, empty } from './core.mjs';
 
 /**
- *
+ * The parameters can be float or integer numbers.
  * @param {number} start
- * @param {number} stop
- * @param {number} step
- * @returns {NDArray}
+ * @param {number} [stop]
+ * @param {number} [step]
+ * @returns {NDArray<number>}
+ * @example
+ * arange(2) // array([0, 1])
+ * @example
+ * arange(1, 3) // array([1, 2])
+ * @example
+ * arange(0, 6, 2) // array([0, 2, 4])
  */
 export function arange(start, stop = undefined, step = 1) {
 	if (stop == undefined) {
@@ -13,12 +19,13 @@ export function arange(start, stop = undefined, step = 1) {
 		start = 0;
 	}
 	let size = Math.max(0, ((stop - start) / step) | 0);
-	let dtype = _dtype('number');
-	let data = dtype.new(size);
+
+	let out = empty([size], 'number');
+	let { data } = out;
 	for (let i = 0; i < size; i++) {
 		data[i] = start + i * step;
 	}
-	return new NDArray([size], data, dtype);
+	return out;
 }
 
 tester

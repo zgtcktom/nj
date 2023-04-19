@@ -42,7 +42,7 @@ export function dot(a, b, out = null) {
 		else assert(shallow_array_equal(shape, out.shape), `out shape mismatch`);
 
 		for (let index of ndindex(shape)) {
-			dot(a.get(...index), b, out.get(slice('...'), ...index));
+			dot(a.get(index), b, out.at(slice('...'), ...index));
 		}
 
 		return out;

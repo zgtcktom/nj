@@ -26,7 +26,7 @@ export function stack(arrays, axis = 0, out = null) {
 
 	let sl = [...Array(axis).fill(Slice.colon), Slice.newaxis];
 
-	let expanded_arrays = arrays.map(arr => arr.get(...sl));
+	let expanded_arrays = arrays.map(arr => arr.get(sl));
 
 	return concatenate(expanded_arrays, axis, out);
 }

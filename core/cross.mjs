@@ -45,17 +45,17 @@ export function cross(a, b, axis = -1, axisa = axis, axisb = axis, axisc = axis)
 	let b0, b1, b2;
 	let cp0, cp1, cp2;
 
-	a0 = a.get('...', 0);
-	a1 = a.get('...', 1);
-	if (a.shape.at(-1) == 3) a2 = a.get('...', 2);
+	a0 = a.at('...', 0);
+	a1 = a.at('...', 1);
+	if (a.shape.at(-1) == 3) a2 = a.at('...', 2);
 
-	b0 = b.get('...', 0);
-	b1 = b.get('...', 1);
-	if (b.shape.at(-1) == 3) b2 = b.get('...', 2);
+	b0 = b.at('...', 0);
+	b1 = b.at('...', 1);
+	if (b.shape.at(-1) == 3) b2 = b.at('...', 2);
 	if (cp.ndim != 0 && cp.shape.at(-1) == 3) {
-		cp0 = cp.get('...', 0);
-		cp1 = cp.get('...', 1);
-		cp2 = cp.get('...', 2);
+		cp0 = cp.at('...', 0);
+		cp1 = cp.at('...', 1);
+		cp2 = cp.at('...', 2);
 	}
 
 	if (a.shape.at(-1) == 2) {

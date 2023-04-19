@@ -9,7 +9,6 @@ import {
 	ravel,
 	slice,
 	tester,
-	even_strides,
 	timeit,
 } from './core.mjs';
 
@@ -40,7 +39,7 @@ export function axisfunc(func, array, axis /*: nonNull*/, keepdims, out) {
 			indices[i] = index[j++];
 		}
 		// console.log(indices);
-		out.itemset(index, func(array.get(...indices)));
+		out.itemset(index, func(array.get(indices)));
 	}
 
 	return out;

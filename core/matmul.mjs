@@ -32,9 +32,9 @@ export function matmul(x1, x2, out = null) {
 	let x21d = x2.ndim == 1;
 	let any1d = x11d || x21d;
 
-	if (x11d) x1 = x1.get(null, slice(':'));
+	if (x11d) x1 = x1.at(null, slice(':'));
 
-	if (x21d) x2 = x2.get(slice(':'), null);
+	if (x21d) x2 = x2.at(slice(':'), null);
 
 	if (x1.ndim == 2 && x2.ndim == 2) {
 		assert(x1.shape[1] == x2.shape[0], `input shape mismatch`);
@@ -52,7 +52,7 @@ export function matmul(x1, x2, out = null) {
 
 		let x2T = x2.T;
 		for (let [i, j] of ndindex(_shape)) {
-			_out.set([i, j], dot(x1.get(i), x2T.get(j)));
+			_out.set([i, j], dot(x1.at(i), x2T.at(j)));
 		}
 
 		return out;
@@ -72,7 +72,7 @@ export function matmul(x1, x2, out = null) {
 	else assert(shallow_array_equal(shape, out.shape), `out shape mismatch`);
 
 	for (let index of ndindex(_shape)) {
-		matmul(x1.get(...index), x2.get(...index), out.get(...index));
+		matmul(x1.get(index), x2.get(index), out.get(index));
 	}
 
 	return out;
