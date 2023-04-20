@@ -1,5 +1,11 @@
 import { tester, array, NDArray, atleast_1d } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {NDArray} v
+ * @param {string} [mode]
+ * @returns {NDArray}
+ */
 export function convolve(a, v, mode = 'full') {
 	a = atleast_1d(a);
 	v = atleast_1d(v);

@@ -1,5 +1,9 @@
 import { tester, NDArray } from './core.mjs';
 
+/**
+ * @param {number} n
+ * @returns {NDArray}
+ */
 export function identity(n) {
 	let size = n * n;
 	let data = Array(size).fill(0);

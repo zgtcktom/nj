@@ -8,12 +8,20 @@ let _index_exp = arg => {
 
 export const tupleType = Symbol('tupleType');
 
+/**
+ * @param  {...null|number|Slice|string} args
+ * @returns {Array<null|number|Slice|string>}
+ */
 export function index_exp(...args) {
 	let tup = args.map(_index_exp);
 	tup[tupleType] = true;
 	return tup;
 }
 
+/**
+ * @param  {...null|number|Slice|string|Array<null|number|Slice|string>} args
+ * @returns {Array<null|number|Slice|string>}
+ */
 export function s_(...args) {
 	if (args.length == 1) {
 		return _index_exp(args[0]);

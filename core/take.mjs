@@ -1,40 +1,12 @@
 import { NDArray, array, asarray, empty, ndindex, shallow_array_equal, slice, tester } from './core.mjs';
 
-function clip(n, min, max) {
-	return n < min ? min : n > max ? max : n;
-}
-
-function _indices(indices, mode, size) {
-	let newindices = [];
-	if (mode == 'wrap') {
-		for (let index of indices) {
-			index = index % size;
-			index = index < 0 ? index + size : index;
-			newindices.push(index);
-		}
-	} else if (mode == 'clip') {
-		for (let index of indices) {
-			index = clip(index, 0, size - 1);
-			newindices.push(index);
-		}
-	} else if (mode == 'raise') {
-		for (let index of indices) {
-			if (index < -size || index >= size)
-				throw `index ${index} is out of bounds for axis 0 with size ${size}`;
-			index = index < 0 ? index + a.size : index;
-			newindices.push(index);
-		}
-	} else throw `unexpected mode = ${mode}`;
-	return newindices;
-}
-
 /**
  *
  * @param {NDArray} a
  * @param {any[]} indices
- * @param {number|undefined} axis
- * @param {NDArray} out
- * @param {string} mode
+ * @param {null|number} [axis]
+ * @param {NDArray} [out]
+ * @param {string} [mode]
  * @returns {NDArray}
  */
 export function take(a, indices, axis = null, out = null, mode = 'raise') {
@@ -73,6 +45,34 @@ export function take(a, indices, axis = null, out = null, mode = 'raise') {
 
 		return out;
 	}
+}
+
+function clip(n, min, max) {
+	return n < min ? min : n > max ? max : n;
+}
+
+function _indices(indices, mode, size) {
+	let newindices = [];
+	if (mode == 'wrap') {
+		for (let index of indices) {
+			index = index % size;
+			index = index < 0 ? index + size : index;
+			newindices.push(index);
+		}
+	} else if (mode == 'clip') {
+		for (let index of indices) {
+			index = clip(index, 0, size - 1);
+			newindices.push(index);
+		}
+	} else if (mode == 'raise') {
+		for (let index of indices) {
+			if (index < -size || index >= size)
+				throw `index ${index} is out of bounds for axis 0 with size ${size}`;
+			index = index < 0 ? index + a.size : index;
+			newindices.push(index);
+		}
+	} else throw `unexpected mode = ${mode}`;
+	return newindices;
 }
 
 tester

@@ -7,8 +7,15 @@ import {
 	normalize_axis_index,
 	Slice,
 	concatenate,
+	NDArray,
 } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrays
+ * @param {number} [axis]
+ * @param {null|NDArray} [out]
+ * @returns {NDArray}
+ */
 export function stack(arrays, axis = 0, out = null) {
 	arrays = arrays.map(a => asarray(a));
 

@@ -1,5 +1,11 @@
 import { tester, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray} N
+ * @param {number} [M]
+ * @param {number} [k]
+ * @returns {NDArray}
+ */
 export function eye(N, M = N, k = 0) {
 	let size = N * M;
 	let data = Array(size).fill(0);

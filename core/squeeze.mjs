@@ -1,10 +1,23 @@
-import { NDArray, tester, array, asarray, ascontiguousarray, arange, slice } from './core.mjs';
-import { normalize_axis } from './numeric.mjs';
+import {
+	NDArray,
+	tester,
+	array,
+	asarray,
+	ascontiguousarray,
+	arange,
+	slice,
+	normalize_axis_tuple,
+} from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {null|number|number[]} axis
+ * @returns {NDArray}
+ */
 export function squeeze(a, axis = null) {
 	a = asarray(a);
 	if (axis != null) {
-		axis = normalize_axis(axis);
+		axis = normalize_axis_tuple(axis);
 	}
 	let { shape, strides, data, dtype, ndim, offset, itemsize } = a;
 	let newshape = [];

@@ -1,15 +1,57 @@
-import { arange, array, ones, tester, _wrap_map_binary, _wrap_map_unary } from './core.mjs';
+import { arange, array, ones, tester, _wrap_map_binary, _wrap_map_unary, NDArray } from './core.mjs';
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const equal = _wrap_map_binary('equal', (x1, x2) => x1 == x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const not_equal = _wrap_map_binary('not_equal', (x1, x2) => x1 != x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const less_equal = _wrap_map_binary('less_equal', (x1, x2) => x1 <= x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const less = _wrap_map_binary('less_equal', (x1, x2) => x1 < x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const greater_equal = _wrap_map_binary('less_equal', (x1, x2) => x1 >= x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const greater = _wrap_map_binary('less_equal', (x1, x2) => x1 > x2);
 
 tester

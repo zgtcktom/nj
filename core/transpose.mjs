@@ -1,6 +1,32 @@
 import { arange, array, asarray, NDArray, ones, tester } from './core.mjs';
 
 /**
+ * @param {NDArray<T>} a
+ * @param {null|number[]} [axes]
+ * @returns {NDArray<T>}
+ */
+export function transpose(a, axes = null) {
+	a = asarray(a);
+
+	let { ndim, shape, data, dtype, base, strides, offset, itemsize } = a;
+	let newshape, newstrides;
+	if (axes == null) {
+		newshape = shape.slice().reverse();
+		newstrides = strides.slice().reverse();
+	} else {
+		axes = normalize_axes(axes, ndim);
+		newshape = Array(ndim);
+		newstrides = Array(ndim);
+		for (let i = 0; i < ndim; i++) {
+			newshape[i] = shape[axes[i]];
+			newstrides[i] = strides[axes[i]];
+		}
+	}
+
+	return new NDArray(newshape, data, dtype, base ?? a, newstrides, offset, itemsize);
+}
+
+/**
  * @param {number[]} axes
  * @param {number} ndim
  * @returns {number[]}
@@ -25,32 +51,6 @@ function normalize_axes(axes, ndim) {
 		newaxes[i] = axis;
 	}
 	return newaxes;
-}
-
-/**
- * @param {NDArray<T>} a
- * @param {number[]} [axes]
- * @returns {NDArray<T>}
- */
-export function transpose(a, axes = undefined) {
-	a = asarray(a);
-
-	let { ndim, shape, data, dtype, base, strides, offset, itemsize } = a;
-	let newshape, newstrides;
-	if (axes == undefined) {
-		newshape = shape.slice().reverse();
-		newstrides = strides.slice().reverse();
-	} else {
-		axes = normalize_axes(axes, ndim);
-		newshape = Array(ndim);
-		newstrides = Array(ndim);
-		for (let i = 0; i < ndim; i++) {
-			newshape[i] = shape[axes[i]];
-			newstrides[i] = strides[axes[i]];
-		}
-	}
-
-	return new NDArray(newshape, data, dtype, base ?? a, newstrides, offset, itemsize);
 }
 
 tester

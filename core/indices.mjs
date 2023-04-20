@@ -1,5 +1,10 @@
 import { tester, arange, array, asarray, ones, zeros, slice, NDArray, amax, empty } from './core.mjs';
 
+/**
+ * @param {number[]} dimensions
+ * @param {boolean} [sparse]
+ * @returns {NDArray}
+ */
 export function indices(dimensions, sparse = false) {
 	let N = dimensions.length;
 	let shape = Array(N).fill(1);

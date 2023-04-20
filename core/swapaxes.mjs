@@ -1,10 +1,10 @@
 import { array, tester, NDArray, asarray, transpose } from './core.mjs';
 
 /**
- * @param {NDArray<T>} a
+ * @param {NDArray} a
  * @param {number} axis1
  * @param {number} axis2
- * @returns {NDArray<T>}
+ * @returns {NDArray}
  */
 export function swapaxes(a, axis1, axis2) {
 	a = asarray(a);

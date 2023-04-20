@@ -10,6 +10,13 @@ import {
 	empty,
 } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} ary
+ * @param {NDArray} indices_or_sections
+ * @param {number} [axis]
+ * @returns {NDArray}
+ */
 export function split(ary, indices_or_sections, axis = 0) {
 	ary = asarray(ary);
 	axis = normalize_axis_index(axis, ary.ndim);

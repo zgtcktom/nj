@@ -1,5 +1,9 @@
-import { tester, arange, array, asarray, ones, zeros, slice, NDArray, amax, nonzero } from './core.mjs';
+import { tester, array, asarray, NDArray, nonzero } from './core.mjs';
 
+/**
+ * @param  {...number[]|boolean[]} args
+ * @returns {NDArray[]}
+ */
 export function ix_(...args) {
 	let out = [];
 	let nd = args.length;

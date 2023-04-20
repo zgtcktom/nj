@@ -1,7 +1,7 @@
 import { NDArray, array, tester } from './core.mjs';
 
 /**
- * @param {any} a
+ * @param {NDArray} a array-like
  * @returns {NDArray}
  */
 export function copy(a) {

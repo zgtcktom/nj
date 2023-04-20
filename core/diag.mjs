@@ -1,5 +1,10 @@
-import { tester, arange, array, asarray, ones, zeros, slice, NDArray, amax, diagonal } from './core.mjs';
+import { tester, arange, array, asarray, zeros, slice, NDArray, diagonal } from './core.mjs';
 
+/**
+ * @param {NDArray} v
+ * @param {number} [k]
+ * @returns {NDArray}
+ */
 export function diag(v, k = 0) {
 	v = asarray(v);
 	let s = v.shape;

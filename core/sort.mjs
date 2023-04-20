@@ -13,6 +13,12 @@ import {
 	empty_like,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {null|number} axis
+ * @param {Function} key
+ * @returns {NDArray}
+ */
 export function sort(a, axis = -1, key = null) {
 	a = asarray(a);
 	if (axis == null) {

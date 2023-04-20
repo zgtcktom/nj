@@ -1,5 +1,9 @@
-import { tester, arange, array, asarray, ones, zeros, slice, NDArray } from './core.mjs';
+import { tester, arange, array, asarray, ones, zeros, slice, NDArray, Slice } from './core.mjs';
 
+/**
+ * @param  {...Slice} slices
+ * @returns {NDArray}
+ */
 export function ogrid(...slices) {
 	let out = [];
 	for (let i = 0; i < slices.length; i++) {

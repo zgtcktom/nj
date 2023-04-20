@@ -10,8 +10,14 @@ import {
 	random,
 	diag,
 	index_exp,
+	NDArray,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {null|number|number[]} [axis]
+ * @returns {NDArray}
+ */
 export function flip(a, axis = null) {
 	a = asarray(a);
 	let indexer;
@@ -27,12 +33,20 @@ export function flip(a, axis = null) {
 	return a.get(indexer);
 }
 
+/**
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function fliplr(a) {
 	a = asarray(a);
 	if (a.ndim < 2) throw `Input must be >= 2-d.`;
 	return a.get(index_exp(':', '::-1'));
 }
 
+/**
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function flipud(a) {
 	a = asarray(a);
 	if (a.ndim < 1) throw `Input must be >= 1-d.`;

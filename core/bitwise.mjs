@@ -12,14 +12,65 @@ import {
 	_wrap_map_binary,
 } from './core.mjs';
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const invert = _wrap_map_unary('invert', x => ~x);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const bitwise_not = invert;
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const bitwise_and = _wrap_map_binary('bitwise_and', (x1, x2) => x1 & x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const bitwise_or = _wrap_map_binary('bitwise_or', (x1, x2) => x1 | x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const bitwise_xor = _wrap_map_binary('bitwise_xor', (x1, x2) => x1 ^ x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const left_shift = _wrap_map_binary('left_shift', (x1, x2) => x1 << x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const right_shift = _wrap_map_binary('right_shift', (x1, x2) => x1 >> x2);
 
 tester.add(

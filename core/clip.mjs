@@ -12,9 +12,9 @@ import {
 } from './core.mjs';
 
 /**
- * @param {NDArray} a
- * @param {number|NDArray} a_min
- * @param {number|NDArray} a_max
+ * @param {NDArray} a array-like
+ * @param {NDArray} a_min array-like
+ * @param {NDArray} a_max array-like
  * @param {NDArray} out
  * @returns {NDArray}
  */

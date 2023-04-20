@@ -1,5 +1,26 @@
 import { tester, array, asarray, NDArray, empty_like } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {NDArray} v
+ * @param {string} [side]
+ * @returns {NDArray}
+ */
+export function searchsorted(a, v, side = 'left') {
+	if (a instanceof NDArray) a = a.toarray();
+
+	v = asarray(v);
+
+	let out = empty_like(v);
+	let i = 0;
+	let _bisect = side == 'left' ? _bisectLeft : _bisectRight;
+	for (let x of v.flat) {
+		out.data[i++] = _bisect(a, x);
+	}
+
+	return out;
+}
+
 function _bisectLeft(arr, x) {
 	let left = 0;
 	let right = arr.length - 1;
@@ -22,21 +43,6 @@ function _bisectRight(arr, x) {
 		else left = mid + 1;
 	}
 	return left;
-}
-
-export function searchsorted(a, v, side = 'left') {
-	if (a instanceof NDArray) a = a.toarray();
-
-	v = asarray(v);
-
-	let out = empty_like(v);
-	let i = 0;
-	let _bisect = side == 'left' ? _bisectLeft : _bisectRight;
-	for (let x of v.flat) {
-		out.data[i++] = _bisect(a, x);
-	}
-
-	return out;
 }
 
 tester

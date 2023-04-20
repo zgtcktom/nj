@@ -14,6 +14,12 @@ import {
 	ndindex,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {null|number} [axis]
+ * @param {string} [bitorder]
+ * @returns {NDArray}
+ */
 export function packbits(a, axis = null, bitorder = 'big') {
 	a = asarray(a);
 	if (axis == null) {

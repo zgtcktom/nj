@@ -24,6 +24,12 @@ export function assert(cond, msg) {
 	}
 }
 
+/**
+ * @param {NDArray} a
+ * @param {NDArray} b
+ * @param {null|NDArray} [out]
+ * @returns {NDArray}
+ */
 export function dot(a, b, out = null) {
 	a = asarray(a);
 	b = asarray(b);

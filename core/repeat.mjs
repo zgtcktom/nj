@@ -16,6 +16,13 @@ import {
 	empty,
 } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} a
+ * @param {number} repeats
+ * @param {null|number} [axis]
+ * @returns {NDArray}
+ */
 export function repeat(a, repeats, axis = null) {
 	a = asarray(a);
 	if (axis == null) {

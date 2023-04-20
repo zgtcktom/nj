@@ -1,18 +1,12 @@
-import {
-	tester,
-	arange,
-	array,
-	asarray,
-	ones,
-	zeros,
-	slice,
-	NDArray,
-	amax,
-	exp,
-	normalize_axis_index,
-	transpose,
-} from './core.mjs';
+import { tester, arange, array, asarray, slice, NDArray, normalize_axis_index, transpose } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number} [offset]
+ * @param {number} [axis1]
+ * @param {number} [axis2]
+ * @returns {NDArray}
+ */
 export function diagonal(a, offset = 0, axis1 = 0, axis2 = 1) {
 	a = asarray(a);
 	let { ndim } = a;
@@ -29,36 +23,12 @@ export function diagonal(a, offset = 0, axis1 = 0, axis2 = 1) {
 		axes[j++] = i;
 	}
 
-	// console.log(a.toarray(), transpose(a, axes).toarray());
 	a = transpose(a, axes);
-
-	// if (ndim == 2) {
-	// 	let n1 = a.shape[0];
-	// 	let n2 = a.shape[1];
-	// 	let step = n2 + 1;
-	// 	let start, stop;
-	// 	if (offset < 0) {
-	// 		start = -n2 * offset;
-	// 		stop = Math.min(n2, n1 + offset) * (n2 + 1) - n2 * offset;
-	// 	} else {
-	// 		start = offset;
-	// 		stop = Math.min(n1, n2 - offset) * (n2 + 1) + offset;
-	// 	}
-
-	// 	let count = Math.ceil((stop - start) / step);
-
-	// 	// let indices = Array(count);
-	// 	// for (let i = 0; i < count; i++) {
-	// 	// 	indices[i] = start + i * step;
-	// 	// }
-	// 	// console.log(indices);
-
-	// 	return new NDArray([count], a.data, a.base ?? a, [step * a.strides[1]], a.offset + start, a.itemsize);
-	// }
 
 	// https://github.com/numpy/numpy-refactor/blob/6de313865ec3f49bcdd06ccbc879f27e65acf818/numpy/core/src/multiarray/item_selection.c
 	// view only
 	// writable, no need to d.setflags(write=True)
+
 	let n1 = a.shape[ndim - 2];
 	let n2 = a.shape[ndim - 1];
 	let step = n2 + 1;

@@ -16,6 +16,10 @@ import {
 	atleast_2d,
 } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrays
+ * @returns {NDArray}
+ */
 export function vstack(arrays) {
 	arrays = atleast_2d(...arrays);
 	if (!Array.isArray(arrays)) arrays = [arrays];

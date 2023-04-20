@@ -1,22 +1,14 @@
-import {
-	tester,
-	arange,
-	array,
-	asarray,
-	ones,
-	zeros,
-	slice,
-	NDArray,
-	shallow_array_equal,
-	mod,
-	argsort,
-	concatenate,
-	subtract,
-	add,
-	empty_like,
-	ndoffset,
-} from './core.mjs';
+import { tester, array, asarray, slice, NDArray, mod, argsort, concatenate, subtract, add } from './core.mjs';
 
+/**
+ * @param {NDArray} x
+ * @param {NDArray} xp
+ * @param {NDArray} fp
+ * @param {null|number} [left]
+ * @param {null|number} [right]
+ * @param {null|number} [period]
+ * @returns {NDArray}
+ */
 export function interp(x, xp, fp, left = null, right = null, period = null) {
 	// not going to very strict check
 	[x, xp, fp] = [x, xp, fp].map(a => asarray(a));
@@ -48,7 +40,6 @@ export function interp(x, xp, fp, left = null, right = null, period = null) {
 		} else if (value > upper) {
 			y = right;
 		} else {
-			// console.log(value);
 			let i = 1;
 			for (; i < xp.length && value > xp.item(i); i++);
 			let x1 = xp.item(i - 1);
@@ -61,14 +52,14 @@ export function interp(x, xp, fp, left = null, right = null, period = null) {
 				} else {
 					let y1 = fp.item(i - 1);
 					let y2 = fp.item(i);
-					// console.log(value, i, x1, x2, y1, y2, x - x1, x2 - x1);
+
 					y = ((value - x1) * (y2 - y1)) / (x2 - x1) + y1;
 				}
 			}
 		}
 		data[i++] = y;
 	}
-	// console.log(x, xp, fp, data);
+
 	return new NDArray(x.shape, data);
 }
 

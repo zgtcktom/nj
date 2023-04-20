@@ -1,6 +1,12 @@
-import { tester, array } from './core.mjs';
+import { tester, array, NDArray, Dtype, guessType } from './core.mjs';
 
-export function fromiter(iter, count = -1) {
+/**
+ * @param {Iterable} iter
+ * @param {number} [count]
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
+ */
+export function fromiter(iter, count = -1, dtype = undefined) {
 	let a;
 	if (count == -1) a = [...iter];
 	else {
@@ -14,7 +20,7 @@ export function fromiter(iter, count = -1) {
 			}
 		}
 	}
-	return array(a);
+	return array(a, dtype ?? guessType(a));
 }
 
 tester

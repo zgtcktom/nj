@@ -24,6 +24,14 @@ import {
 	sqrt,
 } from './core.mjs';
 
+/**
+ *
+ * @param {*} a
+ * @param {*} axis
+ * @param {*} out
+ * @param {*} keepdims
+ * @returns {NDArray}
+ */
 export function ptp(a, axis = null, out = null, keepdims = false) {
 	a = asarray(a);
 	if (axis == null) {
@@ -42,6 +50,15 @@ export function ptp(a, axis = null, out = null, keepdims = false) {
 	return out;
 }
 
+/**
+ *
+ * @param {*} a
+ * @param {*} axis
+ * @param {*} weights
+ * @param {*} returned
+ * @param {*} keepdims
+ * @returns {NDArray}
+ */
 export function average(a, axis = null, weights = null, returned = false, keepdims = false) {
 	a = asarray(a);
 
@@ -71,6 +88,14 @@ export function average(a, axis = null, weights = null, returned = false, keepdi
 	return out;
 }
 
+/**
+ *
+ * @param {*} a
+ * @param {*} axis
+ * @param {*} out
+ * @param {*} keepdims
+ * @returns {NDArray}
+ */
 export function mean(a, axis = null, out = null, keepdims = false) {
 	a = asarray(a);
 
@@ -89,6 +114,15 @@ export function mean(a, axis = null, out = null, keepdims = false) {
 	return out;
 }
 
+/**
+ *
+ * @param {*} a
+ * @param {*} axis
+ * @param {*} out
+ * @param {*} ddof
+ * @param {*} keepdims
+ * @returns {NDArray}
+ */
 export function variance(a, axis = null, out = null, ddof = 0, keepdims = false) {
 	a = asarray(a);
 
@@ -107,12 +141,28 @@ export function variance(a, axis = null, out = null, ddof = 0, keepdims = false)
 	return out;
 }
 
+/**
+ *
+ * @param {*} a
+ * @param {*} axis
+ * @param {*} out
+ * @param {*} ddof
+ * @param {*} keepdims
+ * @returns {NDArray}
+ */
 export function std(a, axis = null, out = null, ddof = 0, keepdims = false) {
 	out = variance(a, axis, out, ddof, keepdims);
 	sqrt(out, out);
 	return out;
 }
 
+/**
+ *
+ * @param {*} a
+ * @param {*} weights
+ * @param {*} minlength
+ * @returns {NDArray}
+ */
 export function bincount(a, weights = null, minlength = 0) {
 	a = asarray(a);
 	if (a.ndim != 1) throw `a.dim != 1`;

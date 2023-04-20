@@ -1,5 +1,11 @@
-import { arange, array, compress, ravel, tester } from './core.mjs';
+import { NDArray, arange, array, compress, ravel, tester } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} condition
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function extract(condition, a) {
 	return compress(ravel(condition), ravel(a));
 }

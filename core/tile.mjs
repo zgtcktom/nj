@@ -1,5 +1,10 @@
 import { tester, arange, array, asarray, ones, zeros, slice, NDArray, amax } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number} reps
+ * @returns {NDArray}
+ */
 export function tile(a, reps) {
 	if (typeof reps == 'number') reps = [reps];
 	let d = reps.length;

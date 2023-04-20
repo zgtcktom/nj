@@ -1,11 +1,17 @@
-import { tester, NDArray, ndindex, array } from './core.mjs';
+import { tester, NDArray, ndindex, array, Dtype, guessType } from './core.mjs';
 
-export function fromfunction(func, shape) {
+/**
+ * @param {Function} func
+ * @param {number[]} shape
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
+ */
+export function fromfunction(func, shape, dtype = undefined) {
 	let data = [];
 	for (let index of ndindex(shape)) {
 		data.push(func(index));
 	}
-	return new NDArray(shape, data);
+	return new NDArray(shape, data, dtype ?? guessType(data));
 }
 
 tester

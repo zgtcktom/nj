@@ -1,5 +1,9 @@
-import { tester, array, concatenate, atleast_3d } from './core.mjs';
+import { tester, array, concatenate, atleast_3d, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrays
+ * @returns {NDArray}
+ */
 export function dstack(arrays) {
 	arrays = atleast_3d(...arrays);
 	if (!Array.isArray(arrays)) arrays = [arrays];

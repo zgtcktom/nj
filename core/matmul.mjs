@@ -15,10 +15,9 @@ import {
 } from './core.mjs';
 
 /**
- *
- * @param {*} x1
- * @param {*} x2
- * @param {NDArray} out
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
  * @returns {NDArray}
  */
 export function matmul(x1, x2, out = null) {

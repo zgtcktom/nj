@@ -15,14 +15,9 @@ import {
 	count_nonzero,
 	ndindex,
 	empty_like,
+	get_size,
+	pick,
 } from './core.mjs';
-import { pick } from './random.pick.mjs';
-
-function get_size(shape) {
-	let size = 1;
-	for (let dim of shape) size *= dim;
-	return size;
-}
 
 function from(func, size = null, out = null, return_scalar = true) {
 	if (out != null) {
@@ -52,11 +47,21 @@ function from(func, size = null, out = null, return_scalar = true) {
 	return out;
 }
 
+/**
+ * @class
+ */
 export class Generator {
 	constructor(rand = Math.random) {
 		this.rand = rand;
 	}
 
+	/**
+	 * @param {number} low
+	 * @param {number} [high]
+	 * @param {number} [size]
+	 * @param {boolean} [endpoint]
+	 * @returns {NDArray}
+	 */
 	integers(low, high = null, size = null, endpoint = false) {
 		if (high == null) {
 			high = low;
@@ -68,10 +73,25 @@ export class Generator {
 		return from(() => (this.rand() * range + low) | 0, size);
 	}
 
+	/**
+	 *
+	 * @param {*} size
+	 * @param {*} out
+	 * @returns {NDArray}
+	 */
 	random(size = null, out = null) {
 		return from(() => this.rand(), size, out);
 	}
 
+	/**
+	 *
+	 * @param {*} a
+	 * @param {*} size
+	 * @param {*} replace
+	 * @param {*} p
+	 * @param {*} axis
+	 * @returns {NDArray}
+	 */
 	choice(a, size = null, replace = true, p = null, axis = 0 /*, shuffle = true*/) {
 		if (typeof a == 'number') {
 			if (a <= 0) throw `a must be a positive integer unless no samples are taken`;
@@ -122,6 +142,11 @@ export class Generator {
 		return out;
 	}
 
+	/**
+	 *
+	 * @param {*} a
+	 * @param {*} axis
+	 */
 	shuffle(a, axis = 0) {
 		// https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 		a = asarray(a);
@@ -148,6 +173,13 @@ export class Generator {
 		}
 	}
 
+	/**
+	 *
+	 * @param {*} a
+	 * @param {*} axis
+	 * @param {*} out
+	 * @returns {NDArray}
+	 */
 	permuted(a, axis = null, out = null) {
 		a = asarray(a);
 		axis = normalize_axis_index(axis, a.ndim);
@@ -165,6 +197,12 @@ export class Generator {
 		return out;
 	}
 
+	/**
+	 *
+	 * @param {*} a
+	 * @param {*} axis
+	 * @returns {NDArray}
+	 */
 	permutation(a, axis = 0) {
 		if (typeof a == 'number') a = arange(a);
 		else a = array(a);
@@ -172,12 +210,25 @@ export class Generator {
 		return a;
 	}
 
+	/**
+	 *
+	 * @param {*} low
+	 * @param {*} high
+	 * @param {*} size
+	 * @returns {NDArray}
+	 */
 	uniform(low = 0.0, high = 1.0, size = null) {
 		return from(() => {
 			return this.rand() * (high - low) + low;
 		}, size);
 	}
 
+	/**
+	 * @param {number} [loc]
+	 * @param {number} [scale]
+	 * @param {null|number} [size]
+	 * @returns {NDArray}
+	 */
 	normal(loc = 0.0, scale = 1.0, size = null) {
 		// https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
 		return from(() => {
@@ -189,6 +240,9 @@ export class Generator {
 	}
 }
 
+/**
+ * @type {Generator}
+ */
 export const random = new Generator();
 
 // tester

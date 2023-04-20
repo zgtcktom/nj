@@ -1,11 +1,17 @@
-import { array, asarray, tester } from './core.mjs';
+import { NDArray, array, asarray, tester } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number|number[]} axis
+ * @returns {NDArray}
+ */
 export function expand_dims(a, axis) {
 	a = asarray(a);
 	if (typeof axis == 'number') axis = [axis];
 	let length = axis.length;
 	axis = new Set(axis);
 	if (axis.size != length) throw 'repeated axis';
+
 	let newndim = a.ndim + length;
 	let newshape = [];
 	for (let i = 0, j = 0; i < newndim; i++) {

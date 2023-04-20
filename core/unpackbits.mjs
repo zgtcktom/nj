@@ -1,13 +1,8 @@
 import {
 	tester,
-	arange,
 	array,
 	asarray,
-	ones,
-	zeros,
-	slice,
 	NDArray,
-	amax,
 	empty,
 	normalize_axis_index,
 	ravel,
@@ -16,21 +11,14 @@ import {
 	array_equal,
 } from './core.mjs';
 
-function _unpackbits(n, out = [], bitorder = 'big') {
-	if (bitorder == 'big') {
-		for (let i = 7; i >= 0; i--) {
-			out[i] = n % 2;
-			n = (n / 2) | 0;
-		}
-	} else {
-		for (let i = 0; i <= 7; i++) {
-			out[i] = n % 2;
-			n = (n / 2) | 0;
-		}
-	}
-	return out;
-}
-
+/**
+ *
+ * @param {NDArray} a
+ * @param {null|number} [axis]
+ * @param {null|number} [count]
+ * @param {string} [bitorder]
+ * @returns {NDArray}
+ */
 export function unpackbits(a, axis = null, count = null, bitorder = 'big') {
 	a = asarray(a);
 	if (axis == null) {
@@ -66,6 +54,21 @@ export function unpackbits(a, axis = null, count = null, bitorder = 'big') {
 		for (let i = start, j = 0; i < end; i++, j++) out.data[_offset + j * out.strides[axis]] = tmp[i];
 	}
 
+	return out;
+}
+
+function _unpackbits(n, out = [], bitorder = 'big') {
+	if (bitorder == 'big') {
+		for (let i = 7; i >= 0; i--) {
+			out[i] = n % 2;
+			n = (n / 2) | 0;
+		}
+	} else {
+		for (let i = 0; i <= 7; i++) {
+			out[i] = n % 2;
+			n = (n / 2) | 0;
+		}
+	}
 	return out;
 }
 

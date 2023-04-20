@@ -1,5 +1,12 @@
 import { tester, arange, array, asarray, NDArray, ndoffset } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} ndarray
+ * @param {function(any, number): any} callback
+ * @param {any} thisArg
+ * @returns {NDArray}
+ */
 export function map(ndarray, callback, thisArg = null) {
 	ndarray = asarray(ndarray);
 	let { shape, strides, offset, data } = ndarray;

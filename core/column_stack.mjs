@@ -1,5 +1,9 @@
-import { tester, array, concatenate, asarray } from './core.mjs';
+import { tester, array, concatenate, asarray, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrs
+ * @returns {NDArray}
+ */
 export function column_stack(arrs) {
 	let arrays = [];
 	for (let arr of arrs) {

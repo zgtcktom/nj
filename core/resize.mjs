@@ -1,5 +1,10 @@
-import { tester, array, zeros, slice, ravel, concatenate, reshape } from './core.mjs';
+import { tester, array, zeros, slice, ravel, concatenate, reshape, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number[]} new_shape
+ * @returns {NDArray}
+ */
 export function resize(a, new_shape) {
 	if (typeof new_shape == 'number') new_shape = [new_shape];
 

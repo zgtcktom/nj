@@ -1,5 +1,9 @@
-import { tester, array, concatenate, asarray, atleast_2d } from './core.mjs';
+import { tester, array, concatenate, asarray, atleast_2d, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrs
+ * @returns {NDArray}
+ */
 export function row_stack(arrs) {
 	arrs = atleast_2d(...arrs);
 	if (!Array.isArray(arrs)) arrs = [arrs];

@@ -1,6 +1,9 @@
 import { NDArray, array, asarray, atleast_1d, ndenumerate, slice, tester } from './core.mjs';
 
-/** @return {NDArray[]} */
+/**
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function nonzero(a) {
 	a = atleast_1d(a);
 	let { ndim } = a;

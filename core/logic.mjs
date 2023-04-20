@@ -1,20 +1,70 @@
-import { array, tester, _wrap_map_unary, _wrap_reduce } from './core.mjs';
+import { array, tester, _wrap_map_unary, _wrap_reduce, NDArray } from './core.mjs';
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {number} axis
+ * @param {NDArray} out
+ * @param {boolean} keepdims
+ * @param {any} initial
+ * @param {boolean} return_scalar
+ * @returns {NDArray}
+ */
 export const all = _wrap_reduce('all', (accum, value) => accum && !!value, 1, true);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {number} axis
+ * @param {NDArray} out
+ * @param {boolean} keepdims
+ * @param {any} initial
+ * @param {boolean} return_scalar
+ * @returns {NDArray}
+ */
 export const any = _wrap_reduce('any', (accum, value) => accum || !!value, 1, false);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const isfinite = _wrap_map_unary('isfinite', Number.isFinite);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const isinf = _wrap_map_unary(
 	'isinf',
 	n => n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
 );
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const isna = _wrap_map_unary('isinf', Number.isNaN);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const isneginf = _wrap_map_unary('isinf', n => n == Number.NEGATIVE_INFINITY);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} out
+ * @returns {NDArray}
+ */
 export const isposinf = _wrap_map_unary('isinf', n => n == Number.POSITIVE_INFINITY);
 
 tester

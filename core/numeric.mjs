@@ -1,4 +1,4 @@
-import { normalize_axis_index, asarray, ndindex, slice } from './core.mjs';
+import { normalize_axis_index, asarray, ndindex, slice, NDArray } from './core.mjs';
 
 export function normalize_axis(axis, ndim, allow_duplicate = false) {
 	// https://github.com/numpy/numpy/blob/857c64a95339bd937fbcc5398246fd2dcf78f3ab/numpy/core/numeric.py#L1331
@@ -10,6 +10,7 @@ export function normalize_axis(axis, ndim, allow_duplicate = false) {
 
 export const normalize_axis_tuple = normalize_axis;
 
+/** @class */
 export class Nditer {
 	constructor(a, axis = null) {
 		this.array = asarray(a);
@@ -56,38 +57,12 @@ export class Nditer {
 	}
 }
 
+/**
+ * @param {NDArray} a
+ * @param {null|number|number[]} axis
+ * @returns {Nditer}
+ */
 export function nditer(a, axis = null) {
 	// no. this is not like numpy.iter
 	return new Nditer(a, axis);
 }
-
-// export function* nditer(a, axis = null) {
-// 	a = asarray(a);
-// 	if (axis == null) {
-// 		yield* a.flat;
-// 		return;
-// 	}
-// 	let { ndim, shape } = a;
-// 	axis = normalize_axis(axis, ndim);
-// 	let ndshape = [];
-// 	let indices = [];
-// 	let mask = [];
-// 	for (let i = 0; i < ndim; i++) {
-// 		if ((mask[i] = !axis.includes(i))) {
-// 			indices[i] = 0;
-// 			ndshape.push(shape[i]);
-// 		} else {
-// 			indices[i] = slice[':'];
-// 		}
-// 	}
-// 	console.log(axis, shape, ndshape);
-// 	for (let index of ndindex(ndshape)) {
-// 		for (let i = 0, j = 0; i < ndim; i++) {
-// 			if (mask[i]) {
-// 				indices[i] = index[j++];
-// 			}
-// 		}
-// 		console.log(indices.toString());
-// 		yield [index, a.get(...indices)];
-// 	}
-// }

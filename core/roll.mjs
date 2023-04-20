@@ -13,6 +13,59 @@ import {
 	empty_like,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number} shift
+ * @param {null|number|number[]} [axis]
+ * @returns {NDArray}
+ */
+export function roll(a, shift, axis = null) {
+	a = asarray(a);
+	if (axis == null) {
+		return roll(a.ravel(), shift, 0).reshape(a.shape);
+	} else {
+		axis = normalize_axis_tuple(axis, a.ndim, true);
+		let broadcasted = broadcast(shift, axis);
+		if (broadcasted.ndim > 1) {
+			throw new Error(`'shift' and 'axis' should be scalars or 1D sequences`);
+		}
+
+		let shifts = Array(a.ndim).fill(0);
+		for (let [sh, ax] of broadcasted) {
+			shifts[ax] += sh;
+		}
+
+		let rolls = Array(a.ndim).fill([[slice(null), slice(null)]]);
+
+		for (let [ax, offset] of shifts.entries()) {
+			offset %= a.shape[ax] || 1;
+			if (offset) {
+				rolls[ax] = [
+					[slice(null, -offset), slice(offset, null)],
+					[slice(-offset, null), slice(null, offset)],
+				];
+			}
+		}
+
+		let result = empty_like(a);
+		// console.log('rolls', rolls);
+		for (let indices of new Product(rolls)) {
+			let arr_index = indices.map(idx => idx[0]);
+			let res_index = indices.map(idx => idx[1]);
+			// for (let idx of indices) {
+			// 	// console.log('idx', idx);
+			// 	// if (!idx[0] || !idx[1]) break;
+			// 	arr_index.push(idx[0]);
+			// 	res_index.push(idx[1]);
+			// }
+
+			// console.log('?', res_index, arr_index);
+			result.set(res_index, a.get(arr_index));
+		}
+		return result;
+	}
+}
+
 export class Product {
 	constructor(iterables) {
 		this.length = iterables.length;
@@ -65,53 +118,6 @@ export class Product {
 		this.done = this.index >= this.size;
 
 		return { value, done: false };
-	}
-}
-
-export function roll(a, shift, axis = null) {
-	a = asarray(a);
-	if (axis == null) {
-		return roll(a.ravel(), shift, 0).reshape(a.shape);
-	} else {
-		axis = normalize_axis_tuple(axis, a.ndim, true);
-		let broadcasted = broadcast(shift, axis);
-		if (broadcasted.ndim > 1) {
-			throw new Error(`'shift' and 'axis' should be scalars or 1D sequences`);
-		}
-
-		let shifts = Array(a.ndim).fill(0);
-		for (let [sh, ax] of broadcasted) {
-			shifts[ax] += sh;
-		}
-
-		let rolls = Array(a.ndim).fill([[slice(null), slice(null)]]);
-
-		for (let [ax, offset] of shifts.entries()) {
-			offset %= a.shape[ax] || 1;
-			if (offset) {
-				rolls[ax] = [
-					[slice(null, -offset), slice(offset, null)],
-					[slice(-offset, null), slice(null, offset)],
-				];
-			}
-		}
-
-		let result = empty_like(a);
-		// console.log('rolls', rolls);
-		for (let indices of new Product(rolls)) {
-			let arr_index = indices.map(idx => idx[0]);
-			let res_index = indices.map(idx => idx[1]);
-			// for (let idx of indices) {
-			// 	// console.log('idx', idx);
-			// 	// if (!idx[0] || !idx[1]) break;
-			// 	arr_index.push(idx[0]);
-			// 	res_index.push(idx[1]);
-			// }
-
-			// console.log('?', res_index, arr_index);
-			result.set(res_index, a.get(arr_index));
-		}
-		return result;
 	}
 }
 

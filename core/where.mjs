@@ -2,21 +2,23 @@ import {
 	tester,
 	arange,
 	array,
-	asarray,
-	ones,
-	zeros,
 	slice,
 	NDArray,
 	nonzero,
 	broadcast,
 	less,
 	multiply,
-	empty_like,
 	empty,
 	ogrid,
 	add,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} condition
+ * @param {null|NDArray} [x]
+ * @param {null|NDArray} [y]
+ * @returns {NDArray}
+ */
 export function where(condition, x = null, y = null) {
 	if (x == null && y == null) return nonzero(condition);
 	let b = broadcast(condition, x, y);

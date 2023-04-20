@@ -1,7 +1,7 @@
 import { array, asarray, tester, arange, NDArray } from './core.mjs';
 
 /**
- * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+ * Returns a NDArray if only one argument is passed, otherwise returns an array of NDArrays
  * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
  * @example
@@ -23,9 +23,13 @@ export function atleast_1d(...arrays) {
 }
 
 /**
- * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+ * Returns a NDArray if only one argument is passed, otherwise returns an array of NDArrays
  * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
+ * @example
+ * atleast_2d(1.0) // array([[1]])
+ * @example
+ * atleast_2d(1, [3, 4]) // [array([[1]]), array([[3, 4]])]
  */
 export function atleast_2d(...arrays) {
 	if (arrays.length != 1) {
@@ -43,9 +47,13 @@ export function atleast_2d(...arrays) {
 }
 
 /**
- * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+ * Returns a NDArray if only one argument is passed, otherwise returns an array of NDArrays
  * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
+ * @example
+ * atleast_3d(1.0) // array([[[1]]])
+ * @example
+ * atleast_3d(1, [3, 4]) // [array([[[1]]]), array([[[3], [4]]])]
  */
 export function atleast_3d(...arrays) {
 	if (arrays.length != 1) {
@@ -92,7 +100,15 @@ tester
 			let y = x.at(0);
 			let z = atleast_1d(y);
 			z.set([0], -96);
-			return [x.toarray(), y.toarray(), z.toarray(), x.base === null, y.base === null, z.base != y, z.base];
+			return [
+				x.toarray(),
+				y.toarray(),
+				z.toarray(),
+				x.base === null,
+				y.base === null,
+				z.base != y,
+				z.base,
+			];
 		},
 		() => [array([1]), 1, array([-96]), true, false, true, array(-96)]
 	);

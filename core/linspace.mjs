@@ -1,5 +1,13 @@
 import { tester, NDArray, array } from './core.mjs';
 
+/**
+ * @param {number} start
+ * @param {number} stop
+ * @param {number} [num]
+ * @param {boolean} [endpoint]
+ * @param {boolean} [retstep]
+ * @returns {NDArray}
+ */
 export function linspace(start, stop, num = 50, endpoint = true, retstep = false) {
 	let step = (stop - start) / (endpoint ? num - 1 : num);
 	let data = [];

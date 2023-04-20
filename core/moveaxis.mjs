@@ -1,10 +1,10 @@
 import { tester, asarray, zeros, normalize_axis_tuple, transpose, NDArray } from './core.mjs';
 
 /**
- * @param {NDArray<T>} a
+ * @param {NDArray} a
  * @param {number|number[]} src
  * @param {number|number[]} dst
- * @returns {NDArray<T>}
+ * @returns {NDArray}
  */
 export function moveaxis(a, src, dst) {
 	a = asarray(a);

@@ -2,4 +2,6 @@ import { tester, arange, array, asarray, ones, zeros, slice, NDArray } from './c
 
 // TBD
 
-export function gradient(f, varargs, axis = null, edge_order = 1) {}
+export function gradient(f, varargs, axis = null, edge_order = 1) {
+	throw new Error();
+}

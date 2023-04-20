@@ -10,8 +10,17 @@ import {
 	multiply,
 	add,
 	divide,
+	NDArray,
 } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} y
+ * @param {null|NDArray} [x]
+ * @param {number} [dx]
+ * @param {number} [axis]
+ * @returns {NDArray}
+ */
 export function trapz(y, x = null, dx = 1.0, axis = -1) {
 	y = asarray(y);
 	let { ndim } = y;

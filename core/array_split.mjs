@@ -1,5 +1,11 @@
-import { tester, arange, array, slice, normalize_axis_index, swapaxes } from './core.mjs';
+import { tester, arange, array, slice, normalize_axis_index, swapaxes, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number|number[]} indices_or_sections
+ * @param {number} [axis]
+ * @returns {NDArray}
+ */
 export function array_split(a, indices_or_sections, axis = 0) {
 	let n_total, n_sections, div_points;
 	if (a.shape != null) {

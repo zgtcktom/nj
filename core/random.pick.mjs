@@ -125,6 +125,15 @@ function sample_tree(tree, level, offset, rand) {
 	return i - offset;
 }
 
+/**
+ * @param {number} size
+ * @param {null|number[]} [p]
+ * @param {boolean} [replace]
+ * @param {string} [method]
+ * @param {any[]} [data]
+ * @param {Function} [rand]
+ * @returns {any[]}
+ */
 export function pick(
 	size,
 	p = null,

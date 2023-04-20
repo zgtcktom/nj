@@ -1,5 +1,9 @@
-import { tester, array, concatenate, atleast_1d } from './core.mjs';
+import { tester, array, concatenate, atleast_1d, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray[]} arrays
+ * @returns {NDArray}
+ */
 export function hstack(arrays) {
 	arrays = atleast_1d(...arrays);
 	if (!Array.isArray(arrays)) arrays = [arrays];

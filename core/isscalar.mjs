@@ -1,5 +1,9 @@
 import { tester, array } from './core.mjs';
 
+/**
+ * @param {any} element
+ * @returns {boolean}
+ */
 export function isscalar(element) {
 	switch (typeof element) {
 		case 'boolean':

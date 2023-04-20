@@ -1,11 +1,7 @@
 import {
 	tester,
-	arange,
 	array,
 	asarray,
-	ones,
-	zeros,
-	slice,
 	NDArray,
 	negative,
 	multiply,
@@ -16,6 +12,15 @@ import {
 	subtract,
 } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {NDArray} b
+ * @param {number} [axis]
+ * @param {number} [axisa]
+ * @param {number} [axisb]
+ * @param {number} [axisc]
+ * @returns {NDArray}
+ */
 export function cross(a, b, axis = -1, axisa = axis, axisb = axis, axisc = axis) {
 	a = asarray(a);
 	b = asarray(b);

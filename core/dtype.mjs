@@ -7,11 +7,26 @@ class BooleanArray extends Array {}
 let Any = x => x;
 
 let lookup = new WeakMap();
+
+/**
+ * @class
+ */
 export class Dtype {
 	#array;
+
+	/**
+	 *
+	 * @param {Function} type
+	 * @param {class} array
+	 * @param {string} name
+	 */
 	constructor(type = Any, array = Array, name = `${type}`) {
+		/** @member {string} */
 		this.name = name;
+
+		/** @member {Function} */
 		this.type = type;
+
 		this.#array = array;
 
 		lookup.set(type, name);

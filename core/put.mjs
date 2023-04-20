@@ -12,7 +12,6 @@ import {
 } from './core.mjs';
 
 /**
- *
  * @param {NDArray} a array-like
  * @param {number|number[]} ind
  * @param {any[]} v

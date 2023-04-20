@@ -7,17 +7,25 @@ import {
 	shallow_array_equal,
 	slice,
 	array,
+	NDArray,
 } from './core.mjs';
 
-export function concatenate(arrays, axis = 0, out = null) {
-	if (arrays.length <= 0) throw 'need at least one array to concatenate';
+/**
+ * @param {NDArray[]} arrays
+ * @param {number|null} [axis]
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export function concatenate(arrays, axis = 0, out = undefined) {
+	if (arrays.length == 0) throw new Error('need at least one array to concatenate');
+
 	arrays = arrays.map(a => asarray(a));
 	if (axis == null) {
-		arrays = arrays.map(ravel);
+		arrays = arrays.map(a => ravel(a));
 		axis = 0;
 	}
 	let { ndim, shape } = arrays[0];
-	if (ndim == 0) throw 'zero-dimensional arrays cannot be concatenated';
+	if (ndim == 0) throw new Error('zero-dimensional arrays cannot be concatenated');
 
 	for (let i = 1; i < arrays.length; i++) {
 		let array = arrays[i];
@@ -28,7 +36,9 @@ export function concatenate(arrays, axis = 0, out = null) {
 		}
 		for (let j = 0; j < ndim; j++) {
 			if (j != axis && array.shape[j] != shape[j]) {
-				throw `all the input array dimensions for the concatenation axis must match exactly, but along dimension ${j}, the array at index 0 has size ${shape[j]} and the array at index ${i} has size ${arrays[i].shape[j]}`;
+				throw new Error(
+					`all the input array dimensions for the concatenation axis must match exactly, but along dimension ${j}, the array at index 0 has size ${shape[j]} and the array at index ${i} has size ${arrays[i].shape[j]}`
+				);
 			}
 		}
 	}
@@ -39,8 +49,8 @@ export function concatenate(arrays, axis = 0, out = null) {
 	outshape[axis] = arrays.reduce((a, b) => a + b.shape[axis], 0);
 
 	if (out == null) out = empty(outshape);
-	else if (out.ndim != ndim) throw 'Output array has wrong dimensionality';
-	else if (!shallow_array_equal(out.shape, outshape)) throw 'Output array is the wrong shape';
+	else if (out.ndim != ndim) throw new Error('output array has wrong dimensionality');
+	else if (!shallow_array_equal(out.shape, outshape)) throw new Error('output array is the wrong shape');
 
 	let slices = Array(ndim).fill(slice(':'));
 	let cumsum = 0;
