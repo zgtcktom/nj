@@ -23,6 +23,6 @@ import { NDArray, Slice } from './core/core.mjs';
 
 /**
  * If a method has the same name as a typical argument, e.g.: the `shape` in
- * `shape(a)` and `empty(shape)`, an alias `_shape(a)' will be provided.
+ * `shape(a)` and `empty(shape)`, an alias `shape_(a)' will be provided.
  * @typedef {*} functionName
  */

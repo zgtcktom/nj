@@ -1,29 +1,22 @@
-import { tester, array, slice, broadcast_to, ndoffset, ndindex, asarray, NDArray } from './core.mjs';
+import { tester, slice, broadcast_to, asarray, NDArray } from './core.mjs';
 
 /**
- *
  * @param {NDArray} dst
- * @param {NDArray} src
- * @param {boolean} where
+ * @param {NDArray} src array-like
+ * @returns {void}
  */
-export function copyto(dst, src, where = true) {
-	if (where == true) {
-		if (!(src instanceof NDArray) && !Array.isArray(src)) {
-			for (let offset of ndoffset(dst.shape, dst.strides)) {
-				dst.data[dst.offset + offset] = src;
-			}
-		} else {
-			src = broadcast_to(asarray(src), dst.shape);
-			let it = ndoffset(src.shape, src.strides);
-			for (let offset of ndoffset(dst.shape, dst.strides)) {
-				dst.data[dst.offset + offset] = src.data[src.offset + it.next().value];
-			}
-			// for (let index of ndindex(dst.shape)) {
-			// 	dst.itemset(index, src.item(index));
-			// }
+export function copyto(dst, src) {
+	src = asarray(src);
+	if (src.size == 1) {
+		let item = src.item();
+		for (let i of dst.keys()) {
+			dst.data[i] = item;
 		}
 	} else {
-		throw `haven't implement`;
+		let flat = broadcast_to(src, dst.shape).flat;
+		for (let i of dst.keys()) {
+			dst.data[i] = flat.next().value;
+		}
 	}
 }
 

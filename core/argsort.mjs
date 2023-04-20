@@ -1,5 +1,20 @@
-import { tester, array, asarray, normalize_axis_index, ravel, ndindex, empty_like } from './core.mjs';
+import {
+	tester,
+	array,
+	asarray,
+	normalize_axis_index,
+	ravel,
+	ndindex,
+	empty_like,
+	NDArray,
+} from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {number} axis
+ * @param {Function} key
+ * @returns {NDArray}
+ */
 export function argsort(a, axis = -1, key = null) {
 	a = asarray(a);
 	if (axis == null) {

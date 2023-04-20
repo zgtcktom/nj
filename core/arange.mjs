@@ -1,7 +1,7 @@
 import { tester, array, NDArray, empty } from './core.mjs';
 
 /**
- * The parameters can be float or integer numbers.
+ * The parameters can be either float or integer numbers.
  * @param {number} start
  * @param {number} [stop]
  * @param {number} [step]

@@ -1,5 +1,9 @@
-import { array, tester } from './core.mjs';
+import { NDArray, array, tester } from './core.mjs';
 
+/**
+ * @param {any} a
+ * @returns {NDArray}
+ */
 export function copy(a) {
 	return array(a);
 }

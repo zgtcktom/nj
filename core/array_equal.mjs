@@ -1,5 +1,41 @@
-import { all, array, asarray, equal, tester, _wrap_map_binary } from './core.mjs';
+import { all, array, asarray, equal, tester, _wrap_map_binary, NDArray } from './core.mjs';
 
+/**
+ * @param {NDArray} a1 array-like
+ * @param {NDArray} a2 array-like
+ * @param {boolean} [equal_nan]
+ * @returns {boolean}
+ */
+export function array_equal(a1, a2, equal_nan = false) {
+	a1 = asarray(a1);
+	a2 = asarray(a2);
+	if (!shallow_array_equal(a1.shape, a2.shape)) {
+		return false;
+	}
+	if (equal_nan) {
+		return all(equal_nan_map(a1, a2));
+	}
+	return all(equal(a1, a2));
+}
+
+/**
+ * @param {NDArray} a1 array-like
+ * @param {NDArray} a2 array-like
+ * @returns {boolean}
+ */
+export function array_equiv(a1, a2) {
+	a1 = asarray(a1);
+	a2 = asarray(a2);
+	if (!broadcastable(a1.shape, a2.shape)) return false;
+	return all(equal(a1, a2));
+}
+
+/**
+ * @param {any[]} a
+ * @param {any[]} b
+ * @returns {boolean}
+ * @ignore
+ */
 export function shallow_array_equal(a, b) {
 	if (a === b) return true;
 	if (a.length !== b.length) return false;
@@ -11,14 +47,6 @@ const equal_nan_map = _wrap_map_binary(
 	'nan_equal',
 	(x1, x2) => x1 == x2 || (Number.isNaN(x1) && Number.isNaN(x2))
 );
-
-export function array_equal(a1, a2, equal_nan = false) {
-	a1 = asarray(a1);
-	a2 = asarray(a2);
-	if (!shallow_array_equal(a1.shape, a2.shape)) return false;
-	if (equal_nan) return all(equal_nan_map(a1, a2));
-	return all(equal(a1, a2));
-}
 
 function broadcastable(...shapes) {
 	let ndim = 0;
@@ -34,13 +62,6 @@ function broadcastable(...shapes) {
 		}
 	}
 	return true;
-}
-
-export function array_equiv(a1, a2) {
-	a1 = asarray(a1);
-	a2 = asarray(a2);
-	if (!broadcastable(a1.shape, a2.shape)) return false;
-	return all(equal(a1, a2));
 }
 
 tester

@@ -1,29 +1,43 @@
-import { tester, NDArray, shape, _dtype, Dtype } from './core.mjs';
-
-function is_int(value) {
-	return Number.isInteger(value);
-}
-
-function get_size(shape) {
-	let size = 1;
-	for (let dim of shape) size *= dim;
-	return size;
-}
+import { tester, NDArray, dtype_, Dtype, get_size, asarray } from './core.mjs';
 
 /**
- *
- * @param {number[]} shape
- * @param {Dtype} dtype
+ * @param {number|number[]} shape
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  */
 export function empty(shape, dtype = undefined) {
-	dtype = _dtype(dtype);
-	if (is_int(shape)) shape = [shape];
+	shape = tuple_(shape);
+	dtype = dtype_(dtype);
 	return new NDArray(shape, dtype.new(get_size(shape)), dtype);
 }
 
-export function empty_like(prototype) {
-	return empty(shape(prototype));
+/**
+ * @param {NDArray} a array-like
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
+ */
+export function empty_like(a, dtype = undefined) {
+	a = asarray(a);
+	return empty(a.shape, dtype ?? a.dtype);
+}
+
+/**
+ * Returns an array-like object
+ * @param {any} value
+ * @returns {any[]}
+ * @ignore
+ */
+export function tuple_(value) {
+	// all falsy values are scalars
+	if (!value) return [value];
+
+	// object that supports .toarray() method
+	if (typeof value.toarray == 'function') value = value.toarray();
+
+	// array-like object
+	if (typeof value == 'object' && value.length != undefined) return value;
+
+	return [value];
 }
 
 tester

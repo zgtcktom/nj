@@ -64,13 +64,23 @@ Object.assign(dtypes, {
 });
 
 /**
- *
- * @param {Dtype|string|function} dtype
+ * @param {Dtype|string|Function} dtype
  * @param {function} array
  * @param {string} name
  * @returns {Dtype}
+ * @example
+ * dtype('number') == dtype(Number) // by string or value type function
+ * @example
+ * dtype('int8') == dtype(Int8Array) // by string or TypedArray constructor
+ * @example
+ * dtype('object') == dtype(Array) // default type and container
+ * @example
+ * dtype(dtype('object')) == dtype('object') // wraps dtype
+ * @example
+ * dtype() or dtype(null) // throws an error
  */
 export function dtype(dtype = 'object', array = undefined, name = undefined) {
+	// dtype ??= 'object';
 	if (typeof dtype == 'string') {
 		if (!Object.hasOwn(dtypes, dtype)) {
 			throw new Error(`${dtype} is not supported`);
@@ -84,6 +94,7 @@ export function dtype(dtype = 'object', array = undefined, name = undefined) {
 }
 
 export const _dtype = dtype;
+export const dtype_ = dtype;
 
 tester
 	.add(

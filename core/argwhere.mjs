@@ -1,5 +1,9 @@
 import { arange, array, asarray, greater, NDArray, ndenumerate, tester } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function argwhere(a) {
 	a = asarray(a);
 	let length = 0;
@@ -29,3 +33,7 @@ tester
 				[1, 2],
 			])
 	);
+
+// tester.onload(() => {
+// 	console.log(argwhere(greater(arange(6).reshape(2, 3), 1)));
+// });

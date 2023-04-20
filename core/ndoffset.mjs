@@ -1,7 +1,7 @@
 import { arange, slice, tester } from './core.mjs';
 
 /** @class */
-class Ndoffset {
+export class Ndoffset {
 	/**
 	 * @param {number[]} shape
 	 * @param {number[]} strides

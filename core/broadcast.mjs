@@ -1,28 +1,25 @@
-import { broadcast_shapes, asarray, tester, array, empty, broadcast_to } from './core.mjs';
+import { broadcast_shapes, asarray, tester, array, empty, broadcast_to, get_size, NDArray } from './core.mjs';
 
-function _size(shape) {
-	let size = 1;
-	for (let dim of shape) size *= dim;
-	return size;
-}
-
-// function extend(function_, class_) {
-// 	for (let name of Object.getOwnPropertyNames(class_)) {
-// 		let method = class_.prototype[name];
-// 		function_[name] = (self, ...args) => method.apply(self, args);
-// 	}
-// 	return function_;
-// }
-
+/**
+ * @class
+ */
 export class Broadcast {
+	/**
+	 * @param {NDArray[]} arrays
+	 */
 	constructor(arrays) {
-		arrays = arrays.map(asarray);
-		this.numiter = arrays.length;
+		/** @member {number[]} */
 		this.shape = broadcast_shapes(...arrays.map(array => array.shape));
+
+		/** @member {NDArray[]} */
 		this.arrays = arrays.map(array => broadcast_to(array, this.shape));
+
+		/** @member {number} */
 		this.ndim = this.shape.length;
-		this.size = _size(this.shape);
-		this.index = 0;
+
+		/** @member {number} */
+		this.size = get_size(this.shape);
+
 		this.reset();
 	}
 
@@ -31,6 +28,15 @@ export class Broadcast {
 		return this;
 	}
 
+	/**
+	 * @typedef {Object} BroadcastResult
+	 * @property {any} value
+	 * @property {boolean} done
+	 */
+
+	/**
+	 * @returns {BroadcastResult}
+	 */
 	next() {
 		let value = this.iters.map(iter => iter.next().value);
 		let done = this.index >= this.size;
@@ -39,13 +45,20 @@ export class Broadcast {
 	}
 
 	reset() {
+		/** @member {Flatiter[]} */
 		this.iters = this.arrays.map(array => array.flat);
+
+		/** @member {number} */
 		this.index = 0;
 	}
 }
 
+/**
+ * @param  {...NDArray} arrays
+ * @returns {Broadcast}
+ */
 export function broadcast(...arrays) {
-	return new Broadcast(arrays);
+	return new Broadcast(arrays.map(a => asarray(a)));
 }
 
 tester

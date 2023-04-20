@@ -8,9 +8,84 @@ import {
 	concatenate,
 	Slice,
 	shallow_array_equal,
-	guess_dtype,
-	_dtype,
+	guessType,
+	dtype_,
 } from './core.mjs';
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {FormatOptions} options
+ * @returns {string}
+ */
+export function array2string(a, options = null) {
+	options = options != null ? Object.assign(Object.create(_formatOptions), options) : _formatOptions;
+
+	let { separator, prefix } = options;
+
+	if (a.size == 0) return `[]`;
+
+	return _array2string(a, options, separator, prefix);
+}
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {number} linewidth
+ * @param {number} precision
+ * @returns {string}
+ */
+export function array_str(a, linewidth = null, precision = null) {
+	linewidth ??= _formatOptions.linewidth;
+	precision ??= _formatOptions.precision;
+
+	if (a.ndim == 0) return `${a.item()}`;
+
+	return array2string(a, { linewidth, precision });
+}
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {number} linewidth
+ * @param {number} precision
+ * @returns {string}
+ */
+export function array_repr(a, linewidth = null, precision = null) {
+	linewidth ??= _formatOptions.linewidth;
+	precision ??= _formatOptions.precision;
+
+	if (a.ndim == 0) return `${a.item()}`;
+
+	let class_name = a instanceof NDArray ? 'array' : typeof a;
+
+	let skipdtype = dtype_is_implied(a.dtype) && a.size > 0;
+
+	let prefix = class_name + '(';
+	let suffix = skipdtype ? ')' : ',';
+
+	let lst;
+	if (a.size > 0 || shallow_array_equal(a.shape, [0])) {
+		lst = array2string(a, { linewidth, precision, separator: ', ', prefix });
+	} else {
+		lst = `[], shape=[${a.shape.join(', ')}]`;
+	}
+
+	let arr_str = prefix + lst + suffix;
+
+	if (skipdtype) return arr_str;
+
+	let dtype_str = `dtype=${a.dtype.name})`;
+
+	let last_line_len = arr_str.length - (arr_str.lastIndexOf('\n') + 1);
+	let spacer = ' ';
+
+	if (last_line_len + dtype_str.length + 1 > linewidth) {
+		spacer = '\n' + ' '.repeat((class_name + '(').length);
+	}
+
+	return arr_str + spacer + dtype_str;
+}
 
 /**
  * @typedef {Object} FormatOptions
@@ -23,7 +98,10 @@ import {
  * @property {string} prefix
  */
 
-/** @type {FormatOptions} */
+/**
+ * @type {FormatOptions}
+ * @ignore
+ */
 let _formatOptions = {
 	edgeitems: 3,
 	threshold: 1000,
@@ -40,6 +118,7 @@ let _formatOptions = {
  * @param {number} edgeitems
  * @param {Array<number|Slice>} index
  * @returns {NDArray}
+ * @ignore
  */
 function _leading_trailing(a, edgeitems, index = []) {
 	let axis = index.length;
@@ -57,12 +136,20 @@ function _leading_trailing(a, edgeitems, index = []) {
 	return _leading_trailing(a, edgeitems, index.concat(index_exp(':')));
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class Callable {
 	get __call__() {
 		return this.call.bind(null, this);
 	}
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class IntegerFormat extends Callable {
 	/**
 	 *
@@ -89,6 +176,7 @@ class IntegerFormat extends Callable {
  * @param {number} x
  * @param {number|undefined} precision
  * @returns {string}
+ * @ignore
  */
 function scientific(x, precision) {
 	return x.toExponential(precision);
@@ -99,11 +187,16 @@ function scientific(x, precision) {
  * @param {number} x
  * @param {number|undefined} precision
  * @returns {string}
+ * @ignore
  */
 function positional(x, precision) {
 	return precision != undefined ? x.toFixed(precision) : String(x);
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class FloatingFormat extends Callable {
 	/**
 	 *
@@ -162,20 +255,24 @@ class FloatingFormat extends Callable {
 }
 
 /**
- *
  * @param {*} x
+ * @ignore
  */
 function default_format(x) {
 	if (typeof x == 'string') return `'${x}'`;
 	return `${x}`;
 }
 
+/**
+ * @param {*} x
+ * @ignore
+ */
 let indirect = x => () => x;
 
 /**
- *
  * @param {NDArray} data
  * @param {FormatOptions} options
+ * @ignore
  */
 function _get_formatdict(data, options) {
 	let formatdict = {
@@ -205,13 +302,12 @@ function all_integer(array) {
 function _get_format_function(data, options) {
 	let formatdict = _get_formatdict(data, options);
 	let array = data.flat.copy().data;
-	let type = guess_dtype(array);
-	let dtype = type == _dtype('number') ? (all_integer(array) ? 'int' : 'float') : 'object';
+	let type = guessType(array);
+	let dtype = dtype_(type) == dtype_('number') ? (all_integer(array) ? 'int' : 'float') : 'object';
 	return formatdict[dtype](options);
 }
 
 /**
- *
  * @param {string} s
  * @param {string} line
  * @param {string} word
@@ -219,6 +315,7 @@ function _get_format_function(data, options) {
  * @param {string} next_line_prefix
  * @param {number} legacy
  * @returns {string[]}
+ * @ignore
  */
 function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
 	let needs_wrap = line.length + word.length > line_width;
@@ -237,7 +334,6 @@ function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
 }
 
 /**
- *
  * @param {string} s
  * @param {string} line
  * @param {string} word
@@ -245,6 +341,7 @@ function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
  * @param {string} next_line_prefix
  * @param {number} legacy
  * @returns {string[]}
+ * @ignore
  */
 function _extendLine_pretty(s, line, word, line_width, next_line_prefix, legacy) {
 	let words = word.split(/\r?\n/);
@@ -391,12 +488,12 @@ function _formatArray(
 }
 
 /**
- *
  * @param {NDArray} a
  * @param {FormatOptions} options
  * @param {string} separator
  * @param {string} prefix
  * @returns {string}
+ * @ignore
  */
 function _array2string(a, options = _formatOptions, separator = ' ', prefix = '') {
 	let data = asarray(a);
@@ -428,83 +525,8 @@ function _array2string(a, options = _formatOptions, separator = ' ', prefix = ''
 	return lst;
 }
 
-/**
- *
- * @param {NDArray} a
- * @param {FormatOptions} options
- * @returns {string}
- */
-export function array2string(a, options = null) {
-	options = options != null ? Object.assign(Object.create(_formatOptions), options) : _formatOptions;
-
-	let { separator, prefix } = options;
-
-	if (a.size == 0) return `[]`;
-
-	return _array2string(a, options, separator, prefix);
-}
-
-/**
- *
- * @param {NDArray} a
- * @param {number} linewidth
- * @param {number} precision
- * @returns {string}
- */
-export function array_str(a, linewidth = null, precision = null) {
-	linewidth ??= _formatOptions.linewidth;
-	precision ??= _formatOptions.precision;
-
-	if (a.ndim == 0) return `${a.item()}`;
-
-	return array2string(a, { linewidth, precision });
-}
-
 function dtype_is_implied(dtype) {
 	return ['number', 'boolean'].includes(dtype.name);
-}
-
-/**
- *
- * @param {NDArray} a
- * @param {number} linewidth
- * @param {number} precision
- * @returns {string}
- */
-export function array_repr(a, linewidth = null, precision = null) {
-	linewidth ??= _formatOptions.linewidth;
-	precision ??= _formatOptions.precision;
-
-	if (a.ndim == 0) return `${a.item()}`;
-
-	let class_name = a instanceof NDArray ? 'array' : typeof a;
-
-	let skipdtype = dtype_is_implied(a.dtype) && a.size > 0;
-
-	let prefix = class_name + '(';
-	let suffix = skipdtype ? ')' : ',';
-
-	let lst;
-	if (a.size > 0 || shallow_array_equal(a.shape, [0])) {
-		lst = array2string(a, { linewidth, precision, separator: ', ', prefix });
-	} else {
-		lst = `[], shape=[${a.shape.join(', ')}]`;
-	}
-
-	let arr_str = prefix + lst + suffix;
-
-	if (skipdtype) return arr_str;
-
-	let dtype_str = `dtype=${a.dtype.name})`;
-
-	let last_line_len = arr_str.length - (arr_str.lastIndexOf('\n') + 1);
-	let spacer = ' ';
-
-	if (last_line_len + dtype_str.length + 1 > linewidth) {
-		spacer = '\n' + ' '.repeat((class_name + '(').length);
-	}
-
-	return arr_str + spacer + dtype_str;
 }
 
 tester

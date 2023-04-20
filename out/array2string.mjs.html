@@ -36,9 +36,84 @@
 	concatenate,
 	Slice,
 	shallow_array_equal,
-	guess_dtype,
-	_dtype,
+	guessType,
+	dtype_,
 } from './core.mjs';
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {FormatOptions} options
+ * @returns {string}
+ */
+export function array2string(a, options = null) {
+	options = options != null ? Object.assign(Object.create(_formatOptions), options) : _formatOptions;
+
+	let { separator, prefix } = options;
+
+	if (a.size == 0) return `[]`;
+
+	return _array2string(a, options, separator, prefix);
+}
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {number} linewidth
+ * @param {number} precision
+ * @returns {string}
+ */
+export function array_str(a, linewidth = null, precision = null) {
+	linewidth ??= _formatOptions.linewidth;
+	precision ??= _formatOptions.precision;
+
+	if (a.ndim == 0) return `${a.item()}`;
+
+	return array2string(a, { linewidth, precision });
+}
+
+/**
+ *
+ * @param {NDArray} a
+ * @param {number} linewidth
+ * @param {number} precision
+ * @returns {string}
+ */
+export function array_repr(a, linewidth = null, precision = null) {
+	linewidth ??= _formatOptions.linewidth;
+	precision ??= _formatOptions.precision;
+
+	if (a.ndim == 0) return `${a.item()}`;
+
+	let class_name = a instanceof NDArray ? 'array' : typeof a;
+
+	let skipdtype = dtype_is_implied(a.dtype) &amp;&amp; a.size > 0;
+
+	let prefix = class_name + '(';
+	let suffix = skipdtype ? ')' : ',';
+
+	let lst;
+	if (a.size > 0 || shallow_array_equal(a.shape, [0])) {
+		lst = array2string(a, { linewidth, precision, separator: ', ', prefix });
+	} else {
+		lst = `[], shape=[${a.shape.join(', ')}]`;
+	}
+
+	let arr_str = prefix + lst + suffix;
+
+	if (skipdtype) return arr_str;
+
+	let dtype_str = `dtype=${a.dtype.name})`;
+
+	let last_line_len = arr_str.length - (arr_str.lastIndexOf('\n') + 1);
+	let spacer = ' ';
+
+	if (last_line_len + dtype_str.length + 1 > linewidth) {
+		spacer = '\n' + ' '.repeat((class_name + '(').length);
+	}
+
+	return arr_str + spacer + dtype_str;
+}
 
 /**
  * @typedef {Object} FormatOptions
@@ -51,7 +126,10 @@
  * @property {string} prefix
  */
 
-/** @type {FormatOptions} */
+/**
+ * @type {FormatOptions}
+ * @ignore
+ */
 let _formatOptions = {
 	edgeitems: 3,
 	threshold: 1000,
@@ -68,6 +146,7 @@ let _formatOptions = {
  * @param {number} edgeitems
  * @param {Array&lt;number|Slice>} index
  * @returns {NDArray}
+ * @ignore
  */
 function _leading_trailing(a, edgeitems, index = []) {
 	let axis = index.length;
@@ -85,12 +164,20 @@ function _leading_trailing(a, edgeitems, index = []) {
 	return _leading_trailing(a, edgeitems, index.concat(index_exp(':')));
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class Callable {
 	get __call__() {
 		return this.call.bind(null, this);
 	}
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class IntegerFormat extends Callable {
 	/**
 	 *
@@ -117,6 +204,7 @@ class IntegerFormat extends Callable {
  * @param {number} x
  * @param {number|undefined} precision
  * @returns {string}
+ * @ignore
  */
 function scientific(x, precision) {
 	return x.toExponential(precision);
@@ -127,11 +215,16 @@ function scientific(x, precision) {
  * @param {number} x
  * @param {number|undefined} precision
  * @returns {string}
+ * @ignore
  */
 function positional(x, precision) {
 	return precision != undefined ? x.toFixed(precision) : String(x);
 }
 
+/**
+ * @class
+ * @ignore
+ */
 class FloatingFormat extends Callable {
 	/**
 	 *
@@ -190,20 +283,24 @@ class FloatingFormat extends Callable {
 }
 
 /**
- *
  * @param {*} x
+ * @ignore
  */
 function default_format(x) {
 	if (typeof x == 'string') return `'${x}'`;
 	return `${x}`;
 }
 
+/**
+ * @param {*} x
+ * @ignore
+ */
 let indirect = x => () => x;
 
 /**
- *
  * @param {NDArray} data
  * @param {FormatOptions} options
+ * @ignore
  */
 function _get_formatdict(data, options) {
 	let formatdict = {
@@ -233,13 +330,12 @@ function all_integer(array) {
 function _get_format_function(data, options) {
 	let formatdict = _get_formatdict(data, options);
 	let array = data.flat.copy().data;
-	let type = guess_dtype(array);
-	let dtype = type == _dtype('number') ? (all_integer(array) ? 'int' : 'float') : 'object';
+	let type = guessType(array);
+	let dtype = dtype_(type) == dtype_('number') ? (all_integer(array) ? 'int' : 'float') : 'object';
 	return formatdict[dtype](options);
 }
 
 /**
- *
  * @param {string} s
  * @param {string} line
  * @param {string} word
@@ -247,6 +343,7 @@ function _get_format_function(data, options) {
  * @param {string} next_line_prefix
  * @param {number} legacy
  * @returns {string[]}
+ * @ignore
  */
 function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
 	let needs_wrap = line.length + word.length > line_width;
@@ -265,7 +362,6 @@ function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
 }
 
 /**
- *
  * @param {string} s
  * @param {string} line
  * @param {string} word
@@ -273,6 +369,7 @@ function _extendLine(s, line, word, line_width, next_line_prefix, legacy) {
  * @param {string} next_line_prefix
  * @param {number} legacy
  * @returns {string[]}
+ * @ignore
  */
 function _extendLine_pretty(s, line, word, line_width, next_line_prefix, legacy) {
 	let words = word.split(/\r?\n/);
@@ -419,12 +516,12 @@ function _formatArray(
 }
 
 /**
- *
  * @param {NDArray} a
  * @param {FormatOptions} options
  * @param {string} separator
  * @param {string} prefix
  * @returns {string}
+ * @ignore
  */
 function _array2string(a, options = _formatOptions, separator = ' ', prefix = '') {
 	let data = asarray(a);
@@ -456,83 +553,8 @@ function _array2string(a, options = _formatOptions, separator = ' ', prefix = ''
 	return lst;
 }
 
-/**
- *
- * @param {NDArray} a
- * @param {FormatOptions} options
- * @returns {string}
- */
-export function array2string(a, options = null) {
-	options = options != null ? Object.assign(Object.create(_formatOptions), options) : _formatOptions;
-
-	let { separator, prefix } = options;
-
-	if (a.size == 0) return `[]`;
-
-	return _array2string(a, options, separator, prefix);
-}
-
-/**
- *
- * @param {NDArray} a
- * @param {number} linewidth
- * @param {number} precision
- * @returns {string}
- */
-export function array_str(a, linewidth = null, precision = null) {
-	linewidth ??= _formatOptions.linewidth;
-	precision ??= _formatOptions.precision;
-
-	if (a.ndim == 0) return `${a.item()}`;
-
-	return array2string(a, { linewidth, precision });
-}
-
 function dtype_is_implied(dtype) {
 	return ['number', 'boolean'].includes(dtype.name);
-}
-
-/**
- *
- * @param {NDArray} a
- * @param {number} linewidth
- * @param {number} precision
- * @returns {string}
- */
-export function array_repr(a, linewidth = null, precision = null) {
-	linewidth ??= _formatOptions.linewidth;
-	precision ??= _formatOptions.precision;
-
-	if (a.ndim == 0) return `${a.item()}`;
-
-	let class_name = a instanceof NDArray ? 'array' : typeof a;
-
-	let skipdtype = dtype_is_implied(a.dtype) &amp;&amp; a.size > 0;
-
-	let prefix = class_name + '(';
-	let suffix = skipdtype ? ')' : ',';
-
-	let lst;
-	if (a.size > 0 || shallow_array_equal(a.shape, [0])) {
-		lst = array2string(a, { linewidth, precision, separator: ', ', prefix });
-	} else {
-		lst = `[], shape=[${a.shape.join(', ')}]`;
-	}
-
-	let arr_str = prefix + lst + suffix;
-
-	if (skipdtype) return arr_str;
-
-	let dtype_str = `dtype=${a.dtype.name})`;
-
-	let last_line_len = arr_str.length - (arr_str.lastIndexOf('\n') + 1);
-	let spacer = ' ';
-
-	if (last_line_len + dtype_str.length + 1 > linewidth) {
-		spacer = '\n' + ' '.repeat((class_name + '(').length);
-	}
-
-	return arr_str + spacer + dtype_str;
 }
 
 tester
@@ -579,13 +601,13 @@ tester
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Broadcast.html">Broadcast</a></li><li><a href="Flatiter.html">Flatiter</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add">add</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#argsort">argsort</a></li><li><a href="global.html#argwhere">argwhere</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_equal">array_equal</a></li><li><a href="global.html#array_equiv">array_equiv</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#ascontiguousarray">ascontiguousarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#broadcast">broadcast</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#broadcast_to">broadcast_to</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#divide">divide</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#empty_like">empty_like</a></li><li><a href="global.html#floor_divide">floor_divide</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#full_like">full_like</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#mod">mod</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#multiply">multiply</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#ones">ones</a></li><li><a href="global.html#ones_like">ones_like</a></li><li><a href="global.html#power">power</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#ravel">ravel</a></li><li><a href="global.html#remainder">remainder</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#subtract">subtract</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li><li><a href="global.html#true_divide">true_divide</a></li><li><a href="global.html#zeros">zeros</a></li><li><a href="global.html#zeros_like">zeros_like</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 00:22:17 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 17:33:57 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -504,12 +504,16 @@ export function _wrap_map_unary(name, fn, use_args = false) {
 	return Object.defineProperty(func, 'name', { value: name });
 }
 
+/**
+ * @param {string} name
+ * @param {function(any, any): any} fn
+ * @ignore
+ */
 export function _wrap_map_binary(name, fn) {
 	/**
-	 *
 	 * @param {NDArray} x1
 	 * @param {NDArray} x2
-	 * @param {NDArray} out
+	 * @param {NDArray} [out]
 	 * @returns {NDArray}
 	 */
 	function func(x1, x2, out = null) {
@@ -532,9 +536,9 @@ export function _wrap_accum_unary(name, fn, defaultinitial) {
 	/**
 	 *
 	 * @param {ArrayLike} x1
-	 * @param {number} axis
-	 * @param {NDArray} out
-	 * @param {any} initial
+	 * @param {number} [axis]
+	 * @param {NDArray} [out]
+	 * @param {any} [initial]
 	 * @returns {NDArray}
 	 */
 	function func(x1, axis = null, out = null, initial = defaultinitial) {

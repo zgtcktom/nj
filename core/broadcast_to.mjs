@@ -1,30 +1,27 @@
 import { tester, NDArray, asarray } from './core.mjs';
 
-function broadcastable_to(srcshape, dstshape) {
-	if (srcshape.length > dstshape.length) return false;
+/**
+ * @param {NDArray} a array-like
+ * @param {number[]} shape
+ * @returns {NDArray}
+ */
+export function broadcast_to(a, shape) {
+	a = asarray(a);
+	let { data, strides, offset, dtype, ndim } = a;
 
-	for (let i = dstshape.length - 1, j = srcshape.length - 1; j >= 0; i--, j--) {
-		if (!(srcshape[j] == 1 || srcshape[j] == dstshape[i])) return false;
-	}
-	return true;
-}
-
-export function broadcast_to(array, shape) {
-	array = asarray(array);
-	if (array.shape.length > shape.length) {
+	if (ndim > shape.length) {
 		throw new Error('broadcast shape has less dimensions than input array');
 	}
 
-	let { data, strides, offset, itemsize, dtype } = array;
-
 	let new_strides = [];
-	for (let i = shape.length - 1, j = array.shape.length - 1; i >= 0; i--, j--) {
-		if (j >= 0 && array.shape[j] != 1 && array.shape[j] != shape[i])
-			throw 'operands could not be broadcast together';
-		new_strides[i] = j < 0 || array.shape[j] == 1 ? 0 : strides[j];
+	for (let i = shape.length - 1, j = a.shape.length - 1; i >= 0; i--, j--) {
+		if (j >= 0 && !(a.shape[j] == 1 || a.shape[j] == shape[i])) {
+			throw new Error('operands could not be broadcast together');
+		}
+		new_strides[i] = j < 0 || a.shape[j] == 1 ? 0 : strides[j];
 	}
 
-	return new NDArray(shape, data, dtype, array, new_strides, offset, itemsize);
+	return new NDArray(shape, data, dtype, a, new_strides, offset);
 }
 
 tester.add(

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: put.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: put.mjs</h1>
 
     
 
@@ -26,44 +26,96 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import {
+	tester,
+	arange,
+	array,
+	asarray,
+	ones,
+	zeros,
+	slice,
+	NDArray,
+	amax,
+	normalize_axis_index,
+} from './core.mjs';
 
 /**
+ *
  * @param {NDArray} a array-like
- * @param {Dtype} [dtype]
- * @returns {NDArray}
+ * @param {number|number[]} ind
+ * @param {any[]} v
+ * @param {string} [mode]
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
+export function put(a, ind, v, mode = 'raise') {
+	if (typeof ind == 'number') ind = [ind];
+	if (typeof v == 'number') v = [v];
+
+	ind = _normalize_indices(ind, mode, a.size, 0);
+	let flat = a.flat;
+	let n = v.length;
+	for (let i = 0; i &lt; ind.length; i++) {
+		flat.set(ind[i], v[i % n]);
 	}
-	return array(a, dtype);
+}
+
+function _normalize_indices_raise(indices, size, throw_axis) {
+	let out = Array(indices.length);
+	for (let i = 0; i &lt; indices.length; i++) {
+		let idx = indices[i];
+		if (idx &lt; 0) idx += size;
+		if (idx &lt; 0 || idx >= size) {
+			throw `index ${indices[i]} is out of bounds for axis ${throw_axis} with size ${size}`;
+		}
+		out[i] = idx;
+	}
+	return out;
+}
+
+function _normalize_indices_wrap(indices, size) {
+	let out = Array(indices.length);
+	for (let i = 0; i &lt; indices.length; i++) {
+		let idx = indices[i] % size;
+		if (idx &lt; 0) idx += size;
+		out[i] = idx;
+	}
+	return out;
+}
+
+function _normalize_indices_clip(indices, size) {
+	let out = Array(indices.length);
+	for (let i = 0; i &lt; indices.length; i++) {
+		let idx = indices[i];
+		out[i] = Math.max(0, Math.min(idx, size - 1));
+	}
+	return out;
+}
+
+function _normalize_indices(indices, mode, size, throw_axis) {
+	if (mode == 'raise') return _normalize_indices_raise(indices, size, throw_axis);
+	if (mode == 'wrap') return _normalize_indices_wrap(indices, size);
+	if (mode == 'clip') return _normalize_indices_clip(indices, size);
+
+	throw `unexpected mode ${mode}`;
 }
 
 tester
 	.add(
-		'asarray',
+		put,
 		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
+			let a = arange(5);
+			put(a, [0, 2], [-44, -55]);
+			return a;
 		},
-		() => true
+		() => array([-44, 1, -55, 3, 4])
 	)
 	.add(
-		'asarray',
-		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
+		put,
+		() => {
+			let a = arange(5);
+			put(a, 22, -5, 'clip');
+			return a;
+		},
+		() => array([0, 1, 2, 3, -5])
 	);
 </code></pre>
         </article>

@@ -72,6 +72,8 @@
 	Dtype,
 	shallow_array_equal,
 	any,
+	dtype_,
+	Ndoffset,
 } from './core.mjs';
 
 /**
@@ -107,7 +109,7 @@ export class NDArray {
 		this.offset = offset;
 
 		/** @member {Dtype} */
-		this.dtype = dtype ?? _dtype(data.constructor);
+		this.dtype = dtype_(dtype ?? data.constructor);
 
 		/** @member {NDArray|null} */
 		this.base = base?.base ?? base;
@@ -137,6 +139,25 @@ export class NDArray {
 		for (let i = 0; i &lt; this.shape[0]; i++) {
 			yield this.at(i);
 		}
+	}
+
+	/**
+	 * Returns `ndoffset(this.shape, this.strides, this.offset)`.
+	 *
+	 * Useful when iterating `this.data[i]` or `this.item(i)` in a `for (let i of this.keys())` loop.
+	 * @returns {Ndoffset}
+	 */
+	keys() {
+		let { shape, strides, offset } = this;
+		return ndoffset(shape, strides, offset);
+	}
+
+	/**
+	 * Returns `this.flat`.
+	 * @returns {Flatiter}
+	 */
+	values() {
+		return this.flat;
 	}
 
 	/**
@@ -238,6 +259,22 @@ export class NDArray {
 	itemset(index, scalar) {
 		this.data[this.idx(index)] = scalar;
 		return this;
+	}
+
+	/**
+	 * @param {Dtype} dtype
+	 * @param {boolean} [copy]
+	 * @returns {NDArray}
+	 */
+	astype(dtype, copy = true) {
+		dtype = dtype_(dtype);
+		copy ||= this.dtype != dtype;
+
+		if (!copy) return this;
+
+		let { shape, size } = this;
+		let data = dtype.new(size, [...this.flat]);
+		return new NDArray(shape, data, dtype);
 	}
 
 	/**
@@ -346,10 +383,6 @@ export class NDArray {
 	 */
 	argsort(axis = -1, key = null) {
 		return argsort(this, axis, key);
-	}
-
-	astype() {
-		throw `not implemented`;
 	}
 
 	byteswap() {
@@ -553,6 +586,7 @@ export class NDArray {
 	// reshape
 
 	/**
+	 * inplace resize
 	 * @param {number[]} new_shape
 	 * @returns {NDArray} this
 	 */
@@ -721,7 +755,7 @@ function get_strides(shape, ndim, itemsize) {
  * @returns {number}
  * @ignore
  */
-function get_size(shape) {
+export function get_size(shape) {
 	let size = 1;
 	for (let dim of shape) size *= dim;
 	return size;
@@ -1375,13 +1409,13 @@ tester
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Flatiter.html">Flatiter</a></li><li><a href="FloatingFormat.html">FloatingFormat</a></li><li><a href="IntegerFormat.html">IntegerFormat</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_array2string">_array2string</a></li><li><a href="global.html#_extendLine">_extendLine</a></li><li><a href="global.html#_extendLine_pretty">_extendLine_pretty</a></li><li><a href="global.html#_formatOptions">_formatOptions</a></li><li><a href="global.html#_get_formatdict">_get_formatdict</a></li><li><a href="global.html#_leading_trailing">_leading_trailing</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#default_format">default_format</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#positional">positional</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#scientific">scientific</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Broadcast.html">Broadcast</a></li><li><a href="Flatiter.html">Flatiter</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="Ndoffset.html">Ndoffset</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add">add</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#argsort">argsort</a></li><li><a href="global.html#argwhere">argwhere</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_equal">array_equal</a></li><li><a href="global.html#array_equiv">array_equiv</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#ascontiguousarray">ascontiguousarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#broadcast">broadcast</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#broadcast_to">broadcast_to</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#divide">divide</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#empty_like">empty_like</a></li><li><a href="global.html#floor_divide">floor_divide</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#full_like">full_like</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#mod">mod</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#multiply">multiply</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#ones">ones</a></li><li><a href="global.html#ones_like">ones_like</a></li><li><a href="global.html#power">power</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#ravel">ravel</a></li><li><a href="global.html#remainder">remainder</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#subtract">subtract</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#transpose">transpose</a></li><li><a href="global.html#true_divide">true_divide</a></li><li><a href="global.html#zeros">zeros</a></li><li><a href="global.html#zeros_like">zeros_like</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 00:22:17 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 17:33:57 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

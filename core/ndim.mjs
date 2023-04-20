@@ -2,7 +2,7 @@ import { asarray, shape, tester } from './core.mjs';
 
 /**
  * Return the ndim of an array without invoking array creation.
- * @param {*} a
+ * @param {any} a
  * @returns {number}
  */
 export function ndim(a) {

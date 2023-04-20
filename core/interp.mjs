@@ -19,7 +19,7 @@ import {
 
 export function interp(x, xp, fp, left = null, right = null, period = null) {
 	// not going to very strict check
-	[x, xp, fp] = [x, xp, fp].map(asarray);
+	[x, xp, fp] = [x, xp, fp].map(a => asarray(a));
 	if (xp.ndim != 1 || fp.ndim != 1) throw `Data points must be 1-D sequences`;
 	if (xp.shape[0] != fp.shape[0]) throw `fp and xp are not of the same length`;
 

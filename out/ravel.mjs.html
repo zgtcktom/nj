@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: ravel.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: ravel.mjs</h1>
 
     
 
@@ -26,44 +26,65 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, array, ascontiguousarray, NDArray, arange, slice } from './core.mjs';
 
 /**
- * @param {NDArray} a array-like
- * @param {Dtype} [dtype]
+ * @param {NDArray} a
  * @returns {NDArray}
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
-	}
-	return array(a, dtype);
+export function ravel(a) {
+	a = ascontiguousarray(a);
+	let { size, data, base, dtype, offset, itemsize } = a;
+	return new NDArray([size], data, dtype, base, undefined, offset, itemsize);
 }
 
 tester
 	.add(
-		'asarray',
-		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
+		ravel,
+		() =>
+			ravel(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			),
+		() => array([1, 2, 3, 4, 5, 6])
 	)
 	.add(
-		'asarray',
+		ravel,
 		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
+			ravel(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]).T
+			),
+		() => array([1, 4, 2, 5, 3, 6])
+	)
+	.add(
+		ravel,
+		() => ravel(arange(12).reshape(2, 3, 2).swapaxes(1, 2)),
+		() => array([0, 2, 4, 1, 3, 5, 6, 8, 10, 7, 9, 11])
+	)
+	.add(
+		ravel,
+		() => {
+			let x, y;
+			x = arange(40).reshape([5, -1]).copy();
+			y = x.at(null, slice(':'), null, null, slice('::2'), null);
+			return [y.reshape(-1).base == x, ravel(y).base];
+		},
+		() => [true, null]
+	)
+	.add(
+		ravel,
+		() => {
+			let x, y;
+			x = arange(40).reshape([5, -1]).copy();
+			y = x.at(null, slice(':'), null, null, slice('::3'), null);
+			return [y.reshape(-1).base == x, ravel(y).base];
+		},
+		() => [false, null]
 	);
 </code></pre>
         </article>

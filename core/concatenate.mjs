@@ -11,7 +11,7 @@ import {
 
 export function concatenate(arrays, axis = 0, out = null) {
 	if (arrays.length <= 0) throw 'need at least one array to concatenate';
-	arrays = arrays.map(asarray);
+	arrays = arrays.map(a => asarray(a));
 	if (axis == null) {
 		arrays = arrays.map(ravel);
 		axis = 0;

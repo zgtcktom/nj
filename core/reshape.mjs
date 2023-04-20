@@ -1,46 +1,14 @@
-import { tester, asarray, NDArray, array, ascontiguousarray, arange, slice, ndindex } from './core.mjs';
+import { tester, asarray, NDArray, array, arange, slice, get_size, tuple_ } from './core.mjs';
 
 /**
- * Determines whether the array can `.reshape(-1)` without creating a copy.
- *
- * i.e.: can iterate using a constant stride (without using a `[i, j, k]` indices)
- * @param {number[]} shape
- * @param {number[]} strides
- * @param {number} ndim
- * @returns {boolean}
- * @ignore
- */
-function even_strides(shape, strides, ndim) {
-	let lastindex;
-	for (let i = ndim - 1; i > 0; i--) {
-		if (shape[i] > 1) {
-			lastindex = i;
-			break;
-		}
-	}
-	for (let i = lastindex - 1; i >= 0; i--) {
-		if (shape[i] > 1) {
-			if (strides[i] != strides[lastindex] * shape[lastindex]) return false;
-			lastindex = i;
-		}
-	}
-	return true;
-}
-
-function get_size(shape) {
-	let size = 1;
-	for (let dim of shape) size *= dim;
-	return size;
-}
-
-/**
- * @param {NDArray} a
+ * @param {NDArray} a array-like
  * @param {number[]} newshape
  * @returns {NDArray}
  */
 export function reshape(a, newshape) {
 	a = asarray(a);
-	if (typeof newshape == 'number') newshape = [newshape];
+	newshape = tuple_(newshape);
+
 	let unknown = -1;
 	let rest = 1;
 	for (let i = 0; i < newshape.length; i++) {
@@ -95,7 +63,6 @@ export function reshape(a, newshape) {
 		}
 	}
 
-	// console.log(newshape.length == 1, even_strides(a.strides, a.shape, a.ndim));
 	// for reshape(a, [-1])
 	let strides = null;
 
@@ -105,7 +72,36 @@ export function reshape(a, newshape) {
 		a = array(a);
 	}
 
-	return new NDArray(newshape, a.data, a.dtype, a, strides, a.offset, a.itemsize);
+	let { data, dtype, offset, itemsize } = a;
+
+	return new NDArray(newshape, data, dtype, a, strides, offset, itemsize);
+}
+
+/**
+ * Determines whether the array can `.reshape(-1)` without creating a copy.
+ *
+ * i.e.: can iterate using a constant stride (without using a `[i, j, k]` indices)
+ * @param {number[]} shape
+ * @param {number[]} strides
+ * @param {number} ndim
+ * @returns {boolean}
+ * @ignore
+ */
+function even_strides(shape, strides, ndim) {
+	let lastindex;
+	for (let i = ndim - 1; i > 0; i--) {
+		if (shape[i] > 1) {
+			lastindex = i;
+			break;
+		}
+	}
+	for (let i = lastindex - 1; i >= 0; i--) {
+		if (shape[i] > 1) {
+			if (strides[i] != strides[lastindex] * shape[lastindex]) return false;
+			lastindex = i;
+		}
+	}
+	return true;
 }
 
 tester

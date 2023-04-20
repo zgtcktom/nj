@@ -107,7 +107,11 @@ export class Flatiter {
 		}
 		if (typeof index == 'string') index = slice(index);
 
-		value = asarray(value).flatten().data;
+		if (value instanceof Flatiter) {
+			value = [...value];
+		} else {
+			value = asarray(value).flatten().data;
+		}
 
 		let it = index instanceof Slice ? index.indices(base.size) : asarray(index).flat;
 

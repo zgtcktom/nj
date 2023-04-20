@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: copy.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: copy.mjs</h1>
 
     
 
@@ -26,45 +26,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { NDArray, array, tester } from './core.mjs';
 
 /**
- * @param {NDArray} a array-like
- * @param {Dtype} [dtype]
+ * @param {any} a
  * @returns {NDArray}
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
-	}
-	return array(a, dtype);
+export function copy(a) {
+	return array(a);
 }
 
-tester
-	.add(
-		'asarray',
-		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
-	)
-	.add(
-		'asarray',
-		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
-	);
+tester.add(
+	copy,
+	() => {
+		let x, y, z;
+		x = array([1, 2, 3]);
+		y = x;
+		z = copy(x);
+		x.set([0], 10);
+		return [x.item(0) == y.item(0), x.item(0) == z.item(0)];
+	},
+	() => [true, false]
+);
 </code></pre>
         </article>
     </section>

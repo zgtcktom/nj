@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: zeros.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: zeros.mjs</h1>
 
     
 
@@ -26,45 +26,25 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { Dtype, NDArray, full, full_like } from './core.mjs';
+
+/**
+ * @param {number[]} shape
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
+ */
+export function zeros(shape, dtype = undefined) {
+	return full(shape, 0, dtype);
+}
 
 /**
  * @param {NDArray} a array-like
  * @param {Dtype} [dtype]
  * @returns {NDArray}
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
-	}
-	return array(a, dtype);
+export function zeros_like(a, dtype = undefined) {
+	return full_like(a, 0, dtype);
 }
-
-tester
-	.add(
-		'asarray',
-		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
-	)
-	.add(
-		'asarray',
-		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
-	);
 </code></pre>
         </article>
     </section>

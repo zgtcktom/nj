@@ -1,4 +1,4 @@
-import { NDArray, array, atleast_1d, ndenumerate, slice, tester } from './core.mjs';
+import { NDArray, array, asarray, atleast_1d, ndenumerate, slice, tester } from './core.mjs';
 
 /** @return {NDArray[]} */
 export function nonzero(a) {
@@ -13,8 +13,7 @@ export function nonzero(a) {
 			}
 		}
 	}
-	for (let i = 0; i < ndim; i++) indices[i] = array(indices[i]);
-	return indices;
+	return indices.map(a => asarray(a));
 }
 
 tester

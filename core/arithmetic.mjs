@@ -1,18 +1,86 @@
-import { tester, arange, array, _wrap_map_binary } from './core.mjs';
+import { tester, arange, array, _wrap_map_binary, NDArray } from './core.mjs';
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const add = _wrap_map_binary('add', (x1, x2) => x1 + x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const subtract = _wrap_map_binary('subtract', (x1, x2) => x1 - x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const multiply = _wrap_map_binary('multiply', (x1, x2) => x1 * x2);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const divide = _wrap_map_binary('divide', (x1, x2) => x1 / x2);
+
+/**
+ * @function
+ * @description alias of `divide`
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const true_divide = divide;
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const floor_divide = _wrap_map_binary('floor_divide', (x1, x2) => (x1 / x2) | 0);
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const mod = _wrap_map_binary('mod', (x1, x2) => ((x1 % x2) + x2) % x2);
+
+/**
+ * @function
+ * @description alias of `mod`
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const remainder = mod;
 
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
 export const power = _wrap_map_binary('power', (x1, x2) => x1 ** x2);
 
 tester.add(

@@ -1,9 +1,13 @@
 import { tester, array, ascontiguousarray, NDArray, arange, slice } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @returns {NDArray}
+ */
 export function ravel(a) {
 	a = ascontiguousarray(a);
-	let { size, data, dtype, offset, itemsize } = a;
-	return new NDArray([size], data, dtype, a.base, undefined, offset, itemsize);
+	let { size, data, base, dtype, offset, itemsize } = a;
+	return new NDArray([size], data, dtype, base, undefined, offset, itemsize);
 }
 
 tester

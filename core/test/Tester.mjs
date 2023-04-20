@@ -31,7 +31,7 @@ function default_compare(a, b) {
 function _print(a) {
 	if (a instanceof NDArray) {
 		// console.log(a);
-		a = a.toString();
+		a = a.valueOf();
 	}
 	if (Array.isArray(a)) return JSON.stringify(a);
 	return a;

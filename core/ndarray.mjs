@@ -44,6 +44,8 @@ import {
 	Dtype,
 	shallow_array_equal,
 	any,
+	dtype_,
+	Ndoffset,
 } from './core.mjs';
 
 /**
@@ -79,7 +81,7 @@ export class NDArray {
 		this.offset = offset;
 
 		/** @member {Dtype} */
-		this.dtype = dtype ?? _dtype(data.constructor);
+		this.dtype = dtype_(dtype ?? data.constructor);
 
 		/** @member {NDArray|null} */
 		this.base = base?.base ?? base;
@@ -109,6 +111,25 @@ export class NDArray {
 		for (let i = 0; i < this.shape[0]; i++) {
 			yield this.at(i);
 		}
+	}
+
+	/**
+	 * Returns `ndoffset(this.shape, this.strides, this.offset)`.
+	 *
+	 * Useful when iterating `this.data[i]` or `this.item(i)` in a `for (let i of this.keys())` loop.
+	 * @returns {Ndoffset}
+	 */
+	keys() {
+		let { shape, strides, offset } = this;
+		return ndoffset(shape, strides, offset);
+	}
+
+	/**
+	 * Returns `this.flat`.
+	 * @returns {Flatiter}
+	 */
+	values() {
+		return this.flat;
 	}
 
 	/**
@@ -210,6 +231,22 @@ export class NDArray {
 	itemset(index, scalar) {
 		this.data[this.idx(index)] = scalar;
 		return this;
+	}
+
+	/**
+	 * @param {Dtype} dtype
+	 * @param {boolean} [copy]
+	 * @returns {NDArray}
+	 */
+	astype(dtype, copy = true) {
+		dtype = dtype_(dtype);
+		copy ||= this.dtype != dtype;
+
+		if (!copy) return this;
+
+		let { shape, size } = this;
+		let data = dtype.new(size, [...this.flat]);
+		return new NDArray(shape, data, dtype);
 	}
 
 	/**
@@ -318,10 +355,6 @@ export class NDArray {
 	 */
 	argsort(axis = -1, key = null) {
 		return argsort(this, axis, key);
-	}
-
-	astype() {
-		throw `not implemented`;
 	}
 
 	byteswap() {
@@ -525,6 +558,7 @@ export class NDArray {
 	// reshape
 
 	/**
+	 * inplace resize
 	 * @param {number[]} new_shape
 	 * @returns {NDArray} this
 	 */
@@ -693,7 +727,7 @@ function get_strides(shape, ndim, itemsize) {
  * @returns {number}
  * @ignore
  */
-function get_size(shape) {
+export function get_size(shape) {
 	let size = 1;
 	for (let dim of shape) size *= dim;
 	return size;

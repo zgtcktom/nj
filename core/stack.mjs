@@ -10,7 +10,7 @@ import {
 } from './core.mjs';
 
 export function stack(arrays, axis = 0, out = null) {
-	arrays = arrays.map(asarray);
+	arrays = arrays.map(a => asarray(a));
 
 	if (arrays.length == 0) {
 		throw `need at least one array to stack`;

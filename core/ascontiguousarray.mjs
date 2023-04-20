@@ -1,29 +1,33 @@
-import { array, asarray, tester, slice, ones } from './core.mjs';
+import { array, asarray, tester, slice, ones, NDArray, Dtype } from './core.mjs';
 
+/**
+ * @param {NDArray} a
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
+ */
+export function ascontiguousarray(a, dtype = undefined) {
+	a = asarray(a, dtype);
+	if (contiguous(a)) return a;
+	return array(a);
+}
+
+/**
+ * Always returns `false` if `ndim == 0`
+ * @param {NDArray} a
+ * @returns {boolean}
+ * @ignore
+ */
 export function contiguous(a) {
 	let { strides, shape, ndim, itemsize } = a;
 	if (ndim == 0) return false;
-	// if (shape[ndim - 1] != 1 && strides[ndim - 1] != itemsize) return false;
 
-	// console.log('asda');
 	for (let i = ndim - 1; i >= 0; i--) {
 		if (shape[i] > 1) {
-			// console.log(itemsize, strides[i], itemsize * shape[i]);
 			if (itemsize != strides[i]) return false;
 			itemsize *= shape[i];
 		}
 	}
 	return true;
-	// for (let i = ndim - 1; i > 0; i--) {
-	// 	if (shape[i - 1] != 1 && shape[i] != 1 && strides[i] * shape[i] != strides[i - 1]) return false;
-	// }
-	// return true;
-}
-
-export function ascontiguousarray(a) {
-	let arr = asarray(a);
-	if (contiguous(arr)) return arr;
-	return array(arr);
 }
 
 tester.add(

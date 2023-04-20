@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: argwhere.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: argwhere.mjs</h1>
 
     
 
@@ -26,45 +26,45 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { arange, array, asarray, greater, NDArray, ndenumerate, tester } from './core.mjs';
 
 /**
- * @param {NDArray} a array-like
- * @param {Dtype} [dtype]
+ * @param {NDArray} a
  * @returns {NDArray}
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
+export function argwhere(a) {
+	a = asarray(a);
+	let length = 0;
+	let data = [];
+	for (let [index, value] of ndenumerate(a)) {
+		if (!value) continue;
+		data.push(...index);
+		length++;
 	}
-	return array(a, dtype);
+	return new NDArray([length, a.ndim], data);
 }
 
 tester
 	.add(
-		'asarray',
-		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
+		argwhere,
+		() => argwhere(55).shape,
+		() => [1, 0]
 	)
 	.add(
-		'asarray',
+		argwhere,
+		() => argwhere(greater(arange(6).reshape(2, 3), 1)),
 		() =>
-			asarray([
+			array([
+				[0, 2],
+				[1, 0],
+				[1, 1],
 				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
+			])
 	);
+
+// tester.onload(() => {
+// 	console.log(argwhere(greater(arange(6).reshape(2, 3), 1)));
+// });
 </code></pre>
         </article>
     </section>

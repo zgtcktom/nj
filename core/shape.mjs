@@ -54,6 +54,7 @@ export function shape(a) {
 }
 
 export const _shape = shape;
+export const shape_ = shape;
 
 tester
 	.add(

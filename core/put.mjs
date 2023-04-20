@@ -11,6 +11,25 @@ import {
 	normalize_axis_index,
 } from './core.mjs';
 
+/**
+ *
+ * @param {NDArray} a array-like
+ * @param {number|number[]} ind
+ * @param {any[]} v
+ * @param {string} [mode]
+ */
+export function put(a, ind, v, mode = 'raise') {
+	if (typeof ind == 'number') ind = [ind];
+	if (typeof v == 'number') v = [v];
+
+	ind = _normalize_indices(ind, mode, a.size, 0);
+	let flat = a.flat;
+	let n = v.length;
+	for (let i = 0; i < ind.length; i++) {
+		flat.set(ind[i], v[i % n]);
+	}
+}
+
 function _normalize_indices_raise(indices, size, throw_axis) {
 	let out = Array(indices.length);
 	for (let i = 0; i < indices.length; i++) {
@@ -43,24 +62,12 @@ function _normalize_indices_clip(indices, size) {
 	return out;
 }
 
-export function _normalize_indices(indices, mode, size, throw_axis) {
+function _normalize_indices(indices, mode, size, throw_axis) {
 	if (mode == 'raise') return _normalize_indices_raise(indices, size, throw_axis);
 	if (mode == 'wrap') return _normalize_indices_wrap(indices, size);
 	if (mode == 'clip') return _normalize_indices_clip(indices, size);
 
 	throw `unexpected mode ${mode}`;
-}
-
-export function put(a, ind, v, mode = 'raise') {
-	if (typeof ind == 'number') ind = [ind];
-	if (typeof v == 'number') v = [v];
-
-	ind = _normalize_indices(ind, mode, a.size, 0);
-	let flat = a.flat;
-	let n = v.length;
-	for (let i = 0; i < ind.length; i++) {
-		flat.set(ind[i], v[i % n]);
-	}
 }
 
 tester

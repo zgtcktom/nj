@@ -1,12 +1,16 @@
-import { tester, NDArray, array } from './core.mjs';
+import { tester, NDArray, array, Dtype } from './core.mjs';
 
 /**
- *
- * @param {NDArray<T>|any} a
- * @returns {NDArray<T>}
+ * @param {NDArray} a array-like
+ * @param {Dtype} [dtype]
+ * @returns {NDArray}
  */
-export function asarray(a) {
-	return a instanceof NDArray ? a : array(a);
+export function asarray(a, dtype = undefined) {
+	if (a instanceof NDArray) {
+		if (dtype == undefined) return a;
+		return a.astype(dtype, false);
+	}
+	return array(a, dtype);
 }
 
 tester

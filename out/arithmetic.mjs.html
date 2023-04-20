@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: asarray.mjs</title>
+    <title>JSDoc: Source: arithmetic.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: asarray.mjs</h1>
+    <h1 class="page-title">Source: arithmetic.mjs</h1>
 
     
 
@@ -26,44 +26,196 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, NDArray, array, Dtype } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, arange, array, _wrap_map_binary, NDArray } from './core.mjs';
 
 /**
- * @param {NDArray} a array-like
- * @param {Dtype} [dtype]
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
  * @returns {NDArray}
  */
-export function asarray(a, dtype = undefined) {
-	if (a instanceof NDArray) {
-		if (dtype == undefined) return a;
-		return a.astype(dtype, false);
-	}
-	return array(a, dtype);
-}
+export const add = _wrap_map_binary('add', (x1, x2) => x1 + x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const subtract = _wrap_map_binary('subtract', (x1, x2) => x1 - x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const multiply = _wrap_map_binary('multiply', (x1, x2) => x1 * x2);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const divide = _wrap_map_binary('divide', (x1, x2) => x1 / x2);
+
+/**
+ * @function
+ * @description alias of `divide`
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const true_divide = divide;
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const floor_divide = _wrap_map_binary('floor_divide', (x1, x2) => (x1 / x2) | 0);
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const mod = _wrap_map_binary('mod', (x1, x2) => ((x1 % x2) + x2) % x2);
+
+/**
+ * @function
+ * @description alias of `mod`
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const remainder = mod;
+
+/**
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {NDArray} [out]
+ * @returns {NDArray}
+ */
+export const power = _wrap_map_binary('power', (x1, x2) => x1 ** x2);
+
+tester.add(
+	add,
+	() => add(arange(9.0).reshape([3, 3]), arange(3.0)),
+	() =>
+		array([
+			[0, 2, 4],
+			[3, 5, 7],
+			[6, 8, 10],
+		])
+);
 
 tester
 	.add(
-		'asarray',
-		() => {
-			let a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
+		subtract,
+		() => subtract(1.0, 4.0),
+		() => -3.0
 	)
 	.add(
-		'asarray',
+		subtract,
+		() => subtract(arange(9.0).reshape([3, 3]), arange(3.0)),
 		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
+			array([
+				[0, 0, 0],
+				[3, 3, 3],
+				[6, 6, 6],
+			])
+	);
+
+tester
+	.add(
+		multiply,
+		() => multiply(2.0, 4.0),
+		() => 8.0
+	)
+	.add(
+		subtract,
+		() => multiply(arange(9.0).reshape([3, 3]), arange(3.0)),
+		() =>
+			array([
+				[0, 1, 4],
+				[0, 4, 10],
+				[0, 7, 16],
+			])
+	);
+
+tester
+	.add(
+		divide,
+		() => divide(2.0, 4.0),
+		() => 0.5
+	)
+	.add(
+		divide,
+		() => divide(arange(9.0).reshape([3, 3]), arange(3.0)),
+		() =>
+			array([
+				[NaN, 1, 1],
+				[Infinity, 4, 2.5],
+				[Infinity, 7, 4],
+			])
+	);
+
+tester
+	.add(
+		mod,
+		() => mod([4, 7], [2, 3]),
+		() => array([0, 1])
+	)
+	.add(
+		mod,
+		() => mod(arange(7), 5),
+		() => array([0, 1, 2, 3, 4, 0, 1])
+	);
+
+tester
+	.add(
+		power,
+		() => power(arange(6), 3),
+		() => array([0, 1, 8, 27, 64, 125])
+	)
+	.add(
+		power,
+		() => power(arange(6), [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]),
+		() => array([0, 1, 8, 27, 16, 5])
+	)
+	.add(
+		power,
+		() =>
+			power(
+				arange(6),
+				array([
+					[1, 2, 3, 3, 2, 1],
+					[1, 2, 3, 3, 2, 1],
+				])
+			),
+		() =>
+			array([
+				[0, 1, 8, 27, 16, 5],
+				[0, 1, 8, 27, 16, 5],
+			])
+	)
+	.add(
+		power,
+		() => power(arange(6), array([1, 2, 3, 3, 2, 1])),
+		() => array([0, 1, 8, 27, 16, 5])
 	);
 </code></pre>
         </article>
