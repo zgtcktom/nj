@@ -1,4 +1,4 @@
-import { all, array, asarray, broadcastable, equal, tester, _wrap_map_binary } from './core.mjs';
+import { all, array, asarray, equal, tester, _wrap_map_binary } from './core.mjs';
 
 export function shallow_array_equal(a, b) {
 	if (a === b) return true;
@@ -18,6 +18,22 @@ export function array_equal(a1, a2, equal_nan = false) {
 	if (!shallow_array_equal(a1.shape, a2.shape)) return false;
 	if (equal_nan) return all(equal_nan_map(a1, a2));
 	return all(equal(a1, a2));
+}
+
+function broadcastable(...shapes) {
+	let ndim = 0;
+	for (let shape of shapes) ndim = Math.max(ndim, shape.length);
+
+	for (let i = 0; i < ndim; i++) {
+		let dim = -1;
+		for (let shape of shapes) {
+			let idx = shape.length - i - 1;
+			if (idx < 0) continue;
+			if (dim == -1) dim = shape[idx];
+			else if (dim != 1 && dim != shape[idx]) return false;
+		}
+	}
+	return true;
 }
 
 export function array_equiv(a1, a2) {
