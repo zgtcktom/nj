@@ -2539,6 +2539,10 @@
 
 
 
+<div class="description">
+    Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+</div>
+
 
 
 
@@ -2641,7 +2645,184 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line8">line 8</a>
+        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NDArray.html">NDArray</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="NDArray.html">NDArray</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>atleast_1d(1.0) // array([1])</code></pre>
+
+    <pre class="prettyprint"><code>atleast_1d(1, [3, 4]) // [array([1]), array([3, 4])]</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="atleast_2d"><span class="type-signature"></span>atleast_2d<span class="signature">(&hellip;arrays)</span><span class="type-signature"> &rarr; {<a href="NDArray.html">NDArray</a>|Array.&lt;<a href="NDArray.html">NDArray</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NDArray.html">NDArray</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -2698,12 +2879,16 @@
     
 
     
-    <h4 class="name" id="atleast_2d"><span class="type-signature"></span>atleast_2d<span class="signature">(arrays)</span><span class="type-signature"> &rarr; {<a href="NDArray.html">NDArray</a>|Array.&lt;<a href="NDArray.html">NDArray</a>>}</span></h4>
+    <h4 class="name" id="atleast_3d"><span class="type-signature"></span>atleast_3d<span class="signature">(&hellip;arrays)</span><span class="type-signature"> &rarr; {<a href="NDArray.html">NDArray</a>|Array.&lt;<a href="NDArray.html">NDArray</a>>}</span></h4>
     
 
     
 
 
+
+<div class="description">
+    Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+</div>
 
 
 
@@ -2726,6 +2911,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -2745,14 +2932,21 @@
             
                 
 <span class="param-type"><a href="NDArray.html">NDArray</a></span>
-|
-
-<span class="param-type">any</span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -2798,164 +2992,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line27">line 27</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="NDArray.html">NDArray</a></span>
-|
-
-<span class="param-type">Array.&lt;<a href="NDArray.html">NDArray</a>></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="atleast_3d"><span class="type-signature"></span>atleast_3d<span class="signature">(arrays)</span><span class="type-signature"> &rarr; {<a href="NDArray.html">NDArray</a>|Array.&lt;<a href="NDArray.html">NDArray</a>>}</span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>arrays</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="NDArray.html">NDArray</a></span>
-|
-
-<span class="param-type">any</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line49">line 49</a>
+        <a href="atleast.mjs.html">atleast.mjs</a>, <a href="atleast.mjs.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -11622,7 +11659,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 17:33:57 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 20 2023 18:48:01 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

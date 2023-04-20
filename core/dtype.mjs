@@ -93,7 +93,6 @@ export function dtype(dtype = 'object', array = undefined, name = undefined) {
 	return (dtypes[name] = new Dtype(dtype, array, name));
 }
 
-export const _dtype = dtype;
 export const dtype_ = dtype;
 
 tester

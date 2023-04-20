@@ -1,77 +1,67 @@
 import { array, asarray, tester, arange, NDArray } from './core.mjs';
 
 /**
- *
+ * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
  * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
+ * @example
+ * atleast_1d(1.0) // array([1])
+ * @example
+ * atleast_1d(1, [3, 4]) // [array([1]), array([3, 4])]
  */
 export function atleast_1d(...arrays) {
 	if (arrays.length != 1) {
-		let ret = [];
-		for (let array of arrays) ret.push(atleast_1d(array));
-		return ret;
+		return arrays.map(a => atleast_1d(a));
 	}
-	let array = asarray(arrays[0]);
-	if (array.ndim >= 1) return array;
-	// scalar array
-	array = array.copy();
-	let { data, itemsize, dtype } = array;
-	return new NDArray([1], data, dtype, array, [itemsize], 0, itemsize);
+
+	let a = asarray(arrays[0]);
+	let { ndim } = a;
+
+	if (ndim >= 1) return a;
+
+	return a.copy().reshape([1]);
 }
 
 /**
- *
- * @param  {...NDArray|any} arrays
+ * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+ * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
  */
 export function atleast_2d(...arrays) {
 	if (arrays.length != 1) {
-		let ret = [];
-		for (let array of arrays) ret.push(atleast_2d(array));
-		return ret;
+		return arrays.map(a => atleast_2d(a));
 	}
-	let array = asarray(arrays[0]);
-	if (array.ndim >= 2) return array;
-	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
-	if (ndim == 1) {
-		return new NDArray([1, shape[0]], data, dtype, array, [0, strides[0]], offset, itemsize);
-	}
-	// scalar array
-	array = array.copy();
-	return new NDArray([1, 1], array.data, dtype, array, [itemsize, itemsize], 0, itemsize);
+
+	let a = asarray(arrays[0]);
+	let { ndim, shape } = a;
+
+	if (ndim >= 2) return a;
+
+	if (ndim == 1) return a.reshape([1, shape[0]]);
+
+	return a.copy().reshape([1, 1]);
 }
 
 /**
- *
- * @param  {...NDArray|any} arrays
+ * Returns a NDArray if `arguments.length == 1`, otherwise an array of NDArrays
+ * @param  {...NDArray} arrays
  * @returns {NDArray|NDArray[]}
  */
 export function atleast_3d(...arrays) {
 	if (arrays.length != 1) {
-		let ret = [];
-		for (let array of arrays) ret.push(atleast_3d(array));
-		return ret;
+		return arrays.map(a => atleast_3d(a));
 	}
-	let array = asarray(arrays[0]);
-	if (array.ndim >= 3) return array;
-	let { shape, data, dtype, strides, offset, itemsize, ndim } = array;
-	if (ndim == 2) {
-		return new NDArray(
-			[shape[0], shape[1], 1],
-			data,
-			dtype,
-			array,
-			[strides[0], strides[1], 0],
-			offset,
-			itemsize
-		);
-	}
-	if (ndim == 1) {
-		return new NDArray([1, shape[0], 1], data, dtype, array, [0, strides[0], 0], offset, itemsize);
-	}
-	// scalar array
-	array = array.copy();
-	return new NDArray([1, 1, 1], array.data, dtype, array, [itemsize, itemsize, itemsize], 0, itemsize);
+
+	let a = asarray(arrays[0]);
+	let { ndim, shape } = a;
+
+	if (ndim >= 3) return a;
+
+	if (ndim == 2) return a.reshape([shape[0], shape[1], 1]);
+
+	if (ndim == 1) return a.reshape([1, shape[0], 1]);
+
+	return a.copy().reshape([1, 1, 1]);
 }
 
 tester

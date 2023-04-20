@@ -40,7 +40,6 @@ import {
 	variance,
 	array_repr,
 	array_str,
-	_dtype,
 	Dtype,
 	shallow_array_equal,
 	any,
