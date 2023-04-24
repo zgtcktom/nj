@@ -56,9 +56,10 @@ export function reshape(a, newshape) {
 				if (newshape[i] != 1) {
 					for (; j < a.shape.length && a.shape[j] == 1; j++);
 				}
-				strides.push(a.strides[j]);
+				strides.push(j < a.shape.length ? a.strides[j++] : 1);
 			}
 			// console.log(strides);
+			// console.log('reshape', newshape, strides, a.strides, a.shape);
 			return new NDArray(newshape, a.data, a.dtype, a, strides, a.offset, a.itemsize);
 		}
 	}

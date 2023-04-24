@@ -182,7 +182,7 @@ export function bincount(a, weights = null, minlength = 0) {
 		i++;
 	}
 
-	return new NDArray([data.length], data);
+	return array(data);
 }
 
 tester

@@ -1,4 +1,4 @@
-import { arange, asarray, count_nonzero, divide, NDArray, sum, tester } from './core.mjs';
+import { arange, array, asarray, count_nonzero, divide, NDArray, sum, tester } from './core.mjs';
 import { pick } from './random.pick.mjs';
 
 function get_size(shape) {
@@ -50,7 +50,7 @@ export function choice(a, shape = null, replace = true, p = null) {
 
 	let data = pick(size, p, replace).map(i => a[i]);
 
-	return new NDArray(shape, data);
+	return array(data).reshape(shape);
 }
 
 // tester

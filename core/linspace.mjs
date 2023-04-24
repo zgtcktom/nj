@@ -14,9 +14,9 @@ export function linspace(start, stop, num = 50, endpoint = true, retstep = false
 	for (let i = 0; i < num; i++) {
 		data[i] = start + i * step;
 	}
-	let array = new NDArray([num], data);
-	if (retstep) return [array, step];
-	return array;
+	let out = array(data);
+	if (retstep) return [out, step];
+	return out;
 }
 
 tester

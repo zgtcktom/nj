@@ -1,14 +1,12 @@
-import { tester, NDArray } from './core.mjs';
+import { tester, NDArray, Dtype, eye } from './core.mjs';
 
 /**
  * @param {number} n
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  */
-export function identity(n) {
-	let size = n * n;
-	let data = Array(size).fill(0);
-	for (let i = 0; i < size; i += n + 1) data[i] = 1;
-	return new NDArray([n, n], data);
+export function identity(n, dtype = 'number') {
+	return eye(n, n, 0, dtype);
 }
 
 tester

@@ -11,7 +11,7 @@ export function fromfunction(func, shape, dtype = undefined) {
 	for (let index of ndindex(shape)) {
 		data.push(func(index));
 	}
-	return new NDArray(shape, data, dtype ?? guessType(data));
+	return array(data, dtype ?? guessType(data)).reshape(shape);
 }
 
 tester

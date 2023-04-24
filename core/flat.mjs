@@ -124,7 +124,7 @@ export class Flatiter {
 
 	/**
 	 * Returns a copy of the flatten array
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	copy() {
 		return array([...this], this.base.dtype);
@@ -134,8 +134,8 @@ export class Flatiter {
 tester.add(
 	'Flatiter',
 	() => {
-		let array = new NDArray([2, 3], [0, 1, 2, 3, 4, 5]);
-		let a = new Flatiter(array);
+		let arr = array([0, 1, 2, 3, 4, 5]).reshape(2, 3);
+		let a = new Flatiter(arr);
 		let out = [];
 		// console.log(a.next());
 		for (let item of a) {
@@ -257,6 +257,11 @@ tester
 
 tester.add(
 	'Flatiter.copy',
-	() => new Flatiter(new NDArray([2, 3], [0, 1, 2, 3, 4, 5]).at(slice([, , -1]))).copy(),
+	() =>
+		new Flatiter(
+			array([0, 1, 2, 3, 4, 5])
+				.reshape(2, 3)
+				.at(slice([, , -1]))
+		).copy(),
 	() => [3, 4, 5, 0, 1, 2]
 );

@@ -1,14 +1,13 @@
 import { array, asarray, tester, slice, ones, NDArray, Dtype } from './core.mjs';
 
 /**
- * @param {NDArray} a
+ * @param {NDArray} a array-like
  * @param {Dtype} [dtype]
  * @returns {NDArray}
  */
 export function ascontiguousarray(a, dtype = undefined) {
 	a = asarray(a, dtype);
-	if (contiguous(a)) return a;
-	return array(a);
+	return contiguous(a) ? a : array(a);
 }
 
 /**

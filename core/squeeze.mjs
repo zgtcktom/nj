@@ -19,15 +19,14 @@ export function squeeze(a, axis = null) {
 	if (axis != null) {
 		axis = normalize_axis_tuple(axis);
 	}
-	let { shape, strides, data, dtype, ndim, offset, itemsize } = a;
+	let { shape, ndim } = a;
 	let newshape = [];
-	let newstrides = [];
 	for (let i = 0; i < ndim; i++) {
 		if (axis ? axis.includes(i) : shape[i] == 1) continue;
 		newshape.push(shape[i]);
-		newstrides.push(strides[i]);
 	}
-	return new NDArray(newshape, data, dtype, a, newstrides, offset, itemsize);
+
+	return a.reshape(newshape);
 }
 
 tester

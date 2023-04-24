@@ -1,19 +1,26 @@
-import { arange, array, asarray, greater, NDArray, ndenumerate, tester } from './core.mjs';
+import {
+	arange,
+	array,
+	atleast_1d,
+	greater,
+	NDArray,
+	ndim,
+	nonzero,
+	slice,
+	tester,
+	transpose,
+} from './core.mjs';
 
 /**
  * @param {NDArray} a
  * @returns {NDArray}
  */
 export function argwhere(a) {
-	a = asarray(a);
-	let length = 0;
-	let data = [];
-	for (let [index, value] of ndenumerate(a)) {
-		if (!value) continue;
-		data.push(...index);
-		length++;
+	if (ndim(a) == 0) {
+		a = atleast_1d(a);
+		return argwhere(a).at(slice(), slice(null, 0));
 	}
-	return new NDArray([length, a.ndim], data);
+	return transpose(nonzero(a));
 }
 
 tester
@@ -33,7 +40,3 @@ tester
 				[1, 2],
 			])
 	);
-
-// tester.onload(() => {
-// 	console.log(argwhere(greater(arange(6).reshape(2, 3), 1)));
-// });

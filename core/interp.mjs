@@ -60,7 +60,7 @@ export function interp(x, xp, fp, left = null, right = null, period = null) {
 		data[i++] = y;
 	}
 
-	return new NDArray(x.shape, data);
+	return array(data).reshape(x.shape);
 }
 
 tester

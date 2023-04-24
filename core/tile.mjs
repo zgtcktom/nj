@@ -1,4 +1,4 @@
-import { tester, arange, array, asarray, ones, zeros, slice, NDArray, amax } from './core.mjs';
+import { tester, array, NDArray } from './core.mjs';
 
 /**
  * @param {NDArray} a
@@ -10,9 +10,9 @@ export function tile(a, reps) {
 	let d = reps.length;
 
 	if (reps.every(x => x == 1) && a instanceof NDArray) {
-		return array(a, null, true, d);
+		return array(a, a.dtype, true, d);
 	}
-	let c = array(a, null, false, d);
+	let c = array(a, a.dtype, false, d);
 	if (d < c.ndim) {
 		reps = [...Array(c.ndim - d).fill(1), ...reps];
 	}

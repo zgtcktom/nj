@@ -47,10 +47,8 @@ export function convolve(a, v, mode = 'full') {
 		}
 	}
 	if (mode == 'same') data = data.slice(((v.size - 1) / 2) | 0, (((v.size - 1) / 2) | 0) + length);
-	return new NDArray([length], data);
+	return array(data);
 }
-
-// console.log(atleast_1d(10));
 
 tester
 	.add(

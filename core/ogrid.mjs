@@ -14,7 +14,7 @@ export function ogrid(...slices) {
 		}
 		let shape = Array(slices.length).fill(1);
 		shape[i] = slicelength;
-		out.push(new NDArray(shape, data));
+		out.push(array(data).reshape(shape));
 	}
 	return out;
 }

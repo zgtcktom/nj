@@ -1,4 +1,4 @@
-import { NDArray } from './core.mjs';
+import { NDArray, array } from './core.mjs';
 
 function get_size(shape) {
 	let size = 1;
@@ -14,7 +14,7 @@ export function random_sample(shape = null) {
 	for (let i = 0; i < size; i++) {
 		data[i] = Math.random();
 	}
-	return new NDArray(shape, data);
+	return array(data).reshape(shape);
 }
 
 // export const random = random_sample;

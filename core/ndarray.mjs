@@ -15,7 +15,6 @@ import {
 	sort,
 	cumsum,
 	repeat,
-	tupleType,
 	all,
 	argsort,
 	clip,
@@ -41,10 +40,11 @@ import {
 	array_repr,
 	array_str,
 	Dtype,
-	shallow_array_equal,
 	any,
 	dtype_,
 	Ndoffset,
+	greater_equal,
+	where,
 } from './core.mjs';
 
 /**
@@ -198,7 +198,10 @@ export class NDArray {
 		}
 
 		if (use_advanced_indexing(indices)) {
-			throw new Error('cannot use advanced indexing in .set()');
+			return this.set(where(indices, value, this));
+
+			// console.log(indices);
+			// throw new Error('cannot use advanced indexing in .set()');
 		}
 
 		copyto(basic_indexing(this, indices), value);
@@ -259,7 +262,7 @@ export class NDArray {
 
 		let dim = shape[0];
 		if (ndim == 1 && strides[0] == itemsize) {
-			return data.slice(offset, offset + dim);
+			return Array.prototype.slice.call(data, offset, offset + dim);
 		}
 		let array = [];
 		for (let i = 0; i < dim; i++) {
@@ -299,7 +302,7 @@ export class NDArray {
 
 	/**
 	 * `.reshape(1, 2)` is equivalent to `.reshape([1, 2])`
-	 * @param  {...number} shape
+	 * @param  {...number|number[]} shape
 	 * @returns {NDArray<T>}
 	 */
 	reshape(...shape) {
@@ -1251,18 +1254,40 @@ tester.add(
 	]
 );
 
-tester.add(
-	'ndarray.set',
-	() => {
-		let a = new NDArray([2, 5], [...Array(10).keys()]);
-		a.at(slice(), slice(1, -1)).set(10);
-		return a;
-	},
-	() => [
-		[0, 10, 10, 10, 4],
-		[5, 10, 10, 10, 9],
-	]
-);
+tester
+	.add(
+		'ndarray.set',
+		() => {
+			let a = new NDArray([2, 5], [...Array(10).keys()]);
+			a.at(slice(), slice(1, -1)).set(10);
+			return a;
+		},
+		() => [
+			[0, 10, 10, 10, 4],
+			[5, 10, 10, 10, 9],
+		]
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set(greater_equal(a, 10), -1);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[0, 1, 2, 3],
+					[4, 5, 6, 7],
+					[8, 9, -1, -1],
+				],
+				[
+					[-1, -1, -1, -1],
+					[-1, -1, -1, -1],
+					[-1, -1, -1, -1],
+				],
+			])
+	);
 
 tester.add(
 	'ndarray.flatten',
