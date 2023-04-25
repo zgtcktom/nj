@@ -120,7 +120,7 @@ export class NDArray {
 	}
 
 	/**
-	 * @returns {T|string}
+	 * @returns {any|string}
 	 */
 	valueOf() {
 		return this.ndim == 0 ? this.item() : array_repr(this);
@@ -222,7 +222,7 @@ export class NDArray {
 	 *
 	 * `.set(value)` is equivalent to `.set(['...'], value)`, but faster
 	 * @param  {Array<number|Slice|string|null>} indices
-	 * @param  {T} [value]
+	 * @param  {any} [value]
 	 * @returns {NDArray}
 	 */
 	set(indices, value) {
@@ -250,7 +250,7 @@ export class NDArray {
 	 * `index` can be undefined only if `a.size == 1`.
 	 *
 	 * @param {number|number[]|undefined} index
-	 * @returns {T}
+	 * @returns {any}
 	 */
 	item(index) {
 		return this.data[this.idx(index)];
@@ -261,7 +261,7 @@ export class NDArray {
 	 *
 	 * index can be undefined only if a.size == 1.
 	 * @param {number|number[]|undefined} index
-	 * @param {T} scalar
+	 * @param {any} scalar
 	 * @returns {NDArray}
 	 */
 	itemset(index, scalar) {
@@ -286,7 +286,7 @@ export class NDArray {
 	}
 
 	/**
-	 * @returns {T[]|T}
+	 * @returns {any[]|any}
 	 */
 	toarray() {
 		let { ndim, strides, itemsize, offset, data, shape } = this;
@@ -307,7 +307,7 @@ export class NDArray {
 
 	/**
 	 * Alias of .toarray()
-	 * @returns {T[]|T}
+	 * @returns {any[]|any}
 	 */
 	tolist() {
 		return this.toarray();
@@ -545,7 +545,7 @@ export class NDArray {
 
 	/**
 	 * @param {number[]} indices
-	 * @param {T[]} values
+	 * @param {any[]} values
 	 * @param {string} [mode]
 	 * @returns {NDArray} this
 	 */
@@ -603,7 +603,7 @@ export class NDArray {
 	}
 
 	/**
-	 * @param {T[]} v
+	 * @param {any[]} v
 	 * @param {string} [side]
 	 * @returns {NDArray}
 	 */

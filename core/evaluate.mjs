@@ -4,14 +4,14 @@ export function compile(fn, params = {}) {
 	console.log(fn.toString());
 }
 
-tester.add(
-	tester,
-	() => {
-		console.log([...ndoffset([1, 2, 3], [-2, -1, 1], 0)]);
-		compile(({ x }) => x * 5 + 1);
-		compile(function fn({ x }) {
-			return x * 5 + 1;
-		});
-	},
-	() => 1
-);
+// tester.add(
+// 	compile,
+// 	() => {
+// 		console.log([...ndoffset([1, 2, 3], [-2, -1, 1], 0)]);
+// 		compile(({ x }) => x * 5 + 1);
+// 		compile(function fn({ x }) {
+// 			return x * 5 + 1;
+// 		});
+// 	},
+// 	() => 1
+// );
