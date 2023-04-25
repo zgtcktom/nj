@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: swapaxes.mjs</title>
+    <title>JSDoc: Source: unravel_index.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: swapaxes.mjs</h1>
+    <h1 class="page-title">Source: unravel_index.mjs</h1>
 
     
 
@@ -26,58 +26,57 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { array, tester, NDArray, asarray, transpose } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, array, asarray, NDArray, get_size, empty } from './core.mjs';
 
 /**
- * @param {NDArray} a
- * @param {number} axis1
- * @param {number} axis2
- * @returns {NDArray}
+ * Expects non-negative indices
+ * @param {NDArray} indices array-like
+ * @param {number[]} shape
+ * @returns {NDArray[]}
+ * @example
+ * unravel_index([22, 41, 37], [7, 6])
+ * // [array([3, 6, 6]), array([4, 5, 1])]
+ * @example
+ * unravel_index(1621, [6, 7, 8, 9])
+ * // [3, 1, 4, 1]
  */
-export function swapaxes(a, axis1, axis2) {
-	a = asarray(a);
+export function unravel_index(indices, shape) {
+	indices = asarray(indices);
 
-	let axes = [...Array(a.ndim).keys()];
-	[axes[axis1], axes[axis2]] = [axes[axis2], axes[axis1]];
+	let ndim = shape.length;
+	let size = get_size(shape);
+	let out = empty([].concat(indices.shape, ndim));
 
-	return transpose(a, axes);
+	let i = 0;
+	for (let idx of indices.flat) {
+		if (idx &lt; 0 || idx >= size) {
+			throw new Error(`index ${idx} is out of bounds for array with size ${size}`);
+		}
+		for (let axis = ndim; axis--; ) {
+			out.data[i + axis] = idx % shape[axis];
+			idx = (idx / shape[axis]) | 0;
+		}
+		i += ndim;
+	}
+
+	let unraveled_coords = Array(ndim)
+		.fill()
+		.map((_, i) => i)
+		.map(i => out.at('...', i));
+
+	return unraveled_coords;
 }
 
 tester
 	.add(
-		swapaxes,
-		() => {
-			let x = array([[1, 2, 3]]);
-			return swapaxes(x, 0, 1);
-		},
-		() => array([[1], [2], [3]])
+		unravel_index,
+		() => unravel_index([22, 41, 37], [7, 6]),
+		() => [array([3, 6, 6]), array([4, 5, 1])]
 	)
 	.add(
-		swapaxes,
-		() => {
-			let x = array([
-				[
-					[0, 1],
-					[2, 3],
-				],
-				[
-					[4, 5],
-					[6, 7],
-				],
-			]);
-			return swapaxes(x, 0, 2);
-		},
-		() =>
-			array([
-				[
-					[0, 4],
-					[2, 6],
-				],
-				[
-					[1, 5],
-					[3, 7],
-				],
-			])
+		unravel_index,
+		() => unravel_index(1621, [6, 7, 8, 9]),
+		() => [3, 1, 4, 1]
 	);
 </code></pre>
         </article>

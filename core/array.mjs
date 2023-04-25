@@ -3,8 +3,8 @@ import { tester, NDArray, Dtype, dtype_, shape_ } from './core.mjs';
 /**
  * @param {NDArray} a array-like
  * @param {Dtype} [dtype]
- * @param {boolean} [copy]
- * @param {number} [ndmin]
+ * @param {boolean} [copy = true]
+ * @param {number} [ndmin = 0]
  * @returns {NDArray}
  */
 export function array(a, dtype = undefined, copy = true, ndmin = 0) {

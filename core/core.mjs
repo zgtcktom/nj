@@ -108,3 +108,7 @@ export * from './dot.mjs';
 export * from './array2string.mjs';
 
 export * from './ndoffset.mjs';
+export * from './unravel_index.mjs';
+export * from './ravel_multi_index.mjs';
+
+export * from './evaluate.mjs';

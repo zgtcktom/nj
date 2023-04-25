@@ -1,7 +1,8 @@
 import { tester, NDArray, dtype_, Dtype, get_size, asarray } from './core.mjs';
 
 /**
- * @param {number|number[]} shape
+ * empty(2) is equivalent to empty([2])
+ * @param {number|number[]} shape empty([]) for a scalar ndarray
  * @param {Dtype} [dtype]
  * @returns {NDArray}
  */

@@ -1,4 +1,4 @@
-import { tester, NDArray, Dtype, eye } from './core.mjs';
+import { tester, NDArray, Dtype, eye, array } from './core.mjs';
 
 /**
  * @param {number} n
@@ -22,5 +22,5 @@ tester
 	.add(
 		'identity',
 		() => identity(0),
-		() => []
+		() => array([]).reshape([0, 0])
 	);

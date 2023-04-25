@@ -73,7 +73,7 @@ export function repeat(a, repeats, axis = null) {
 		}
 	}
 
-	return out;
+	return out.astype(a.dtype);
 }
 
 tester

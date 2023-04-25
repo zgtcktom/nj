@@ -1,4 +1,4 @@
-import { tester, arange, array, asarray, NDArray, ndoffset } from './core.mjs';
+import { tester, arange, array, asarray, NDArray, ndoffset, empty } from './core.mjs';
 
 /**
  *
@@ -11,12 +11,13 @@ export function map(ndarray, callback, thisArg = null) {
 	ndarray = asarray(ndarray);
 	let { shape, strides, offset, data } = ndarray;
 
-	let out = [];
+	let out = empty(shape);
+	let i = 0;
 	for (let index of ndoffset(shape, strides, offset)) {
-		out.push(callback.call(thisArg, data[index], index, data));
+		out.data[i++] = callback.call(thisArg, data[index], index, data);
 	}
 
-	return new NDArray(shape, out);
+	return out;
 }
 
 tester.add(

@@ -1,14 +1,14 @@
 import { arange, array, asarray, NDArray, ones, tester } from './core.mjs';
 
 /**
- * @param {NDArray<T>} a
+ * @param {NDArray} a
  * @param {null|number[]} [axes]
- * @returns {NDArray<T>}
+ * @returns {NDArray}
  */
 export function transpose(a, axes = null) {
 	a = asarray(a);
 
-	let { ndim, shape, data, dtype, base, strides, offset, itemsize } = a;
+	let { ndim, shape, strides } = a;
 	let newshape, newstrides;
 	if (axes == null) {
 		newshape = shape.slice().reverse();
@@ -23,7 +23,7 @@ export function transpose(a, axes = null) {
 		}
 	}
 
-	return new NDArray(newshape, data, dtype, base ?? a, newstrides, offset, itemsize);
+	return a.as_strided(newshape, newstrides);
 }
 
 /**

@@ -1,4 +1,4 @@
-import { NDArray } from '../core.mjs';
+import { NDArray, array_equal } from '../core.mjs';
 
 function default_compare(a, b) {
 	if (a == b) return true;
@@ -9,23 +9,24 @@ function default_compare(a, b) {
 		}
 		return true;
 	}
-	if (typeof a == 'boolean' && typeof b == 'boolean') return a == b;
-	if (Number.isNaN(a) && Number.isNaN(b)) return true;
-	if (typeof a == 'number' && typeof b == 'number') return a == b;
-	if (typeof a == 'string' && typeof b == 'string') return a == b;
+	return array_equal(a, b, true);
+	// if (typeof a == 'boolean' && typeof b == 'boolean') return a == b;
+	// if (Number.isNaN(a) && Number.isNaN(b)) return true;
+	// if (typeof a == 'number' && typeof b == 'number') return a == b;
+	// if (typeof a == 'string' && typeof b == 'string') return a == b;
 
-	if (a?.toarray != undefined) return default_compare(a.toarray(), b);
-	if (b?.toarray != undefined) return default_compare(a, b.toarray());
+	// if (a?.toarray != undefined) return default_compare(a.toarray(), b);
+	// if (b?.toarray != undefined) return default_compare(a, b.toarray());
 
-	if (a?.constructor != b?.constructor) return false;
-	let a_keys = Object.getOwnPropertyNames(a);
-	let b_keys = Object.getOwnPropertyNames(b);
-	if (a_keys.length != b_keys.length) return false;
+	// if (a?.constructor != b?.constructor) return false;
+	// let a_keys = Object.getOwnPropertyNames(a);
+	// let b_keys = Object.getOwnPropertyNames(b);
+	// if (a_keys.length != b_keys.length) return false;
 
-	for (let i = 0; i < a_keys.length; i++) {
-		if (!default_compare(a[a_keys[i]], b[b_keys[i]])) return false;
-	}
-	return true;
+	// for (let i = 0; i < a_keys.length; i++) {
+	// 	if (!default_compare(a[a_keys[i]], b[b_keys[i]])) return false;
+	// }
+	// return true;
 }
 
 function _print(a) {
@@ -33,7 +34,7 @@ function _print(a) {
 		// console.log(a);
 		a = a.valueOf();
 	}
-	if (Array.isArray(a)) return JSON.stringify(a);
+	// if (Array.isArray(a)) return JSON.stringify(a);
 	return a;
 }
 

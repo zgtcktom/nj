@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.flatnonzero = exports.fix = exports.eye = exports.extract = exports.expm1 = exports.expand_dims = exports.exp2 = exports.exp = exports.equal = exports.empty_like = exports.empty = exports.ediff1d = exports.e = exports.dtype_ = exports.dtype = exports.dstack = exports.dsplit = exports.dot = exports.divide = exports.diff = exports.diagonal = exports.diag = exports.degrees = exports.deg2rad = exports.cumsum = exports.cumprod = exports.cross = exports.count_nonzero = exports.cosh = exports.cos = exports.copyto = exports.copysign = exports.copy = exports.convolve = exports.contiguous = exports.concatenate = exports.compress = exports.column_stack = exports.clip = exports.choice = exports.ceil = exports.cbrt = exports.broadcast_to = exports.broadcast_shapes = exports.broadcast = exports.bitwise_xor = exports.bitwise_or = exports.bitwise_not = exports.bitwise_and = exports.bincount = exports.average = exports.atleast_3d = exports.atleast_2d = exports.atleast_1d = exports.assert = exports.ascontiguousarray = exports.asarray = exports.array_str = exports.array_split = exports.array_repr = exports.array_equiv = exports.array_equal = exports.array2string = exports.array = exports.around = exports.argwhere = exports.argsort = exports.arctanh = exports.arctan2 = exports.arctan = exports.arcsinh = exports.arcsin = exports.arccosh = exports.arccos = exports.arange = exports.any = exports.amin = exports.amax = exports.all = exports.add = exports.absolute = exports.abs = exports._wrap_reduce = exports._wrap_map_unary = exports._wrap_map_binary = exports._wrap_map = exports._wrap_accum_unary = exports._shape = exports._ndim = exports.Tester = exports.Slice = exports.Product = exports.Ndoffset = exports.Nditer = exports.NINF = exports.NDArray = exports.Generator = exports.Flatiter = exports.Dtype = exports.Broadcast = void 0;
-exports.sample = exports.s_ = exports.row_stack = exports.roll = exports.rint = exports.right_shift = exports.resize = exports.reshape = exports.repeat = exports.remainder = exports.reciprocal = exports.ravel = exports.ranf = exports.random_sample = exports.random = exports.rand = exports.radians = exports.rad2deg = exports.put = exports.ptp = exports.prod = exports.power = exports.positive = exports.pick = exports.pi = exports.packbits = exports.ones_like = exports.ones = exports.ogrid = exports.not_equal = exports.normalize_axis_tuple = exports.normalize_axis_mask = exports.normalize_axis_index = exports.normalize_axis = exports.nonzero = exports.negative = exports.ndoffset = exports.nditer = exports.ndindex = exports.ndim = exports.ndenumerate = exports.nansum = exports.nanprod = exports.nancumsum = exports.nancumprod = exports.nan_to_num = exports.nan = exports.multiply = exports.moveaxis = exports.mod = exports.minimum = exports.mean = exports.maximum = exports.matmul = exports.map = exports.logaddexp2 = exports.logaddexp = exports.log2 = exports.log1p = exports.log10 = exports.log = exports.linspace = exports.less_equal = exports.less = exports.left_shift = exports.ldexp = exports.lcm = exports.ix_ = exports.isscalar = exports.isposinf = exports.isneginf = exports.isna = exports.isinf = exports.isfinite = exports.invert = exports.interp = exports.inf = exports.indices = exports.index_exp = exports.in1d = exports.identity = exports.hypot = exports.hstack = exports.hsplit = exports.guessType = exports.greater_equal = exports.greater = exports.gradient = exports.get_size = exports.gcd = exports.full_like = exports.full = exports.fromiter = exports.fromfunction = exports.fmod = exports.floor_divide = exports.floor = exports.flipud = exports.fliplr = exports.flip = void 0;
-exports.zeros_like = exports.zeros = exports.where = exports.vstack = exports.vsplit = exports.variance = exports.unwrap = exports.unpackbits = exports.tuple_ = exports.tupleType = exports.trunc = exports.true_divide = exports.trapz = exports.transpose = exports.timeit2 = exports.timeit = exports.tile = exports.tester = exports.tanh = exports.tan = exports.take = exports.swapaxes = exports.sum = exports.subtract = exports.std = exports.stack = exports.squeeze = exports.square = exports.sqrt = exports.split = exports.sort = exports.slice = exports.sinh = exports.sin = exports.signbit = exports.sign = exports.shape_ = exports.shape = exports.shallow_array_equal = exports.searchsorted = void 0;
+exports.fix = exports.eye = exports.extract = exports.expm1 = exports.expand_dims = exports.exp2 = exports.exp = exports.equal = exports.empty_like = exports.empty = exports.ediff1d = exports.e = exports.dtype_ = exports.dtype = exports.dstack = exports.dsplit = exports.dot = exports.divide = exports.diff = exports.diagonal = exports.diag = exports.degrees = exports.deg2rad = exports.cumsum = exports.cumprod = exports.cross = exports.count_nonzero = exports.cosh = exports.cos = exports.copyto = exports.copysign = exports.copy = exports.convolve = exports.contiguous = exports.concatenate = exports.compress = exports.compile = exports.column_stack = exports.clip = exports.choice = exports.ceil = exports.cbrt = exports.broadcast_to = exports.broadcast_shapes = exports.broadcast = exports.bitwise_xor = exports.bitwise_or = exports.bitwise_not = exports.bitwise_and = exports.bincount = exports.average = exports.atleast_3d = exports.atleast_2d = exports.atleast_1d = exports.assert = exports.ascontiguousarray = exports.asarray = exports.array_str = exports.array_split = exports.array_repr = exports.array_equiv = exports.array_equal = exports.array2string = exports.array = exports.around = exports.argwhere = exports.argsort = exports.arctanh = exports.arctan2 = exports.arctan = exports.arcsinh = exports.arcsin = exports.arccosh = exports.arccos = exports.arange = exports.any = exports.amin = exports.amax = exports.all = exports.add = exports.absolute = exports.abs = exports._wrap_reduce = exports._wrap_map_unary = exports._wrap_map_binary = exports._wrap_map = exports._wrap_accum_unary = exports._shape = exports._ndim = exports.Tester = exports.Slice = exports.Product = exports.Ndoffset = exports.Nditer = exports.NINF = exports.NDArray = exports.Generator = exports.Flatiter = exports.Dtype = exports.Broadcast = void 0;
+exports.roll = exports.rint = exports.right_shift = exports.resize = exports.reshape = exports.repeat = exports.remainder = exports.reciprocal = exports.ravel_multi_index = exports.ravel = exports.ranf = exports.random_sample = exports.random = exports.rand = exports.radians = exports.rad2deg = exports.put = exports.ptp = exports.prod = exports.power = exports.positive = exports.pick = exports.pi = exports.packbits = exports.ones_like = exports.ones = exports.ogrid = exports.not_equal = exports.normalize_axis_tuple = exports.normalize_axis_mask = exports.normalize_axis_index = exports.normalize_axis = exports.nonzero = exports.negative = exports.ndoffset = exports.nditer = exports.ndindex = exports.ndim = exports.ndenumerate = exports.nansum = exports.nanprod = exports.nancumsum = exports.nancumprod = exports.nan_to_num = exports.nan = exports.multiply = exports.moveaxis = exports.mod = exports.minimum = exports.mean = exports.maximum = exports.matmul = exports.map = exports.logaddexp2 = exports.logaddexp = exports.log2 = exports.log1p = exports.log10 = exports.log = exports.linspace = exports.less_equal = exports.less = exports.left_shift = exports.ldexp = exports.lcm = exports.ix_ = exports.isscalar = exports.isposinf = exports.isneginf = exports.isna = exports.isinf = exports.isfinite = exports.invert = exports.interp = exports.inf = exports.indices = exports.index_exp = exports.in1d = exports.identity = exports.hypot = exports.hstack = exports.hsplit = exports.guessType = exports.greater_equal = exports.greater = exports.gradient = exports.get_strides = exports.get_size = exports.gcd = exports.full_like = exports.full = exports.fromiter = exports.fromfunction = exports.fmod = exports.floor_divide = exports.floor = exports.flipud = exports.fliplr = exports.flip = exports.flatnonzero = void 0;
+exports.zeros_like = exports.zeros = exports.where = exports.vstack = exports.vsplit = exports.variance = exports.unwrap = exports.unravel_index = exports.unpackbits = exports.tuple_ = exports.tupleType = exports.trunc = exports.true_divide = exports.trapz = exports.transpose = exports.timeit2 = exports.timeit = exports.tile = exports.tester = exports.tanh = exports.tan = exports.take = exports.swapaxes = exports.sum = exports.subtract = exports.std = exports.stack = exports.squeeze = exports.square = exports.sqrt = exports.split = exports.sort = exports.slice = exports.sinh = exports.sin = exports.signbit = exports.sign = exports.shape_ = exports.shape = exports.shallow_array_equal = exports.searchsorted = exports.sample = exports.s_ = exports.row_stack = void 0;
 var e = {
     460: () => {}
   },
@@ -33,88 +33,78 @@ var n = {};
       for (let r = 0; r < t.length; r++) if (!e(t[r], a[r])) return !1;
       return !0;
     }
-    if ("boolean" == typeof t && "boolean" == typeof a) return t == a;
-    if (Number.isNaN(t) && Number.isNaN(a)) return !0;
-    if ("number" == typeof t && "number" == typeof a) return t == a;
-    if ("string" == typeof t && "string" == typeof a) return t == a;
-    if (null != t?.toarray) return e(t.toarray(), a);
-    if (null != a?.toarray) return e(t, a.toarray());
-    if (t?.constructor != a?.constructor) return !1;
-    let r = Object.getOwnPropertyNames(t),
-      n = Object.getOwnPropertyNames(a);
-    if (r.length != n.length) return !1;
-    for (let s = 0; s < r.length; s++) if (!e(t[r[s]], a[n[s]])) return !1;
-    return !0;
+    return je(t, a, !0);
   }
   function t(e) {
-    return e instanceof v && (e = e.valueOf()), Array.isArray(e) ? JSON.stringify(e) : e;
+    return e instanceof z && (e = e.valueOf()), e;
   }
   r.d(n, {
     zvA: () => oe,
     bFe: () => h,
     iIB: () => G,
     RO$: () => kr,
-    zhN: () => v,
-    _bh: () => jt,
+    zhN: () => z,
+    _bh: () => qt,
     OVY: () => Se,
     mXy: () => Dn,
     xsH: () => wn,
     p2w: () => m,
     SRu: () => s,
     NYz: () => ce,
-    Buv: () => O,
+    Buv: () => F,
     E4R: () => dt,
     tw1: () => st,
     Yur: () => it,
     RPv: () => lt,
     JWo: () => ut,
-    WnP: () => Ka,
-    AGi: () => Va,
+    WnP: () => Ra,
+    AGi: () => Ka,
     IHx: () => ht,
     $6P: () => xt,
-    Lb7: () => Fa,
-    t5D: () => Ta,
+    Lb7: () => Ta,
+    t5D: () => Oa,
     YjB: () => _t,
     eTT: () => C,
-    FKo: () => Tt,
+    FKo: () => Ot,
     Hn6: () => Bt,
-    PD: () => Ft,
+    PD: () => Tt,
     oSO: () => Ct,
     Xsc: () => Dt,
-    gJP: () => Rt,
+    gJP: () => Pt,
     $jo: () => Ht,
     s6s: () => dr,
-    S1h: () => ze,
+    S1h: () => ve,
     Q8B: () => Qt,
     IXX: () => E,
-    FJh: () => vn,
-    YSU: () => qe,
+    FJh: () => zn,
+    YSU: () => je,
     Vjr: () => Ie,
     xok: () => $n,
     oix: () => Br,
     Yqf: () => An,
-    k2d: () => R,
+    k2d: () => P,
     FAR: () => ae,
     hu8: () => _n,
     V2R: () => le,
     dcL: () => ie,
     ujY: () => de,
-    Y8W: () => qr,
-    yE8: () => Tr,
+    Y8W: () => jr,
+    yE8: () => Or,
     W4K: () => Wa,
     GBu: () => Ua,
     eYE: () => Ja,
     qgf: () => Ca,
     fMc: () => ue,
     xAU: () => J,
-    M2z: () => T,
-    eKn: () => Pa,
+    M2z: () => O,
+    eKn: () => Ya,
     mDi: () => aa,
     q$q: () => _r,
     oqW: () => ir,
     T8D: () => Jr,
-    nNb: () => ve,
-    mVq: () => Te,
+    MY2: () => Kn,
+    nNb: () => ze,
+    mVq: () => Oe,
     y39: () => re,
     RrX: () => lr,
     JGK: () => ge,
@@ -127,20 +117,20 @@ var n = {};
     $Gn: () => da,
     zbp: () => oa,
     VlM: () => Gt,
-    RWx: () => Kt,
+    RWx: () => Rt,
     Ka3: () => rn,
     on5: () => an,
     Hgg: () => fa,
     csF: () => ct,
-    AKD: () => zn,
+    AKD: () => vn,
     wIX: () => Lr,
     N5d: () => Wr,
     cTT: () => p,
     sk1: () => c,
     e: () => kt,
     D5q: () => pa,
-    cSb: () => K,
-    sKD: () => V,
+    cSb: () => R,
+    sKD: () => K,
     DgJ: () => La,
     Qqt: () => ca,
     uuq: () => ya,
@@ -155,34 +145,35 @@ var n = {};
     Ah7: () => ln,
     GWj: () => ta,
     Sc8: () => yt,
-    Ek0: () => qa,
+    Ek0: () => ja,
     v_D: () => we,
     KSO: () => be,
     rpZ: () => U,
     NxV: () => W,
     thl: () => Sa,
     rn5: () => $,
+    rqY: () => A,
     FLS: () => rr,
     pjt: () => ar,
     zGm: () => tr,
-    smV: () => j,
+    smV: () => q,
     Hsf: () => Qr,
     DIH: () => Ur,
-    _mT: () => Pt,
+    _mT: () => Yt,
     yRu: () => fe,
-    HqJ: () => Rr,
+    HqJ: () => Pr,
     S8h: () => un,
     CGm: () => Dr,
     gY6: () => St,
     Zw8: () => ur,
     U_R: () => Ga,
-    f0i: () => zt,
-    fXA: () => vt,
+    f0i: () => vt,
+    fXA: () => zt,
     I7t: () => At,
     igg: () => $t,
     ftH: () => Mt,
     KvH: () => _,
-    IW_: () => Pr,
+    IW_: () => Yr,
     uqG: () => Ea,
     vy: () => $a,
     Ai1: () => Ba,
@@ -194,12 +185,12 @@ var n = {};
     Krr: () => xa,
     k3Q: () => ba,
     YKj: () => _a,
-    buk: () => za,
+    buk: () => va,
     UID: () => bn,
     Jxs: () => xn,
     gWQ: () => Ia,
     J69: () => Ir,
-    LTh: () => Oa,
+    LTh: () => Fa,
     wQq: () => gt,
     U8E: () => De,
     JpY: () => pt,
@@ -211,35 +202,36 @@ var n = {};
     obs: () => ia,
     $V5: () => _e,
     p3s: () => pe,
-    x2A: () => P,
-    fyW: () => je,
-    MHD: () => Pn,
+    x2A: () => Y,
+    fyW: () => qe,
+    MHD: () => Yn,
     pdy: () => ka,
     MaX: () => xe,
     S4p: () => Ne,
-    INJ: () => Ke,
-    lf5: () => Ye,
+    INJ: () => Re,
+    lf5: () => Ve,
     ffp: () => Ee,
     AqN: () => Qa,
     qDh: () => Sr,
     iUs: () => Q,
     r6Y: () => Z,
-    NCv: () => Kr,
+    NCv: () => Rr,
     pi: () => Et,
     eiS: () => xr,
     i1C: () => Ma,
     qux: () => bt,
     WVs: () => na,
-    OZM: () => jr,
+    OZM: () => qr,
     gzd: () => fn,
     BVy: () => Xt,
-    uRy: () => Vt,
+    uRy: () => Kt,
     TN_: () => $r,
     MXc: () => Nr,
-    di9: () => zr,
-    n3V: () => vr,
+    di9: () => vr,
+    n3V: () => zr,
     nTq: () => Ae,
-    M25: () => ja,
+    Pyd: () => Rn,
+    M25: () => qa,
     spK: () => wt,
     rx1: () => en,
     XLQ: () => X,
@@ -251,26 +243,26 @@ var n = {};
     s_: () => hn,
     UPJ: () => Ar,
     FvN: () => cn,
-    flC: () => Oe,
+    flC: () => Fe,
     mCt: () => I,
-    FPS: () => F,
-    Xxe: () => Ya,
-    UBE: () => va,
-    O$l: () => qt,
+    FPS: () => T,
+    Xxe: () => Va,
+    UBE: () => za,
+    O$l: () => jt,
     R_K: () => Ut,
     tPi: () => x,
     DYV: () => or,
     Vl2: () => Hr,
     _b3: () => Da,
-    h62: () => Ra,
+    h62: () => Pa,
     L9e: () => ye,
     knu: () => Xr,
-    qoR: () => Fr,
+    qoR: () => Tr,
     $XF: () => ft,
     Smz: () => sa,
     ZU4: () => ne,
     qnb: () => H,
-    ORZ: () => Ot,
+    ORZ: () => Ft,
     AEp: () => Jt,
     K1B: () => l,
     Gg6: () => tn,
@@ -281,10 +273,11 @@ var n = {};
     $I7: () => mt,
     RFc: () => ra,
     DDI: () => on,
-    vwf: () => Y,
-    bLT: () => Vr,
-    Wg4: () => Yt,
-    CAK: () => Or,
+    vwf: () => V,
+    bLT: () => Kr,
+    M56: () => Pn,
+    Wg4: () => Vt,
+    CAK: () => Fr,
     nFP: () => Zr,
     Ud9: () => Gr,
     arb: () => Er,
@@ -543,8 +536,8 @@ var n = {};
     return !1;
   }
   x.newaxis = m.newaxis, x.ellipsis = m.ellipsis, x.colon = m.colon, l.add(x, () => x(0, 1, 2).toString(), () => "0:1:2").add(x, () => x(null, 1, 2).toString(), () => ":1:2").add(x, () => x(0, null, 2).toString(), () => "0::2").add(x, () => x(null, null, -1).toString(), () => "::-1").add(x, () => x(null, null, null).toString(), () => ":"), l.add("isscalar", () => _(3.1), () => !0).add("isscalar", () => _(E(3.1)), () => !1).add("isscalar", () => _([3.1]), () => !1).add("isscalar", () => _(!1), () => !0).add("isscalar", () => _("numpy"), () => !0).add("isscalar", () => _(Number()), () => !0);
-  var z = r(460);
-  class v {
+  var v = r(460);
+  class z {
     constructor(e, t = null, a = null, r = null, n = null, s = 0, l = 1) {
       this.ndim = e.length, this.size = $(e), this.shape = e, this.data = t ?? Array(this.size), this.itemsize = l, this.strides = n ?? A(e, this.ndim, l), this.offset = s, this.dtype = c(a ?? t.constructor), this.base = r?.base ?? r;
     }
@@ -555,6 +548,18 @@ var n = {};
       } = this;
       if (0 != e) return t[0];
     }
+    get flat() {
+      return new G(this);
+    }
+    set flat(e) {
+      this.flat.set(":", e);
+    }
+    get T() {
+      return se(this);
+    }
+    set T(e) {
+      this.T.set(e);
+    }
     toString() {
       return An(this);
     }
@@ -564,13 +569,22 @@ var n = {};
     *[Symbol.iterator]() {
       for (let e = 0; e < this.shape[0]; e++) yield this.at(e);
     }
+    as_strided(e = this.shape, t = this.strides, a = this.offset) {
+      let {
+        data: r,
+        dtype: n,
+        base: s,
+        itemsize: l
+      } = this;
+      return new z(e, r, n, s ?? this, t, a, l);
+    }
     keys() {
       let {
         shape: e,
         strides: t,
         offset: a
       } = this;
-      return Pn(e, t, a);
+      return Yn(e, t, a);
     }
     values() {
       return this.flat;
@@ -615,9 +629,7 @@ var n = {};
       return k(e) ? N.call(this, e) : M(this, e);
     }
     set(e, t) {
-      if (1 == arguments.length) return D(this, e), this;
-      if (k(e)) throw new Error("cannot use advanced indexing in .set()");
-      return D(M(this, e), t), this;
+      return 1 == arguments.length ? (D(this, e), this) : k(e) ? this.set(Er(e, t, this)) : (D(M(this, e), t), this);
     }
     item(e) {
       return this.data[this.idx(e)];
@@ -632,7 +644,7 @@ var n = {};
           size: r
         } = this,
         n = e.new(r, [...this.flat]);
-      return new v(a, n, e);
+      return new z(a, n, e);
     }
     toarray() {
       let {
@@ -645,25 +657,13 @@ var n = {};
       } = this;
       if (0 == e) return n[r];
       let l = s[0];
-      if (1 == e && t[0] == a) return n.slice(r, r + l);
+      if (1 == e && t[0] == a) return Array.prototype.slice.call(n, r, r + l);
       let i = [];
       for (let e = 0; e < l; e++) i.push(this.at(e).toarray());
       return i;
     }
     tolist() {
       return this.toarray();
-    }
-    get flat() {
-      return new G(this);
-    }
-    set flat(e) {
-      this.flat.set(":", e);
-    }
-    get T() {
-      return se(this);
-    }
-    set T(e) {
-      this.T.set(e);
     }
     reshape(...e) {
       return 1 == e.length && "object" == typeof e[0] && (e = e[0]), X(this, e);
@@ -696,7 +696,7 @@ var n = {};
       return ir(this, e, t, a);
     }
     compress(e, t = null, a = null) {
-      return ve(e, this, t, a);
+      return ze(e, this, t, a);
     }
     conj() {
       throw "not implemented";
@@ -729,7 +729,7 @@ var n = {};
         strides: r,
         offset: n
       } = this;
-      for (let s of Pn(a, r, n)) t[s] = e;
+      for (let s of Yn(a, r, n)) t[s] = e;
       return this;
     }
     flatten() {
@@ -738,19 +738,19 @@ var n = {};
         flat: t,
         dtype: a
       } = this;
-      return new v([e], [...t], a);
+      return new z([e], [...t], a);
     }
     getfield() {
       throw "not implemented";
     }
     max(e = null, t = null, a = !1, r = null, n = !0) {
-      return Fa(this, e, t, a, r, n);
+      return Ta(this, e, t, a, r, n);
     }
     mean(e = null, t = null, a = !1) {
       return Ir(this, e, t, a);
     }
     min(e = null, t = null, a = !1, r = null, n = !0) {
-      return Ta(this, e, t, a, r, n);
+      return Oa(this, e, t, a, r, n);
     }
     newbyteorder() {
       throw "not implemented";
@@ -765,7 +765,7 @@ var n = {};
       return na(this, e, t, a, r, n);
     }
     ptp(e = null, t = null, a = !1) {
-      return jr(this, e, t, a);
+      return qr(this, e, t, a);
     }
     put(e, t, a = "raise") {
       return fn(this, e, t, a), this;
@@ -801,7 +801,7 @@ var n = {};
       return ye(this, e);
     }
     std(e = null, t = null, a = 0, r = !1) {
-      return Fr(this, e, t, a, r);
+      return Tr(this, e, t, a, r);
     }
     sum(e = null, t = null, a = !1, r = 0, n = !0) {
       return sa(this, e, t, a, r, n);
@@ -825,7 +825,7 @@ var n = {};
       return se(this, e);
     }
     variance(e = null, t = null, a = 0, r = !1) {
-      return Or(this, e, t, a, r);
+      return Fr(this, e, t, a, r);
     }
   }
   function A(e, t, a) {
@@ -886,10 +886,10 @@ var n = {};
       }
       f++;
     } else a.splice(f, 0, 1), n.splice(f, 0, 1), f++;
-    return new v(a, l, o, d ?? e, n, s, i);
+    return new z(a, l, o, d ?? e, n, s, i);
   }
   function k(e) {
-    for (let t of e) if (null != t && "object" == typeof t && (Array.isArray(t) || t instanceof v)) return !0;
+    for (let t of e) if (null != t && "object" == typeof t && (Array.isArray(t) || t instanceof z && t.ndim > 0)) return !0;
     return !1;
   }
   function N(e) {
@@ -919,26 +919,26 @@ var n = {};
       for (let a = 0, r = 0; a < e.length; a++) i[a] || (e[a] = t[r++]);
       h.push(this.at(...e, null));
     }
-    return new v(u, Te(h, t.length).data);
+    return new z(u, Oe(h, t.length).data);
   }
   function E(e, t = undefined, a = !0, r = 0) {
-    if (e instanceof v) {
+    if (e instanceof z) {
       let {
         shape: n,
         ndim: s
       } = e;
       return s < r && (n = Array(r - s).fill(1).concat(n), e = e.reshape(n)), e.astype(t ?? e.dtype, a);
     }
-    let n = F(e),
+    let n = T(e),
       s = [];
     S(s, e, n, 0);
     let l = n.length;
-    return l < r && (n = Array(r - l).fill(1).concat(n)), t = c(t ?? j(s)), new v(n, t.new(s.length, s), t);
+    return l < r && (n = Array(r - l).fill(1).concat(n)), t = c(t ?? q(s)), new z(n, t.new(s.length, s), t);
   }
   function S(e, t, a, r = 0) {
     if (r < a.length) for (let n = 0; n < a[r]; n++) S(e, t.at(n), a, r + 1);else "function" == typeof t?.toarray && (t = t.toarray()), e.push(t);
   }
-  function j(e) {
+  function q(e) {
     let t;
     if ("object" == typeof e && e?.[Symbol.iterator]) {
       t = typeof e[0];
@@ -949,19 +949,19 @@ var n = {};
     } else t = typeof e;
     return "number" == t || "string" == t || "boolean" == t ? t : "object";
   }
-  function q(e, t, a = 0) {
+  function j(e, t, a = 0) {
     for (let r = 0; r < e.length && a < t.length; r++) {
       let n = e[r];
       if (null == n || "object" != typeof n || n.length != t[a]) {
         t.length = a;
         break;
       }
-      if (n instanceof v) {
+      if (n instanceof z) {
         for (let e = a, r = 0; e < t.length && r < n.ndim; e++, r++) if (t[e] != n.shape[r]) {
           t.length = e;
           break;
         }
-      } else a + 1 < t.length && q(n, t, a + 1);
+      } else a + 1 < t.length && j(n, t, a + 1);
     }
   }
   function I(e) {
@@ -970,29 +970,32 @@ var n = {};
     let t = [],
       a = e;
     for (;;) {
-      if (a instanceof v) t.push(...a.shape);else if ("object" == typeof a && null != a?.length) {
+      if (a instanceof z) t.push(...a.shape);else if ("object" == typeof a && null != a?.length) {
         t.push(a.length), a = a[0];
         continue;
       }
       break;
     }
-    return t.length > 1 && q(e, t, 1), t;
+    return t.length > 1 && j(e, t, 1), t;
   }
-  v.prototype[z?.inspect?.custom] = function () {
+  z.prototype[v?.inspect?.custom] = function () {
     return this.valueOf();
-  }, l.onload(() => {}), l.add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), [0, 2, 4], x()), () => E([[[0], [5], [10], [15], [20], [25]], [[62], [67], [72], [77], [82], [87]], [[34], [39], [44], [49], [54], [59]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), E([0, 2, 1]), x(), x()), () => E([[[0], [1], [2], [3], [4]], [[70], [71], [72], [73], [74]], [[35], [36], [37], [38], [39]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), E([0, 2, 1]), E([0, 2, 4]), x()), () => E([[[0], [12], [9]], [[30], [42], [39]], [[60], [72], [69]], [[90], [102], [99]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), E([0, 2, 1]), x(), [0, 0, 0]), () => E([[[0, 1, 2, 3, 4], [30, 31, 32, 33, 34], [60, 61, 62, 63, 64], [90, 91, 92, 93, 94]], [[10, 11, 12, 13, 14], [40, 41, 42, 43, 44], [70, 71, 72, 73, 74], [100, 101, 102, 103, 104]], [[5, 6, 7, 8, 9], [35, 36, 37, 38, 39], [65, 66, 67, 68, 69], [95, 96, 97, 98, 99]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), x(), E([0, 2, 1]), E([0, 0, 0])), () => E([[[0, 2, 1], [5, 7, 6], [10, 12, 11], [15, 17, 16], [20, 22, 21], [25, 27, 26]], [[30, 32, 31], [35, 37, 36], [40, 42, 41], [45, 47, 46], [50, 52, 51], [55, 57, 56]], [[60, 62, 61], [65, 67, 66], [70, 72, 71], [75, 77, 76], [80, 82, 81], [85, 87, 86]], [[90, 92, 91], [95, 97, 96], [100, 102, 101], [105, 107, 106], [110, 112, 111], [115, 117, 116]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), x(), E([0, 0, 0])), () => E([[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24], [25, 26, 27, 28, 29]], [[60, 61, 62, 63, 64], [65, 66, 67, 68, 69], [70, 71, 72, 73, 74], [75, 76, 77, 78, 79], [80, 81, 82, 83, 84], [85, 86, 87, 88, 89]], [[30, 31, 32, 33, 34], [35, 36, 37, 38, 39], [40, 41, 42, 43, 44], [45, 46, 47, 48, 49], [50, 51, 52, 53, 54], [55, 56, 57, 58, 59]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), E([0, 2, 1]), x(), 0), () => E([[0, 1, 2, 3, 4], [70, 71, 72, 73, 74], [35, 36, 37, 38, 39]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), x(), 0), () => E([[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24], [25, 26, 27, 28, 29]], [[60, 61, 62, 63, 64], [65, 66, 67, 68, 69], [70, 71, 72, 73, 74], [75, 76, 77, 78, 79], [80, 81, 82, 83, 84], [85, 86, 87, 88, 89]], [[30, 31, 32, 33, 34], [35, 36, 37, 38, 39], [40, 41, 42, 43, 44], [45, 46, 47, 48, 49], [50, 51, 52, 53, 54], [55, 56, 57, 58, 59]]])).add("ndarray.get", () => new v([2, 5], [...Array(10).keys()]).at(x(), x([,, -1])), () => [[4, 3, 2, 1, 0], [9, 8, 7, 6, 5]]).add("ndarray.get", () => new v([2, 5], [...Array(10).keys()]).at(x(-1), 3), () => [8]).add("ndarray.get", () => new v([2, 5], [...Array(10).keys()]).at(x([,, -1]), x([,, -1])), () => [[9, 8, 7, 6, 5], [4, 3, 2, 1, 0]]).add("ndarray.get", () => {
+  }, l.onload(() => {}), l.add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), [0, 2, 4], x()), () => E([[[0], [5], [10], [15], [20], [25]], [[62], [67], [72], [77], [82], [87]], [[34], [39], [44], [49], [54], [59]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), E([0, 2, 1]), x(), x()), () => E([[[0], [1], [2], [3], [4]], [[70], [71], [72], [73], [74]], [[35], [36], [37], [38], [39]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), E([0, 2, 1]), E([0, 2, 4]), x()), () => E([[[0], [12], [9]], [[30], [42], [39]], [[60], [72], [69]], [[90], [102], [99]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), E([0, 2, 1]), x(), [0, 0, 0]), () => E([[[0, 1, 2, 3, 4], [30, 31, 32, 33, 34], [60, 61, 62, 63, 64], [90, 91, 92, 93, 94]], [[10, 11, 12, 13, 14], [40, 41, 42, 43, 44], [70, 71, 72, 73, 74], [100, 101, 102, 103, 104]], [[5, 6, 7, 8, 9], [35, 36, 37, 38, 39], [65, 66, 67, 68, 69], [95, 96, 97, 98, 99]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(x(), x(), E([0, 2, 1]), E([0, 0, 0])), () => E([[[0, 2, 1], [5, 7, 6], [10, 12, 11], [15, 17, 16], [20, 22, 21], [25, 27, 26]], [[30, 32, 31], [35, 37, 36], [40, 42, 41], [45, 47, 46], [50, 52, 51], [55, 57, 56]], [[60, 62, 61], [65, 67, 66], [70, 72, 71], [75, 77, 76], [80, 82, 81], [85, 87, 86]], [[90, 92, 91], [95, 97, 96], [100, 102, 101], [105, 107, 106], [110, 112, 111], [115, 117, 116]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), x(), E([0, 0, 0])), () => E([[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24], [25, 26, 27, 28, 29]], [[60, 61, 62, 63, 64], [65, 66, 67, 68, 69], [70, 71, 72, 73, 74], [75, 76, 77, 78, 79], [80, 81, 82, 83, 84], [85, 86, 87, 88, 89]], [[30, 31, 32, 33, 34], [35, 36, 37, 38, 39], [40, 41, 42, 43, 44], [45, 46, 47, 48, 49], [50, 51, 52, 53, 54], [55, 56, 57, 58, 59]]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), E([0, 2, 1]), x(), 0), () => E([[0, 1, 2, 3, 4], [70, 71, 72, 73, 74], [35, 36, 37, 38, 39]])).add("ndarray.get", () => C(120).reshape(4, 6, 5, 1).at(E([0, 2, 1]), x(), x(), 0), () => E([[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24], [25, 26, 27, 28, 29]], [[60, 61, 62, 63, 64], [65, 66, 67, 68, 69], [70, 71, 72, 73, 74], [75, 76, 77, 78, 79], [80, 81, 82, 83, 84], [85, 86, 87, 88, 89]], [[30, 31, 32, 33, 34], [35, 36, 37, 38, 39], [40, 41, 42, 43, 44], [45, 46, 47, 48, 49], [50, 51, 52, 53, 54], [55, 56, 57, 58, 59]]])).add("ndarray.get", () => new z([2, 5], [...Array(10).keys()]).at(x(), x([,, -1])), () => [[4, 3, 2, 1, 0], [9, 8, 7, 6, 5]]).add("ndarray.get", () => new z([2, 5], [...Array(10).keys()]).at(x(-1), 3), () => [8]).add("ndarray.get", () => new z([2, 5], [...Array(10).keys()]).at(x([,, -1]), x([,, -1])), () => [[9, 8, 7, 6, 5], [4, 3, 2, 1, 0]]).add("ndarray.get", () => {
     let e;
     return e = E([[3, 0, 0], [0, 4, 0], [5, 6, 0]]).at(x(), x(), null), e;
   }, () => E([[[3], [0], [0]], [[0], [4], [0]], [[5], [6], [0]]])).add("ndarray.get", () => {
     let e;
     return e = E([[3, 0, 0], [0, 4, 0], [5, 6, 0]]).at(x("..."), null), e;
-  }, () => E([[[3], [0], [0]], [[0], [4], [0]], [[5], [6], [0]]])).add("ndarray.get", () => C(24).reshape(2, 3, 4).at(null, "...", null), () => E([[[[[0], [1], [2], [3]], [[4], [5], [6], [7]], [[8], [9], [10], [11]]], [[[12], [13], [14], [15]], [[16], [17], [18], [19]], [[20], [21], [22], [23]]]]])).add("ndarray.get", () => C(24).reshape(2, 3, 4).at(x(":"), [0, 2], x("::2")), () => E([[[0, 2], [8, 10]], [[12, 14], [20, 22]]])), l.add("ndarray.item", () => new v([2, 5], [...Array(10).keys()]).at(x([,, -1]), x([,, -1])).item(5), () => 4), l.add("ndarray.itemset", () => {
-    let e = new v([3, 3], [[2, 2, 6], [1, 3, 6], [1, 0, 1]].flat());
+  }, () => E([[[3], [0], [0]], [[0], [4], [0]], [[5], [6], [0]]])).add("ndarray.get", () => C(24).reshape(2, 3, 4).at(null, "...", null), () => E([[[[[0], [1], [2], [3]], [[4], [5], [6], [7]], [[8], [9], [10], [11]]], [[[12], [13], [14], [15]], [[16], [17], [18], [19]], [[20], [21], [22], [23]]]]])).add("ndarray.get", () => C(24).reshape(2, 3, 4).at(x(":"), [0, 2], x("::2")), () => E([[[0, 2], [8, 10]], [[12, 14], [20, 22]]])), l.add("ndarray.item", () => new z([2, 5], [...Array(10).keys()]).at(x([,, -1]), x([,, -1])).item(5), () => 4), l.add("ndarray.itemset", () => {
+    let e = new z([3, 3], [[2, 2, 6], [1, 3, 6], [1, 0, 1]].flat());
     return e.itemset(4, 0), e.itemset([2, 2], 9), e;
   }, () => [[2, 2, 6], [1, 0, 6], [1, 0, 9]]), l.add("ndarray.set", () => {
-    let e = new v([2, 5], [...Array(10).keys()]);
+    let e = new z([2, 5], [...Array(10).keys()]);
     return e.at(x(), x(1, -1)).set(10), e;
-  }, () => [[0, 10, 10, 10, 4], [5, 10, 10, 10, 9]]), l.add("ndarray.flatten", () => E([[1, 2], [3, 4]]).flatten(), () => E([1, 2, 3, 4])), l.add("ndarray.flat.set", () => {
+  }, () => [[0, 10, 10, 10, 4], [5, 10, 10, 10, 9]]).add("ndarray.set", () => {
+    let e = C(24).reshape(2, 3, 4);
+    return e.set(tr(e, 10), -1), e;
+  }, () => E([[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, -1, -1]], [[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]])), l.add("ndarray.flatten", () => E([[1, 2], [3, 4]]).flatten(), () => E([1, 2, 3, 4])), l.add("ndarray.flat.set", () => {
     let e = E([[1, 2, 3], [4, 5, 6]]);
     return e.flat = 3, e;
   }, () => E([[3, 3, 3], [3, 3, 3]])).add("ndarray.flat.set", () => {
@@ -1016,35 +1019,32 @@ var n = {};
       t = e;
     return e.resize([1, 1]), [e, t];
   }, () => [E([[0]]), E([[0]])]), l.add("array", () => E([3.1, 9]), () => [3.1, 9]).add("array", () => E([[9, 6], 3.1, 9]).shape, () => [3]).add("array", () => E(5), () => 5);
-  const O = I,
-    F = I;
-  function T(e, t) {
-    e = R(e);
+  const F = I,
+    T = I;
+  function O(e, t) {
+    e = P(e);
     let {
-      data: a,
-      strides: r,
-      offset: n,
-      dtype: s,
-      ndim: l
+      strides: a,
+      ndim: r
     } = e;
-    if (l > t.length) throw new Error("broadcast shape has less dimensions than input array");
-    let i = [];
-    for (let a = t.length - 1, n = e.shape.length - 1; a >= 0; a--, n--) {
-      if (n >= 0 && 1 != e.shape[n] && e.shape[n] != t[a]) throw new Error("operands could not be broadcast together");
-      i[a] = n < 0 || 1 == e.shape[n] ? 0 : r[n];
+    if (r > t.length) throw new Error("broadcast shape has less dimensions than input array");
+    let n = [];
+    for (let r = t.length - 1, s = e.shape.length - 1; r >= 0; r--, s--) {
+      if (s >= 0 && 1 != e.shape[s] && e.shape[s] != t[r]) throw new Error("operands could not be broadcast together");
+      n[r] = s < 0 || 1 == e.shape[s] ? 0 : a[s];
     }
-    return new v(t, a, s, e, i, n);
+    return e.as_strided(t, n);
   }
   function D(e, t) {
-    if (1 == (t = R(t)).size) {
+    if (1 == (t = P(t)).size) {
       let a = t.item();
       for (let t of e.keys()) e.data[t] = a;
     } else {
-      let a = T(t, e.shape).flat;
+      let a = O(t, e.shape).flat;
       for (let t of e.keys()) e.data[t] = a.next().value;
     }
   }
-  function* P(e, t = !0) {
+  function* Y(e, t = !0) {
     let a = Array(e.length).fill(0),
       r = function (e) {
         let t = 1;
@@ -1059,20 +1059,20 @@ var n = {};
       }
     }
   }
+  function P(e, t = undefined) {
+    return e instanceof z ? null == t ? e : e.astype(t, !1) : E(e, t);
+  }
   function R(e, t = undefined) {
-    return e instanceof v ? null == t ? e : e.astype(t, !1) : E(e, t);
+    return e = V(e), t = c(t), new z(e, t.new($(e)), t);
   }
   function K(e, t = undefined) {
-    return e = Y(e), t = c(t), new v(e, t.new($(e)), t);
+    return R((e = P(e)).shape, t ?? e.dtype);
   }
-  function V(e, t = undefined) {
-    return K((e = R(e)).shape, t ?? e.dtype);
-  }
-  function Y(e) {
+  function V(e) {
     return e ? ("function" == typeof e.toarray && (e = e.toarray()), "object" == typeof e && null != e.length ? e : [e]) : [e];
   }
   function X(e, t) {
-    e = R(e), t = Y(t);
+    e = P(e), t = V(t);
     let a = -1,
       r = 1;
     for (let e = 0; e < t.length; e++) if (-1 == t[e]) {
@@ -1084,7 +1084,7 @@ var n = {};
       t[a] = 0 == r ? 0 : e.size / r;
     }
     if (e.size != $(t)) throw new Error(`cannot reshape array of size ${e.size} into shape [${t.join(", ")}]`);
-    if (null == e.base) return new v(t, e.data, e.dtype, e);
+    if (null == e.base) return e.as_strided(t, A(t, t.length, e.itemsize));
     {
       let a = !0,
         r = 0;
@@ -1100,13 +1100,13 @@ var n = {};
         let a = [];
         for (let r = 0, n = 0; r < t.length; r++) {
           if (1 != t[r]) for (; n < e.shape.length && 1 == e.shape[n]; n++);
-          a.push(e.strides[n]);
+          a.push(n < e.shape.length ? e.strides[n++] : 1);
         }
-        return new v(t, e.data, e.dtype, e, a, e.offset, e.itemsize);
+        return e.as_strided(t, a);
       }
     }
     let n = null;
-    1 == t.length && function (e, t, a) {
+    return 1 == t.length && function (e, t, a) {
       let r;
       for (let t = a - 1; t > 0; t--) if (e[t] > 1) {
         r = t;
@@ -1117,32 +1117,25 @@ var n = {};
         r = a;
       }
       return !0;
-    }(e.shape, e.strides, e.ndim) ? n = [e.strides[0]] : 0 != t.length && (e = E(e));
-    let {
-      data: s,
-      dtype: l,
-      offset: i,
-      itemsize: d
-    } = e;
-    return new v(t, s, l, e, n, i, d);
+    }(e.shape, e.strides, e.ndim) ? n = [e.strides[0]] : 0 != t.length && (e = E(e)), e.as_strided(t, n);
   }
-  l.add("shape", () => I([[[3, 9]], [[3, 9, 3]], [[3, 9]]]), () => [3, 1]).add("shape", () => I([1, 2, 3, [1, 3]]), () => [4]).add("shape", () => I([0]), () => [1]).add("shape", () => I(0), () => []).add("shape", () => I([C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 12), C(24).reshape(1, 2, 12)]), () => [3, 1, 2]).add("shape", () => I([C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 3, 4)]), () => [3, 1, 2, 3, 4]), l.add("broadcast_to", () => T(new v([3], [1, 2, 3]), [3, 3]).toarray(), () => [[1, 2, 3], [1, 2, 3], [1, 2, 3]]), l.add("broadcast_to", () => T(new v([1, 3, 1], [1, 2, 3]), [2, 3, 4]).toarray(), () => [[[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]], [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]]), l.add("copyto", () => {
-    let e = R([4, 5, 6]);
+  l.add("shape", () => I([[[3, 9]], [[3, 9, 3]], [[3, 9]]]), () => [3, 1]).add("shape", () => I([1, 2, 3, [1, 3]]), () => [4]).add("shape", () => I([0]), () => [1]).add("shape", () => I(0), () => []).add("shape", () => I([C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 12), C(24).reshape(1, 2, 12)]), () => [3, 1, 2]).add("shape", () => I([C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 3, 4), C(24).reshape(1, 2, 3, 4)]), () => [3, 1, 2, 3, 4]), l.add("broadcast_to", () => O(E([1, 2, 3]).reshape(3), [3, 3]).toarray(), () => [[1, 2, 3], [1, 2, 3], [1, 2, 3]]), l.add("broadcast_to", () => O(E([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).toarray(), () => [[[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]], [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]]), l.add("copyto", () => {
+    let e = P([4, 5, 6]);
     return D(e, [1, 2, 3]), e;
   }, () => [1, 2, 3]).add("copyto", () => {
-    let e = R([[1, 2, 3], [4, 5, 6]]);
+    let e = P([[1, 2, 3], [4, 5, 6]]);
     return D(e, [[4, 5, 6], [7, 8, 9]]), e;
   }, () => [[4, 5, 6], [7, 8, 9]]).add("copyto", () => {
-    let e = R([[0, 1, 2], [3, 4, 5]]);
+    let e = P([[0, 1, 2], [3, 4, 5]]);
     return D(e.at(x(), 1), [-1, -2]), e;
   }, () => [[0, -1, 2], [3, -2, 5]]), l.add("asarray", () => {
     let e = E([[1, 2], [3, 4]]);
-    return R(e) === e;
-  }, () => !0).add("asarray", () => R([[1, 2], [3, 4]]), () => [[1, 2], [3, 4]]), l.add("empty", () => K([2, 2]), () => [[,,], [,,]]).add("empty", () => K(0), () => []).add("empty", () => K([]), () => {}), l.add("empty_like", () => V([[1, 2, 3], [4, 5, 6]]), () => [[,,,], [,,,]]).add("empty_like", () => V([1, 2, 3, [1, 3]]), () => [,,,,]), l.add(X, () => X(E([1, 2, 3, 4, 5]).at(x("::-2")), -1), () => E([5, 3, 1])).add(X, () => X(E([1]), []), () => E(1)).add(X, () => X(E(1), 1), () => E([1])).add(X, () => X(E(1), -1), () => E([1])).add("reshape", () => X(R([[0, 1], [2, 3], [4, 5]]), [2, 3]), () => [[0, 1, 2], [3, 4, 5]]).add("reshape", () => X(R([[[[0, 1]]]]), [2, -1]), () => [[0], [1]]).add("reshape", () => {
-    let e = R([[[[0, 1]]]]);
+    return P(e) === e;
+  }, () => !0).add("asarray", () => P([[1, 2], [3, 4]]), () => [[1, 2], [3, 4]]), l.add("empty", () => R([2, 2]), () => [[,,], [,,]]).add("empty", () => R(0), () => []).add("empty", () => R([]), () => {}), l.add("empty_like", () => K([[1, 2, 3], [4, 5, 6]]), () => [[,,,], [,,,]]).add("empty_like", () => K([1, 2, 3, [1, 3]]), () => [,,,,]), l.add(X, () => X(E([1, 2, 3, 4, 5]).at(x("::-2")), -1), () => E([5, 3, 1])).add(X, () => X(E([1]), []), () => E(1)).add(X, () => X(E(1), 1), () => E([1])).add(X, () => X(E(1), -1), () => E([1])).add("reshape", () => X(P([[0, 1], [2, 3], [4, 5]]), [2, 3]), () => [[0, 1, 2], [3, 4, 5]]).add("reshape", () => X(P([[[[0, 1]]]]), [2, -1]), () => [[0], [1]]).add("reshape", () => {
+    let e = P([[[[0, 1]]]]);
     return X(e, [2, -1]).base === e;
   }, () => !0).add("reshape", () => {
-    let e = R([[[[0, 1]]]]).at(0);
+    let e = P([[[[0, 1]]]]).at(0);
     return X(e, [2, -1]).base === e;
   }, () => !1).add("reshape", () => X(E([[1, 2, 3], [4, 5, 6]]), [-1]), () => E([1, 2, 3, 4, 5, 6])).add("reshape", () => {
     let e = C(30),
@@ -1159,7 +1152,7 @@ var n = {};
         strides: a,
         offset: r
       } = e;
-      this.#n = Pn(t, a, r);
+      this.#n = Yn(t, a, r);
     }
     get index() {
       return this.#n.index;
@@ -1194,7 +1187,7 @@ var n = {};
           base: r
         } = this;
       if ("number" == typeof e) return E(r.item(e), r.dtype);
-      "string" == typeof e && (e = x(e)), e instanceof m ? (t = e.indices(r.size), a = K([t.slicelength], r.dtype)) : (t = R(e).flat, a = V(e));
+      "string" == typeof e && (e = x(e)), e instanceof m ? (t = e.indices(r.size), a = R([t.slicelength], r.dtype)) : (t = P(e).flat, a = K(e));
       let n = 0;
       for (let e of t) a.data[n++] = r.item(e);
       return a;
@@ -1204,8 +1197,8 @@ var n = {};
         base: a
       } = this;
       if ("number" == typeof e) return a.itemset(e, t), this;
-      "string" == typeof e && (e = x(e)), t = t instanceof G ? [...t] : R(t).flatten().data;
-      let r = e instanceof m ? e.indices(a.size) : R(e).flat,
+      "string" == typeof e && (e = x(e)), t = t instanceof G ? [...t] : P(t).flatten().data;
+      let r = e instanceof m ? e.indices(a.size) : P(e).flat,
         n = 0;
       for (let e of r) a.itemset(e, t[n++ % t.length]);
       return this;
@@ -1215,11 +1208,11 @@ var n = {};
     }
   }
   function U(e, t, a = undefined) {
-    let r = K(e, a ?? j(t));
+    let r = R(e, a ?? q(t));
     return D(r, t), r;
   }
   function W(e, t, a = undefined) {
-    let r = V(e, a ?? j(t));
+    let r = K(e, a ?? q(t));
     return D(r, t), r;
   }
   function J(...e) {
@@ -1236,7 +1229,7 @@ var n = {};
   function C(e, t = undefined, a = 1) {
     null == t && (t = e, e = 0);
     let r = Math.max(0, (t - e) / a | 0),
-      n = K([r], "number"),
+      n = R([r], "number"),
       {
         data: s
       } = n;
@@ -1247,23 +1240,23 @@ var n = {};
     let s = (t - e) / (r ? a - 1 : a),
       l = [];
     for (let t = 0; t < a; t++) l[t] = e + t * s;
-    let i = new v([a], l);
+    let i = E(l);
     return n ? [i, s] : i;
   }
   function H(e, t, a = null, r = null, n = "raise") {
-    if (e = R(e), t = E(t), null == a) {
+    if (e = P(e), t = E(t), null == a) {
       t.data = L(t.data, n, e.size);
       let a = t.shape;
-      if (null == r) r = K(a);else if (!Oe(r.shape, a)) throw "output array does not match result of ndarray.take";
+      if (null == r) r = R(a);else if (!Fe(r.shape, a)) throw "output array does not match result of ndarray.take";
       for (let a = 0; a < t.size; a++) r.data[a] = e.item(t.data[a]);
       return r;
     }
     {
       a < 0 && (a += e.ndim), t.data = L(t.data, n, e.shape[a]);
       let s = e.shape.slice();
-      if (s.splice(a, 1, ...t.shape), null == r) r = K(s);else if (!Oe(r.shape, s)) throw "output array does not match result of ndarray.take";
+      if (s.splice(a, 1, ...t.shape), null == r) r = R(s);else if (!Fe(r.shape, s)) throw "output array does not match result of ndarray.take";
       let l = Array(a).fill(x());
-      for (let a of P(t.shape)) r.get(l.concat(a)).set(e.get([...l, t.item(a)]));
+      for (let a of Y(t.shape)) r.get(l.concat(a)).set(e.get([...l, t.item(a)]));
       return r;
     }
   }
@@ -1292,7 +1285,7 @@ var n = {};
     return W(e, 0, t);
   }
   function ae(e, t = undefined) {
-    return re(e = R(e, t)) ? e : E(e);
+    return re(e = P(e, t)) ? e : E(e);
   }
   function re(e) {
     let {
@@ -1309,25 +1302,20 @@ var n = {};
     return !0;
   }
   function ne(e, t, a) {
-    e = R(e);
+    e = P(e);
     let r = [...Array(e.ndim).keys()];
     return [r[t], r[a]] = [r[a], r[t]], se(e, r);
   }
   function se(e, t = null) {
-    e = R(e);
+    e = P(e);
     let a,
       r,
       {
         ndim: n,
         shape: s,
-        data: l,
-        dtype: i,
-        base: d,
-        strides: o,
-        offset: u,
-        itemsize: h
+        strides: l
       } = e;
-    if (null == t) a = s.slice().reverse(), r = o.slice().reverse();else {
+    if (null == t) a = s.slice().reverse(), r = l.slice().reverse();else {
       t = function (e, t) {
         if (e.length != t) throw new Error("axes don't match array");
         let a = [],
@@ -1340,13 +1328,13 @@ var n = {};
         }
         return a;
       }(t, n), a = Array(n), r = Array(n);
-      for (let e = 0; e < n; e++) a[e] = s[t[e]], r[e] = o[t[e]];
+      for (let e = 0; e < n; e++) a[e] = s[t[e]], r[e] = l[t[e]];
     }
-    return new v(a, l, i, d ?? e, r, u, h);
+    return e.as_strided(a, r);
   }
   function le(...e) {
     if (1 != e.length) return e.map(e => le(e));
-    let t = R(e[0]),
+    let t = P(e[0]),
       {
         ndim: a
       } = t;
@@ -1354,7 +1342,7 @@ var n = {};
   }
   function ie(...e) {
     if (1 != e.length) return e.map(e => ie(e));
-    let t = R(e[0]),
+    let t = P(e[0]),
       {
         ndim: a,
         shape: r
@@ -1363,7 +1351,7 @@ var n = {};
   }
   function de(...e) {
     if (1 != e.length) return e.map(e => de(e));
-    let t = R(e[0]),
+    let t = P(e[0]),
       {
         ndim: a,
         shape: r
@@ -1371,7 +1359,7 @@ var n = {};
     return a >= 3 ? t : 2 == a ? t.reshape([r[0], r[1], 1]) : 1 == a ? t.reshape([1, r[0], 1]) : t.copy().reshape([1, 1, 1]);
   }
   l.add("Flatiter", () => {
-    let e = new v([2, 3], [0, 1, 2, 3, 4, 5]),
+    let e = E([0, 1, 2, 3, 4, 5]).reshape(2, 3),
       t = new G(e),
       a = [];
     for (let e of t) a.push(e);
@@ -1388,7 +1376,7 @@ var n = {};
   }, () => E([[1, 1, 2], [3, 5, 6]])).add("Flatiter.set", () => {
     let e = E([[1, 2, 3], [4, 5, 6]]);
     return e.flat.set(":", [[1, 2]]), e;
-  }, () => E([[1, 2, 1], [2, 1, 2]])), l.add("Flatiter.copy", () => new G(new v([2, 3], [0, 1, 2, 3, 4, 5]).at(x([,, -1]))).copy(), () => [3, 4, 5, 0, 1, 2]), l.add("full", () => U([2, 2], 1 / 0), () => [[1 / 0, 1 / 0], [1 / 0, 1 / 0]]).add("full", () => U([2, 2], 10), () => [[10, 10], [10, 10]]).add("full", () => U([2, 2], [1, 2]), () => [[1, 2], [1, 2]]).add("full", () => U(2, -1), () => [-1, -1]), l.add(W, () => W([1], 2), () => [2]).add(W, () => W(1, 99), () => 99).add(W, () => qe(W([[0, 1], [2, 3]], [1.1, 2.2], "int8"), E([[1, 2], [1, 2]])), () => !0), l.add("broadcast_shapes", () => J([1, 2], [3, 1], [3, 2]), () => [3, 2]), l.add("broadcast_shapes", () => J([6, 7], [5, 6, 1], [7], [5, 1, 7]), () => [5, 6, 7]), l.add("arange", () => C(3), () => E([0, 1, 2])).add("arange", () => C(-10, 10), () => E([-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])).add("arange", () => C(-10, 10, -1), () => E([])).add("arange", () => C(3, 7, 2), () => E([3, 5])).add("arange", () => C(0, -10, -1), () => E([0, -1, -2, -3, -4, -5, -6, -7, -8, -9])), l.add("linspace", () => B(2, 3, 5), () => E([2, 2.25, 2.5, 2.75, 3])).add("linspace", () => B(2, 3, 5, !1), () => E([2, 2.2, 2.4, 2.6, 2.8])).add("linspace", () => B(2, 3, 5, !0, !0), () => [E([2, 2.25, 2.5, 2.75, 3]), .25]).add("linspace", () => B(2, 3, 5, !1, !0), () => [E([2, 2.2, 2.4, 2.6, 2.8]), .2]).add("linspace", () => B(1, 10, 10, !1), () => E([1, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3, 8.2, 9.1])), l.add("take", () => H([4, 3, 5, 7, 6, 8], [0, 1, 4]), () => E([4, 3, 6])).add("take", () => H([4, 3, 5, 7, 6, 8], [[0, 1], [2, 3]]), () => E([[4, 3], [5, 7]])).add("take", () => H(E([[1, 2], [3, 4], [5, 6], [7, 8]]), [[0, 1], [2, 3]], 0), () => E([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])).add("take", () => H(E([[1, 2], [3, 4], [5, 6], [7, 8]]), E([[[[0, 1], [0, 1]]]]), 1), () => E([[[[[1, 2], [1, 2]]]], [[[[3, 4], [3, 4]]]], [[[[5, 6], [5, 6]]]], [[[[7, 8], [7, 8]]]]])).add("take", () => H([[5, 6, 2, 7, 1], [4, 9, 2, 9, 3]], [0, 4], 1), () => [[5, 1], [4, 3]]), l.add(ae, () => {
+  }, () => E([[1, 2, 1], [2, 1, 2]])), l.add("Flatiter.copy", () => new G(E([0, 1, 2, 3, 4, 5]).reshape(2, 3).at(x([,, -1]))).copy(), () => [3, 4, 5, 0, 1, 2]), l.add("full", () => U([2, 2], 1 / 0), () => [[1 / 0, 1 / 0], [1 / 0, 1 / 0]]).add("full", () => U([2, 2], 10), () => [[10, 10], [10, 10]]).add("full", () => U([2, 2], [1, 2]), () => [[1, 2], [1, 2]]).add("full", () => U(2, -1), () => [-1, -1]), l.add(W, () => W([1], 2), () => [2]).add(W, () => W(1, 99), () => 99).add(W, () => je(W([[0, 1], [2, 3]], [1.1, 2.2], "int8"), E([[1, 2], [1, 2]])), () => !0), l.add("broadcast_shapes", () => J([1, 2], [3, 1], [3, 2]), () => [3, 2]), l.add("broadcast_shapes", () => J([6, 7], [5, 6, 1], [7], [5, 1, 7]), () => [5, 6, 7]), l.add("arange", () => C(3), () => E([0, 1, 2])).add("arange", () => C(-10, 10), () => E([-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])).add("arange", () => C(-10, 10, -1), () => E([])).add("arange", () => C(3, 7, 2), () => E([3, 5])).add("arange", () => C(0, -10, -1), () => E([0, -1, -2, -3, -4, -5, -6, -7, -8, -9])), l.add("linspace", () => B(2, 3, 5), () => E([2, 2.25, 2.5, 2.75, 3])).add("linspace", () => B(2, 3, 5, !1), () => E([2, 2.2, 2.4, 2.6, 2.8])).add("linspace", () => B(2, 3, 5, !0, !0), () => [E([2, 2.25, 2.5, 2.75, 3]), .25]).add("linspace", () => B(2, 3, 5, !1, !0), () => [E([2, 2.2, 2.4, 2.6, 2.8]), .2]).add("linspace", () => B(1, 10, 10, !1), () => E([1, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3, 8.2, 9.1])), l.add("take", () => H([4, 3, 5, 7, 6, 8], [0, 1, 4]), () => E([4, 3, 6])).add("take", () => H([4, 3, 5, 7, 6, 8], [[0, 1], [2, 3]]), () => E([[4, 3], [5, 7]])).add("take", () => H(E([[1, 2], [3, 4], [5, 6], [7, 8]]), [[0, 1], [2, 3]], 0), () => E([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])).add("take", () => H(E([[1, 2], [3, 4], [5, 6], [7, 8]]), E([[[[0, 1], [0, 1]]]]), 1), () => E([[[[[1, 2], [1, 2]]]], [[[[3, 4], [3, 4]]]], [[[[5, 6], [5, 6]]]], [[[[7, 8], [7, 8]]]]])).add("take", () => H([[5, 6, 2, 7, 1], [4, 9, 2, 9, 3]], [0, 4], 1), () => [[5, 1], [4, 3]]), l.add(ae, () => {
     let e = Q([3, 1, 5]).at(x(), x([,, 3]), x());
     return ae(e) === e;
   }, () => !0), l.add(ae, () => {
@@ -1429,7 +1417,7 @@ var n = {};
   }, () => [[4, 3, 1], !0]).add(de, () => de([1, 2], [[1, 2]], [[[1, 2]]]), () => [[[[1], [2]]], [[[1], [2]]], [[[1, 2]]]]);
   class oe {
     constructor(e) {
-      this.shape = J(...e.map(e => e.shape)), this.arrays = e.map(e => T(e, this.shape)), this.ndim = this.shape.length, this.size = $(this.shape), this.reset();
+      this.shape = J(...e.map(e => e.shape)), this.arrays = e.map(e => O(e, this.shape)), this.ndim = this.shape.length, this.size = $(this.shape), this.reset();
     }
     [Symbol.iterator]() {
       return 0 != this.index && this.reset(), this;
@@ -1447,26 +1435,26 @@ var n = {};
     }
   }
   function ue(...e) {
-    return new oe(e.map(e => R(e)));
+    return new oe(e.map(e => P(e)));
   }
-  function he(e, t = e, a = 0) {
-    let r = e * t,
-      n = Array(r).fill(0);
-    for (let e = a + Math.ceil(-a / (t + 1)) * (t + 1); e < r; e += t + 1) n[e] = 1;
-    return new v([e, t], n);
+  function he(e, t = e, a = 0, r = "number") {
+    let n = ee([e, t], r),
+      {
+        data: s,
+        size: l
+      } = n;
+    for (let e = a + Math.ceil(-a / (t + 1)) * (t + 1); e < l; e += t + 1) s[e] = 1;
+    return n;
   }
-  function fe(e) {
-    let t = e * e,
-      a = Array(t).fill(0);
-    for (let r = 0; r < t; r += e + 1) a[r] = 1;
-    return new v([e, e], a);
+  function fe(e, t = "number") {
+    return he(e, e, 0, t);
   }
   function pe(e) {
     return null == e || "object" != typeof e ? 0 : null != e.ndim ? e.ndim : I(e).length;
   }
   l.add(ue, () => {
     let e = ue(E([[1], [2], [3]]), E([4, 5, 6])),
-      t = K(e.shape),
+      t = R(e.shape),
       a = [];
     for (let [t, r] of e) a.push(t + r);
     return t.flat = a, t;
@@ -1474,10 +1462,10 @@ var n = {};
     let e = [],
       t = ue(E([1, 2, 3]), E([[4], [5], [6]]));
     return e.push(t.index), e.push(t.next().value, t.next().value, t.next().value), e.push(t.index), t.reset(), e.push(t.index), e;
-  }, () => [0, [1, 4], [2, 4], [3, 4], 3, 0]), l.add("eye", () => he(2), () => [[1, 0], [0, 1]]).add("eye", () => he(3, 3, 1), () => [[0, 1, 0], [0, 0, 1], [0, 0, 0]]).add("eye", () => he(4, 5, -1), () => [[0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0]]), l.add("identity", () => fe(3), () => [[1, 0, 0], [0, 1, 0], [0, 0, 1]]).add("identity", () => fe(0), () => []);
+  }, () => [0, [1, 4], [2, 4], [3, 4], 3, 0]), l.add("eye", () => he(2), () => [[1, 0], [0, 1]]).add("eye", () => he(3, 3, 1), () => [[0, 1, 0], [0, 0, 1], [0, 0, 0]]).add("eye", () => he(4, 5, -1), () => [[0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0]]), l.add("identity", () => fe(3), () => [[1, 0, 0], [0, 1, 0], [0, 0, 1]]).add("identity", () => fe(0), () => E([]).reshape([0, 0]));
   const ce = pe;
   function me(e, t) {
-    e = R(e), "number" == typeof t && (t = [t]);
+    e = P(e), "number" == typeof t && (t = [t]);
     let a = t.length;
     if ((t = new Set(t)).size != a) throw "repeated axis";
     let r = e.ndim + a,
@@ -1486,28 +1474,22 @@ var n = {};
     return e.reshape(n);
   }
   function ye(e, t = null) {
-    e = R(e), null != t && (t = Ee(t));
+    e = P(e), null != t && (t = Ee(t));
     let {
         shape: a,
-        strides: r,
-        data: n,
-        dtype: s,
-        ndim: l,
-        offset: i,
-        itemsize: d
+        ndim: r
       } = e,
-      o = [],
-      u = [];
-    for (let e = 0; e < l; e++) (t ? t.includes(e) : 1 == a[e]) || (o.push(a[e]), u.push(r[e]));
-    return new v(o, n, s, e, u, i, d);
+      n = [];
+    for (let e = 0; e < r; e++) (t ? t.includes(e) : 1 == a[e]) || n.push(a[e]);
+    return e.reshape(n);
   }
   function ge(e) {
     return E(e);
   }
   function we(e, t, a = undefined) {
     let r = [];
-    for (let a of P(t)) r.push(e(a));
-    return new v(t, r, a ?? j(r));
+    for (let a of Y(t)) r.push(e(a));
+    return E(r, a ?? q(r)).reshape(t);
   }
   function be(e, t = -1, a = undefined) {
     let r;
@@ -1516,7 +1498,7 @@ var n = {};
       let a = 0;
       if (a < t) for (let n of e) if (r.push(n), a++, a >= t) break;
     }
-    return E(r, a ?? j(r));
+    return E(r, a ?? q(r));
   }
   function xe(e) {
     e = le(e);
@@ -1526,40 +1508,34 @@ var n = {};
       a = [];
     for (let e = 0; e < t; e++) a.push([]);
     for (let [r, n] of _e(e)) if (n) for (let e = 0; e < t; e++) a[e].push(r[e]);
-    return a.map(e => R(e));
+    return a.map(e => P(e));
   }
   function* _e(e) {
-    e = R(e);
-    for (let t of P(e.shape)) {
+    e = P(e);
+    for (let t of Y(e.shape)) {
       let a = [t, e.item(t)];
       yield a;
     }
   }
-  function ze(e) {
-    e = R(e);
-    let t = 0,
-      a = [];
-    for (let [r, n] of _e(e)) n && (a.push(...r), t++);
-    return new v([t, e.ndim], a);
+  function ve(e) {
+    return 0 == pe(e) ? ve(e = le(e)).at(x(), x(null, 0)) : se(xe(e));
   }
-  function ve(e, t, a = null, r = null) {
-    if (1 != (e = R(e)).ndim) throw "condition must be a 1-d array";
+  function ze(e, t, a = null, r = null) {
+    if (1 != (e = P(e)).ndim) throw "condition must be a 1-d array";
     return H(t, xe(e)[0], a, r);
   }
   function Ae(e) {
     e = ae(e);
     let {
       size: t,
-      data: a,
-      base: r,
-      dtype: n,
-      offset: s,
-      itemsize: l
+      base: a,
+      offset: r,
+      itemsize: n
     } = e;
-    return new v([t], a, n, r, void 0, s, l);
+    return (e = e.as_strided([t], A([t], 1, n), r)).base = a, e;
   }
   function $e(e, t) {
-    return ve(Ae(e), Ae(t));
+    return ze(Ae(e), Ae(t));
   }
   function Me(e) {
     return xe(Ae(e))[0];
@@ -1568,10 +1544,10 @@ var n = {};
     return sa(Qa(e, 0), t, null, a);
   }
   function Ne(e, t, a = !1) {
-    if (Array.isArray(e) || (e = [e]), e = e.map(e => Ke(e, t)), !a && new Set(e).size != e.length) throw "repeated axis";
+    if (Array.isArray(e) || (e = [e]), e = e.map(e => Re(e, t)), !a && new Set(e).size != e.length) throw "repeated axis";
     return e;
   }
-  l.add("ndim", () => pe([[1, 2, 3], [4, 5, 6]]), () => 2).add("ndim", () => pe(R([[1, 2, 3], [4, 5, 6]])), () => 2).add("ndim", () => pe(1), () => 0).add("ndim", () => pe(null), () => 0), l.add(me, () => me(E([1, 2]), 0), () => E([[1, 2]])).add(me, () => me(E([1, 2]), 1), () => E([[1], [2]])).add(me, () => me(E([1, 2]), [0, 1]), () => E([[[1, 2]]])).add(me, () => me(E([1, 2]), [2, 0]), () => E([[[1], [2]]])).add(me, () => {
+  l.add("ndim", () => pe([[1, 2, 3], [4, 5, 6]]), () => 2).add("ndim", () => pe(P([[1, 2, 3], [4, 5, 6]])), () => 2).add("ndim", () => pe(1), () => 0).add("ndim", () => pe(null), () => 0), l.add(me, () => me(E([1, 2]), 0), () => E([[1, 2]])).add(me, () => me(E([1, 2]), 1), () => E([[1], [2]])).add(me, () => me(E([1, 2]), [0, 1]), () => E([[[1, 2]]])).add(me, () => me(E([1, 2]), [2, 0]), () => E([[[1], [2]]])).add(me, () => {
     let e = E([1, 2]);
     return me(e, [2, 0]).base === e;
   }, () => !0), l.add(ye, () => ye(E([[[0], [1], [2]]])).shape, () => [3]).add(ye, () => ye(E([[[0], [1], [2]]]), 0).shape, () => [3, 1]).add(ye, () => ye(E([[[0], [1], [2]]]), 2).shape, () => [1, 3]).add(ye, () => ye(E([[1234]])), () => E(1234)).add(ye, () => {
@@ -1591,7 +1567,7 @@ var n = {};
   }), () => E([[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]])), l.add(xe, () => {
     let e;
     return e = E([[3, 0, 0], [0, 4, 0], [5, 6, 0]]).at(x("..."), null), xe(e);
-  }, () => [E([0, 1, 2, 2]), E([0, 1, 0, 1]), E([0, 0, 0, 0])]).add(xe, () => xe(E([[!1, !1, !1], [!0, !0, !0], [!0, !0, !0]])), () => [E([1, 1, 1, 2, 2, 2]), E([0, 1, 2, 0, 1, 2])]).add(xe, () => xe(55), () => E([0])), l.add(_e, () => {
+  }, () => [E([0, 1, 2, 2]), E([0, 1, 0, 1]), E([0, 0, 0, 0])]).add(xe, () => xe(E([[!1, !1, !1], [!0, !0, !0], [!0, !0, !0]])), () => [E([1, 1, 1, 2, 2, 2]), E([0, 1, 2, 0, 1, 2])]).add(xe, () => xe(55), () => [E([0])]), l.add(_e, () => {
     {
       let e;
       e = E([[1, 2], [3, 4]]);
@@ -1599,7 +1575,7 @@ var n = {};
       for (let [a, r] of _e(e)) t.push(a.slice(), r);
       return t;
     }
-  }, () => [[0, 0], 1, [0, 1], 2, [1, 0], 3, [1, 1], 4]), l.add(ze, () => ze(55).shape, () => [1, 0]).add(ze, () => ze(ar(C(6).reshape(2, 3), 1)), () => E([[0, 2], [1, 0], [1, 1], [1, 2]])), l.add(ve, () => ve([0, 1], E([[1, 2], [3, 4], [5, 6]]), 0), () => E([[3, 4]])).add(ve, () => ve([!1, !0, !0], E([[1, 2], [3, 4], [5, 6]]), 0), () => E([[3, 4], [5, 6]])).add(ve, () => ve([!1, !0], E([[1, 2], [3, 4], [5, 6]]), 1), () => E([[2], [4], [6]])).add(ve, () => ve([!1, !0], E([[1, 2], [3, 4], [5, 6]])), () => E([2])), l.add(Ae, () => Ae(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 2, 3, 4, 5, 6])).add(Ae, () => Ae(E([[1, 2, 3], [4, 5, 6]]).T), () => E([1, 4, 2, 5, 3, 6])).add(Ae, () => Ae(C(12).reshape(2, 3, 2).swapaxes(1, 2)), () => E([0, 2, 4, 1, 3, 5, 6, 8, 10, 7, 9, 11])).add(Ae, () => {
+  }, () => [[0, 0], 1, [0, 1], 2, [1, 0], 3, [1, 1], 4]), l.add(ve, () => ve(55).shape, () => [1, 0]).add(ve, () => ve(ar(C(6).reshape(2, 3), 1)), () => E([[0, 2], [1, 0], [1, 1], [1, 2]])), l.add(ze, () => ze([0, 1], E([[1, 2], [3, 4], [5, 6]]), 0), () => E([[3, 4]])).add(ze, () => ze([!1, !0, !0], E([[1, 2], [3, 4], [5, 6]]), 0), () => E([[3, 4], [5, 6]])).add(ze, () => ze([!1, !0], E([[1, 2], [3, 4], [5, 6]]), 1), () => E([[2], [4], [6]])).add(ze, () => ze([!1, !0], E([[1, 2], [3, 4], [5, 6]])), () => E([2])), l.add(Ae, () => Ae(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 2, 3, 4, 5, 6])).add(Ae, () => Ae(E([[1, 2, 3], [4, 5, 6]]).T), () => E([1, 4, 2, 5, 3, 6])).add(Ae, () => Ae(C(12).reshape(2, 3, 2).swapaxes(1, 2)), () => E([0, 2, 4, 1, 3, 5, 6, 8, 10, 7, 9, 11])).add(Ae, () => {
     let e, t;
     return e = C(40).reshape([5, -1]).copy(), t = e.at(null, x(":"), null, null, x("::2"), null), [t.reshape(-1).base == e, Ae(t).base];
   }, () => [!0, null]).add(Ae, () => {
@@ -1633,7 +1609,7 @@ var n = {};
   const Ee = Ne;
   class Se {
     constructor(e, t = null) {
-      this.array = R(e);
+      this.array = P(e);
       let {
         ndim: a,
         shape: r
@@ -1657,20 +1633,20 @@ var n = {};
         mask: r,
         indices: n
       } = this;
-      for (let t of P(a)) {
+      for (let t of Y(a)) {
         for (let a = 0, s = 0; a < e.ndim; a++) r[a] && (n[a] = t[s++]);
         yield [t, e.get(n)];
       }
     }
   }
-  function je(e, t = null) {
+  function qe(e, t = null) {
     return new Se(e, t);
   }
-  function qe(e, t, a = !1) {
-    return e = R(e), t = R(t), !!Oe(e.shape, t.shape) && xt(a ? Fe(e, t) : La(e, t));
+  function je(e, t, a = !1) {
+    return e = P(e), t = P(t), !!Fe(e.shape, t.shape) && xt(a ? Te(e, t) : La(e, t));
   }
   function Ie(e, t) {
-    return e = R(e), t = R(t), !!function (...e) {
+    return e = P(e), t = P(t), !!function (...e) {
       let t = 0;
       for (let a of e) t = Math.max(t, a.length);
       for (let a = 0; a < t; a++) {
@@ -1683,16 +1659,16 @@ var n = {};
       return !0;
     }(e.shape, t.shape) && xt(La(e, t));
   }
-  function Oe(e, t) {
+  function Fe(e, t) {
     if (e === t) return !0;
     if (e.length !== t.length) return !1;
     for (let a = 0; a < e.length; a++) if (e[a] !== t[a]) return !1;
     return !0;
   }
-  const Fe = it("nan_equal", (e, t) => e == t || Number.isNaN(e) && Number.isNaN(t));
-  function Te(e, t = 0, a = undefined) {
+  const Te = it("nan_equal", (e, t) => e == t || Number.isNaN(e) && Number.isNaN(t));
+  function Oe(e, t = 0, a = undefined) {
     if (0 == e.length) throw new Error("need at least one array to concatenate");
-    e = e.map(e => R(e)), null == t && (e = e.map(e => Ae(e)), t = 0);
+    e = e.map(e => P(e)), null == t && (e = e.map(e => Ae(e)), t = 0);
     let {
       ndim: r,
       shape: n
@@ -1703,11 +1679,11 @@ var n = {};
       if (s.ndim != r) throw new Error(`all the input arrays must have same number of dimensions, but the array at index 0 has ${r} dimension(s) and the array at index ${a} has ${e[a].ndim} dimension(s)`);
       for (let l = 0; l < r; l++) if (l != t && s.shape[l] != n[l]) throw new Error(`all the input array dimensions for the concatenation axis must match exactly, but along dimension ${l}, the array at index 0 has size ${n[l]} and the array at index ${a} has size ${e[a].shape[l]}`);
     }
-    t = Ke(t, r);
+    t = Re(t, r);
     let s = n.slice();
-    if (s[t] = e.reduce((e, a) => e + a.shape[t], 0), null == a) a = K(s);else {
+    if (s[t] = e.reduce((e, a) => e + a.shape[t], 0), null == a) a = R(s);else {
       if (a.ndim != r) throw new Error("output array has wrong dimensionality");
-      if (!Oe(a.shape, s)) throw new Error("output array is the wrong shape");
+      if (!Fe(a.shape, s)) throw new Error("output array is the wrong shape");
     }
     let l = Array(r).fill(x(":")),
       i = 0;
@@ -1715,7 +1691,7 @@ var n = {};
     return a;
   }
   function De(e, t, a) {
-    e = R(e);
+    e = P(e);
     let {
       ndim: r
     } = e;
@@ -1724,40 +1700,40 @@ var n = {};
     for (let e = 0; e < t.length; e++) n.splice(a[e], 0, t[e]);
     return se(e, n);
   }
-  l.add(qe, () => qe([1, 2], [1, 2]), () => !0).add(qe, () => qe(E([1, 2]), E([1, 2])), () => !0).add(qe, () => qe([1, 2], [1, 2, 3]), () => !1).add(qe, () => qe([1, 2], [1, 4]), () => !1).add(qe, () => {
+  l.add(je, () => je([1, 2], [1, 2]), () => !0).add(je, () => je(E([1, 2]), E([1, 2])), () => !0).add(je, () => je([1, 2], [1, 2, 3]), () => !1).add(je, () => je([1, 2], [1, 4]), () => !1).add(je, () => {
     let e = E([1, NaN]);
-    return qe(e, e);
-  }, () => !1).add(qe, () => {
+    return je(e, e);
+  }, () => !1).add(je, () => {
     let e = E([1, NaN]);
-    return qe(e, e, !0);
-  }, () => !0), l.add(Ie, () => Ie([1, 2], [1, 2]), () => !0).add(Ie, () => Ie([1, 2], [1, 3]), () => !1).add(Ie, () => Ie([1, 2], [[1, 2], [1, 2]]), () => !0).add(Ie, () => Ie([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]]), () => !1).add(Ie, () => Ie([1, 2], [[1, 2], [1, 3]]), () => !1), l.add(Te, () => {
+    return je(e, e, !0);
+  }, () => !0), l.add(Ie, () => Ie([1, 2], [1, 2]), () => !0).add(Ie, () => Ie([1, 2], [1, 3]), () => !1).add(Ie, () => Ie([1, 2], [[1, 2], [1, 2]]), () => !0).add(Ie, () => Ie([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]]), () => !1).add(Ie, () => Ie([1, 2], [[1, 2], [1, 3]]), () => !1), l.add(Oe, () => {
     let e = E([[1, 2], [3, 4]]),
       t = E([[5, 6]]);
-    return [Te([e, t], 0), Te([e, t.T], 1), Te([e, t], null)];
+    return [Oe([e, t], 0), Oe([e, t.T], 1), Oe([e, t], null)];
   }, () => [E([[1, 2], [3, 4], [5, 6]]), E([[1, 2, 5], [3, 4, 6]]), E([1, 2, 3, 4, 5, 6])]), l.add(De, () => De(ee([3, 4, 5]), 0, -1).shape, () => [4, 5, 3]).add(De, () => De(ee([3, 4, 5]), -1, 0).shape, () => [5, 3, 4]);
-  let Pe = e => [...Array(e).keys()];
-  function Re(e) {
+  let Ye = e => [...Array(e).keys()];
+  function Pe(e) {
     let t = Object.create(null);
     return (...a) => ((e, t, a) => e[t] ?? (e[t] = a(...t)))(t, a, e);
   }
-  function Ke(e, t) {
+  function Re(e, t) {
     let a = e;
     if (e = +e, !Number.isInteger(e)) throw new Error(`${a} cannot be cast to integer`);
     if (e < 0 && (e += t), e < 0 || t <= e) throw `axis ${a} is out of bounds for array of dimension ${t}`;
     return e;
   }
-  let Ve = {};
-  function Ye(e, t, a = !1) {
-    if (null == e) return Ve[t] ?? (Ve[t] = Array(t).fill(1));
+  let Ke = {};
+  function Ve(e, t, a = !1) {
+    if (null == e) return Ke[t] ?? (Ke[t] = Array(t).fill(1));
     let r = Array(t).fill(0);
     if (Array.isArray(e)) {
-      for (let a = 0; a < e.length; a++) r[Ke(e[a], t)] = 1;
+      for (let a = 0; a < e.length; a++) r[Re(e[a], t)] = 1;
       if (!a) {
         let a = 0;
         for (let e = 0; e < t; e++) a += r[e];
         if (a != e.length) throw "repeated axis";
       }
-    } else r[Ke(e, t)] = 1;
+    } else r[Re(e, t)] = 1;
     return r;
   }
   let Xe = (e = null, t, a, r = t) => {
@@ -1782,15 +1758,15 @@ var n = {};
     Ze = e => `return ${e}`;
   function et(e, t, a = t) {
     let r = "out",
-      n = Pe(e).map(e => `x${e + 1}`),
+      n = Ye(e).map(e => `x${e + 1}`),
       s = `${r}_offset`,
       l = n.map(e => `${e}_offset`),
       i = `${r}_data`,
       d = n.map(e => `${e}_data`),
-      o = Pe(a).map(e => `${r}_strides_${e}`),
-      u = n.map(e => Pe(t).map(t => `${e}_strides_${t}`)),
-      h = Pe(t).map(e => `i_${e}`),
-      f = Pe(t).map(e => `shape_${e}`);
+      o = Ye(a).map(e => `${r}_strides_${e}`),
+      u = n.map(e => Ye(t).map(t => `${e}_strides_${t}`)),
+      h = Ye(t).map(e => `i_${e}`),
+      f = Ye(t).map(e => `shape_${e}`);
     return {
       fn: "fn",
       out: r,
@@ -1807,9 +1783,9 @@ var n = {};
   }
   function tt(e, t, a, r) {
     let n = [];
-    return n.push(Ge("let", t, Be(e, "data"))), n.push(Ge("let", a, Be(e, "offset"))), r.length > 0 && n.push(Xe("let", r, Be(e, "strides"), Pe(r.length))), n;
+    return n.push(Ge("let", t, Be(e, "data"))), n.push(Ge("let", a, Be(e, "offset"))), r.length > 0 && n.push(Xe("let", r, Be(e, "strides"), Ye(r.length))), n;
   }
-  let at = Re((e, t) => new Function(...function (e, t) {
+  let at = Pe((e, t) => new Function(...function (e, t) {
       let {
           fn: a,
           out: r,
@@ -1826,9 +1802,9 @@ var n = {};
         p = [];
       return p.push(...tt(r, i, s, o)), n.forEach((e, t) => {
         p.push(...tt(e, d[t], l[t], u[t]));
-      }), p.push(Xe("let", f, Be(n[0], "shape"), Pe(f.length))), p.push(Pe(t).reverse().reduce((e, t) => Ue(h[t], f[t], e), We(Ge(null, [Ce(i, Qe(s, ...h.map((e, t) => Le(e, o[t]))))], [Je(a, ...d.map((e, t) => Ce(e, Qe(l[t], ...h.map((e, a) => Le(e, u[t][a]))))))]))), Ze(r)), [a, ...n, r, We(...p)];
+      }), p.push(Xe("let", f, Be(n[0], "shape"), Ye(f.length))), p.push(Ye(t).reverse().reduce((e, t) => Ue(h[t], f[t], e), We(Ge(null, [Ce(i, Qe(s, ...h.map((e, t) => Le(e, o[t]))))], [Je(a, ...d.map((e, t) => Ce(e, Qe(l[t], ...h.map((e, a) => Le(e, u[t][a]))))))]))), Ze(r)), [a, ...n, r, We(...p)];
     }(e, t))),
-    rt = (Re((e, t) => new Function()), Re((e, t, a) => new Function(...function (e, t, a) {
+    rt = (Pe((e, t) => new Function()), Pe((e, t, a) => new Function(...function (e, t, a) {
       let r = t;
       for (let e = 0; e < t; e++) r -= a[e];
       let {
@@ -1850,9 +1826,9 @@ var n = {};
         w = [];
       return w.push(...tt(s, o, i, h)), l.forEach((e, t) => {
         w.push(...tt(e, u[t], d[t], f[t]));
-      }), w.push(Xe("let", c, Be(l[0], "shape"), Pe(c.length))), w.push(Pe(t).filter(e => !a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We(Ge("let", y, m), ...g.map((e, r) => Ge("let", e, Qe(d[r], ...Pe(t).filter(e => !a[e]).map(e => Le(p[e], f[r][e]))))), Pe(t).filter(e => a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We([Ge(null, y, Je(n, y, ...u.map((e, r) => Ce(e, Qe(g[r], ...Pe(t).filter(e => a[e]).map(e => Le(p[e], f[r][e])))))))])), Ge(null, Ce(o, Qe(i, ...Pe(t).filter(e => !a[e]).map((e, t) => Le(p[e], h[t])))), y))), Ze(s)), [n, ...l, s, m, We(...w)];
+      }), w.push(Xe("let", c, Be(l[0], "shape"), Ye(c.length))), w.push(Ye(t).filter(e => !a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We(Ge("let", y, m), ...g.map((e, r) => Ge("let", e, Qe(d[r], ...Ye(t).filter(e => !a[e]).map(e => Le(p[e], f[r][e]))))), Ye(t).filter(e => a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We([Ge(null, y, Je(n, y, ...u.map((e, r) => Ce(e, Qe(g[r], ...Ye(t).filter(e => a[e]).map(e => Le(p[e], f[r][e])))))))])), Ge(null, Ce(o, Qe(i, ...Ye(t).filter(e => !a[e]).map((e, t) => Le(p[e], h[t])))), y))), Ze(s)), [n, ...l, s, m, We(...w)];
     }(e, t, a)))),
-    nt = Re((e, t, a) => new Function(...function (e, t, a) {
+    nt = Pe((e, t, a) => new Function(...function (e, t, a) {
       let r = t,
         {
           fn: n,
@@ -1874,15 +1850,15 @@ var n = {};
         b = [];
       return b.push(...tt(s, o, i, h)), l.forEach((e, t) => {
         b.push(...tt(e, u[t], d[t], f[t]));
-      }), b.push(Xe("let", c, Be(l[0], "shape"), Pe(c.length))), b.push(Pe(t).filter(e => !a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We(Ge("let", y, m), ...g.map((e, r) => Ge("let", e, Qe(d[r], ...Pe(t).filter(e => !a[e]).map(e => Le(p[e], f[r][e]))))), Ge("let", w, Qe(i, ...Pe(t).filter(e => !a[e]).map(e => Le(p[e], h[e])))), Pe(t).filter(e => a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We([Ge(null, y, Je(n, y, ...u.map((e, r) => Ce(e, Qe(g[r], ...Pe(t).filter(e => a[e]).map(e => Le(p[e], f[r][e]))))))), Ge(null, Ce(o, Qe(w, ...Pe(t).filter(e => a[e]).map((e, t) => Le(p[e], h[e])))), y)])))), Ze(s)), [n, ...l, s, m, We(...b)];
+      }), b.push(Xe("let", c, Be(l[0], "shape"), Ye(c.length))), b.push(Ye(t).filter(e => !a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We(Ge("let", y, m), ...g.map((e, r) => Ge("let", e, Qe(d[r], ...Ye(t).filter(e => !a[e]).map(e => Le(p[e], f[r][e]))))), Ge("let", w, Qe(i, ...Ye(t).filter(e => !a[e]).map(e => Le(p[e], h[e])))), Ye(t).filter(e => a[e]).reverse().reduce((e, t) => Ue(p[t], c[t], e), We([Ge(null, y, Je(n, y, ...u.map((e, r) => Ce(e, Qe(g[r], ...Ye(t).filter(e => a[e]).map(e => Le(p[e], f[r][e]))))))), Ge(null, Ce(o, Qe(w, ...Ye(t).filter(e => a[e]).map((e, t) => Le(p[e], h[e])))), y)])))), Ze(s)), [n, ...l, s, m, We(...b)];
     }(e, t, a)));
   function st(e, t, a = t.length, r = !1) {
     let n;
-    if (1 == a) n = r ? (e, a = null, r = null) => (e = R(e), null == a ? a = K(e.shape) : e = T(e, a.shape), at(1, a.ndim)(t.bind(null, r), e, a)) : (e, a = null) => (e = R(e), null == a ? a = K(e.shape) : e = T(e, a.shape), at(1, a.ndim)(t, e, a));else {
+    if (1 == a) n = r ? (e, a = null, r = null) => (e = P(e), null == a ? a = R(e.shape) : e = O(e, a.shape), at(1, a.ndim)(t.bind(null, r), e, a)) : (e, a = null) => (e = P(e), null == a ? a = R(e.shape) : e = O(e, a.shape), at(1, a.ndim)(t, e, a));else {
       if (2 != a) throw "not support on narg > 2 yet";
       n = (e, a, r = null) => {
         let n;
-        return e = R(e), a = R(a), null == r ? (n = J(e.shape, a.shape), r = K(n)) : n = r.shape, e = T(e, n), a = T(a, n), at(2, r.ndim)(t, e, a, r);
+        return e = P(e), a = P(a), null == r ? (n = J(e.shape, a.shape), r = R(n)) : n = r.shape, e = O(e, n), a = O(a, n), at(2, r.ndim)(t, e, a, r);
       };
     }
     return Object.defineProperty(n, "name", {
@@ -1892,14 +1868,14 @@ var n = {};
   function lt(e, t, a = !1) {
     if (a) {
       function r(e, a = null, r = null) {
-        return e = R(e), null == a ? a = K(e.shape) : e = T(e, a.shape), at(1, a.ndim)(t.bind(null, r), e, a);
+        return e = P(e), null == a ? a = R(e.shape) : e = O(e, a.shape), at(1, a.ndim)(t.bind(null, r), e, a);
       }
       return Object.defineProperty(r, "name", {
         value: e
       });
     }
     function r(e, a = null) {
-      return e = R(e), null == a ? a = K(e.shape) : e = T(e, a.shape), at(1, a.ndim)(t, e, a);
+      return e = P(e), null == a ? a = R(e.shape) : e = O(e, a.shape), at(1, a.ndim)(t, e, a);
     }
     return Object.defineProperty(r, "name", {
       value: e
@@ -1908,19 +1884,19 @@ var n = {};
   function it(e, t) {
     return Object.defineProperty(function (e, a, r = null) {
       let n;
-      return e = R(e), a = R(a), null == r ? (n = J(e.shape, a.shape), r = K(n)) : n = r.shape, e = T(e, n), a = T(a, n), at(2, r.ndim)(t, e, a, r);
+      return e = P(e), a = P(a), null == r ? (n = J(e.shape, a.shape), r = R(n)) : n = r.shape, e = O(e, n), a = O(a, n), at(2, r.ndim)(t, e, a, r);
     }, "name", {
       value: e
     });
   }
   function dt(e, t, a) {
     return Object.defineProperty(function (e, r = null, n = null, s = a) {
-      e = R(e), null == r && (e = Ae(e));
+      e = P(e), null == r && (e = Ae(e));
       let {
         ndim: l,
         shape: i
       } = e;
-      if (r = Ye(r, l), null == n) n = K(i);else if (!Oe(i, n.shape)) throw "unmatch shape";
+      if (r = Ve(r, l), null == n) n = R(i);else if (!Fe(i, n.shape)) throw "unmatch shape";
       return nt(1, l, r)(t, e, n, s), n;
     }, "name", {
       value: e
@@ -1930,23 +1906,23 @@ var n = {};
   function ut(e, t, a = t.length - 1, r) {
     if (1 != a) throw "not support on narg > 1 yet";
     return Object.defineProperty(function (e, a = null, n = null, s = !1, l = r, i = !0) {
-      null != n && (i = !1), e = R(e);
+      null != n && (i = !1), e = P(e);
       let d,
         {
           ndim: o,
           shape: u
         } = e;
-      if (null == a) a = Ye(a, o), d = ot;else {
-        a = Ye(a, o), d = [];
+      if (null == a) a = Ve(a, o), d = ot;else {
+        a = Ve(a, o), d = [];
         for (let e = 0; e < o; e++) a[e] || d.push(u[e]);
       }
       if (s) {
         let r = u.slice();
         for (let e = 0; e < o; e++) a[e] && (r[e] = 1);
-        if (null == n) n = K(r);else if (!Oe(r, n.shape)) throw "unmatch shape";
+        if (null == n) n = R(r);else if (!Fe(r, n.shape)) throw "unmatch shape";
         return rt(1, o, a)(t, e, n.reshape(d), l), i && 0 == n.ndim ? n.item() : n;
       }
-      if (null == n) n = K(d);else if (!Oe(d, n.shape)) throw "unmatch shape";
+      if (null == n) n = R(d);else if (!Fe(d, n.shape)) throw "unmatch shape";
       return n = rt(1, o, a)(t, e, n, l), i && 0 == n.ndim ? n.item() : n;
     }, "name", {
       value: e
@@ -1964,8 +1940,8 @@ var n = {};
   l.add(ht, () => ht(C(9).reshape([3, 3]), C(3)), () => E([[0, 2, 4], [3, 5, 7], [6, 8, 10]])), l.add(ft, () => ft(1, 4), () => -3).add(ft, () => ft(C(9).reshape([3, 3]), C(3)), () => E([[0, 0, 0], [3, 3, 3], [6, 6, 6]])), l.add(pt, () => pt(2, 4), () => 8).add(ft, () => pt(C(9).reshape([3, 3]), C(3)), () => E([[0, 1, 4], [0, 4, 10], [0, 7, 16]])), l.add(ct, () => ct(2, 4), () => .5).add(ct, () => ct(C(9).reshape([3, 3]), C(3)), () => E([[NaN, 1, 1], [1 / 0, 4, 2.5], [1 / 0, 7, 4]])), l.add(gt, () => gt([4, 7], [2, 3]), () => E([0, 1])).add(gt, () => gt(C(7), 5), () => E([0, 1, 2, 3, 4, 0, 1])), l.add(bt, () => bt(C(6), 3), () => E([0, 1, 8, 27, 64, 125])).add(bt, () => bt(C(6), [1, 2, 3, 3, 2, 1]), () => E([0, 1, 8, 27, 16, 5])).add(bt, () => bt(C(6), E([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])), () => E([[0, 1, 8, 27, 16, 5], [0, 1, 8, 27, 16, 5]])).add(bt, () => bt(C(6), E([1, 2, 3, 3, 2, 1])), () => E([0, 1, 8, 27, 16, 5]));
   const xt = ut("all", (e, t) => e && !!t, 1, !0),
     _t = ut("any", (e, t) => e || !!t, 1, !1),
-    zt = lt("isfinite", Number.isFinite),
-    vt = lt("isinf", e => e == Number.POSITIVE_INFINITY || e == Number.NEGATIVE_INFINITY),
+    vt = lt("isfinite", Number.isFinite),
+    zt = lt("isinf", e => e == Number.POSITIVE_INFINITY || e == Number.NEGATIVE_INFINITY),
     At = lt("isinf", Number.isNaN),
     $t = lt("isinf", e => e == Number.NEGATIVE_INFINITY),
     Mt = lt("isinf", e => e == Number.POSITIVE_INFINITY);
@@ -1977,23 +1953,23 @@ var n = {};
     Nt = NaN,
     Et = Math.PI,
     St = 1 / 0,
-    jt = -1 / 0,
-    qt = lt("sin", Math.sin),
+    qt = -1 / 0,
+    jt = lt("sin", Math.sin),
     It = lt("cos", Math.cos),
-    Ot = lt("tan", Math.tan),
-    Ft = lt("arcsin", Math.asin),
-    Tt = lt("arccos", Math.acos),
+    Ft = lt("tan", Math.tan),
+    Tt = lt("arcsin", Math.asin),
+    Ot = lt("arccos", Math.acos),
     Dt = lt("arctan", Math.atan),
-    Pt = lt("hypot", Math.hypot),
-    Rt = lt("arctan2", Math.atan2),
-    Kt = lt("degrees", e => 180 * e / Et),
-    Vt = lt("radians", e => e / 180 * Et);
-  function Yt(e, t = 2 * Et, a = t / 2) {
-    if (1 != (e = R(e)).ndim) throw "unwrap currently only supports 1d arrays";
+    Yt = lt("hypot", Math.hypot),
+    Pt = lt("arctan2", Math.atan2),
+    Rt = lt("degrees", e => 180 * e / Et),
+    Kt = lt("radians", e => e / 180 * Et);
+  function Vt(e, t = 2 * Et, a = t / 2) {
+    if (1 != (e = P(e)).ndim) throw "unwrap currently only supports 1d arrays";
     let r = [e.data[e.offset]],
       n = e.data[e.offset],
       s = !0;
-    for (let l of Pn(e.shape, e.strides)) {
+    for (let l of Yn(e.shape, e.strides)) {
       if (s) {
         s = !1;
         continue;
@@ -2003,7 +1979,7 @@ var n = {};
       let d = n + i;
       r.push(d), n = d;
     }
-    return R(r);
+    return P(r);
   }
   const Xt = lt("rad2deg", e => 180 * e / Et),
     Gt = lt("deg2rad", e => e / 180 * Et),
@@ -2045,11 +2021,11 @@ var n = {};
     ua = null,
     ha = null;
   function fa(e, t = 1, a = -1) {
-    e = R(e);
+    e = P(e);
     let {
       ndim: r
     } = e;
-    a = Ke(a, r);
+    a = Re(a, r);
     let n = Array(r).fill(x()),
       s = Array(r).fill(x());
     n[a] = x(1, null), s[a] = x(null, -1);
@@ -2059,7 +2035,7 @@ var n = {};
   function pa(e, t = null, a = null) {
     if (e = fa(X(e, -1)), null != a || null != t) {
       let r = [];
-      null != a && r.push(a), r.push(e), null != t && r.push(t), e = Te(r, null);
+      null != a && r.push(a), r.push(e), null != t && r.push(t), e = Oe(r, null);
     }
     return e;
   }
@@ -2071,8 +2047,8 @@ var n = {};
     ba = lt("log2", Math.log2),
     xa = lt("log1p", Math.log1p),
     _a = it("logaddexp", (e, t) => Math.log(Math.exp(e) + Math.exp(t))),
-    za = it("logaddexp2", (e, t) => Math.log2(2 ** e + 2 ** t)),
-    va = lt("signbit", e => e < 0),
+    va = it("logaddexp2", (e, t) => Math.log2(2 ** e + 2 ** t)),
+    za = lt("signbit", e => e < 0),
     Aa = it("copysign", (e, t) => t < 0 ? -Math.abs(e) : Math.abs(e)),
     $a = it("ldexp", (e, t) => e * 2 ** t),
     Ma = lt("positive", e => +e),
@@ -2088,27 +2064,27 @@ var n = {};
       return e * t / Na(e, t);
     }),
     Sa = it("gcd", Na),
-    ja = lt("reciprocal", e => 1 / e),
-    qa = it("fmod", (e, t) => e - (e / t | 0) * t),
+    qa = lt("reciprocal", e => 1 / e),
+    ja = it("fmod", (e, t) => e - (e / t | 0) * t),
     Ia = it("maximum", Math.max),
-    Oa = it("minimum", Math.min),
-    Fa = ut("amax", Math.max, 1, -St),
-    Ta = ut("amin", Math.min, 1, St),
+    Fa = it("minimum", Math.min),
+    Ta = ut("amax", Math.max, 1, -St),
+    Oa = ut("amin", Math.min, 1, St),
     Da = lt("sqrt", Math.sqrt),
-    Pa = lt("cbrt", Math.cbrt),
-    Ra = lt("square", e => e ** 2),
-    Ka = lt("abs", Math.abs),
-    Va = Ka,
-    Ya = lt("sign", Math.sign),
+    Ya = lt("cbrt", Math.cbrt),
+    Pa = lt("square", e => e ** 2),
+    Ra = lt("abs", Math.abs),
+    Ka = Ra,
+    Va = lt("sign", Math.sign),
     Xa = lt("nan_to_num", e => isNaN(e) ? 0 : e == 1 / 0 ? Number.MAX_VALUE : e == -1 / 0 ? Number.MIN_VALUE : e);
-  l.add(Fa, () => Fa(C(4).reshape(2, 2)), () => 3).add(Fa, () => Fa(C(4).reshape(2, 2), 0), () => E([2, 3])).add(Fa, () => Fa(C(4).reshape(2, 2), 1), () => E([1, 3])), l.add(Ia, () => Ia([2, 3, 4], [1, 5, 2]), () => E([2, 5, 4])).add(Ia, () => Ia(he(2), [.5, 2]), () => E([[1, 2], [.5, 2]])), l.add(qa, () => qa([-3, -2, -1, 1, 2, 3], 2), () => E([-1, 0, -1, 1, 0, 1])).add(qa, () => wt([-3, -2, -1, 1, 2, 3], 2), () => E([1, 0, 1, 1, 0, 1])), l.add(Sa, () => Sa(12, 20), () => 4).add(Sa, () => Sa(C(6), 20), () => E([20, 1, 2, 1, 4, 5])), l.add(Ea, () => Ea(12, 20), () => 60).add(Ea, () => Ea(C(6), 20), () => E([0, 20, 20, 60, 20, 20])), l.add(Aa, () => Aa(1.3, -1), () => -1.3).add(Aa, () => 1 / Aa(0, 1), () => 1 / 0).add(Aa, () => 1 / Aa(0, -1), () => -1 / 0), l.add(va, () => va(-1.2), () => !0).add(va, () => va(E([1, -2.3, 2.1])), () => E([!1, !0, !1])), l.add(_a, () => {
+  l.add(Ta, () => Ta(C(4).reshape(2, 2)), () => 3).add(Ta, () => Ta(C(4).reshape(2, 2), 0), () => E([2, 3])).add(Ta, () => Ta(C(4).reshape(2, 2), 1), () => E([1, 3])), l.add(Ia, () => Ia([2, 3, 4], [1, 5, 2]), () => E([2, 5, 4])).add(Ia, () => Ia(he(2), [.5, 2]), () => E([[1, 2], [.5, 2]])), l.add(ja, () => ja([-3, -2, -1, 1, 2, 3], 2), () => E([-1, 0, -1, 1, 0, 1])).add(ja, () => wt([-3, -2, -1, 1, 2, 3], 2), () => E([1, 0, 1, 1, 0, 1])), l.add(Sa, () => Sa(12, 20), () => 4).add(Sa, () => Sa(C(6), 20), () => E([20, 1, 2, 1, 4, 5])), l.add(Ea, () => Ea(12, 20), () => 60).add(Ea, () => Ea(C(6), 20), () => E([0, 20, 20, 60, 20, 20])), l.add(Aa, () => Aa(1.3, -1), () => -1.3).add(Aa, () => 1 / Aa(0, 1), () => 1 / 0).add(Aa, () => 1 / Aa(0, -1), () => -1 / 0), l.add(za, () => za(-1.2), () => !0).add(za, () => za(E([1, -2.3, 2.1])), () => E([!1, !0, !1])), l.add(_a, () => {
     let e = ga(1e-50),
       t = ga(2.5e-50);
     return _a(e, t);
-  }, () => -113.87649168120691), l.add(Yt, () => Yt([0, 1, 2, -1, 0], 4), () => E([0, 1, 2, 3, 4])).add(Yt, () => Yt([1, 2, 3, 4, 5, 6, 1, 2, 3], 6), () => E([1, 2, 3, 4, 5, 6, 7, 8, 9])).add(Yt, () => Yt([2, 3, 4, 5, 2, 3, 4, 5], 4), () => E([2, 3, 4, 5, 6, 7, 8, 9])), l.add(Qt, () => Qt([.37, 1.64]), () => E([0, 2])).add(Qt, () => Qt([.37, 1.64], 1), () => E([.4, 1.6])).add(Qt, () => Qt([.5, 1.5, 2.5, 3.5, 4.5]), () => E([0, 2, 2, 4, 4])).add(Qt, () => Qt([5, 15, 25, 35, 45], -1), () => E([0, 20, 20, 40, 40])).add(Qt, () => Qt([-5, -15, -25, -35, -45], -1), () => E([0, -20, -20, -40, -40])).add(Qt, () => Qt([1, 2, 3, 11], 1), () => E([1, 2, 3, 11])).add(Qt, () => Qt([1, 2, 3, 11], -1), () => E([0, 0, 0, 10])), l.add(Zt, () => Zt(E([-1.7, -1.5, -.2, .2, 1.5, 1.7, 2])), () => E([-2, -2, -0, 0, 2, 2, 2])), l.add(ea, () => ea(3.14), () => 3).add(ea, () => ea(3), () => 3).add(ea, () => ea([2.1, 2.9, -2.1, -2.9]), () => E([2, 2, -2, -2])), l.add(na, () => na([]), () => 1).add(na, () => na([1, 2]), () => 2).add(na, () => na(E([[1, 2], [3, 4]])), () => 24).add(na, () => na(E([[1, 2], [3, 4]]), 1), () => E([2, 12])).add(na, () => na(E([[1, 2], [3, 4]]), 0), () => E([3, 8])).add(na, () => na([1, 2], null, null, null, 5), () => 10), l.add(sa, () => sa([.5, 1.5]), () => 2).add(sa, () => sa([[0, 1], [0, 5]]), () => 6).add(sa, () => sa([[0, 1], [0, 5]], 0), () => E([0, 6])).add(sa, () => sa([[0, 1], [0, 5]], 1), () => E([1, 5])).add(sa, () => sa([10], null, null, null, 5), () => 15).add(sa, () => sa(C(100).reshape(5, -1, 1).at(x("::-2"), x("2:7")), [0, -1]), () => E([126, 129, 132, 135, 138])).add(sa, () => {
+  }, () => -113.87649168120691), l.add(Vt, () => Vt([0, 1, 2, -1, 0], 4), () => E([0, 1, 2, 3, 4])).add(Vt, () => Vt([1, 2, 3, 4, 5, 6, 1, 2, 3], 6), () => E([1, 2, 3, 4, 5, 6, 7, 8, 9])).add(Vt, () => Vt([2, 3, 4, 5, 2, 3, 4, 5], 4), () => E([2, 3, 4, 5, 6, 7, 8, 9])), l.add(Qt, () => Qt([.37, 1.64]), () => E([0, 2])).add(Qt, () => Qt([.37, 1.64], 1), () => E([.4, 1.6])).add(Qt, () => Qt([.5, 1.5, 2.5, 3.5, 4.5]), () => E([0, 2, 2, 4, 4])).add(Qt, () => Qt([5, 15, 25, 35, 45], -1), () => E([0, 20, 20, 40, 40])).add(Qt, () => Qt([-5, -15, -25, -35, -45], -1), () => E([0, -20, -20, -40, -40])).add(Qt, () => Qt([1, 2, 3, 11], 1), () => E([1, 2, 3, 11])).add(Qt, () => Qt([1, 2, 3, 11], -1), () => E([0, 0, 0, 10])), l.add(Zt, () => Zt(E([-1.7, -1.5, -.2, .2, 1.5, 1.7, 2])), () => E([-2, -2, -0, 0, 2, 2, 2])), l.add(ea, () => ea(3.14), () => 3).add(ea, () => ea(3), () => 3).add(ea, () => ea([2.1, 2.9, -2.1, -2.9]), () => E([2, 2, -2, -2])), l.add(na, () => na([]), () => 1).add(na, () => na([1, 2]), () => 2).add(na, () => na(E([[1, 2], [3, 4]])), () => 24).add(na, () => na(E([[1, 2], [3, 4]]), 1), () => E([2, 12])).add(na, () => na(E([[1, 2], [3, 4]]), 0), () => E([3, 8])).add(na, () => na([1, 2], null, null, null, 5), () => 10), l.add(sa, () => sa([.5, 1.5]), () => 2).add(sa, () => sa([[0, 1], [0, 5]]), () => 6).add(sa, () => sa([[0, 1], [0, 5]], 0), () => E([0, 6])).add(sa, () => sa([[0, 1], [0, 5]], 1), () => E([1, 5])).add(sa, () => sa([10], null, null, null, 5), () => 15).add(sa, () => sa(C(100).reshape(5, -1, 1).at(x("::-2"), x("2:7")), [0, -1]), () => E([126, 129, 132, 135, 138])).add(sa, () => {
     let e = C(100);
     return e = e.at(x(20, -20)).reshape([2, 1, -1, 2]).at(x("..."), x("::-1")), sa(e, [1, -2], null, !0, -99);
-  }, () => E([[[[426, 411]]], [[[876, 861]]]])), l.add(la, () => la(1), () => 1).add(la, () => la([1]), () => 1).add(la, () => la([1, Nt]), () => 1).add(la, () => la(E([[1, 2], [3, Nt]])), () => 6).add(la, () => la(E([[1, 2], [3, Nt]]), 0), () => E([3, 2])), l.add(ia, () => ia(1), () => 1).add(ia, () => ia([1]), () => 1).add(ia, () => ia([1, Nt]), () => 1).add(ia, () => ia(E([[1, 1], [1, Nt]])), () => 3).add(ia, () => ia(E([[1, 1], [1, Nt]]), 0), () => E([2, 1])).add(ia, () => ia([1, Nt, St]), () => St).add(ia, () => ia([1, Nt, jt]), () => -St), l.add(da, () => da(E([1, 2, 3])), () => E([1, 2, 6])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 2, 6, 24, 120, 720])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]]), 0), () => E([[1, 2, 3], [4, 10, 18]])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]]), 1), () => E([[1, 2, 6], [4, 20, 120]])), l.add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 3, 6, 10, 15, 21])).add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]]), 0), () => E([[1, 2, 3], [5, 7, 9]])).add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]]), 1), () => E([[1, 3, 6], [4, 9, 15]])), l.add(fa, () => fa(E([1, 2, 4, 7, 0])), () => E([1, 2, 3, -7])).add(fa, () => fa(E([1, 2, 4, 7, 0]), 2), () => E([1, 1, -10])).add(fa, () => fa(E([[1, 3, 6, 10], [0, 5, 6, 8]])), () => E([[2, 3, 4], [5, 1, 2]])).add(fa, () => fa(E([[1, 3, 6, 10], [0, 5, 6, 8]]), 1, 0), () => E([[-1, 2, 0, -2]])), l.add(pa, () => pa(E([1, 2, 4, 7, 0])), () => E([1, 2, 3, -7])).add(pa, () => pa(E([1, 2, 4, 7, 0]), E([88, 99]), -99), () => E([-99, 1, 2, 3, -7, 88, 99])).add(pa, () => pa([[1, 2, 4], [1, 6, 24]]), () => E([1, 2, -3, 5, 18])), l.add(Ka, () => Ka(E([-1.2, 1.2])), () => E([1.2, 1.2])), l.add(qt, () => qt(C(30).reshape(2, 5, 1, -1, 1)).shape, () => E([[[[[0], [.8414709848078965], [.9092974268256817]]], [[[.1411200080598672], [-.7568024953079282], [-.9589242746631385]]], [[[-.27941549819892586], [.6569865987187891], [.9893582466233818]]], [[[.4121184852417566], [-.5440211108893698], [-.9999902065507035]]], [[[-.5365729180004349], [.4201670368266409], [.9906073556948704]]]], [[[[.6502878401571168], [-.2879033166650653], [-.9613974918795568]]], [[[-.7509872467716762], [.14987720966295234], [.9129452507276277]]], [[[.8366556385360561], [-.008851309290403876], [-.8462204041751706]]], [[[-.9055783620066238], [-.13235175009777303], [.7625584504796028]]], [[[.956375928404503], [.27090578830786904], [-.6636338842129675]]]]]).shape);
+  }, () => E([[[[426, 411]]], [[[876, 861]]]])), l.add(la, () => la(1), () => 1).add(la, () => la([1]), () => 1).add(la, () => la([1, Nt]), () => 1).add(la, () => la(E([[1, 2], [3, Nt]])), () => 6).add(la, () => la(E([[1, 2], [3, Nt]]), 0), () => E([3, 2])), l.add(ia, () => ia(1), () => 1).add(ia, () => ia([1]), () => 1).add(ia, () => ia([1, Nt]), () => 1).add(ia, () => ia(E([[1, 1], [1, Nt]])), () => 3).add(ia, () => ia(E([[1, 1], [1, Nt]]), 0), () => E([2, 1])).add(ia, () => ia([1, Nt, St]), () => St).add(ia, () => ia([1, Nt, qt]), () => -St), l.add(da, () => da(E([1, 2, 3])), () => E([1, 2, 6])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 2, 6, 24, 120, 720])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]]), 0), () => E([[1, 2, 3], [4, 10, 18]])).add(da, () => da(E([[1, 2, 3], [4, 5, 6]]), 1), () => E([[1, 2, 6], [4, 20, 120]])), l.add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]])), () => E([1, 3, 6, 10, 15, 21])).add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]]), 0), () => E([[1, 2, 3], [5, 7, 9]])).add(oa, () => oa(E([[1, 2, 3], [4, 5, 6]]), 1), () => E([[1, 3, 6], [4, 9, 15]])), l.add(fa, () => fa(E([1, 2, 4, 7, 0])), () => E([1, 2, 3, -7])).add(fa, () => fa(E([1, 2, 4, 7, 0]), 2), () => E([1, 1, -10])).add(fa, () => fa(E([[1, 3, 6, 10], [0, 5, 6, 8]])), () => E([[2, 3, 4], [5, 1, 2]])).add(fa, () => fa(E([[1, 3, 6, 10], [0, 5, 6, 8]]), 1, 0), () => E([[-1, 2, 0, -2]])), l.add(pa, () => pa(E([1, 2, 4, 7, 0])), () => E([1, 2, 3, -7])).add(pa, () => pa(E([1, 2, 4, 7, 0]), E([88, 99]), -99), () => E([-99, 1, 2, 3, -7, 88, 99])).add(pa, () => pa([[1, 2, 4], [1, 6, 24]]), () => E([1, 2, -3, 5, 18])), l.add(Ra, () => Ra(E([-1.2, 1.2])), () => E([1.2, 1.2])), l.add(jt, () => jt(C(30).reshape(2, 5, 1, -1, 1)).shape, () => E([[[[[0], [.8414709848078965], [.9092974268256817]]], [[[.1411200080598672], [-.7568024953079282], [-.9589242746631385]]], [[[-.27941549819892586], [.6569865987187891], [.9893582466233818]]], [[[.4121184852417566], [-.5440211108893698], [-.9999902065507035]]], [[[-.5365729180004349], [.4201670368266409], [.9906073556948704]]]], [[[[.6502878401571168], [-.2879033166650653], [-.9613974918795568]]], [[[-.7509872467716762], [.14987720966295234], [.9129452507276277]]], [[[.8366556385360561], [-.008851309290403876], [-.8462204041751706]]], [[[-.9055783620066238], [-.13235175009777303], [.7625584504796028]]], [[[.956375928404503], [.27090578830786904], [-.6636338842129675]]]]]).shape);
   const Ga = lt("invert", e => ~e),
     Ua = Ga,
     Wa = it("bitwise_and", (e, t) => e & t),
@@ -2131,12 +2107,12 @@ var n = {};
     throw new Error();
   }
   function nr(e, t, a = -1, r = a, n = a, s = a) {
-    e = R(e), t = R(t), r = Ke(r, e.ndim), n = Ke(n, t.ndim), e = De(e, r, -1), t = De(t, n, -1);
+    e = P(e), t = P(t), r = Re(r, e.ndim), n = Re(n, t.ndim), e = De(e, r, -1), t = De(t, n, -1);
     let l = e.shape.at(-1),
       i = t.shape.at(-1);
     if (2 != l && 3 != l || 2 != i && 3 != i) throw "incompatible dimensions for cross product (dimension must be 2 or 3)";
     let d = J(e.shape.slice(0, -1), t.shape.slice(0, -1));
-    3 != e.shape.at(-1) && 3 != t.shape.at(-1) || (d = [...d, 3], s = Ke(s, d.length));
+    3 != e.shape.at(-1) && 3 != t.shape.at(-1) || (d = [...d, 3], s = Re(s, d.length));
     let o,
       u,
       h,
@@ -2146,7 +2122,7 @@ var n = {};
       m,
       y,
       g,
-      w = K(d);
+      w = R(d);
     if (o = e.at("...", 0), u = e.at("...", 1), 3 == e.shape.at(-1) && (h = e.at("...", 2)), f = t.at("...", 0), p = t.at("...", 1), 3 == t.shape.at(-1) && (c = t.at("...", 2)), 0 != w.ndim && 3 == w.shape.at(-1) && (m = w.at("...", 0), y = w.at("...", 1), g = w.at("...", 2)), 2 == e.shape.at(-1)) {
       if (2 == t.shape.at(-1)) return pt(o, p, w), ft(w, pt(u, f), w), w;
       if (3 != t.shape.at(-1)) throw "b.shape.at(-1) != 3";
@@ -2165,13 +2141,13 @@ var n = {};
     return De(w, -1, s);
   }
   function sr(e, t = null, a = 1, r = -1) {
-    e = R(e);
+    e = P(e);
     let {
       ndim: n
     } = e;
-    r = Ke(r, n);
+    r = Re(r, n);
     let s = a;
-    if (null != t) if (1 == (t = R(t)).ndim) {
+    if (null != t) if (1 == (t = P(t)).ndim) {
       s = fa(t);
       let e = Array(n).fill(1);
       e[r] = s.shape[0], s = s.reshape(e);
@@ -2208,31 +2184,31 @@ var n = {};
       for (let n = 0; n < t.size - 1 - a; n++) r += e.item(e.size - t.size + 1 + a + n) * t.item(t.size - 1 - n);
       n[s++] = r;
     }
-    return "same" == a && (n = n.slice((t.size - 1) / 2 | 0, ((t.size - 1) / 2 | 0) + r)), new v([r], n);
+    return "same" == a && (n = n.slice((t.size - 1) / 2 | 0, ((t.size - 1) / 2 | 0) + r)), E(n);
   }
   function ir(e, t, a, r = null) {
-    if (e = R(e), null == r) r = V(e);else if (!Oe(e.shape, r.shape)) throw "out shape does not match input shape";
+    if (e = P(e), null == r) r = K(e);else if (!Fe(e.shape, r.shape)) throw "out shape does not match input shape";
     if (_(t) && _(a)) {
-      let n = Pn(e.shape, e.strides);
-      for (let s of Pn(r.shape, r.strides)) r.data[s] = Math.min(Math.max(t, e.data[n.next().value]), a);
+      let n = Yn(e.shape, e.strides);
+      for (let s of Yn(r.shape, r.strides)) r.data[s] = Math.min(Math.max(t, e.data[n.next().value]), a);
       return r;
     }
-    t = T(t, e.shape), a = T(a, e.shape);
-    let n = Pn(e.shape, e.strides),
-      s = Pn(t.shape, t.strides),
-      l = Pn(a.shape, a.strides);
-    for (let i of Pn(r.shape, r.strides)) r.data[i] = Math.min(Math.max(t.data[s.next().value], e.data[n.next().value]), a.data[l.next().value]);
+    t = O(t, e.shape), a = O(a, e.shape);
+    let n = Yn(e.shape, e.strides),
+      s = Yn(t.shape, t.strides),
+      l = Yn(a.shape, a.strides);
+    for (let i of Yn(r.shape, r.strides)) r.data[i] = Math.min(Math.max(t.data[s.next().value], e.data[n.next().value]), a.data[l.next().value]);
     return r;
   }
   function dr(e, t = -1, a = null) {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
-    let r = V(e),
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
+    let r = K(e),
       n = Array(e.shape[t]),
       s = Array(e.shape[t]),
       l = (e, t) => n[e] - n[t],
       i = e.shape.slice();
     i[t] = 1;
-    for (let d of P(i)) {
+    for (let d of Y(i)) {
       let {
           offset: o
         } = e,
@@ -2250,13 +2226,13 @@ var n = {};
     return r;
   }
   function or(e, t = -1, a = null) {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
-    let r = V(e),
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
+    let r = K(e),
       n = Array(e.shape[t]),
       s = (e, t) => e - t,
       l = e.shape.slice();
     l[t] = 1;
-    for (let i of P(l)) {
+    for (let i of Y(l)) {
       let {
           offset: d
         } = e,
@@ -2274,12 +2250,12 @@ var n = {};
     return r;
   }
   function ur(e, t, a, r = null, n = null, s = null) {
-    if ([e, t, a] = [e, t, a].map(e => R(e)), 1 != t.ndim || 1 != a.ndim) throw "Data points must be 1-D sequences";
+    if ([e, t, a] = [e, t, a].map(e => P(e)), 1 != t.ndim || 1 != a.ndim) throw "Data points must be 1-D sequences";
     if (t.shape[0] != a.shape[0]) throw "fp and xp are not of the same length";
     if (null != s) {
       e = gt(e, s);
       let r = dr(t = gt(t, s));
-      t = t.at(r), a = a.at(r), t = Te([ft(t.at(x(-1)), s), t, ht(t.at(x(0, 1)), s)]), a = Te([a.at(x(-1)), a, a.at(x(0, 1))]);
+      t = t.at(r), a = a.at(r), t = Oe([ft(t.at(x(-1)), s), t, ht(t.at(x(0, 1)), s)]), a = Oe([a.at(x(-1)), a, a.at(x(0, 1))]);
     }
     r ??= a.item(0), n ??= a.item(-1);
     let l = Array(e.size),
@@ -2302,7 +2278,7 @@ var n = {};
       }
       l[i++] = e;
     }
-    return new v(e.shape, l);
+    return E(l).reshape(e.shape);
   }
   function hr(e) {
     let t = Array(e.length),
@@ -2478,10 +2454,10 @@ var n = {};
     return n;
   }
   function _r(e, t = null, a = !0, r = null) {
-    if (1 != (e = "number" == typeof e ? C(e) : R(e)).ndim) throw "'p' must be 1-dimensional";
+    if (1 != (e = "number" == typeof e ? C(e) : P(e)).ndim) throw "'p' must be 1-dimensional";
     if (0 == e.size) throw "'a' cannot be empty unless no samples are taken";
     if (null == r) r = Array(e.size).fill(1 / e.size);else {
-      if (1 != (r = R(r)).ndim) throw "'p' must be 1-dimensional";
+      if (1 != (r = P(r)).ndim) throw "'p' must be 1-dimensional";
       if (r.size != e.size) throw "'a' and 'p' must have same size";
       r = r.toarray();
     }
@@ -2493,10 +2469,9 @@ var n = {};
       return t;
     }(t);
     if (ke(r) < n) throw "Fewer non-zero entries in p than size";
-    let s = xr(n, r, a).map(t => e[t]);
-    return new v(t, s);
+    return E(xr(n, r, a).map(t => e[t])).reshape(t);
   }
-  function zr(e = null) {
+  function vr(e = null) {
     if (null == e) return Math.random();
     "number" == typeof e && (e = [e]);
     let t = function (e) {
@@ -2506,7 +2481,7 @@ var n = {};
       }(e),
       a = Array(t);
     for (let e = 0; e < t; e++) a[e] = Math.random();
-    return new v(e, a);
+    return E(a).reshape(e);
   }
   l.add(La, () => La([0, 1, 3], C(3)), () => E([!0, !0, !1])).add(La, () => La(1, Q(1)), () => E([!0])).add(La, () => La(E([2, 4, 6]), E([2, 4, 2])), () => E([!0, !0, !1])), l.add(Qa, () => Qa([1, 2], [1, 3]), () => E([!1, !0])).add(Qa, () => Qa([1, 2], [[1, 3], [1, 4]]), () => E([[!1, !0], [!1, !0]])), l.add(Za, () => Za([4, 2, 1], [2, 2, 2]), () => E([!1, !0, !0])), l.add(er, () => er([1, 2], [2, 2]), () => E([!0, !1])), l.add(tr, () => tr([4, 2, 1], [2, 2, 2]), () => E([!0, !0, !1])), l.add(ar, () => ar([4, 2], [2, 2]), () => E([!0, !1])), l.add(nr, () => nr([1, 2, 3], [4, 5, 6]), () => E([-3, 6, -3])).add(nr, () => nr([1, 2], [4, 5, 6]), () => E([12, -6, -3])).add(nr, () => nr([1, 2, 0], [4, 5, 6]), () => E([12, -6, -3])).add(nr, () => nr([1, 2], [4, 5]), () => E(-3)).add(nr, () => nr(E([[1, 2, 3], [4, 5, 6]]), E([[4, 5, 6], [1, 2, 3]])), () => E([[-3, 6, -3], [3, -6, 3]])).add(nr, () => nr(E([[1, 2, 3], [4, 5, 6]]), E([[4, 5, 6], [1, 2, 3]]), void 0, void 0, void 0, 0), () => E([[-3, 3], [6, -6], [-3, 3]])).add(nr, () => {
     let e = E([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
@@ -2516,10 +2491,10 @@ var n = {};
     let e = C(10);
     return [ir(e, 3, 6, e), e];
   }, () => [E([3, 3, 3, 3, 4, 5, 6, 6, 6, 6]), E([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])]).add(ir, () => ir(C(10), [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8), () => E([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])), dr(E([[[0, 3], [2, 2], [2, 2]], [[8, 5], [4, 1], [6, -2]]]), 0), l.add(dr, () => dr([3, 1, 2]), () => E([1, 2, 0])).add(dr, () => dr(E([[0, 3], [2, 2]]), 0), () => E([[0, 1], [1, 0]])).add(dr, () => dr(E([[0, 3], [2, 2]]), 1), () => E([[0, 1], [0, 1]])).add(dr, () => dr(E([[[0, 3], [2, 2], [2, 2]], [[8, 5], [4, 1], [6, -2]]]), 0), () => E([[[0, 0], [0, 1], [0, 1]], [[1, 1], [1, 0], [1, 0]]])).add(dr, () => dr(E([[[0, 3], [2, 2], [2, 2]], [[8, 5], [4, 1], [6, -2]]]), 1), () => E([[[0, 1], [1, 2], [2, 0]], [[1, 2], [2, 1], [0, 0]]])).add(dr, () => dr(E([[[0, 3], [2, 2], [2, 2]], [[8, 5], [4, 1], [6, -2]]]), 2), () => E([[[0, 1], [0, 1], [0, 1]], [[1, 0], [1, 0], [1, 0]]])), l.add(or, () => or(E([[1, 4], [3, 1]])), () => E([[1, 4], [1, 3]])).add(or, () => or(E([[1, 4], [3, 1]]), null), () => E([1, 1, 3, 4])).add(or, () => or(E([[1, 4], [3, 1]]), 0), () => E([[1, 1], [3, 4]])), l.add(ur, () => ur(2.5, [1, 2, 3], [3, 2, 0]), () => 1).add(ur, () => ur(4.5, [6, 4, 5], [3, 2, 0]), () => 3).add(ur, () => ur([0, 1, 1.5, 2.5, 3.14], [1, 2, 3], [3, 2, 0]), () => E([3, 3, 2.5, 1, 0])).add(ur, () => ur([-180, -170, -185, 185, -10, -5, 0, 365], [190, -190, 350, -350], [5, 10, 3, 4], null, null, 360), () => E([7.5, 5, 8.75, 6.25, 3, 3.25, 3.5, 3.75]));
-  const vr = zr,
-    Ar = zr;
+  const zr = vr,
+    Ar = vr;
   function $r(...e) {
-    return zr(e);
+    return vr(e);
   }
   function Mr(e, t = null, a = null, r = !0) {
     if (null != a) {
@@ -2531,7 +2506,7 @@ var n = {};
       if (r) return e();
       n = [], t = 1;
     } else "number" == typeof t ? n = [t] : (n = t, t = $(n));
-    if (null == a) a = K(n);else if (!Oe(n, a.shape)) throw "size must match out.shape when used together";
+    if (null == a) a = R(n);else if (!Fe(n, a.shape)) throw "size must match out.shape when used together";
     let {
       data: s,
       offset: l
@@ -2555,9 +2530,9 @@ var n = {};
       if ("number" == typeof e) {
         if (e <= 0) throw "a must be a positive integer unless no samples are taken";
         e = C(e);
-      } else if (0 == (e = R(e)).size) throw "a cannot be empty unless no samples are taken";
+      } else if (0 == (e = P(e)).size) throw "a cannot be empty unless no samples are taken";
       if (null == r) r = Array(e.shape[n]).fill(1 / e.shape[n]);else {
-        if (1 != (r = R(r)).ndim) throw "p must be 1-dimensional";
+        if (1 != (r = P(r)).ndim) throw "p must be 1-dimensional";
         if (r.size != e.shape[n]) throw "a and p must have same size";
         r = r.toarray();
       }
@@ -2569,23 +2544,23 @@ var n = {};
       let i = [...e.shape];
       i.splice(n, 1, ...l);
       let d = Array(n).fill(x()),
-        o = K(i),
+        o = R(i),
         u = xr(t, r, a, void 0, void 0, this.rand),
         h = 0;
-      for (let t of P(l)) {
+      for (let t of Y(l)) {
         for (let e = 0; e < t.length; e++) d[n + e] = t[e];
         s[n] = u[h++], o.set(d, e._getview(s));
       }
       return o;
     }
     shuffle(e, t = 0) {
-      t = Ke(t, (e = R(e)).ndim);
+      t = Re(t, (e = P(e)).ndim);
       let a = Array(t + 1).fill(x(":")),
         {
           shape: r
         } = e,
         n = r[t],
-        s = K([...r.slice(0, t), ...r.slice(t + 1)]);
+        s = R([...r.slice(0, t), ...r.slice(t + 1)]);
       for (let r = 0; r < n - 2; r++) {
         let l = this.rand() * (n - r) + r | 0;
         a[t] = r;
@@ -2596,10 +2571,10 @@ var n = {};
       }
     }
     permuted(e, t = null, a = null) {
-      t = Ke(t, (e = R(e)).ndim);
+      t = Re(t, (e = P(e)).ndim);
       let r = [...e.shape];
-      r[t] = 1, null == a && (a = V(e));
-      for (let n of P(r)) {
+      r[t] = 1, null == a && (a = K(e));
+      for (let n of Y(r)) {
         n[t] = x();
         let r = e._getview(n).flatten();
         this.shuffle(r), a.set(n, r);
@@ -2625,7 +2600,7 @@ var n = {};
   function Er(e, t = null, a = null) {
     if (null == t && null == a) return xe(e);
     let r = ue(e, t, a),
-      n = K(r.shape),
+      n = R(r.shape),
       s = 0;
     for (let [e, t, a] of r) n.data[s++] = e ? t : a;
     return n;
@@ -2642,59 +2617,59 @@ var n = {};
         i = Array(l);
       for (let e = 0; e < l; e++) i[e] = r + e * s;
       let d = Array(e.length).fill(1);
-      d[a] = l, t.push(new v(d, i));
+      d[a] = l, t.push(E(i).reshape(d));
     }
     return t;
   }
-  function jr(e, t = null, a = null, r = !1) {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
+  function qr(e, t = null, a = null, r = !1) {
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
     let n = [...e.shape.slice(0, t), ...(r ? [1] : []), ...e.shape.slice(t + 1)];
-    if (null == a) a = K(n);else if (!Oe(n, a.shape)) throw "out must have the same shape as the expected output";
-    return ft(Fa(e, t, null, r), Ta(e, t, null, r), a), a;
+    if (null == a) a = R(n);else if (!Fe(n, a.shape)) throw "out must have the same shape as the expected output";
+    return ft(Ta(e, t, null, r), Oa(e, t, null, r), a), a;
   }
-  function qr(e, t = null, a = null, r = !1, n = !1) {
+  function jr(e, t = null, a = null, r = !1, n = !1) {
     let s;
-    if (e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim), null != a && (a = R(a)), null != a) {
+    if (e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim), null != a && (a = P(a)), null != a) {
       if (s = sa(a), 0 == s) throw "sum(weights) must not be 0";
-      if (1 == a.ndim) a = a.reshape([...Array(t).fill(1), e.shape[t]]);else if (!Oe(a.shape, e.shape)) throw "weights.shape and a.shape do not match";
+      if (1 == a.ndim) a = a.reshape([...Array(t).fill(1), e.shape[t]]);else if (!Fe(a.shape, e.shape)) throw "weights.shape and a.shape do not match";
       e = pt(e, a);
     } else s = e.shape[t];
     let l = ct(sa(e, t, null, n), s);
     return r ? [l, s] : l;
   }
   function Ir(e, t = null, a = null, r = !1) {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
     let n = [...e.shape.slice(0, t), ...(r ? [1] : []), ...e.shape.slice(t + 1)];
-    if (null == a) a = K(n);else if (!Oe(n, a.shape)) throw "out must have the same shape as the expected output";
+    if (null == a) a = R(n);else if (!Fe(n, a.shape)) throw "out must have the same shape as the expected output";
     return ct(sa(e, t, null, r), e.shape[t], a), a;
   }
-  function Or(e, t = null, a = null, r = 0, n = !1) {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
-    let s = [...e.shape.slice(0, t), ...(n ? [1] : []), ...e.shape.slice(t + 1)];
-    if (null == a) a = K(s);else if (!Oe(s, a.shape)) throw "out must have the same shape as the expected output";
-    return Ir(Ra(ft(e, ct(sa(e, t, null, !0), e.shape[t] - r))), t, a, n), a;
-  }
   function Fr(e, t = null, a = null, r = 0, n = !1) {
-    return a = Or(e, t, a, r, n), Da(a, a), a;
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
+    let s = [...e.shape.slice(0, t), ...(n ? [1] : []), ...e.shape.slice(t + 1)];
+    if (null == a) a = R(s);else if (!Fe(s, a.shape)) throw "out must have the same shape as the expected output";
+    return Ir(Pa(ft(e, ct(sa(e, t, null, !0), e.shape[t] - r))), t, a, n), a;
   }
-  function Tr(e, t = null, a = 0) {
-    if (1 != (e = R(e)).ndim) throw "a.dim != 1";
-    if (Ta(e) < 0) throw "amin(a) < 0";
+  function Tr(e, t = null, a = null, r = 0, n = !1) {
+    return a = Fr(e, t, a, r, n), Da(a, a), a;
+  }
+  function Or(e, t = null, a = 0) {
+    if (1 != (e = P(e)).ndim) throw "a.dim != 1";
+    if (Oa(e) < 0) throw "amin(a) < 0";
     if (a < 0) throw "minlength < 0";
     if (null != t) {
-      if (!Oe((t = R(t)).shape, e.shape)) throw "weights.shape != a.shape";
+      if (!Fe((t = P(t)).shape, e.shape)) throw "weights.shape != a.shape";
       t = t.toarray();
     }
-    let r = Array(Math.max(Fa(e) + 1, a)).fill(0),
+    let r = Array(Math.max(Ta(e) + 1, a)).fill(0),
       n = 0;
     for (let a of e.flat) r[a] += null != t ? t[n] : 1, n++;
-    return new v([r.length], r);
+    return E(r);
   }
   function Dr(e, t = !1) {
     let a,
       r = e.length,
       n = Array(r).fill(1);
-    a = t ? [] : K([r, ...e]);
+    a = t ? [] : R([r, ...e]);
     for (let r = 0; r < e.length; r++) {
       let s = e[r],
         l = C(s).reshape([...n.slice(0, r), s, ...n.slice(r + 1)]);
@@ -2702,27 +2677,27 @@ var n = {};
     }
     return a;
   }
-  function Pr(...e) {
+  function Yr(...e) {
     let t = [],
       a = e.length;
     for (let r = 0; r < a; r++) {
       let n = e[r];
-      n = R(n), n.ndim, "boolean" == typeof n.item(0) && ([n] = xe(n)), n = n.reshape([...Array(r).fill(1), n.size, ...Array(a - r - 1).fill(1)]), t.push(n);
+      n = P(n), n.ndim, "boolean" == typeof n.item(0) && ([n] = xe(n)), n = n.reshape([...Array(r).fill(1), n.size, ...Array(a - r - 1).fill(1)]), t.push(n);
     }
     return t;
   }
-  function Rr(e, t, a = !1, r = !1, n = "table") {
+  function Pr(e, t, a = !1, r = !1, n = "table") {
     throw new Error();
   }
-  function Kr(e, t = null, a = "big") {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
+  function Rr(e, t = null, a = "big") {
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
     let r = e.shape.slice();
     r[t] = Math.ceil(r[t] / 8);
-    let n = K(r),
+    let n = R(r),
       s = e.shape.slice();
     s[t] = 1;
     let l = Array(8 * r[t]);
-    for (let r of P(s)) {
+    for (let r of Y(s)) {
       let {
           offset: i
         } = e,
@@ -2747,16 +2722,16 @@ var n = {};
     }
     return n;
   }
-  function Vr(e, t = null, a = null, r = "big") {
-    e = R(e), null == t ? (e = Ae(e), t = 0) : t = Ke(t, e.ndim);
+  function Kr(e, t = null, a = null, r = "big") {
+    e = P(e), null == t ? (e = Ae(e), t = 0) : t = Re(t, e.ndim);
     let n = 0,
       s = 8;
     null != a && (a < 0 ? n = 8 - a : s = a);
     let l = e.shape.slice();
     l[t] = l[t] * (s - n);
-    let i = K(l),
+    let i = R(l),
       d = Array(8);
-    for (let a of P(e.shape)) {
+    for (let a of Y(e.shape)) {
       let {
           offset: l
         } = e,
@@ -2764,42 +2739,42 @@ var n = {};
           offset: o
         } = i;
       for (let t = 0; t < e.shape.length; t++) l += a[t] * e.strides[t], o += a[t] * i.strides[t];
-      Yr(e.data[l], d, r);
+      Vr(e.data[l], d, r);
       for (let e = n, a = 0; e < s; e++, a++) i.data[o + a * i.strides[t]] = d[e];
     }
     return i;
   }
-  function Yr(e, t = [], a = "big") {
+  function Vr(e, t = [], a = "big") {
     if ("big" == a) for (let a = 7; a >= 0; a--) t[a] = e % 2, e = e / 2 | 0;else for (let a = 0; a <= 7; a++) t[a] = e % 2, e = e / 2 | 0;
     return t;
   }
   function Xr(e, t = 0, a = null) {
-    if (0 == (e = e.map(e => R(e))).length) throw "need at least one array to stack";
-    for (let t = 1; t < e.length; t++) if (!Oe(e[0], e[t])) throw "all input arrays must have the same shape";
-    t = Ke(t, e[0].ndim + 1);
+    if (0 == (e = e.map(e => P(e))).length) throw "need at least one array to stack";
+    for (let t = 1; t < e.length; t++) if (!Fe(e[0], e[t])) throw "all input arrays must have the same shape";
+    t = Re(t, e[0].ndim + 1);
     let r = [...Array(t).fill(m.colon), m.newaxis];
-    return Te(e.map(e => e.get(r)), t, a);
+    return Oe(e.map(e => e.get(r)), t, a);
   }
   function Gr(e) {
-    return e = ie(...e), Array.isArray(e) || (e = [e]), Te(e, 0);
+    return e = ie(...e), Array.isArray(e) || (e = [e]), Oe(e, 0);
   }
   function Ur(e) {
-    return e = le(...e), Array.isArray(e) || (e = [e]), e.length > 0 && 1 == e[0].ndim ? Te(e, 0) : Te(e, 1);
+    return e = le(...e), Array.isArray(e) || (e = [e]), e.length > 0 && 1 == e[0].ndim ? Oe(e, 0) : Oe(e, 1);
   }
   function Wr(e) {
-    return e = de(...e), Array.isArray(e) || (e = [e]), Te(e, 2);
+    return e = de(...e), Array.isArray(e) || (e = [e]), Oe(e, 2);
   }
   function Jr(e) {
     let t = [];
-    for (let a of e) a = R(a), a.ndim < 2 && (a = E(a, null, !1, 2).T), t.push(a);
-    return Te(t, 1);
+    for (let a of e) a = P(a), a.ndim < 2 && (a = E(a, null, !1, 2).T), t.push(a);
+    return Oe(t, 1);
   }
   function Cr(e) {
-    return e = ie(...e), Array.isArray(e) || (e = [e]), Te(e, 0);
+    return e = ie(...e), Array.isArray(e) || (e = [e]), Oe(e, 0);
   }
   function Br(e, t, a = 0) {
     let r, n, s;
-    if (null != e.shape ? (a = Ke(a, e.ndim), r = e.shape[a]) : r = e.length, "number" == typeof t) {
+    if (null != e.shape ? (a = Re(a, e.ndim), r = e.shape[a]) : r = e.length, "number" == typeof t) {
       if (n = 0 | t, n <= 0) throw "number sections must be larger than 0.";
       let e = r / n | 0,
         a = r % n;
@@ -2815,7 +2790,7 @@ var n = {};
     return l;
   }
   function Hr(e, t, a = 0) {
-    if (a = Ke(a, (e = R(e)).ndim), null != t.shape && (t = t.toarray()), null == t.length) {
+    if (a = Re(a, (e = P(e)).ndim), null != t.shape && (t = t.toarray()), null == t.length) {
       let r = t;
       if (e.shape[a] % r) throw "array split does not result in an equal division";
     }
@@ -2834,14 +2809,14 @@ var n = {};
     return Hr(e, t, 0);
   }
   function en(e, t, a = null) {
-    e = R(e), null == a ? (e = Ae(e), a = 0) : a = Ke(a, e.ndim);
+    e = P(e), null == a ? (e = Ae(e), a = 0) : a = Re(a, e.ndim);
     let r = e.shape.slice(),
       n = "number" == typeof t;
     if (n) r[a] *= t;else if (1 == t.length) t = t[0], r[a] *= t, n = !0;else {
       if (r[a] != t.length) throw `operands could not be broadcast together with shape (${r[a]},) (${t.length},)`;
       r[a] = t.reduce((e, t) => e + t);
     }
-    let s = K(r),
+    let s = R(r),
       l = s.strides.slice();
     l.splice(a, 1);
     let i = e.shape.slice();
@@ -2849,7 +2824,7 @@ var n = {};
     let d = e.strides.slice();
     d.splice(a, 1);
     let o = r[a];
-    for (let r of P(i)) {
+    for (let r of Y(i)) {
       let i = 0,
         u = 0;
       for (let e = 0; e < r.length; e++) i += r[e] * d[e], u += r[e] * l[e];
@@ -2860,13 +2835,13 @@ var n = {};
         for (let e = 0; e < d; e++, h++) s.data[u + h * s.strides[a]] = l;
       }
     }
-    return s;
+    return s.astype(e.dtype);
   }
   function tn(e, t) {
     "number" == typeof t && (t = [t]);
     let a = t.length;
-    if (t.every(e => 1 == e) && e instanceof v) return E(e, null, !0, a);
-    let r = E(e, null, !1, a);
+    if (t.every(e => 1 == e) && e instanceof z) return E(e, e.dtype, !0, a);
+    let r = E(e, e.dtype, !1, a);
     a < r.ndim && (t = [...Array(r.ndim - a).fill(1), ...t]);
     let n = r.shape.map((e, a) => e * t[a]),
       s = r.size;
@@ -2884,12 +2859,12 @@ var n = {};
     return r.reshape(n);
   }
   function an(e, t = 0, a = 0, r = 1) {
-    e = R(e);
+    e = P(e);
     let {
       ndim: n
     } = e;
     if (n < 2) throw "array.ndim must be >= 2";
-    a = Ke(a, n), r = Ke(r, n);
+    a = Re(a, n), r = Re(r, n);
     let s = Array(n);
     s[n - 2] = a, s[n - 1] = r;
     for (let e = 0, t = 0; e < n; e++) e != a && e != r && (s[t++] = e);
@@ -2900,10 +2875,10 @@ var n = {};
       u = o + 1;
     t < 0 ? (l = -o * t, i = Math.min(o, d + t) * (o + 1) - o * t) : (l = t, i = Math.min(d, o - t) * (o + 1) + t);
     let h = Math.ceil((i - l) / u);
-    return new v([...e.shape.slice(0, -2), h], e.data, e.dtype, e.base ?? e, [...e.strides.slice(0, -2), u * e.strides[n - 1]], e.offset + l, e.itemsize);
+    return e.as_strided([...e.shape.slice(0, -2), h], [...e.strides.slice(0, -2), u * e.strides[n - 1]], e.offset + l);
   }
   function rn(e, t = 0) {
-    let a = (e = R(e)).shape;
+    let a = (e = P(e)).shape;
     if (1 == a.length) {
       let r = a[0] + Math.abs(t),
         n = ee([r, r]),
@@ -2917,18 +2892,18 @@ var n = {};
   }
   function nn(e, t = null) {
     let a;
-    if (e = R(e), null == t) a = Array(e.ndim).fill(x("::-1"));else {
+    if (e = P(e), null == t) a = Array(e.ndim).fill(x("::-1"));else {
       t = Ee(t, e.ndim), a = Array(e.ndim).fill(x(":"));
       for (let e of t) a[e] = x("::-1");
     }
     return e.get(a);
   }
   function sn(e) {
-    if ((e = R(e)).ndim < 2) throw "Input must be >= 2-d.";
+    if ((e = P(e)).ndim < 2) throw "Input must be >= 2-d.";
     return e.get(un(":", "::-1"));
   }
   function ln(e) {
-    if ((e = R(e)).ndim < 1) throw "Input must be >= 1-d.";
+    if ((e = P(e)).ndim < 1) throw "Input must be >= 1-d.";
     return e.at(x("::-1"));
   }
   l.add(Er, () => {
@@ -2940,11 +2915,11 @@ var n = {};
   }, () => E([[10, 0, 0, 0], [10, 11, 1, 1], [10, 11, 12, 2]])).add(Er, () => {
     let e = E([[0, 1, 2], [0, 2, 4], [0, 3, 6]]);
     return Er(er(e, 4), e, -1);
-  }, () => E([[0, 1, 2], [0, 2, -1], [0, 3, -1]])), l.add(Sr, () => Sr(x("0:5"), x("0:5")), () => [E([[0], [1], [2], [3], [4]]), E([[0, 1, 2, 3, 4]])]).add(Sr, () => Sr(x("3:5"), x("0:-5"), x("0:1")), () => [E([[[3]], [[4]]]), E([]).reshape([1, 0, 1]), E([[[0]]])]), l.add(jr, () => jr(E([[4, 9, 2, 10], [6, 9, 7, 12]]), 1), () => E([8, 6])).add(jr, () => jr(E([[4, 9, 2, 10], [6, 9, 7, 12]]), 0), () => E([2, 0, 5, 2])).add(jr, () => jr(E([[4, 9, 2, 10], [6, 9, 7, 12]])), () => 10).add(jr, () => jr(bt(C(10, 40), 2).reshape(5, 2, 3), 0, null, !0), () => E([[[1056, 1104, 1152], [1200, 1248, 1296]]])), l.add(qr, () => qr(C(1, 5)), () => 2.5).add(qr, () => qr(C(1, 11), void 0, C(10, 0, -1)), () => 4).add(qr, () => qr(C(6).reshape(3, 2), 1, [1 / 4, 3 / 4]), () => E([.75, 2.75, 4.75])).add(qr, () => qr(C(6).reshape(3, 2), 1, void 0, void 0, !0), () => E([[.5], [2.5], [4.5]])), l.add(Ir, () => Ir(E([[1, 2], [3, 4]])), () => 2.5).add(Ir, () => Ir(E([[1, 2], [3, 4]]), 0), () => E([2, 3])).add(Ir, () => Ir(E([[1, 2], [3, 4]]), 1), () => E([1.5, 3.5])), l.add(Or, () => Or(E([[1, 2], [3, 4]])), () => 1.25).add(Or, () => Or(E([[1, 2], [3, 4]]), 0), () => E([1, 1])).add(Or, () => Or(E([[1, 2], [3, 4]]), 1), () => E([.25, .25])), l.add(Fr, () => Fr(E([[1, 2], [3, 4]])), () => 1.118033988749895).add(Fr, () => Fr(E([[1, 2], [3, 4]]), 0), () => E([1, 1])).add(Fr, () => Fr(E([[1, 2], [3, 4]]), 1), () => E([.5, .5])), l.add(Tr, () => Tr(C(5)), () => E([1, 1, 1, 1, 1])).add(Tr, () => Tr(E([0, 1, 1, 3, 2, 1, 7])), () => E([1, 3, 1, 1, 0, 0, 0, 1])).add(Tr, () => Tr(E([0, 1, 1, 2, 2, 2]), E([.3, .5, .2, .7, 1, -.6])), () => E([.3, .7, 1.1])), l.add(Dr, () => Dr([2, 3]), () => E([[[0, 0, 0], [1, 1, 1]], [[0, 1, 2], [0, 1, 2]]])).add(Dr, () => Dr([2, 3], !0), () => [E([[0], [1]]), E([[0, 1, 2]])]), l.add(Pr, () => Pr([0, 1], [2, 4]), () => [E([[0], [1]]), E([[2, 4]])]).add(Pr, () => Pr([!0, !0], [2, 4]), () => [E([[0], [1]]), E([[2, 4]])]).add(Pr, () => Pr([!0, !0], [!1, !1, !0, !1, !0]), () => [E([[0], [1]]), E([[2, 4]])]), l.add(Kr, () => Kr(E([[[1, 0, 1], [0, 1, 0]], [[1, 1, 0], [0, 0, 1]]]), -1), () => E([[[160], [64]], [[192], [32]]])).add(Kr, () => Kr(E([[[1, 0, 1], [0, 1, 0]], [[1, 1, 0], [0, 0, 1]]])), () => E([171, 16])).add(Kr, () => Kr(E([[[1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]), -1), () => E([[[160, 0]]])), l.add(Vr, () => Vr(E([[2], [7], [23]]), 1), () => E([[0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 0, 1, 1, 1]])).add(Vr, () => {
+  }, () => E([[0, 1, 2], [0, 2, -1], [0, 3, -1]])), l.add(Sr, () => Sr(x("0:5"), x("0:5")), () => [E([[0], [1], [2], [3], [4]]), E([[0, 1, 2, 3, 4]])]).add(Sr, () => Sr(x("3:5"), x("0:-5"), x("0:1")), () => [E([[[3]], [[4]]]), E([]).reshape([1, 0, 1]), E([[[0]]])]), l.add(qr, () => qr(E([[4, 9, 2, 10], [6, 9, 7, 12]]), 1), () => E([8, 6])).add(qr, () => qr(E([[4, 9, 2, 10], [6, 9, 7, 12]]), 0), () => E([2, 0, 5, 2])).add(qr, () => qr(E([[4, 9, 2, 10], [6, 9, 7, 12]])), () => 10).add(qr, () => qr(bt(C(10, 40), 2).reshape(5, 2, 3), 0, null, !0), () => E([[[1056, 1104, 1152], [1200, 1248, 1296]]])), l.add(jr, () => jr(C(1, 5)), () => 2.5).add(jr, () => jr(C(1, 11), void 0, C(10, 0, -1)), () => 4).add(jr, () => jr(C(6).reshape(3, 2), 1, [1 / 4, 3 / 4]), () => E([.75, 2.75, 4.75])).add(jr, () => jr(C(6).reshape(3, 2), 1, void 0, void 0, !0), () => E([[.5], [2.5], [4.5]])), l.add(Ir, () => Ir(E([[1, 2], [3, 4]])), () => 2.5).add(Ir, () => Ir(E([[1, 2], [3, 4]]), 0), () => E([2, 3])).add(Ir, () => Ir(E([[1, 2], [3, 4]]), 1), () => E([1.5, 3.5])), l.add(Fr, () => Fr(E([[1, 2], [3, 4]])), () => 1.25).add(Fr, () => Fr(E([[1, 2], [3, 4]]), 0), () => E([1, 1])).add(Fr, () => Fr(E([[1, 2], [3, 4]]), 1), () => E([.25, .25])), l.add(Tr, () => Tr(E([[1, 2], [3, 4]])), () => 1.118033988749895).add(Tr, () => Tr(E([[1, 2], [3, 4]]), 0), () => E([1, 1])).add(Tr, () => Tr(E([[1, 2], [3, 4]]), 1), () => E([.5, .5])), l.add(Or, () => Or(C(5)), () => E([1, 1, 1, 1, 1])).add(Or, () => Or(E([0, 1, 1, 3, 2, 1, 7])), () => E([1, 3, 1, 1, 0, 0, 0, 1])).add(Or, () => Or(E([0, 1, 1, 2, 2, 2]), E([.3, .5, .2, .7, 1, -.6])), () => E([.3, .7, 1.1])), l.add(Dr, () => Dr([2, 3]), () => E([[[0, 0, 0], [1, 1, 1]], [[0, 1, 2], [0, 1, 2]]])).add(Dr, () => Dr([2, 3], !0), () => [E([[0], [1]]), E([[0, 1, 2]])]), l.add(Yr, () => Yr([0, 1], [2, 4]), () => [E([[0], [1]]), E([[2, 4]])]).add(Yr, () => Yr([!0, !0], [2, 4]), () => [E([[0], [1]]), E([[2, 4]])]).add(Yr, () => Yr([!0, !0], [!1, !1, !0, !1, !0]), () => [E([[0], [1]]), E([[2, 4]])]), l.add(Rr, () => Rr(E([[[1, 0, 1], [0, 1, 0]], [[1, 1, 0], [0, 0, 1]]]), -1), () => E([[[160], [64]], [[192], [32]]])).add(Rr, () => Rr(E([[[1, 0, 1], [0, 1, 0]], [[1, 1, 0], [0, 0, 1]]])), () => E([171, 16])).add(Rr, () => Rr(E([[[1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]), -1), () => E([[[160, 0]]])), l.add(Kr, () => Kr(E([[2], [7], [23]]), 1), () => E([[0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 0, 1, 1, 1]])).add(Kr, () => {
     let e = E([[0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 0, 1, 1, 1]]),
-      t = Kr(e, 0);
-    return [Vr(t, 0), qe(e, Vr(t, 0, e.shape[0]))];
-  }, () => [E([[0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 0, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]), !0]), l.add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 0).shape, () => [10, 3, 4]).add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 1).shape, () => [3, 10, 4]).add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 2).shape, () => [3, 4, 10]).add(Xr, () => Xr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Xr, () => Xr([E([1, 2, 3]), E([4, 5, 6])], -1), () => E([[1, 4], [2, 5], [3, 6]])), l.add(Gr, () => Gr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Gr, () => Gr([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1], [2], [3], [4], [5], [6]])), l.add(Ur, () => Ur([E([1, 2, 3]), E([4, 5, 6])]), () => E([1, 2, 3, 4, 5, 6])).add(Ur, () => Ur([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1, 4], [2, 5], [3, 6]])), l.add(Wr, () => Wr([E([1, 2, 3]), E([2, 3, 4])]), () => E([[[1, 2], [2, 3], [3, 4]]])).add(Wr, () => Wr([E([[1], [2], [3]]), E([[2], [3], [4]])]), () => E([[[1, 2]], [[2, 3]], [[3, 4]]])), l.add(Jr, () => Jr([E([1, 2, 3]), E([2, 3, 4])]), () => E([[1, 2], [2, 3], [3, 4]])), l.add(Cr, () => Cr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Cr, () => Cr([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1], [2], [3], [4], [5], [6]])), l.add(Br, () => Br(C(8), 3), () => [E([0, 1, 2]), E([3, 4, 5]), E([6, 7])]).add(Br, () => Br(C(9), 4), () => [E([0, 1, 2]), E([3, 4]), E([5, 6]), E([7, 8])]), l.add(Hr, () => Hr(C(9), 3), () => [E([0, 1, 2]), E([3, 4, 5]), E([6, 7, 8])]).add(Hr, () => Hr(C(8), [3, 5, 6, 10]), () => [E([0, 1, 2]), E([3, 4]), E([5]), E([6, 7]), E([])]), l.add(Lr, () => Lr(C(16).reshape(2, 2, 4), 2), () => [E([[[0, 1], [4, 5]], [[8, 9], [12, 13]]]), E([[[2, 3], [6, 7]], [[10, 11], [14, 15]]])]).add(Lr, () => Lr(C(16).reshape(2, 2, 4), E([3, 6])), () => [E([[[0, 1, 2], [4, 5, 6]], [[8, 9, 10], [12, 13, 14]]]), E([[[3], [7]], [[11], [15]]]), K([2, 2, 0])]), l.add(Qr, () => Qr(C(16).reshape(4, 4), 2), () => [E([[0, 1], [4, 5], [8, 9], [12, 13]]), E([[2, 3], [6, 7], [10, 11], [14, 15]])]).add(Qr, () => Qr(C(16).reshape(4, 4), E([3, 6])), () => [E([[0, 1, 2], [4, 5, 6], [8, 9, 10], [12, 13, 14]]), E([[3], [7], [11], [15]]), K([4, 0])]).add(Qr, () => Qr(C(8).reshape(2, 2, 2), 2), () => [E([[[0, 1]], [[4, 5]]]), E([[[2, 3]], [[6, 7]]])]).add(Qr, () => Qr(E([0, 1, 2, 3, 4, 5]), 2), () => [E([0, 1, 2]), E([3, 4, 5])]), l.add(Zr, () => Zr(C(16).reshape(4, 4), 2), () => [E([[0, 1, 2, 3], [4, 5, 6, 7]]), E([[8, 9, 10, 11], [12, 13, 14, 15]])]).add(Zr, () => Zr(C(16).reshape(4, 4), E([3, 6])), () => [E([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]), E([[12, 13, 14, 15]]), K([0, 4])]).add(Zr, () => Zr(C(8).reshape(2, 2, 2), 2), () => [E([[[0, 1], [2, 3]]]), E([[[4, 5], [6, 7]]])]), l.add(en, () => en(3, 4), () => E([3, 3, 3, 3])).add(en, () => en(E([[1, 2], [3, 4]]), 2), () => E([1, 1, 2, 2, 3, 3, 4, 4])).add(en, () => en(E([[1, 2], [3, 4]]), 3, 1), () => E([[1, 1, 1, 2, 2, 2], [3, 3, 3, 4, 4, 4]])).add(en, () => en(E([[1, 2], [3, 4]]), [1, 2], 0), () => E([[1, 2], [3, 4], [3, 4]])), l.add(tn, () => {
+      t = Rr(e, 0);
+    return [Kr(t, 0), je(e, Kr(t, 0, e.shape[0]))];
+  }, () => [E([[0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 0, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]), !0]), l.add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 0).shape, () => [10, 3, 4]).add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 1).shape, () => [3, 10, 4]).add(Xr, () => Xr(Array(10).fill().map(() => Nr.normal(0, 1, [3, 4])), 2).shape, () => [3, 4, 10]).add(Xr, () => Xr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Xr, () => Xr([E([1, 2, 3]), E([4, 5, 6])], -1), () => E([[1, 4], [2, 5], [3, 6]])), l.add(Gr, () => Gr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Gr, () => Gr([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1], [2], [3], [4], [5], [6]])), l.add(Ur, () => Ur([E([1, 2, 3]), E([4, 5, 6])]), () => E([1, 2, 3, 4, 5, 6])).add(Ur, () => Ur([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1, 4], [2, 5], [3, 6]])), l.add(Wr, () => Wr([E([1, 2, 3]), E([2, 3, 4])]), () => E([[[1, 2], [2, 3], [3, 4]]])).add(Wr, () => Wr([E([[1], [2], [3]]), E([[2], [3], [4]])]), () => E([[[1, 2]], [[2, 3]], [[3, 4]]])), l.add(Jr, () => Jr([E([1, 2, 3]), E([2, 3, 4])]), () => E([[1, 2], [2, 3], [3, 4]])), l.add(Cr, () => Cr([E([1, 2, 3]), E([4, 5, 6])]), () => E([[1, 2, 3], [4, 5, 6]])).add(Cr, () => Cr([E([[1], [2], [3]]), E([[4], [5], [6]])]), () => E([[1], [2], [3], [4], [5], [6]])), l.add(Br, () => Br(C(8), 3), () => [E([0, 1, 2]), E([3, 4, 5]), E([6, 7])]).add(Br, () => Br(C(9), 4), () => [E([0, 1, 2]), E([3, 4]), E([5, 6]), E([7, 8])]), l.add(Hr, () => Hr(C(9), 3), () => [E([0, 1, 2]), E([3, 4, 5]), E([6, 7, 8])]).add(Hr, () => Hr(C(8), [3, 5, 6, 10]), () => [E([0, 1, 2]), E([3, 4]), E([5]), E([6, 7]), E([])]), l.add(Lr, () => Lr(C(16).reshape(2, 2, 4), 2), () => [E([[[0, 1], [4, 5]], [[8, 9], [12, 13]]]), E([[[2, 3], [6, 7]], [[10, 11], [14, 15]]])]).add(Lr, () => Lr(C(16).reshape(2, 2, 4), E([3, 6])), () => [E([[[0, 1, 2], [4, 5, 6]], [[8, 9, 10], [12, 13, 14]]]), E([[[3], [7]], [[11], [15]]]), R([2, 2, 0])]), l.add(Qr, () => Qr(C(16).reshape(4, 4), 2), () => [E([[0, 1], [4, 5], [8, 9], [12, 13]]), E([[2, 3], [6, 7], [10, 11], [14, 15]])]).add(Qr, () => Qr(C(16).reshape(4, 4), E([3, 6])), () => [E([[0, 1, 2], [4, 5, 6], [8, 9, 10], [12, 13, 14]]), E([[3], [7], [11], [15]]), R([4, 0])]).add(Qr, () => Qr(C(8).reshape(2, 2, 2), 2), () => [E([[[0, 1]], [[4, 5]]]), E([[[2, 3]], [[6, 7]]])]).add(Qr, () => Qr(E([0, 1, 2, 3, 4, 5]), 2), () => [E([0, 1, 2]), E([3, 4, 5])]), l.add(Zr, () => Zr(C(16).reshape(4, 4), 2), () => [E([[0, 1, 2, 3], [4, 5, 6, 7]]), E([[8, 9, 10, 11], [12, 13, 14, 15]])]).add(Zr, () => Zr(C(16).reshape(4, 4), E([3, 6])), () => [E([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]), E([[12, 13, 14, 15]]), R([0, 4])]).add(Zr, () => Zr(C(8).reshape(2, 2, 2), 2), () => [E([[[0, 1], [2, 3]]]), E([[[4, 5], [6, 7]]])]), l.add(en, () => en(3, 4), () => E([3, 3, 3, 3])).add(en, () => en(E([[1, 2], [3, 4]]), 2), () => E([1, 1, 2, 2, 3, 3, 4, 4])).add(en, () => en(E([[1, 2], [3, 4]]), 3, 1), () => E([[1, 1, 1, 2, 2, 2], [3, 3, 3, 4, 4, 4]])).add(en, () => en(E([[1, 2], [3, 4]]), [1, 2], 0), () => E([[1, 2], [3, 4], [3, 4]])), l.add(tn, () => {
     let e = E([0, 1, 2]);
     return [tn(e, 2), tn(e, [2, 2]), tn(e, [2, 1, 2])];
   }, () => [E([0, 1, 2, 0, 1, 2]), E([[0, 1, 2, 0, 1, 2], [0, 1, 2, 0, 1, 2]]), E([[[0, 1, 2, 0, 1, 2]], [[0, 1, 2, 0, 1, 2]]])]).add(tn, () => {
@@ -3017,11 +2992,11 @@ var n = {};
     }
     if (0 == e.size || 0 == a) return ee(t);
     let r = Math.ceil(a / e.size);
-    return X(e = Te(Array(r).fill(e)).at(x(0, a)), t);
+    return X(e = Oe(Array(r).fill(e)).at(x(0, a)), t);
   }
   function cn(e, t, a = "left") {
-    e instanceof v && (e = e.toarray());
-    let r = V(t = R(t)),
+    e instanceof z && (e = e.toarray());
+    let r = K(t = P(t)),
       n = 0,
       s = "left" == a ? mn : yn;
     for (let a of t.flat) r.data[n++] = s(e, a);
@@ -3046,7 +3021,7 @@ var n = {};
     return a;
   }
   function gn(e, t, a = null) {
-    if (e = R(e), null == a) return gn(e.ravel(), t, 0).reshape(e.shape);
+    if (e = P(e), null == a) return gn(e.ravel(), t, 0).reshape(e.shape);
     {
       let r = ue(t, a = Ee(a, e.ndim, !0));
       if (r.ndim > 1) throw new Error("'shift' and 'axis' should be scalars or 1D sequences");
@@ -3054,7 +3029,7 @@ var n = {};
       for (let [e, t] of r) n[t] += e;
       let s = Array(e.ndim).fill([[x(null), x(null)]]);
       for (let [t, a] of n.entries()) a %= e.shape[t] || 1, a && (s[t] = [[x(null, -a), x(a, null)], [x(-a, null), x(null, a)]]);
-      let l = V(e);
+      let l = K(e);
       for (let t of new wn(s)) {
         let a = t.map(e => e[0]),
           r = t.map(e => e[1]);
@@ -3111,19 +3086,20 @@ var n = {};
     }
   }
   function bn(e, t, a = null) {
-    e = R(e);
+    e = P(e);
     let {
         shape: r,
         strides: n,
         offset: s,
         data: l
       } = e,
-      i = [];
-    for (let e of Pn(r, n, s)) i.push(t.call(a, l[e], e, l));
-    return new v(r, i);
+      i = R(r),
+      d = 0;
+    for (let e of Yn(r, n, s)) i.data[d++] = t.call(a, l[e], e, l);
+    return i;
   }
   function xn(e, t, a = null) {
-    e = R(e), t = R(t), _n(e.ndim > 0, "x1 does not have enough dimensions"), _n(t.ndim > 0, "x2 does not have enough dimensions");
+    e = P(e), t = P(t), _n(e.ndim > 0, "x1 does not have enough dimensions"), _n(t.ndim > 0, "x2 does not have enough dimensions");
     let r = 1 == e.ndim,
       n = 1 == t.ndim,
       s = r || n;
@@ -3131,37 +3107,37 @@ var n = {};
       _n(e.shape[1] == t.shape[0], "input shape mismatch");
       let l = [e.shape[0], t.shape[1]],
         i = s ? l.slice(r ? 1 : 0, n ? -1 : void 0) : l;
-      null == a ? a = K(i) : _n(Oe(i, a.shape), "out shape mismatch");
+      null == a ? a = R(i) : _n(Fe(i, a.shape), "out shape mismatch");
       let d = s ? a.reshape(l) : a,
         o = t.T;
-      for (let [t, a] of P(l)) d.set([t, a], zn(e.at(t), o.at(a)));
+      for (let [t, a] of Y(l)) d.set([t, a], vn(e.at(t), o.at(a)));
       return a;
     }
     let l = J(e.shape.slice(0, -2), t.shape.slice(0, -2));
-    e = T(e, [...l, ...e.shape.slice(-2)]), t = T(t, [...l, ...t.shape.slice(-2)]), _n(e.shape.at(-1) == t.shape.at(-2), "input shape mismatch");
+    e = O(e, [...l, ...e.shape.slice(-2)]), t = O(t, [...l, ...t.shape.slice(-2)]), _n(e.shape.at(-1) == t.shape.at(-2), "input shape mismatch");
     let i = e.shape.at(-2),
       d = t.shape.at(-1),
       o = [...l, i, d];
-    null == a ? a = K(o) : _n(Oe(o, a.shape), "out shape mismatch");
-    for (let r of P(l)) xn(e.get(r), t.get(r), a.get(r));
+    null == a ? a = R(o) : _n(Fe(o, a.shape), "out shape mismatch");
+    for (let r of Y(l)) xn(e.get(r), t.get(r), a.get(r));
     return a;
   }
   function _n(e, t) {
     if (!e) throw new Error(t);
   }
-  function zn(e, t, a = null) {
-    if (e = R(e), t = R(t), 1 == e.ndim && 1 == t.ndim) return sa(pt(e, t), 0, a);
+  function vn(e, t, a = null) {
+    if (e = P(e), t = P(t), 1 == e.ndim && 1 == t.ndim) return sa(pt(e, t), 0, a);
     if (2 == e.ndim && 2 == t.ndim) return xn(e, t, a);
     if (0 == e.ndim || 0 == t.ndim) return pt(e, t, a);
     if (1 == t.ndim) {
       _n(e.shape.at(-1) == t.shape[0], `shapes ${e.shape} and ${t.shape} not aligned`);
       let r = e.shape.slice(0, -1);
-      null == a ? a = K(r) : _n(Oe(r, a.shape), "out shape mismatch");
-      for (let n of P(r)) zn(e.get(n), t, a.at(x("..."), ...n));
+      null == a ? a = R(r) : _n(Fe(r, a.shape), "out shape mismatch");
+      for (let n of Y(r)) vn(e.get(n), t, a.at(x("..."), ...n));
       return a;
     }
   }
-  function vn(e, t = null) {
+  function zn(e, t = null) {
     t = null != t ? Object.assign(Object.create(Mn), t) : Mn;
     let {
       separator: a,
@@ -3169,23 +3145,23 @@ var n = {};
     } = t;
     return 0 == e.size ? "[]" : function (e, t = Mn, a = " ", r = "") {
       let n,
-        s = R(e);
+        s = P(e);
       0 == e.ndim && (e = s), e.size > t.threshold ? (n = "...", s = kn(s, t.edgeitems)) : n = "";
       let l = function (e, t) {
           let a = function (e, t) {
               let a = {
                   int: () => new En(e).__call__,
-                  float: () => new qn(e, t.precision).__call__,
+                  float: () => new jn(e, t.precision).__call__,
                   object: () => In
                 },
                 {
                   formatter: r
                 } = t;
-              if (null != r) for (let e of Object.keys(r)) a[e] = On(r[e]);
+              if (null != r) for (let e of Object.keys(r)) a[e] = Fn(r[e]);
               return a;
             }(e, t),
             r = e.flat.copy().data,
-            n = j(r),
+            n = q(r),
             s = c(n) == c("number") ? function (e) {
               for (let t of e) if (!Number.isInteger(t)) return !1;
               return !0;
@@ -3214,16 +3190,16 @@ var n = {};
               let s = r;
               for (let t = 0; t < c; t++) {
                 let l = d([...a, t], p, f);
-                [w, s] = Tn(w, s, l, e, r, i), s += n;
+                [w, s] = On(w, s, l, e, r, i), s += n;
               }
-              g && ([w, s] = Fn(w, s, l, e, r, i), s += i <= 113 ? ", " : n);
+              g && ([w, s] = Tn(w, s, l, e, r, i), s += i <= 113 ? ", " : n);
               for (let t = m; t > 1; t--) {
                 let l = d([...a, -t], p, f);
-                [w, s] = Tn(w, s, l, e, r, i), s += n;
+                [w, s] = On(w, s, l, e, r, i), s += n;
               }
               i <= 113 && (e = o);
               let u = d([...a, -1], p, f);
-              [w, s] = Tn(w, s, u, e, r, i), w += s;
+              [w, s] = On(w, s, u, e, r, i), w += s;
             } else {
               w = "";
               let e = n.trimEnd() + "\n".repeat(h - 1);
@@ -3245,7 +3221,7 @@ var n = {};
     }(e, t, a, r);
   }
   function An(e, t = null, a = null) {
-    return t ??= Mn.linewidth, a ??= Mn.precision, 0 == e.ndim ? `${e.item()}` : vn(e, {
+    return t ??= Mn.linewidth, a ??= Mn.precision, 0 == e.ndim ? `${e.item()}` : zn(e, {
       linewidth: t,
       precision: a
     });
@@ -3253,13 +3229,13 @@ var n = {};
   function $n(e, t = null, a = null) {
     if (t ??= Mn.linewidth, a ??= Mn.precision, 0 == e.ndim) return `${e.item()}`;
     let r,
-      n = e instanceof v ? "array" : typeof e,
+      n = e instanceof z ? "array" : typeof e,
       s = function (e) {
         return ["number", "boolean"].includes(e.name);
       }(e.dtype) && e.size > 0,
       l = n + "(",
       i = s ? ")" : ",";
-    r = e.size > 0 || Oe(e.shape, [0]) ? vn(e, {
+    r = e.size > 0 || Fe(e.shape, [0]) ? zn(e, {
       linewidth: t,
       precision: a,
       separator: ", ",
@@ -3282,7 +3258,7 @@ var n = {};
     let e = E([[1, 0], [0, 1]]),
       t = E([1, 2]);
     return [xn(e, t), xn(t, e)];
-  }, () => [E([1, 2]), E([1, 2])]).add(xn, () => xn(C(16).reshape([2, 2, 4]), C(16).reshape([2, 4, 2])), () => E([[[28, 34], [76, 98]], [[428, 466], [604, 658]]])), l.add(zn, () => zn(3, 4), () => 12).add(zn, () => zn([[1, 2], [3, 4]], [4, 1]), () => E([6, 16])).add(zn, () => zn([[1, 0], [0, 1]], [[4, 1], [2, 2]]), () => E([[4, 1], [2, 2]]));
+  }, () => [E([1, 2]), E([1, 2])]).add(xn, () => xn(C(16).reshape([2, 2, 4]), C(16).reshape([2, 4, 2])), () => E([[[28, 34], [76, 98]], [[428, 466], [604, 658]]])), l.add(vn, () => vn(3, 4), () => 12).add(vn, () => vn([[1, 2], [3, 4]], [4, 1]), () => E([6, 16])).add(vn, () => vn([[1, 0], [0, 1]], [[4, 1], [2, 2]]), () => E([[4, 1], [2, 2]]));
   let Mn = {
     edgeitems: 3,
     threshold: 1e3,
@@ -3298,7 +3274,7 @@ var n = {};
     if (e.shape[r] > 2 * t) {
       let n = a.concat(un([, t])),
         s = a.concat(un([-t]));
-      return Te([kn(e, t, n), kn(e, t, s)], r);
+      return Oe([kn(e, t, n), kn(e, t, s)], r);
     }
     return kn(e, t, a.concat(un(":")));
   }
@@ -3321,10 +3297,10 @@ var n = {};
   function Sn(e, t) {
     return e.toExponential(t);
   }
-  function jn(e, t) {
+  function qn(e, t) {
     return null != t ? e.toFixed(t) : String(e);
   }
-  class qn extends Nn {
+  class jn extends Nn {
     constructor(e, t = undefined) {
       super(), this.precision = t;
       let a = !1;
@@ -3337,7 +3313,7 @@ var n = {};
       }
       this.exp_format = a;
       let r = 0;
-      if (this.exp_format) for (let a of e.flat) r = Math.max(r, Sn(a, t).length);else for (let a of e.flat) r = Math.max(r, jn(a, t).length);
+      if (this.exp_format) for (let a of e.flat) r = Math.max(r, Sn(a, t).length);else for (let a of e.flat) r = Math.max(r, qn(a, t).length);
       this.padLeft = r;
     }
     call({
@@ -3345,21 +3321,21 @@ var n = {};
       exp_format: t,
       precision: a
     } = this, r) {
-      let n = t ? Sn(r, a) : jn(r, a);
+      let n = t ? Sn(r, a) : qn(r, a);
       return " ".repeat(e - n.length) + n;
     }
   }
   function In(e) {
     return "string" == typeof e ? `'${e}'` : `${e}`;
   }
-  let On = e => () => e;
-  function Fn(e, t, a, r, n, s) {
+  let Fn = e => () => e;
+  function Tn(e, t, a, r, n, s) {
     let l = t.length + a.length > r;
     return s > 113 && t.length <= n.length && (l = !1), l && (e += t.trimEnd() + "\n", t = n), [e, t += a];
   }
-  function Tn(e, t, a, r, n, s) {
+  function On(e, t, a, r, n, s) {
     let l = a.split(/\r?\n/);
-    if (1 === l.length || s <= 113) return Fn(e, t, a, r, n, s);
+    if (1 === l.length || s <= 113) return Tn(e, t, a, r, n, s);
     let i,
       d = Math.max(...l.map(e => e.length));
     t.length + d > r && t.length > n.length ? (e += t.trimEnd() + "\n", t = n + l[0], i = n) : (i = " ".repeat(t.length), t += l[0]);
@@ -3367,7 +3343,7 @@ var n = {};
     let o = d - l.at(-1).length;
     return [e, t += " ".repeat(o)];
   }
-  l.add(vn, () => vn(C(2520).reshape(3, 4, 210)), () => "[[[   0    1    2 ...  207  208  209]\n  [ 210  211  212 ...  417  418  419]\n  [ 420  421  422 ...  627  628  629]\n  [ 630  631  632 ...  837  838  839]]\n\n [[ 840  841  842 ... 1047 1048 1049]\n  [1050 1051 1052 ... 1257 1258 1259]\n  [1260 1261 1262 ... 1467 1468 1469]\n  [1470 1471 1472 ... 1677 1678 1679]]\n\n [[1680 1681 1682 ... 1887 1888 1889]\n  [1890 1891 1892 ... 2097 2098 2099]\n  [2100 2101 2102 ... 2307 2308 2309]\n  [2310 2311 2312 ... 2517 2518 2519]]]").add(vn, () => vn(E([.1, 100, 50, -9e3])), () => "[ 1e-1  1e+2  5e+1 -9e+3]").add(vn, () => vn(E([1.1, 100.2, 50.6])), () => "[  1.1 100.2  50.6]"), l.add($n, () => $n(E([1.1, 100.2, 50.6])), () => "array([  1.1, 100.2,  50.6])").add($n, () => "" + E([1.1, 100.2, 50.6]), () => "array([  1.1, 100.2,  50.6])");
+  l.add(zn, () => zn(C(2520).reshape(3, 4, 210)), () => "[[[   0    1    2 ...  207  208  209]\n  [ 210  211  212 ...  417  418  419]\n  [ 420  421  422 ...  627  628  629]\n  [ 630  631  632 ...  837  838  839]]\n\n [[ 840  841  842 ... 1047 1048 1049]\n  [1050 1051 1052 ... 1257 1258 1259]\n  [1260 1261 1262 ... 1467 1468 1469]\n  [1470 1471 1472 ... 1677 1678 1679]]\n\n [[1680 1681 1682 ... 1887 1888 1889]\n  [1890 1891 1892 ... 2097 2098 2099]\n  [2100 2101 2102 ... 2307 2308 2309]\n  [2310 2311 2312 ... 2517 2518 2519]]]").add(zn, () => zn(E([.1, 100, 50, -9e3])), () => "[ 1e-1  1e+2  5e+1 -9e+3]").add(zn, () => zn(E([1.1, 100.2, 50.6])), () => "[  1.1 100.2  50.6]"), l.add($n, () => $n(E([1.1, 100.2, 50.6])), () => "array([  1.1, 100.2,  50.6])").add($n, () => "" + E([1.1, 100.2, 50.6]), () => "array([  1.1, 100.2,  50.6])");
   class Dn {
     constructor(e, t, a) {
       let r = e.length;
@@ -3414,16 +3390,51 @@ var n = {};
       };
     }
   }
-  function Pn(e, t, a = 0) {
+  function Yn(e, t, a = 0) {
     return new Dn(e, t, a);
   }
-  l.add(Pn, () => {
+  function Pn(e, t) {
+    e = P(e);
+    let a = t.length,
+      r = $(t),
+      n = R([].concat(e.shape, a)),
+      s = 0;
+    for (let l of e.flat) {
+      if (l < 0 || l >= r) throw new Error(`index ${l} is out of bounds for array with size ${r}`);
+      for (let e = a; e--;) n.data[s + e] = l % t[e], l = l / t[e] | 0;
+      s += a;
+    }
+    let l = Array(a).fill().map((e, t) => t).map(e => n.at("...", e));
+    return l;
+  }
+  function Rn(e, t, a = "raise") {
+    let r = P(e).T;
+    if (r = ie(r), "raise" == a) {
+      if (_t(er(r, 0)) || _t(ar(r, t))) throw new Error(`index is out of bounds for array with shape ${t}`);
+    } else if ("wrap" == a) r = gt(ht(gt(r, t), t), t);else {
+      if ("clip" != a) throw new Error(`unsupported mode '${a}'`);
+      r = ir(r, ee(t.length), ft(t, 1));
+    }
+    let n = R(T(e).slice(1)),
+      s = Oe([da(t.slice(1).reverse()).at("::-1"), [1]]),
+      l = 0;
+    for (let e of r) n.itemset(l++, sa(pt(e, s)));
+    return n;
+  }
+  function Kn() {
+    asd;
+  }
+  l.add(Yn, () => {
     let e = C(100);
     e = e.at(x(20, -20)).reshape([2, 1, -1, 2]).at(x("..."), x("::-1"));
     let t = [];
-    for (let a of Pn(e.shape, e.strides)) t.push(e.data[e.offset + a]);
+    for (let a of Yn(e.shape, e.strides)) t.push(e.data[e.offset + a]);
     return t;
-  }, () => [21, 20, 23, 22, 25, 24, 27, 26, 29, 28, 31, 30, 33, 32, 35, 34, 37, 36, 39, 38, 41, 40, 43, 42, 45, 44, 47, 46, 49, 48, 51, 50, 53, 52, 55, 54, 57, 56, 59, 58, 61, 60, 63, 62, 65, 64, 67, 66, 69, 68, 71, 70, 73, 72, 75, 74, 77, 76, 79, 78]);
+  }, () => [21, 20, 23, 22, 25, 24, 27, 26, 29, 28, 31, 30, 33, 32, 35, 34, 37, 36, 39, 38, 41, 40, 43, 42, 45, 44, 47, 46, 49, 48, 51, 50, 53, 52, 55, 54, 57, 56, 59, 58, 61, 60, 63, 62, 65, 64, 67, 66, 69, 68, 71, 70, 73, 72, 75, 74, 77, 76, 79, 78]), l.add(Pn, () => Pn([22, 41, 37], [7, 6]), () => [E([3, 6, 6]), E([4, 5, 1])]).add(Pn, () => Pn(1621, [6, 7, 8, 9]), () => [3, 1, 4, 1]), l.add(Rn, () => Rn(E([[3, 6, 6], [4, 5, 1]]), [7, 6]), () => E([22, 41, 37])).add(Rn, () => Rn([[3, 6, 6], [4, 5, 1]], [4, 6], "clip"), () => E([22, 23, 19])).add(Rn, () => Rn(E([[3, 6, 6], [4, 5, 1]]), [4, 4], "wrap"), () => E([12, 9, 9])).add(Rn, () => Rn([3, 1, 4, 1], [6, 7, 8, 9]), () => 1621), l.add(l, () => {
+    console.log((({
+      x: e
+    }) => 5 * e + 1).toString());
+  }, () => 1);
 })();
 var s = n.zvA,
   l = n.bFe,
@@ -3442,8 +3453,8 @@ var s = n.zvA,
   b = n.tw1,
   x = n.Yur,
   _ = n.RPv,
-  z = n.JWo,
-  v = n.WnP,
+  v = n.JWo,
+  z = n.WnP,
   A = n.AGi,
   $ = n.IHx,
   M = n.$6P,
@@ -3451,18 +3462,18 @@ var s = n.zvA,
   N = n.t5D,
   E = n.YjB,
   S = n.eTT,
-  j = n.FKo,
-  q = n.Hn6,
+  q = n.FKo,
+  j = n.Hn6,
   I = n.PD,
-  O = n.oSO,
-  F = n.Xsc,
-  T = n.gJP,
+  F = n.oSO,
+  T = n.Xsc,
+  O = n.gJP,
   D = n.$jo,
-  P = n.s6s,
-  R = n.S1h,
-  K = n.Q8B,
-  V = n.IXX,
-  Y = n.FJh,
+  Y = n.s6s,
+  P = n.S1h,
+  R = n.Q8B,
+  K = n.IXX,
+  V = n.FJh,
   X = n.YSU,
   G = n.Vjr,
   U = n.xok,
@@ -3488,360 +3499,368 @@ var s = n.zvA,
   he = n.q$q,
   fe = n.oqW,
   pe = n.T8D,
-  ce = n.nNb,
-  me = n.mVq,
-  ye = n.y39,
-  ge = n.RrX,
-  we = n.JGK,
-  be = n.JGz,
-  xe = n.zOr,
-  _e = n.mCk,
+  ce = n.MY2,
+  me = n.nNb,
+  ye = n.mVq,
+  ge = n.y39,
+  we = n.RrX,
+  be = n.JGK,
+  xe = n.JGz,
+  _e = n.zOr,
+  ve = n.mCk,
   ze = n.f9Y,
-  ve = n.zNN,
-  Ae = n.kCc,
-  $e = n.$Gn,
-  Me = n.zbp,
-  ke = n.VlM,
-  Ne = n.RWx,
-  Ee = n.Ka3,
-  Se = n.on5,
+  Ae = n.zNN,
+  $e = n.kCc,
+  Me = n.$Gn,
+  ke = n.zbp,
+  Ne = n.VlM,
+  Ee = n.RWx,
+  Se = n.Ka3,
+  qe = n.on5,
   je = n.Hgg,
-  qe = n.csF,
-  Ie = n.AKD,
-  Oe = n.wIX,
-  Fe = n.N5d,
-  Te = n.cTT,
-  De = n.sk1,
+  Ie = n.csF,
+  Fe = n.AKD,
+  Te = n.wIX,
+  Oe = n.N5d,
+  De = n.cTT,
+  Ye = n.sk1,
   Pe = n.e,
   Re = n.D5q,
   Ke = n.cSb,
   Ve = n.sKD,
-  Ye = n.DgJ,
-  Xe = n.Qqt,
-  Ge = n.uuq,
-  Ue = n.aD1,
-  We = n.t$B,
-  Je = n.KlT,
-  Ce = n.iyy,
-  Be = n.zG0,
-  He = n.KTV,
-  Le = n.RRI,
-  Qe = n.HC4,
-  Ze = n.Ah7,
-  et = n.GWj,
-  tt = n.Sc8,
-  at = n.Ek0,
-  rt = n.v_D,
-  nt = n.KSO,
-  st = n.rpZ,
-  lt = n.NxV,
-  it = n.thl,
-  dt = n.rn5,
-  ot = n.FLS,
-  ut = n.pjt,
-  ht = n.zGm,
-  ft = n.smV,
-  pt = n.Hsf,
-  ct = n.DIH,
-  mt = n._mT,
-  yt = n.yRu,
-  gt = n.HqJ,
-  wt = n.S8h,
-  bt = n.CGm,
-  xt = n.gY6,
-  _t = n.Zw8,
-  zt = n.U_R,
-  vt = n.f0i,
-  At = n.fXA,
-  $t = n.I7t,
-  Mt = n.igg,
-  kt = n.ftH,
-  Nt = n.KvH,
-  Et = n.IW_,
-  St = n.uqG,
-  jt = n.vy,
-  qt = n.Ai1,
-  It = n.d9m,
+  Xe = n.DgJ,
+  Ge = n.Qqt,
+  Ue = n.uuq,
+  We = n.aD1,
+  Je = n.t$B,
+  Ce = n.KlT,
+  Be = n.iyy,
+  He = n.zG0,
+  Le = n.KTV,
+  Qe = n.RRI,
+  Ze = n.HC4,
+  et = n.Ah7,
+  tt = n.GWj,
+  at = n.Sc8,
+  rt = n.Ek0,
+  nt = n.v_D,
+  st = n.KSO,
+  lt = n.rpZ,
+  it = n.NxV,
+  dt = n.thl,
+  ot = n.rn5,
+  ut = n.rqY,
+  ht = n.FLS,
+  ft = n.pjt,
+  pt = n.zGm,
+  ct = n.smV,
+  mt = n.Hsf,
+  yt = n.DIH,
+  gt = n._mT,
+  wt = n.yRu,
+  bt = n.HqJ,
+  xt = n.S8h,
+  _t = n.CGm,
+  vt = n.gY6,
+  zt = n.Zw8,
+  At = n.U_R,
+  $t = n.f0i,
+  Mt = n.fXA,
+  kt = n.I7t,
+  Nt = n.igg,
+  Et = n.ftH,
+  St = n.KvH,
+  qt = n.IW_,
+  jt = n.uqG,
+  It = n.vy,
+  Ft = n.Ai1,
+  Tt = n.d9m,
   Ot = n.bzW,
-  Ft = n.SX3,
-  Tt = n.cM7,
-  Dt = n.mvw,
-  Pt = n.Krr,
-  Rt = n.k3Q,
-  Kt = n.YKj,
-  Vt = n.buk,
-  Yt = n.UID,
-  Xt = n.Jxs,
-  Gt = n.gWQ,
-  Ut = n.J69,
-  Wt = n.LTh,
-  Jt = n.wQq,
-  Ct = n.U8E,
-  Bt = n.JpY,
-  Ht = n.qnd,
-  Lt = n.dQs,
-  Qt = n.$7d,
-  Zt = n.RCU,
-  ea = n.MIL,
-  ta = n.obs,
-  aa = n.$V5,
-  ra = n.p3s,
-  na = n.x2A,
-  sa = n.fyW,
-  la = n.MHD,
-  ia = n.pdy,
-  da = n.MaX,
-  oa = n.S4p,
-  ua = n.INJ,
-  ha = n.lf5,
-  fa = n.ffp,
-  pa = n.AqN,
-  ca = n.qDh,
-  ma = n.iUs,
-  ya = n.r6Y,
-  ga = n.NCv,
-  wa = n.pi,
-  ba = n.eiS,
-  xa = n.i1C,
-  _a = n.qux,
-  za = n.WVs,
-  va = n.OZM,
-  Aa = n.gzd,
-  $a = n.BVy,
-  Ma = n.uRy,
-  ka = n.TN_,
-  Na = n.MXc,
-  Ea = n.di9,
-  Sa = n.n3V,
-  ja = n.nTq,
-  qa = n.M25,
-  Ia = n.spK,
-  Oa = n.rx1,
-  Fa = n.XLQ,
-  Ta = n.SIr,
-  Da = n.wyi,
-  Pa = n.XC3,
-  Ra = n.SlP,
-  Ka = n.aSG,
-  Va = n.s_,
-  Ya = n.UPJ,
-  Xa = n.FvN,
-  Ga = n.flC,
-  Ua = n.mCt,
-  Wa = n.FPS,
-  Ja = n.Xxe,
-  Ca = n.UBE,
-  Ba = n.O$l,
-  Ha = n.R_K,
-  La = n.tPi,
-  Qa = n.DYV,
-  Za = n.Vl2,
-  er = n._b3,
-  tr = n.h62,
-  ar = n.L9e,
-  rr = n.knu,
-  nr = n.qoR,
-  sr = n.$XF,
-  lr = n.Smz,
-  ir = n.ZU4,
-  dr = n.qnb,
-  or = n.ORZ,
-  ur = n.AEp,
-  hr = n.K1B,
-  fr = n.Gg6,
-  pr = n.uAr,
-  cr = n.BpP,
-  mr = n.p4s,
-  yr = n.ebm,
-  gr = n.$I7,
-  wr = n.RFc,
-  br = n.DDI,
-  xr = n.vwf,
-  _r = n.bLT,
-  zr = n.Wg4,
-  vr = n.CAK,
-  Ar = n.nFP,
-  $r = n.Ud9,
-  Mr = n.arb,
-  kr = n.lls,
-  Nr = n.T1S;
-exports.zeros_like = Nr;
-exports.zeros = kr;
-exports.where = Mr;
-exports.vstack = $r;
-exports.vsplit = Ar;
-exports.variance = vr;
-exports.unwrap = zr;
-exports.unpackbits = _r;
-exports.tuple_ = xr;
-exports.tupleType = br;
-exports.trunc = wr;
-exports.true_divide = gr;
-exports.trapz = yr;
-exports.transpose = mr;
-exports.timeit2 = cr;
-exports.timeit = pr;
-exports.tile = fr;
-exports.tester = hr;
-exports.tanh = ur;
-exports.tan = or;
-exports.take = dr;
-exports.swapaxes = ir;
-exports.sum = lr;
-exports.subtract = sr;
-exports.std = nr;
-exports.stack = rr;
-exports.squeeze = ar;
-exports.square = tr;
-exports.sqrt = er;
-exports.split = Za;
-exports.sort = Qa;
-exports.slice = La;
-exports.sinh = Ha;
-exports.sin = Ba;
-exports.signbit = Ca;
-exports.sign = Ja;
-exports.shape_ = Wa;
-exports.shape = Ua;
-exports.shallow_array_equal = Ga;
-exports.searchsorted = Xa;
-exports.sample = Ya;
-exports.s_ = Va;
-exports.row_stack = Ka;
-exports.roll = Ra;
-exports.rint = Pa;
-exports.right_shift = Da;
-exports.resize = Ta;
-exports.reshape = Fa;
-exports.repeat = Oa;
-exports.remainder = Ia;
-exports.reciprocal = qa;
-exports.ravel = ja;
-exports.ranf = Sa;
-exports.random_sample = Ea;
-exports.random = Na;
-exports.rand = ka;
-exports.radians = Ma;
-exports.rad2deg = $a;
-exports.put = Aa;
-exports.ptp = va;
-exports.prod = za;
-exports.power = _a;
-exports.positive = xa;
-exports.pick = ba;
-exports.pi = wa;
-exports.packbits = ga;
-exports.ones_like = ya;
-exports.ones = ma;
-exports.ogrid = ca;
-exports.not_equal = pa;
-exports.normalize_axis_tuple = fa;
-exports.normalize_axis_mask = ha;
-exports.normalize_axis_index = ua;
-exports.normalize_axis = oa;
-exports.nonzero = da;
-exports.negative = ia;
-exports.ndoffset = la;
-exports.nditer = sa;
-exports.ndindex = na;
-exports.ndim = ra;
-exports.ndenumerate = aa;
-exports.nansum = ta;
-exports.nanprod = ea;
-exports.nancumsum = Zt;
-exports.nancumprod = Qt;
-exports.nan_to_num = Lt;
-exports.nan = Ht;
-exports.multiply = Bt;
-exports.moveaxis = Ct;
-exports.mod = Jt;
-exports.minimum = Wt;
-exports.mean = Ut;
-exports.maximum = Gt;
-exports.matmul = Xt;
-exports.map = Yt;
-exports.logaddexp2 = Vt;
-exports.logaddexp = Kt;
-exports.log2 = Rt;
-exports.log1p = Pt;
-exports.log10 = Dt;
-exports.log = Tt;
-exports.linspace = Ft;
+  Dt = n.SX3,
+  Yt = n.cM7,
+  Pt = n.mvw,
+  Rt = n.Krr,
+  Kt = n.k3Q,
+  Vt = n.YKj,
+  Xt = n.buk,
+  Gt = n.UID,
+  Ut = n.Jxs,
+  Wt = n.gWQ,
+  Jt = n.J69,
+  Ct = n.LTh,
+  Bt = n.wQq,
+  Ht = n.U8E,
+  Lt = n.JpY,
+  Qt = n.qnd,
+  Zt = n.dQs,
+  ea = n.$7d,
+  ta = n.RCU,
+  aa = n.MIL,
+  ra = n.obs,
+  na = n.$V5,
+  sa = n.p3s,
+  la = n.x2A,
+  ia = n.fyW,
+  da = n.MHD,
+  oa = n.pdy,
+  ua = n.MaX,
+  ha = n.S4p,
+  fa = n.INJ,
+  pa = n.lf5,
+  ca = n.ffp,
+  ma = n.AqN,
+  ya = n.qDh,
+  ga = n.iUs,
+  wa = n.r6Y,
+  ba = n.NCv,
+  xa = n.pi,
+  _a = n.eiS,
+  va = n.i1C,
+  za = n.qux,
+  Aa = n.WVs,
+  $a = n.OZM,
+  Ma = n.gzd,
+  ka = n.BVy,
+  Na = n.uRy,
+  Ea = n.TN_,
+  Sa = n.MXc,
+  qa = n.di9,
+  ja = n.n3V,
+  Ia = n.nTq,
+  Fa = n.Pyd,
+  Ta = n.M25,
+  Oa = n.spK,
+  Da = n.rx1,
+  Ya = n.XLQ,
+  Pa = n.SIr,
+  Ra = n.wyi,
+  Ka = n.XC3,
+  Va = n.SlP,
+  Xa = n.aSG,
+  Ga = n.s_,
+  Ua = n.UPJ,
+  Wa = n.FvN,
+  Ja = n.flC,
+  Ca = n.mCt,
+  Ba = n.FPS,
+  Ha = n.Xxe,
+  La = n.UBE,
+  Qa = n.O$l,
+  Za = n.R_K,
+  er = n.tPi,
+  tr = n.DYV,
+  ar = n.Vl2,
+  rr = n._b3,
+  nr = n.h62,
+  sr = n.L9e,
+  lr = n.knu,
+  ir = n.qoR,
+  dr = n.$XF,
+  or = n.Smz,
+  ur = n.ZU4,
+  hr = n.qnb,
+  fr = n.ORZ,
+  pr = n.AEp,
+  cr = n.K1B,
+  mr = n.Gg6,
+  yr = n.uAr,
+  gr = n.BpP,
+  wr = n.p4s,
+  br = n.ebm,
+  xr = n.$I7,
+  _r = n.RFc,
+  vr = n.DDI,
+  zr = n.vwf,
+  Ar = n.bLT,
+  $r = n.M56,
+  Mr = n.Wg4,
+  kr = n.CAK,
+  Nr = n.nFP,
+  Er = n.Ud9,
+  Sr = n.arb,
+  qr = n.lls,
+  jr = n.T1S;
+exports.zeros_like = jr;
+exports.zeros = qr;
+exports.where = Sr;
+exports.vstack = Er;
+exports.vsplit = Nr;
+exports.variance = kr;
+exports.unwrap = Mr;
+exports.unravel_index = $r;
+exports.unpackbits = Ar;
+exports.tuple_ = zr;
+exports.tupleType = vr;
+exports.trunc = _r;
+exports.true_divide = xr;
+exports.trapz = br;
+exports.transpose = wr;
+exports.timeit2 = gr;
+exports.timeit = yr;
+exports.tile = mr;
+exports.tester = cr;
+exports.tanh = pr;
+exports.tan = fr;
+exports.take = hr;
+exports.swapaxes = ur;
+exports.sum = or;
+exports.subtract = dr;
+exports.std = ir;
+exports.stack = lr;
+exports.squeeze = sr;
+exports.square = nr;
+exports.sqrt = rr;
+exports.split = ar;
+exports.sort = tr;
+exports.slice = er;
+exports.sinh = Za;
+exports.sin = Qa;
+exports.signbit = La;
+exports.sign = Ha;
+exports.shape_ = Ba;
+exports.shape = Ca;
+exports.shallow_array_equal = Ja;
+exports.searchsorted = Wa;
+exports.sample = Ua;
+exports.s_ = Ga;
+exports.row_stack = Xa;
+exports.roll = Va;
+exports.rint = Ka;
+exports.right_shift = Ra;
+exports.resize = Pa;
+exports.reshape = Ya;
+exports.repeat = Da;
+exports.remainder = Oa;
+exports.reciprocal = Ta;
+exports.ravel_multi_index = Fa;
+exports.ravel = Ia;
+exports.ranf = ja;
+exports.random_sample = qa;
+exports.random = Sa;
+exports.rand = Ea;
+exports.radians = Na;
+exports.rad2deg = ka;
+exports.put = Ma;
+exports.ptp = $a;
+exports.prod = Aa;
+exports.power = za;
+exports.positive = va;
+exports.pick = _a;
+exports.pi = xa;
+exports.packbits = ba;
+exports.ones_like = wa;
+exports.ones = ga;
+exports.ogrid = ya;
+exports.not_equal = ma;
+exports.normalize_axis_tuple = ca;
+exports.normalize_axis_mask = pa;
+exports.normalize_axis_index = fa;
+exports.normalize_axis = ha;
+exports.nonzero = ua;
+exports.negative = oa;
+exports.ndoffset = da;
+exports.nditer = ia;
+exports.ndindex = la;
+exports.ndim = sa;
+exports.ndenumerate = na;
+exports.nansum = ra;
+exports.nanprod = aa;
+exports.nancumsum = ta;
+exports.nancumprod = ea;
+exports.nan_to_num = Zt;
+exports.nan = Qt;
+exports.multiply = Lt;
+exports.moveaxis = Ht;
+exports.mod = Bt;
+exports.minimum = Ct;
+exports.mean = Jt;
+exports.maximum = Wt;
+exports.matmul = Ut;
+exports.map = Gt;
+exports.logaddexp2 = Xt;
+exports.logaddexp = Vt;
+exports.log2 = Kt;
+exports.log1p = Rt;
+exports.log10 = Pt;
+exports.log = Yt;
+exports.linspace = Dt;
 exports.less_equal = Ot;
-exports.less = It;
-exports.left_shift = qt;
-exports.ldexp = jt;
-exports.lcm = St;
-exports.ix_ = Et;
-exports.isscalar = Nt;
-exports.isposinf = kt;
-exports.isneginf = Mt;
-exports.isna = $t;
-exports.isinf = At;
-exports.isfinite = vt;
-exports.invert = zt;
-exports.interp = _t;
-exports.inf = xt;
-exports.indices = bt;
-exports.index_exp = wt;
-exports.in1d = gt;
-exports.identity = yt;
-exports.hypot = mt;
-exports.hstack = ct;
-exports.hsplit = pt;
-exports.guessType = ft;
-exports.greater_equal = ht;
-exports.greater = ut;
-exports.gradient = ot;
-exports.get_size = dt;
-exports.gcd = it;
-exports.full_like = lt;
-exports.full = st;
-exports.fromiter = nt;
-exports.fromfunction = rt;
-exports.fmod = at;
-exports.floor_divide = tt;
-exports.floor = et;
-exports.flipud = Ze;
-exports.fliplr = Qe;
-exports.flip = Le;
-exports.flatnonzero = He;
-exports.fix = Be;
-exports.eye = Ce;
-exports.extract = Je;
-exports.expm1 = We;
-exports.expand_dims = Ue;
-exports.exp2 = Ge;
-exports.exp = Xe;
-exports.equal = Ye;
+exports.less = Tt;
+exports.left_shift = Ft;
+exports.ldexp = It;
+exports.lcm = jt;
+exports.ix_ = qt;
+exports.isscalar = St;
+exports.isposinf = Et;
+exports.isneginf = Nt;
+exports.isna = kt;
+exports.isinf = Mt;
+exports.isfinite = $t;
+exports.invert = At;
+exports.interp = zt;
+exports.inf = vt;
+exports.indices = _t;
+exports.index_exp = xt;
+exports.in1d = bt;
+exports.identity = wt;
+exports.hypot = gt;
+exports.hstack = yt;
+exports.hsplit = mt;
+exports.guessType = ct;
+exports.greater_equal = pt;
+exports.greater = ft;
+exports.gradient = ht;
+exports.get_strides = ut;
+exports.get_size = ot;
+exports.gcd = dt;
+exports.full_like = it;
+exports.full = lt;
+exports.fromiter = st;
+exports.fromfunction = nt;
+exports.fmod = rt;
+exports.floor_divide = at;
+exports.floor = tt;
+exports.flipud = et;
+exports.fliplr = Ze;
+exports.flip = Qe;
+exports.flatnonzero = Le;
+exports.fix = He;
+exports.eye = Be;
+exports.extract = Ce;
+exports.expm1 = Je;
+exports.expand_dims = We;
+exports.exp2 = Ue;
+exports.exp = Ge;
+exports.equal = Xe;
 exports.empty_like = Ve;
 exports.empty = Ke;
 exports.ediff1d = Re;
 exports.e = Pe;
-exports.dtype_ = De;
-exports.dtype = Te;
-exports.dstack = Fe;
-exports.dsplit = Oe;
-exports.dot = Ie;
-exports.divide = qe;
+exports.dtype_ = Ye;
+exports.dtype = De;
+exports.dstack = Oe;
+exports.dsplit = Te;
+exports.dot = Fe;
+exports.divide = Ie;
 exports.diff = je;
-exports.diagonal = Se;
-exports.diag = Ee;
-exports.degrees = Ne;
-exports.deg2rad = ke;
-exports.cumsum = Me;
-exports.cumprod = $e;
-exports.cross = Ae;
-exports.count_nonzero = ve;
+exports.diagonal = qe;
+exports.diag = Se;
+exports.degrees = Ee;
+exports.deg2rad = Ne;
+exports.cumsum = ke;
+exports.cumprod = Me;
+exports.cross = $e;
+exports.count_nonzero = Ae;
 exports.cosh = ze;
-exports.cos = _e;
-exports.copyto = xe;
-exports.copysign = be;
-exports.copy = we;
-exports.convolve = ge;
-exports.contiguous = ye;
-exports.concatenate = me;
-exports.compress = ce;
+exports.cos = ve;
+exports.copyto = _e;
+exports.copysign = xe;
+exports.copy = be;
+exports.convolve = we;
+exports.contiguous = ge;
+exports.concatenate = ye;
+exports.compress = me;
+exports.compile = ce;
 exports.column_stack = pe;
 exports.clip = fe;
 exports.choice = he;
@@ -3867,18 +3886,18 @@ exports.array_split = W;
 exports.array_repr = U;
 exports.array_equiv = G;
 exports.array_equal = X;
-exports.array2string = Y;
-exports.array = V;
-exports.around = K;
-exports.argwhere = R;
-exports.argsort = P;
+exports.array2string = V;
+exports.array = K;
+exports.around = R;
+exports.argwhere = P;
+exports.argsort = Y;
 exports.arctanh = D;
-exports.arctan2 = T;
-exports.arctan = F;
-exports.arcsinh = O;
+exports.arctan2 = O;
+exports.arctan = T;
+exports.arcsinh = F;
 exports.arcsin = I;
-exports.arccosh = q;
-exports.arccos = j;
+exports.arccosh = j;
+exports.arccos = q;
 exports.arange = S;
 exports.any = E;
 exports.amin = N;
@@ -3886,8 +3905,8 @@ exports.amax = k;
 exports.all = M;
 exports.add = $;
 exports.absolute = A;
-exports.abs = v;
-exports._wrap_reduce = z;
+exports.abs = z;
+exports._wrap_reduce = v;
 exports._wrap_map_unary = _;
 exports._wrap_map_binary = x;
 exports._wrap_map = b;

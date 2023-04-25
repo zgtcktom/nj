@@ -23,7 +23,9 @@ export function tile(a, reps) {
 		for (let i = 0; i < ndim; i++) {
 			let dim_in = shape[i];
 			let nrep = reps[i];
-			if (nrep != 1) c = c.reshape(-1, n).repeat(nrep, 0);
+			if (nrep != 1) {
+				c = c.reshape(-1, n).repeat(nrep, 0);
+			}
 			n = (n / dim_in) | 0;
 		}
 	}

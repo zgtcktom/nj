@@ -1,4 +1,4 @@
-import { tester, array, ascontiguousarray, NDArray, arange, slice } from './core.mjs';
+import { tester, array, ascontiguousarray, NDArray, arange, slice, get_strides } from './core.mjs';
 
 /**
  * @param {NDArray} a
@@ -6,8 +6,10 @@ import { tester, array, ascontiguousarray, NDArray, arange, slice } from './core
  */
 export function ravel(a) {
 	a = ascontiguousarray(a);
-	let { size, data, base, dtype, offset, itemsize } = a;
-	return new NDArray([size], data, dtype, base, undefined, offset, itemsize);
+	let { size, base, offset, itemsize } = a;
+	a = a.as_strided([size], get_strides([size], 1, itemsize), offset);
+	a.base = base;
+	return a;
 }
 
 tester

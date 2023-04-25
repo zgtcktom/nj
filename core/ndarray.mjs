@@ -49,12 +49,11 @@ import {
 
 /**
  * @class
- * @template T
  */
 export class NDArray {
 	/**
 	 * @param {number[]} shape
-	 * @param {T[]} data
+	 * @param {any[]} data
 	 * @param {Dtype} dtype
 	 * @param {NDArray} base
 	 * @param {number[]} strides
@@ -70,7 +69,7 @@ export class NDArray {
 
 		/** @member {number[]} */
 		this.shape = shape;
-		/** @member {T[]} */
+		/** @member {any[]} */
 		this.data = data ?? Array(this.size);
 		/** @member {number} */
 		this.itemsize = itemsize;
@@ -93,6 +92,27 @@ export class NDArray {
 	}
 
 	/**
+	 * @member {Flatiter}
+	 * @type {Flatiter}
+	 */
+	get flat() {
+		return new Flatiter(this);
+	}
+
+	set flat(value) {
+		this.flat.set(':', value);
+	}
+
+	/** @member {NDArray} */
+	get T() {
+		return transpose(this);
+	}
+
+	set T(value) {
+		this.T.set(value);
+	}
+
+	/**
 	 * @returns {string}
 	 */
 	toString() {
@@ -110,6 +130,20 @@ export class NDArray {
 		for (let i = 0; i < this.shape[0]; i++) {
 			yield this.at(i);
 		}
+	}
+
+	/**
+	 * Returns a view with the given shape, strides, and offset.
+	 *
+	 * out.base = this.base ?? this
+	 * @param {number[]} [shape]
+	 * @param {number[]} [strides]
+	 * @param {number} [offset] required as a ptr to the first item
+	 * @returns {NDArray}
+	 */
+	as_strided(shape = this.shape, strides = this.strides, offset = this.offset) {
+		let { data, dtype, base, itemsize } = this;
+		return new NDArray(shape, data, dtype, base ?? this, strides, offset, itemsize);
 	}
 
 	/**
@@ -166,7 +200,7 @@ export class NDArray {
 	/**
 	 * `.at(0)` is is equivalent to `.get([0])`
 	 * @param  {...number|Slice|string|null|number[]|boolean[]} indices
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	at(...indices) {
 		return this.get(indices);
@@ -175,7 +209,7 @@ export class NDArray {
 	/**
 	 * `.get(indices)` is is equivalent to `.at(...indices)`
 	 * @param  {Array<number|Slice|string|null|number[]|boolean[]>} indices
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	get(indices) {
 		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
@@ -189,7 +223,7 @@ export class NDArray {
 	 * `.set(value)` is equivalent to `.set(['...'], value)`, but faster
 	 * @param  {Array<number|Slice|string|null>} indices
 	 * @param  {T} [value]
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	set(indices, value) {
 		if (arguments.length == 1) {
@@ -228,7 +262,7 @@ export class NDArray {
 	 * index can be undefined only if a.size == 1.
 	 * @param {number|number[]|undefined} index
 	 * @param {T} scalar
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	itemset(index, scalar) {
 		this.data[this.idx(index)] = scalar;
@@ -280,30 +314,9 @@ export class NDArray {
 	}
 
 	/**
-	 * @member {Flatiter<T>}
-	 * @type {Flatiter<T>}
-	 */
-	get flat() {
-		return new Flatiter(this);
-	}
-
-	set flat(value) {
-		this.flat.set(':', value);
-	}
-
-	/** @member {NDArray} */
-	get T() {
-		return transpose(this);
-	}
-
-	set T(value) {
-		this.T.set(value);
-	}
-
-	/**
 	 * `.reshape(1, 2)` is equivalent to `.reshape([1, 2])`
 	 * @param  {...number|number[]} shape
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	reshape(...shape) {
 		if (shape.length == 1 && typeof shape[0] == 'object') {
@@ -439,8 +452,8 @@ export class NDArray {
 	}
 
 	/**
-	 * @param {T} value
-	 * @returns {NDArray<T>} this
+	 * @param {any} value
+	 * @returns {NDArray} this
 	 */
 	fill(value) {
 		let { data, shape, strides, offset } = this;
@@ -451,7 +464,7 @@ export class NDArray {
 	}
 
 	/**
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	flatten() {
 		let { size, flat, dtype } = this;
@@ -469,9 +482,9 @@ export class NDArray {
 	 * @param {number|number[]} [axis]
 	 * @param {NDArray} [out]
 	 * @param {boolean} [keepdims]
-	 * @param {T} [initial]
+	 * @param {any} [initial]
 	 * @param {boolean} [return_scalar]
-	 * @returns {NDArray<T>|T}
+	 * @returns {NDArray<any>|any}
 	 */
 	max(axis = null, out = null, keepdims = false, initial = null, return_scalar = true) {
 		return amax(this, axis, out, keepdims, initial, return_scalar);
@@ -485,9 +498,9 @@ export class NDArray {
 	 * @param {number|number[]} [axis]
 	 * @param {NDArray} [out]
 	 * @param {boolean} [keepdims]
-	 * @param {T} [initial]
+	 * @param {any} [initial]
 	 * @param {boolean} [return_scalar]
-	 * @returns {NDArray<T>|T}
+	 * @returns {NDArray|any}
 	 */
 	min(axis = null, out = null, keepdims = false, initial = null, return_scalar = true) {
 		return amin(this, axis, out, keepdims, initial, return_scalar);
@@ -512,9 +525,9 @@ export class NDArray {
 	 * @param {number|number[]} [axis]
 	 * @param {NDArray} [out]
 	 * @param {boolean} [keepdims]
-	 * @param {T} [initial]
+	 * @param {any} [initial]
 	 * @param {boolean} [return_scalar]
-	 * @returns {NDArray<T>|T}
+	 * @returns {NDArray|any}
 	 */
 	prod(axis = null, out = null, keepdims = false, initial = 0, return_scalar = true) {
 		return prod(this, axis, out, keepdims, initial, return_scalar);
@@ -524,7 +537,7 @@ export class NDArray {
 	 * @param {number|number[]} [axis]
 	 * @param {NDArray} [out]
 	 * @param {boolean} [keepdims]
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	ptp(axis = null, out = null, keepdims = false) {
 		return ptp(this, axis, out, keepdims);
@@ -542,7 +555,7 @@ export class NDArray {
 	}
 
 	/**
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	ravel() {
 		return ravel(this);
@@ -551,7 +564,7 @@ export class NDArray {
 	/**
 	 * @param {number|number[]} repeats
 	 * @param {number} [axis]
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	repeat(repeats, axis = null) {
 		return repeat(this, repeats, axis);
@@ -641,7 +654,7 @@ export class NDArray {
 	 * @param {boolean} [keepdims]
 	 * @param {number} [initial]
 	 * @param {boolean} [return_scalar]
-	 * @returns {NDArray<T>|T}
+	 * @returns {NDArray|any}
 	 */
 	sum(axis = null, out = null, keepdims = false, initial = 0, return_scalar = true) {
 		return sum(this, axis, out, keepdims, initial, return_scalar);
@@ -713,7 +726,7 @@ NDArray.prototype[util?.inspect?.custom] = function () {
  * @returns {number[]}
  * @ignore
  */
-function get_strides(shape, ndim, itemsize) {
+export function get_strides(shape, ndim, itemsize) {
 	if (ndim == 0) return [];
 
 	let strides = Array(ndim);
@@ -848,7 +861,11 @@ function basic_indexing(a, indices) {
  */
 function use_advanced_indexing(indices) {
 	for (let index of indices) {
-		if (index != null && typeof index == 'object' && (Array.isArray(index) || index instanceof NDArray)) {
+		if (
+			index != null &&
+			typeof index == 'object' &&
+			(Array.isArray(index) || (index instanceof NDArray && index.ndim > 0))
+		) {
 			return true;
 		}
 	}

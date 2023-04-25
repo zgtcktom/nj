@@ -1,4 +1,4 @@
-import { tester, asarray, NDArray, array, arange, slice, get_size, tuple_ } from './core.mjs';
+import { tester, asarray, NDArray, array, arange, slice, get_size, tuple_, get_strides } from './core.mjs';
 
 /**
  * @param {NDArray} a array-like
@@ -31,7 +31,7 @@ export function reshape(a, newshape) {
 		throw new Error(`cannot reshape array of size ${a.size} into shape [${newshape.join(', ')}]`);
 	}
 	if (a.base == undefined) {
-		return new NDArray(newshape, a.data, a.dtype, a);
+		return a.as_strided(newshape, get_strides(newshape, newshape.length, a.itemsize));
 	}
 
 	// check (1, 1, x, -1, y, 1) to (x, y)
@@ -58,9 +58,8 @@ export function reshape(a, newshape) {
 				}
 				strides.push(j < a.shape.length ? a.strides[j++] : 1);
 			}
-			// console.log(strides);
-			// console.log('reshape', newshape, strides, a.strides, a.shape);
-			return new NDArray(newshape, a.data, a.dtype, a, strides, a.offset, a.itemsize);
+
+			return a.as_strided(newshape, strides);
 		}
 	}
 
@@ -73,9 +72,7 @@ export function reshape(a, newshape) {
 		a = array(a);
 	}
 
-	let { data, dtype, offset, itemsize } = a;
-
-	return new NDArray(newshape, data, dtype, a, strides, offset, itemsize);
+	return a.as_strided(newshape, strides);
 }
 
 /**

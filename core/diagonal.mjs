@@ -43,14 +43,10 @@ export function diagonal(a, offset = 0, axis1 = 0, axis2 = 1) {
 
 	let count = Math.ceil((stop - start) / step);
 
-	return new NDArray(
+	return a.as_strided(
 		[...a.shape.slice(0, -2), count],
-		a.data,
-		a.dtype,
-		a.base ?? a,
 		[...a.strides.slice(0, -2), step * a.strides[ndim - 1]],
-		a.offset + start,
-		a.itemsize
+		a.offset + start
 	);
 }
 

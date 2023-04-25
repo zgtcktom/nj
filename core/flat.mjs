@@ -8,10 +8,10 @@ export class Flatiter {
 	#offsetiter;
 
 	/**
-	 * @param {NDArray<T>} base
+	 * @param {NDArray} base
 	 */
 	constructor(base) {
-		/** @member {NDArray<T>} */
+		/** @member {NDArray} */
 		this.base = base;
 
 		let { shape, strides, offset } = base;
@@ -39,7 +39,7 @@ export class Flatiter {
 
 	/**
 	 * @typedef {Object} FlatiterResult
-	 * @property {T} value
+	 * @property {any} value
 	 * @property {boolean} done
 	 */
 
@@ -58,7 +58,7 @@ export class Flatiter {
 
 	/**
 	 * @param {number|Slice|string|number[]} index
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	at(index) {
 		return this.get(index);
@@ -66,7 +66,7 @@ export class Flatiter {
 
 	/**
 	 * @param {number|Slice|string|number[]} index
-	 * @returns {NDArray<T>}
+	 * @returns {NDArray}
 	 */
 	get(index) {
 		let { base } = this;
@@ -96,8 +96,8 @@ export class Flatiter {
 	 *
 	 * `NDArray.set` broadcasts the value to match the shape of the selection
 	 * @param {number|Slice|string|number[]} index
-	 * @param {T[]|T} value
-	 * @returns {Flatiter<T>} this
+	 * @param {any[]|any} value
+	 * @returns {Flatiter} this
 	 */
 	set(index, value) {
 		let { base } = this;

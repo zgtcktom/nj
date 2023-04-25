@@ -1,4 +1,4 @@
-import { tester, NDArray, asarray } from './core.mjs';
+import { tester, NDArray, asarray, array } from './core.mjs';
 
 /**
  * @param {NDArray} a array-like
@@ -7,7 +7,7 @@ import { tester, NDArray, asarray } from './core.mjs';
  */
 export function broadcast_to(a, shape) {
 	a = asarray(a);
-	let { data, strides, offset, dtype, ndim } = a;
+	let { strides, ndim } = a;
 
 	if (ndim > shape.length) {
 		throw new Error('broadcast shape has less dimensions than input array');
@@ -21,12 +21,12 @@ export function broadcast_to(a, shape) {
 		new_strides[i] = j < 0 || a.shape[j] == 1 ? 0 : strides[j];
 	}
 
-	return new NDArray(shape, data, dtype, a, new_strides, offset);
+	return a.as_strided(shape, new_strides);
 }
 
 tester.add(
 	'broadcast_to',
-	() => broadcast_to(new NDArray([3], [1, 2, 3]), [3, 3]).toarray(),
+	() => broadcast_to(array([1, 2, 3]).reshape(3), [3, 3]).toarray(),
 	() => [
 		[1, 2, 3],
 		[1, 2, 3],
@@ -36,7 +36,7 @@ tester.add(
 
 tester.add(
 	'broadcast_to',
-	() => broadcast_to(new NDArray([1, 3, 1], [1, 2, 3]), [2, 3, 4]).toarray(),
+	() => broadcast_to(array([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).toarray(),
 	() => [
 		[
 			[1, 1, 1, 1],
