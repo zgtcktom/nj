@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx webpack build && npx babel --plugins @babel/plugin-transform-modules-commonjs  ./dist/bundle.mjs --out-dir ./dist",
     "test": "node ./NDArray.mjs",
-    "jsdoc": "npx jsdoc ./core -c ./jsdoc_conf.json"
+    "jsdoc": "npx jsdoc ./core -c ./jsdoc_conf.json -d ./docs/"
   },
   "repository": {
     "type": "git",
