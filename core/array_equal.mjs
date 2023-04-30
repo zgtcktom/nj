@@ -1,4 +1,4 @@
-import { all, array, asarray, equal, tester, _wrap_map_binary, NDArray } from './core.mjs';
+import { all, array, asarray, equal, tester, NDArray, wrapper_map2 } from './core.mjs';
 
 /**
  * @param {NDArray} a1 array-like
@@ -43,7 +43,7 @@ export function shallow_array_equal(a, b) {
 	return true;
 }
 
-const equal_nan_map = _wrap_map_binary(
+const equal_nan_map = wrapper_map2(
 	'nan_equal',
 	(x1, x2) => x1 == x2 || (Number.isNaN(x1) && Number.isNaN(x2))
 );

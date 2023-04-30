@@ -3,124 +3,116 @@ import {
 	array,
 	tester,
 	slice,
-	_wrap_reduce,
 	asarray,
 	ndoffset,
-	linspace,
 	subtract,
-	mod,
 	normalize_axis_index,
 	concatenate,
-	ravel,
 	reshape,
 	remainder,
 	eye,
-	_wrap_map_unary,
-	_wrap_map_binary,
-	_wrap_accum_unary,
 	NDArray,
+	wrapper_map,
+	wrapper_reduce,
+	wrapper_map2,
+	shallow_array_equal,
+	empty,
 } from './core.mjs';
 
-/**
- * @type {number}
- */
+/** @type {number} */
 export const e = Math.E;
-/**
- * @type {number}
- */
+
+/** @type {number} */
 export const nan = NaN;
-/**
- * @type {number}
- */
+
+/** @type {number} */
 export const pi = Math.PI;
-/**
- * @type {number}
- */
+
+/** @type {number} */
 export const inf = Infinity;
-/**
- * @type {number}
- */
+
+/** @type {number} */
 export const NINF = -Infinity;
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const sin = _wrap_map_unary('sin', Math.sin);
+export const sin = wrapper_map('sin', Math.sin);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const cos = _wrap_map_unary('cos', Math.cos);
+export const cos = wrapper_map('cos', Math.cos);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const tan = _wrap_map_unary('tan', Math.tan);
+export const tan = wrapper_map('tan', Math.tan);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arcsin = _wrap_map_unary('arcsin', Math.asin);
+export const arcsin = wrapper_map('arcsin', Math.asin);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arccos = _wrap_map_unary('arccos', Math.acos);
+export const arccos = wrapper_map('arccos', Math.acos);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arctan = _wrap_map_unary('arctan', Math.atan);
+export const arctan = wrapper_map('arctan', Math.atan);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const hypot = _wrap_map_unary('hypot', Math.hypot);
+export const hypot = wrapper_map('hypot', Math.hypot);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arctan2 = _wrap_map_unary('arctan2', Math.atan2);
+export const arctan2 = wrapper_map('arctan2', Math.atan2);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const degrees = _wrap_map_unary('degrees', x => (x * 180) / pi);
+export const degrees = wrapper_map('degrees', x => (x * 180) / pi);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const radians = _wrap_map_unary('radians', x => (x / 180) * pi);
+export const radians = wrapper_map('radians', x => (x / 180) * pi);
 
 /**
  * @param {NDArray} p
@@ -157,101 +149,104 @@ export function unwrap(p, period = 2 * pi, discont = period / 2) {
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const rad2deg = _wrap_map_unary('rad2deg', x => (x * 180) / pi);
+export const rad2deg = wrapper_map('rad2deg', x => (x * 180) / pi);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const deg2rad = _wrap_map_unary('deg2rad', x => (x / 180) * pi);
+export const deg2rad = wrapper_map('deg2rad', x => (x / 180) * pi);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const sinh = _wrap_map_unary('sinh', Math.sinh);
+export const sinh = wrapper_map('sinh', Math.sinh);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const cosh = _wrap_map_unary('cosh', Math.cosh);
+export const cosh = wrapper_map('cosh', Math.cosh);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const tanh = _wrap_map_unary('tanh', Math.tanh);
+export const tanh = wrapper_map('tanh', Math.tanh);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arcsinh = _wrap_map_unary('arcsinh', Math.asinh);
+export const arcsinh = wrapper_map('arcsinh', Math.asinh);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arccosh = _wrap_map_unary('arccosh', Math.acosh);
+export const arccosh = wrapper_map('arccosh', Math.acosh);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const arctanh = _wrap_map_unary('arctanh', Math.atanh);
+export const arctanh = wrapper_map('arctanh', Math.atanh);
 
-const _around = _wrap_map_unary(
-	'_around',
-	({ decimals }, x) => {
+/**
+ * @param {NDArray} x
+ * @param {number} [decimals = 0]
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export function around(x, decimals = 0, out = null) {
+	x = asarray(x);
+	if (out == null) {
+		out = empty(x.shape);
+	} else if (!shallow_array_equal(out.shape, x.shape)) {
+		throw new Error('shape does not match');
+	}
+
+	let i = 0;
+	for (let value of x.flat) {
 		let multiplier = 10 ** decimals;
-		let n = x * multiplier;
+		let n = value * multiplier;
 		let m = Math.round(n);
 		let fraction = n % 1;
 		if (fraction == 0.5 || fraction == -0.5) {
 			m = m % 2 ? m - 1 : m;
 		}
-		return m / multiplier;
-	},
-	true
-);
+		out.itemset(i++, m / multiplier);
+	}
+
+	return out;
+}
 
 /**
  * @function
  * @param {NDArray} x
- * @param {number} [decimals]
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const around = function (x, decimals = 0, out) {
-	return _around(x, out, { decimals });
-};
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
- * @returns {NDArray}
- */
-export const rint = _wrap_map_unary('rint', x => {
+export const rint = wrapper_map('rint', x => {
 	let fraction = x % 1;
 	let n = Math.round(x);
 	if (fraction == 0.5 || fraction == -0.5) {
@@ -262,106 +257,83 @@ export const rint = _wrap_map_unary('rint', x => {
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const fix = _wrap_map_unary('fix', x => Math.sign(x) * Math.floor(Math.abs(x)));
+export const fix = wrapper_map('fix', x => Math.sign(x) * Math.floor(Math.abs(x)));
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const floor = _wrap_map_unary('floor', Math.floor);
+export const floor = wrapper_map('floor', Math.floor);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const ceil = _wrap_map_unary('ceil', Math.ceil);
+export const ceil = wrapper_map('ceil', Math.ceil);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const trunc = _wrap_map_unary('trunc', Math.trunc);
+export const trunc = wrapper_map('trunc', Math.trunc);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const prod = _wrap_reduce('prod', (x1, x2) => x1 * x2, 1, 1);
+export const prod = wrapper_reduce('prod', (x1, x2) => x1 * x2, 1);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const sum = _wrap_reduce('sum', (x1, x2) => x1 + x2, 1, 0);
+export const sum = wrapper_reduce('sum', (x1, x2) => x1 + x2, 0);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const nanprod = _wrap_reduce('nanprod', (x1, x2) => x1 * (isNaN(x2) ? 1 : x2), 1, 1);
+export const nanprod = wrapper_reduce('nanprod', (x1, x2) => x1 * (isNaN(x2) ? 1 : x2), 1);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const nansum = _wrap_reduce('nansum', (x1, x2) => x1 + (isNaN(x2) ? 0 : x2), 1, 0);
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {null|number} [axis]
- * @param {NDArray} [out]
- * @param {any} [initial]
- * @returns {NDArray}
- */
-export const cumprod = _wrap_accum_unary('cumprod', (x1, x2) => x1 * x2, 1);
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {null|number} [axis]
- * @param {NDArray} [out]
- * @param {any} [initial]
- * @returns {NDArray}
- */
-export const cumsum = _wrap_accum_unary('cumsum', (x1, x2) => x1 + x2, 0);
-
-export const nancumprod = null;
-export const nancumsum = null;
+export const nansum = wrapper_reduce('nansum', (x1, x2) => x1 + (isNaN(x2) ? 0 : x2), 0);
 
 /**
  * @function
@@ -407,119 +379,119 @@ export function ediff1d(a, to_end = null, to_begin = null) {
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const exp = _wrap_map_unary('exp', Math.exp, 1);
+export const exp = wrapper_map('exp', Math.exp, 1);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const expm1 = _wrap_map_unary('expm1', x => Math.exp(x) - 1);
+export const expm1 = wrapper_map('expm1', x => Math.exp(x) - 1);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const exp2 = _wrap_map_unary('exp2', x => 2 ** x);
+export const exp2 = wrapper_map('exp2', x => 2 ** x);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const log = _wrap_map_unary('log', Math.log);
+export const log = wrapper_map('log', Math.log);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const log10 = _wrap_map_unary('log10', Math.log10);
+export const log10 = wrapper_map('log10', Math.log10);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const log2 = _wrap_map_unary('log2', Math.log2);
+export const log2 = wrapper_map('log2', Math.log2);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const log1p = _wrap_map_unary('log1p', Math.log1p);
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {NDArray} x2
- * @param {NDArray} [out]
- * @returns {NDArray}
- */
-export const logaddexp = _wrap_map_binary('logaddexp', (x1, x2) => Math.log(Math.exp(x1) + Math.exp(x2)));
+export const log1p = wrapper_map('log1p', Math.log1p);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const logaddexp2 = _wrap_map_binary('logaddexp2', (x1, x2) => Math.log2(2 ** x1 + 2 ** x2));
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
- * @returns {NDArray}
- */
-export const signbit = _wrap_map_unary('signbit', x => x < 0);
+export const logaddexp = wrapper_map2('logaddexp', (x1, x2) => Math.log(Math.exp(x1) + Math.exp(x2)));
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const copysign = _wrap_map_binary('copysign', (x1, x2) => (x2 < 0 ? -Math.abs(x1) : Math.abs(x1)));
+export const logaddexp2 = wrapper_map2('logaddexp2', (x1, x2) => Math.log2(2 ** x1 + 2 ** x2));
+
+/**
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const signbit = wrapper_map('signbit', x => x < 0);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const ldexp = _wrap_map_binary('ldexp', (x1, x2) => x1 * 2 ** x2);
+export const copysign = wrapper_map2('copysign', (x1, x2) => (x2 < 0 ? -Math.abs(x1) : Math.abs(x1)));
 
 /**
  * @function
  * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const positive = _wrap_map_unary('positive', x => +x);
+export const ldexp = wrapper_map2('ldexp', (x1, x2) => x1 * 2 ** x2);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const negative = _wrap_map_unary('negative', x => -x);
+export const positive = wrapper_map('positive', x => +x);
+
+/**
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const negative = wrapper_map('negative', x => -x);
 
 function _gcd(a, b) {
 	while (b != 0) {
@@ -538,121 +510,127 @@ function _lcm(a, b) {
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const lcm = _wrap_map_binary('lcm', _lcm);
+export const lcm = wrapper_map2('lcm', _lcm);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const gcd = _wrap_map_binary('gcd', _gcd);
+export const gcd = wrapper_map2('gcd', _gcd);
 
-export const reciprocal = _wrap_map_unary('reciprocal', x => 1 / x);
+/**
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const reciprocal = wrapper_map('reciprocal', x => 1 / x);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const fmod = _wrap_map_binary('fmod', (x1, x2) => x1 - ((x1 / x2) | 0) * x2);
+export const fmod = wrapper_map2('fmod', (x1, x2) => x1 - ((x1 / x2) | 0) * x2);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const maximum = _wrap_map_binary('maximum', Math.max);
+export const maximum = wrapper_map2('maximum', Math.max);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const minimum = _wrap_map_binary('minimum', Math.min);
+export const minimum = wrapper_map2('minimum', Math.min);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const amax = _wrap_reduce('amax', Math.max, 1, -inf);
+export const amax = wrapper_reduce('amax', Math.max, -inf);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {null|number|number[]} [axis]
- * @param {NDArray} [out]
- * @param {boolean} [keepdims]
- * @param {any} [initial]
- * @param {boolean} [return_scalar]
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const amin = _wrap_reduce('amin', Math.min, 1, inf);
+export const amin = wrapper_reduce('amin', Math.min, inf);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const sqrt = _wrap_map_unary('sqrt', Math.sqrt);
+export const sqrt = wrapper_map('sqrt', Math.sqrt);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const cbrt = _wrap_map_unary('cbrt', Math.cbrt);
+export const cbrt = wrapper_map('cbrt', Math.cbrt);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const square = _wrap_map_unary('square', x => x ** 2);
+export const square = wrapper_map('square', x => x ** 2);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const abs = _wrap_map_unary('abs', Math.abs),
+export const abs = wrapper_map('abs', Math.abs),
 	absolute = abs;
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const sign = _wrap_map_unary('sign', Math.sign);
+export const sign = wrapper_map('sign', Math.sign);
 
 /**
  * @function
- * @param {NDArray} x1
- * @param {NDArray} [out]
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const nan_to_num = _wrap_map_unary('nan_to_num', x => {
+export const nan_to_num = wrapper_map('nan_to_num', x => {
 	if (isNaN(x)) return 0;
 	if (x == Infinity) return Number.MAX_VALUE;
 	if (x == -Infinity) return Number.MIN_VALUE;
@@ -821,16 +799,6 @@ tester
 		() => around([1, 2, 3, 11], -1),
 		() => array([0, 0, 0, 10])
 	);
-// .add(
-// 	// this is false
-// 	unwrap,
-// 	() => unwrap(subtract(mod(linspace(0, 720, 19), 360), 180), 360),
-// 	() =>
-// 		array([
-// 			-180, -140, -100, -60, -20, 20, 60, 100, 140, 180, 220, 260, 300, 340, 380, 420, 460, 500,
-// 			540,
-// 		])
-// );
 
 tester.add(
 	rint,
@@ -1062,101 +1030,6 @@ tester
 
 tester
 	.add(
-		cumprod,
-		() => cumprod(array([1, 2, 3])),
-		() => array([1, 2, 6])
-	)
-	.add(
-		cumprod,
-		() =>
-			cumprod(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				])
-			),
-		() => array([1, 2, 6, 24, 120, 720])
-	)
-	.add(
-		cumprod,
-		() =>
-			cumprod(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				]),
-				0
-			),
-		() =>
-			array([
-				[1, 2, 3],
-				[4, 10, 18],
-			])
-	)
-	.add(
-		cumprod,
-		() =>
-			cumprod(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				]),
-				1
-			),
-		() =>
-			array([
-				[1, 2, 6],
-				[4, 20, 120],
-			])
-	);
-
-tester
-	.add(
-		cumsum,
-		() =>
-			cumsum(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				])
-			),
-		() => array([1, 3, 6, 10, 15, 21])
-	)
-	.add(
-		cumsum,
-		() =>
-			cumsum(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				]),
-				0
-			),
-		() =>
-			array([
-				[1, 2, 3],
-				[5, 7, 9],
-			])
-	)
-	.add(
-		cumsum,
-		() =>
-			cumsum(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				]),
-				1
-			),
-		() =>
-			array([
-				[1, 3, 6],
-				[4, 9, 15],
-			])
-	);
-
-tester
-	.add(
 		diff,
 		() => diff(array([1, 2, 4, 7, 0])),
 		() => array([1, 2, 3, -7])
@@ -1221,50 +1094,6 @@ tester.add(
 	() => abs(array([-1.2, 1.2])),
 	() => array([1.2, 1.2])
 );
-
-// function tuple_eq(a, b) {
-// 	if (a.length != b.length) return false;
-// 	for (let i = 0; i < a.length; i++) if (a[i] != b[i]) return false;
-// 	return true;
-// }
-
-// function _binary_func(func, x1, x2, out) {
-// 	let b = broadcast(x1, x2);
-// 	if (out == null) {
-// 		out = empty(b.shape);
-// 		let i = 0;
-// 		for (let [x1, x2] of b) {
-// 			out.data[i++] = func(x1, x2);
-// 		}
-// 		return out;
-// 	}
-// 	if (tuple_eq(b.shape, out.shape)) {
-// 		let i = 0;
-// 		for (let [x1, x2] of b) {
-// 			out.itemset(i++, func(x1, x2));
-// 		}
-// 		return out;
-// 	}
-// 	if (!broadcastable_to(b.shape, out.shape))
-// 		throw `non-broadcastable output operand with shape [${out.shape}] doesn't match the broadcast shape [${b.shape}]`;
-
-// 	out.set(_binary_func(func, x1, x2, null));
-// 	return out;
-// }
-
-// function binary_func(func) {
-// 	return (x1, x2, out = null) => _binary_func(func, x1, x2, out);
-// }
-
-// function _add(x1, x2) {
-// 	return x1 + x2;
-// }
-
-// var add2 = binary_func(_add);
-// var add = wrap_map('add', _add);
-// var add3 = _wrap_map('add', _add);
-// export var sin = _wrap_map('sin', Math.sin);
-// console.log(sum);
 
 tester.add(
 	sin,

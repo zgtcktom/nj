@@ -15,7 +15,9 @@ export function broadcast_shapes(...shapes) {
 			let dim = shape[i];
 			if (dim == 1) continue;
 			if (broadcasted[j] == 1) broadcasted[j] = dim;
-			else if (broadcasted[j] != dim) throw 'shape mismatch';
+			else if (broadcasted[j] != dim) {
+				throw new Error('shape mismatch');
+			}
 		}
 	}
 	return broadcasted;

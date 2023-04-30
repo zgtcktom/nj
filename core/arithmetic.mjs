@@ -1,47 +1,48 @@
-import { tester, arange, array, _wrap_map_binary, NDArray } from './core.mjs';
+import { tester, arange, array, NDArray, wrapper_map2 } from './core.mjs';
 
 /**
+ * x1 + x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const add = _wrap_map_binary('add', (x1, x2) => x1 + x2);
+export const add = wrapper_map2('add', (x1, x2) => x1 + x2);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const subtract = _wrap_map_binary('subtract', (x1, x2) => x1 - x2);
+export const subtract = wrapper_map2('subtract', (x1, x2) => x1 - x2);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const multiply = _wrap_map_binary('multiply', (x1, x2) => x1 * x2);
+export const multiply = wrapper_map2('multiply', (x1, x2) => x1 * x2);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const divide = _wrap_map_binary('divide', (x1, x2) => x1 / x2);
+export const divide = wrapper_map2('divide', (x1, x2) => x1 / x2);
 
 /**
+ * Alias of {@link divide}
  * @function
- * @description alias of `divide`
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
 export const true_divide = divide;
@@ -50,26 +51,26 @@ export const true_divide = divide;
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const floor_divide = _wrap_map_binary('floor_divide', (x1, x2) => (x1 / x2) | 0);
+export const floor_divide = wrapper_map2('floor_divide', (x1, x2) => (x1 / x2) | 0);
 
 /**
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const mod = _wrap_map_binary('mod', (x1, x2) => ((x1 % x2) + x2) % x2);
+export const mod = wrapper_map2('mod', (x1, x2) => ((x1 % x2) + x2) % x2);
 
 /**
+ * Alias of {@link mod}
  * @function
- * @description alias of `mod`
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
 export const remainder = mod;
@@ -78,10 +79,10 @@ export const remainder = mod;
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const power = _wrap_map_binary('power', (x1, x2) => x1 ** x2);
+export const power = wrapper_map2('power', (x1, x2) => x1 ** x2);
 
 tester.add(
 	add,

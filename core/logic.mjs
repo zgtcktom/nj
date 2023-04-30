@@ -1,77 +1,83 @@
-import { array, tester, _wrap_map_unary, _wrap_reduce, NDArray } from './core.mjs';
+import { array, tester, NDArray, wrapper_reduce, wrapper_map } from './core.mjs';
 
 /**
+ * accum && !!value
  * @function
- * @param {NDArray} x1
- * @param {number} axis
- * @param {NDArray} out
- * @param {boolean} keepdims
- * @param {any} initial
- * @param {boolean} return_scalar
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const all = _wrap_reduce('all', (accum, value) => accum && !!value, 1, true);
+export const all = wrapper_reduce('all', (accum, value) => accum && !!value, true);
 
 /**
+ * accum || !!value
  * @function
- * @param {NDArray} x1
- * @param {number} axis
- * @param {NDArray} out
- * @param {boolean} keepdims
- * @param {any} initial
- * @param {boolean} return_scalar
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @param {boolean} [keepdims = false]
+ * @param {any} [initial = undefined]
+ * @param {boolean} [return_scalar = true]
  * @returns {NDArray}
  */
-export const any = _wrap_reduce('any', (accum, value) => accum || !!value, 1, false);
+export const any = wrapper_reduce('any', (accum, value) => accum || !!value, false);
 
 /**
+ * Number.isFinite
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isfinite = _wrap_map_unary('isfinite', Number.isFinite);
+export const isfinite = wrapper_map('isfinite', Number.isFinite);
 
 /**
+ * n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isinf = _wrap_map_unary(
+export const isinf = wrapper_map(
 	'isinf',
 	n => n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
 );
 
 /**
+ * Number.isNaN
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isna = _wrap_map_unary('isinf', Number.isNaN);
+export const isna = wrapper_map('isna', Number.isNaN);
 
 /**
+ * n == Number.NEGATIVE_INFINITY
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isneginf = _wrap_map_unary('isinf', n => n == Number.NEGATIVE_INFINITY);
+export const isneginf = wrapper_map('isneginf', n => n == Number.NEGATIVE_INFINITY);
 
 /**
+ * n == Number.POSITIVE_INFINITY
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isposinf = _wrap_map_unary('isinf', n => n == Number.POSITIVE_INFINITY);
+export const isposinf = wrapper_map('isposinf', n => n == Number.POSITIVE_INFINITY);
 
 tester
 	.add(
 		all,
 		() =>
-			// noted that !!all(false) is true
 			all([
 				[true, false],
 				[true, true],
@@ -99,9 +105,14 @@ tester
 		all,
 		() => {
 			let o = array(false);
-			return [all([-1, 4, 5], null, o) === o, o];
+			return [all([-1, 4, 5], null, o) == o, o];
 		},
 		() => [true, array(true)]
+	)
+	.add(
+		all,
+		() => all([]),
+		() => true
 	);
 
 tester
@@ -133,9 +144,6 @@ tester
 	)
 	.add(
 		any,
-		// > np.any(np.nan)
-		// True
-		// Nope
 		() => any(NaN),
 		() => false
 	);

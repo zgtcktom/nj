@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: diag.mjs</title>
+    <title>JSDoc: Source: cumulative.mjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: diag.mjs</h1>
+    <h1 class="page-title">Source: cumulative.mjs</h1>
 
     
 
@@ -26,54 +26,274 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { tester, arange, array, asarray, zeros, slice, NDArray, diagonal } from './core.mjs';
+            <pre class="prettyprint source linenums"><code>import { tester, array, NDArray, wrapper_accumulate } from './core.mjs';
 
 /**
- * @param {NDArray} v
- * @param {number} [k]
+ * x1 * x2
+ * @function
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export function diag(v, k = 0) {
-	v = asarray(v);
-	let s = v.shape;
-	if (s.length == 1) {
-		let n = s[0] + Math.abs(k);
-		let res = zeros([n, n]);
-		let i = k >= 0 ? k : -k * n;
-		let view = res.at(slice(null, n - k));
-		for (let j = 0; j &lt; v.size; j++, i += n + 1) {
-			view.itemset(i, v.item(j));
-		}
-		return res;
-	}
-	if (s.length != 2) throw `Input must be 1- or 2-d.`;
-	return diagonal(v, k);
-}
+export const cumprod = wrapper_accumulate('cumprod', (x1, x2) => x1 * x2);
+
+/**
+ * x1 + x2
+ * @function
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const cumsum = wrapper_accumulate('cumsum', (x1, x2) => x1 + x2);
+
+let nan1 = x => (Number.isNaN(x) ? 1 : x);
+
+/**
+ * nan1(x1) * nan1(x2)
+ * @function
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const nancumprod = wrapper_accumulate('nancumprod', (x1, x2) => nan1(x1) * nan1(x2));
+
+let nan0 = x => (Number.isNaN(x) ? 0 : x);
+
+/**
+ * nan0(x1) + nan0(x2)
+ * @function
+ * @param {NDArray} x
+ * @param {null|number|number[]} [axis = null]
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const nancumsum = wrapper_accumulate('nancumsum', (x1, x2) => nan0(x1) + nan0(x2));
 
 tester
 	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3])),
-		() => array([0, 4, 8])
+		cumprod,
+		() => cumprod(0),
+		() => array([0])
 	)
 	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3]), 1),
-		() => array([1, 5])
+		cumprod,
+		() => cumprod([]),
+		() => array([])
 	)
 	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3]), -1),
-		() => array([3, 7])
+		cumprod,
+		() => cumprod(array([1, 2, 3])),
+		() => array([1, 2, 6])
 	)
 	.add(
-		diag,
-		() => diag(diag(arange(9).reshape([3, 3]))),
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			),
+		() => array([1, 2, 6, 24, 120, 720])
+	)
+	.add(
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				0
+			),
 		() =>
 			array([
-				[0, 0, 0],
-				[0, 4, 0],
-				[0, 0, 8],
+				[1, 2, 3],
+				[4, 10, 18],
+			])
+	)
+	.add(
+		cumprod,
+		() =>
+			cumprod(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 2, 6],
+				[4, 20, 120],
+			])
+	);
+
+tester
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+			),
+		() => array([1, 3, 6, 10, 15, 21])
+	)
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				0
+			),
+		() =>
+			array([
+				[1, 2, 3],
+				[5, 7, 9],
+			])
+	)
+	.add(
+		cumsum,
+		() =>
+			cumsum(
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 3, 6],
+				[4, 9, 15],
+			])
+	);
+
+tester
+	.add(
+		nancumprod,
+		() => nancumprod(1),
+		() => array([1])
+	)
+	.add(
+		nancumprod,
+		() => nancumprod([1]),
+		() => array([1])
+	)
+	.add(
+		nancumprod,
+		() => nancumprod([1, NaN]),
+		() => array([1, 1])
+	)
+	.add(
+		nancumprod,
+		() =>
+			nancumprod(
+				array([
+					[1, 2],
+					[3, NaN],
+				])
+			),
+		() => array([1, 2, 6, 6])
+	)
+	.add(
+		nancumprod,
+		() =>
+			nancumprod(
+				array([
+					[1, 2],
+					[3, NaN],
+				]),
+				0
+			),
+		() =>
+			array([
+				[1, 2],
+				[3, 2],
+			])
+	)
+	.add(
+		nancumprod,
+		() =>
+			nancumprod(
+				array([
+					[1, 2],
+					[3, NaN],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 2],
+				[3, 3],
+			])
+	);
+
+tester
+	.add(
+		nancumsum,
+		() => nancumsum(1),
+		() => array([1])
+	)
+	.add(
+		nancumsum,
+		() => nancumsum([1]),
+		() => array([1])
+	)
+	.add(
+		nancumsum,
+		() => nancumsum([1, NaN]),
+		() => array([1, 1])
+	)
+	.add(
+		nancumsum,
+		() =>
+			nancumsum(
+				array([
+					[1, 2],
+					[3, NaN],
+				])
+			),
+		() => array([1, 3, 6, 6])
+	)
+	.add(
+		nancumsum,
+		() =>
+			nancumsum(
+				array([
+					[1, 2],
+					[3, NaN],
+				]),
+				0
+			),
+		() =>
+			array([
+				[1, 2],
+				[4, 2],
+			])
+	)
+	.add(
+		nancumsum,
+		() =>
+			nancumsum(
+				array([
+					[1, 2],
+					[3, NaN],
+				]),
+				1
+			),
+		() =>
+			array([
+				[1, 3],
+				[3, 3],
 			])
 	);
 </code></pre>

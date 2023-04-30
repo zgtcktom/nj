@@ -1,77 +1,72 @@
-import {
-	tester,
-	arange,
-	array,
-	asarray,
-	ones,
-	zeros,
-	slice,
-	NDArray,
-	amax,
-	_wrap_map_unary,
-	_wrap_map_binary,
-} from './core.mjs';
+import { tester, array, NDArray, wrapper_map, wrapper_map2 } from './core.mjs';
 
 /**
+ * ~x
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const invert = _wrap_map_unary('invert', x => ~x);
+export const bitwise_not = wrapper_map('bitwise_not', x => ~x);
 
 /**
+ * Alias of {@link bitwise_not}
  * @function
- * @param {NDArray} x1
- * @param {NDArray} out
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const bitwise_not = invert;
+export const invert = bitwise_not;
 
 /**
+ * x1 & x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const bitwise_and = _wrap_map_binary('bitwise_and', (x1, x2) => x1 & x2);
+export const bitwise_and = wrapper_map2('bitwise_and', (x1, x2) => x1 & x2);
 
 /**
+ * x1 | x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const bitwise_or = _wrap_map_binary('bitwise_or', (x1, x2) => x1 | x2);
+export const bitwise_or = wrapper_map2('bitwise_or', (x1, x2) => x1 | x2);
 
 /**
+ * x1 ^ x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const bitwise_xor = _wrap_map_binary('bitwise_xor', (x1, x2) => x1 ^ x2);
+export const bitwise_xor = wrapper_map2('bitwise_xor', (x1, x2) => x1 ^ x2);
 
 /**
+ * x1 << x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const left_shift = _wrap_map_binary('left_shift', (x1, x2) => x1 << x2);
+export const left_shift = wrapper_map2('left_shift', (x1, x2) => x1 << x2);
 
 /**
+ * x1 >> x2
  * @function
  * @param {NDArray} x1
  * @param {NDArray} x2
- * @param {NDArray} [out]
+ * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const right_shift = _wrap_map_binary('right_shift', (x1, x2) => x1 >> x2);
+export const right_shift = wrapper_map2('right_shift', (x1, x2) => x1 >> x2);
 
 tester.add(
 	invert,

@@ -112,3 +112,5 @@ export * from './unravel_index.mjs';
 export * from './ravel_multi_index.mjs';
 
 export * from './evaluate.mjs';
+
+export * from './cumulative.mjs';

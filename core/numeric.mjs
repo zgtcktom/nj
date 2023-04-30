@@ -1,4 +1,4 @@
-import { normalize_axis_index, asarray, ndindex, slice, NDArray } from './core.mjs';
+import { normalize_axis_index, asarray, ndindex, slice, NDArray, normalize_axes } from './core.mjs';
 
 export function normalize_axis(axis, ndim, allow_duplicate = false) {
 	// https://github.com/numpy/numpy/blob/857c64a95339bd937fbcc5398246fd2dcf78f3ab/numpy/core/numeric.py#L1331
