@@ -1,40 +1,29 @@
-import { tester, NDArray, slice, array, asarray, ndoffset, Slice, empty, empty_like } from './core.mjs';
+import {
+	tester,
+	NDArray,
+	slice,
+	array,
+	asarray,
+	Slice,
+	empty,
+	empty_like,
+	NdoffsetIterator,
+} from './core.mjs';
 
 /**
  * @class
- * @template T
+ * @extends {NdoffsetIterator}
  */
-export class Flatiter {
-	#offsetiter;
-
+export class Flatiter extends NdoffsetIterator {
 	/**
 	 * @param {NDArray} base
 	 */
 	constructor(base) {
+		let { shape, strides, offset } = base;
+		super(shape, strides, offset);
+
 		/** @member {NDArray} */
 		this.base = base;
-
-		let { shape, strides, offset } = base;
-		this.#offsetiter = ndoffset(shape, strides, offset);
-	}
-
-	/** @member {number} */
-	get index() {
-		return this.#offsetiter.index;
-	}
-
-	/** @member {number[]} */
-	get coords() {
-		return this.#offsetiter.coords;
-	}
-
-	[Symbol.iterator]() {
-		this.reset();
-		return this;
-	}
-
-	reset() {
-		this.#offsetiter.reset();
 	}
 
 	/**
@@ -45,15 +34,10 @@ export class Flatiter {
 
 	/**
 	 * @returns {FlatiterResult}
-	 * @ignore
 	 */
 	next() {
-		let offsetiter = this.#offsetiter;
-		if (offsetiter.done) return { done: true };
-
-		let offset = offsetiter.next().value;
-		let value = this.base.data[offset];
-		return { value, done: false };
+		if (this.done) return { done: true };
+		return { value: this.base.data[super.next().value], done: false };
 	}
 
 	/**

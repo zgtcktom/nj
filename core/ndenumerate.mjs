@@ -1,14 +1,39 @@
-import { ndindex, tester, array, asarray, NDArray } from './core.mjs';
+import { tester, array, asarray, NDArray, Flatiter } from './core.mjs';
 
 /**
- *
  * @param {NDArray} a
+ * @returns {NdenumerateIterator}
  */
-export function* ndenumerate(a) {
+export function ndenumerate(a) {
 	a = asarray(a);
-	for (let index of ndindex(a.shape)) {
-		let value = [index, a.item(index)];
-		yield value;
+	return new NdenumerateIterator(a);
+}
+
+/**
+ * @class
+ * @extends {Flatiter}
+ */
+export class NdenumerateIterator extends Flatiter {
+	/**
+	 * @param {NDArray} base
+	 */
+	constructor(base) {
+		super(base);
+	}
+
+	/**
+	 * @typedef {Object} NdenumerateResult
+	 * @property {any} value
+	 * @property {boolean} done
+	 */
+
+	/**
+	 * @returns {NdenumerateResult}
+	 */
+	next() {
+		if (this.done) return { done: true };
+		let value = super.next().value;
+		return { value: [this.coords, value], done: false };
 	}
 }
 

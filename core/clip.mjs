@@ -23,7 +23,7 @@ export function clip(a, a_min, a_max, out = null) {
 	if (out == null) out = empty_like(a);
 	else if (!shallow_array_equal(a.shape, out.shape)) throw `out shape does not match input shape`;
 	if (isscalar(a_min) && isscalar(a_max)) {
-		let a_offset = ndoffset(a.shape, a.strides);
+		let a_offset = ndoffset(a.shape, a.strides)[Symbol.iterator]();
 		for (let offset of ndoffset(out.shape, out.strides)) {
 			out.data[offset] = Math.min(Math.max(a_min, a.data[a_offset.next().value]), a_max);
 		}
@@ -31,9 +31,9 @@ export function clip(a, a_min, a_max, out = null) {
 	}
 	a_min = broadcast_to(a_min, a.shape);
 	a_max = broadcast_to(a_max, a.shape);
-	let a_offset = ndoffset(a.shape, a.strides);
-	let a_min_offset = ndoffset(a_min.shape, a_min.strides);
-	let a_max_offset = ndoffset(a_max.shape, a_max.strides);
+	let a_offset = ndoffset(a.shape, a.strides)[Symbol.iterator]();
+	let a_min_offset = ndoffset(a_min.shape, a_min.strides)[Symbol.iterator]();
+	let a_max_offset = ndoffset(a_max.shape, a_max.strides)[Symbol.iterator]();
 	for (let offset of ndoffset(out.shape, out.strides)) {
 		out.data[offset] = Math.min(
 			Math.max(a_min.data[a_min_offset.next().value], a.data[a_offset.next().value]),

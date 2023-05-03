@@ -42,7 +42,7 @@ import {
 	Dtype,
 	any,
 	dtype_,
-	Ndoffset,
+	NdoffsetIterator,
 	greater_equal,
 	where,
 } from './core.mjs';
@@ -150,7 +150,7 @@ export class NDArray {
 	 * Returns `ndoffset(this.shape, this.strides, this.offset)`.
 	 *
 	 * Useful when iterating `this.data[i]` or `this.item(i)` in a `for (let i of this.keys())` loop.
-	 * @returns {Ndoffset}
+	 * @returns {NdoffsetIterator}
 	 */
 	keys() {
 		let { shape, strides, offset } = this;

@@ -13,9 +13,7 @@ export * from './ndindex.mjs';
 export * from './asarray.mjs';
 export * from './empty.mjs';
 export * from './reshape.mjs';
-export * from './flat.mjs';
 export * from './full.mjs';
-export * from './flat.mjs';
 export * from './broadcast_shapes.mjs';
 export * from './arange.mjs';
 export * from './linspace.mjs';
@@ -36,7 +34,6 @@ export * from './copy.mjs';
 export * from './fromfunction.mjs';
 export * from './fromiter.mjs';
 export * from './nonzero.mjs';
-export * from './ndenumerate.mjs';
 export * from './argwhere.mjs';
 export * from './compress.mjs';
 export * from './ravel.mjs';
@@ -108,6 +105,8 @@ export * from './dot.mjs';
 export * from './array2string.mjs';
 
 export * from './ndoffset.mjs';
+export * from './flat.mjs';
+export * from './ndenumerate.mjs';
 export * from './unravel_index.mjs';
 export * from './ravel_multi_index.mjs';
 

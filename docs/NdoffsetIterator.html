@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: flip.mjs</title>
+    <title>JSDoc: Class: NdoffsetIterator</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,186 +17,1025 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: flip.mjs</h1>
+    <h1 class="page-title">Class: NdoffsetIterator</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import {
-	tester,
-	arange,
-	array,
-	asarray,
-	slice,
-	normalize_axis_tuple,
-	all,
-	equal,
-	random,
-	diag,
-	index_exp,
-	NDArray,
-} from './core.mjs';
+        <h2><span class="attribs"><span class="type-signature"></span></span>NdoffsetIterator<span class="signature">(shape, strides, initial)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-/**
- * @param {NDArray} a
- * @param {null|number|number[]} [axis]
- * @returns {NDArray}
- */
-export function flip(a, axis = null) {
-	a = asarray(a);
-	let indexer;
-	if (axis == null) {
-		indexer = Array(a.ndim).fill(slice('::-1'));
-	} else {
-		axis = normalize_axis_tuple(axis, a.ndim);
-		indexer = Array(a.ndim).fill(slice(':'));
-		for (let ax of axis) {
-			indexer[ax] = slice('::-1');
-		}
-	}
-	return a.get(indexer);
-}
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * @param {NDArray} a
- * @returns {NDArray}
- */
-export function fliplr(a) {
-	a = asarray(a);
-	if (a.ndim &lt; 2) throw `Input must be >= 2-d.`;
-	return a.get(index_exp(':', '::-1'));
-}
+    
 
-/**
- * @param {NDArray} a
- * @returns {NDArray}
- */
-export function flipud(a) {
-	a = asarray(a);
-	if (a.ndim &lt; 1) throw `Input must be >= 1-d.`;
-	return a.at(slice('::-1'));
-}
+    
+    <h4 class="name" id="NdoffsetIterator"><span class="type-signature"></span>new NdoffsetIterator<span class="signature">(shape, strides, initial)</span><span class="type-signature"></span></h4>
+    
 
-tester
-	.add(
-		flip,
-		() => {
-			let A = arange(8).reshape([2, 2, 2]);
-			return [A, flip(A, 0), flip(A, 1), flip(A), flip(A, [0, 2])];
-		},
-		() => [
-			array([
-				[
-					[0, 1],
-					[2, 3],
-				],
-				[
-					[4, 5],
-					[6, 7],
-				],
-			]),
-			array([
-				[
-					[4, 5],
-					[6, 7],
-				],
-				[
-					[0, 1],
-					[2, 3],
-				],
-			]),
-			array([
-				[
-					[2, 3],
-					[0, 1],
-				],
-				[
-					[6, 7],
-					[4, 5],
-				],
-			]),
-			array([
-				[
-					[7, 6],
-					[5, 4],
-				],
-				[
-					[3, 2],
-					[1, 0],
-				],
-			]),
-			array([
-				[
-					[5, 4],
-					[7, 6],
-				],
-				[
-					[1, 0],
-					[3, 2],
-				],
-			]),
-		]
-	)
-	.add(
-		flip,
-		() => {
-			let A = random.normal(0, 1, [3, 4, 5]);
-			return all(equal(flip(A, 2), A.at(slice(':'), slice(':'), slice('::-1'), slice('...'))));
-		},
-		() => true
-	);
+    
 
-tester
-	.add(
-		fliplr,
-		() => fliplr(diag([1, 2, 3])),
-		() =>
-			array([
-				[0, 0, 1],
-				[0, 2, 0],
-				[3, 0, 0],
-			])
-	)
-	.add(
-		fliplr,
-		() => {
-			let A = random.normal(0, 1, [2, 4, 5]);
-			return all(equal(fliplr(A), A.at(slice(':'), slice('::-1'), slice('...'))));
-		},
-		() => true
-	);
 
-tester
-	.add(
-		flipud,
-		() => flipud(diag([1, 2, 3])),
-		() =>
-			array([
-				[0, 0, 3],
-				[0, 2, 0],
-				[1, 0, 0],
-			])
-	)
-	.add(
-		flipud,
-		() => {
-			let A = random.normal(0, 1, [2, 3, 5]);
-			return all(equal(flipud(A), A.at(slice('::-1'), slice('...'))));
-		},
-		() => true
-	)
-	.add(
-		flipud,
-		() => flipud([1, 2]),
-		() => array([2, 1])
-	);
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>shape</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>strides</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>initial</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="NdoffsetIterator.html">NdoffsetIterator</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="coords"><span class="type-signature"></span>coords<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line31">line 31</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="dim_strides"><span class="type-signature"></span>dim_strides<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="done"><span class="type-signature"></span>done<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="index"><span class="type-signature"></span>index<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="initial"><span class="type-signature"></span>initial<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="ndim"><span class="type-signature"></span>ndim<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="offset"><span class="type-signature"></span>offset<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="shape"><span class="type-signature"></span>shape<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="size"><span class="type-signature"></span>size<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="strides"><span class="type-signature"></span>strides<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="next"><span class="type-signature"></span>next<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#NdoffsetResult">NdoffsetResult</a>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ndoffset.mjs.html">ndoffset.mjs</a>, <a href="ndoffset.mjs.html#line57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#NdoffsetResult">NdoffsetResult</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
