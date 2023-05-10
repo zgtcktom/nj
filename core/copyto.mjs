@@ -1,4 +1,4 @@
-import { tester, slice, broadcast_to, asarray, NDArray } from './core.mjs';
+import { tester, slice, broadcast_to, asarray, NDArray, ndoffset } from './core.mjs';
 
 /**
  * @param {NDArray} dst
@@ -8,14 +8,12 @@ import { tester, slice, broadcast_to, asarray, NDArray } from './core.mjs';
 export function copyto(dst, src) {
 	src = asarray(src);
 	if (src.size == 1) {
-		let item = src.item();
-		for (let i of dst.keys()) {
-			dst.data[i] = item;
-		}
+		dst.fill(src.item());
 	} else {
-		let flat = broadcast_to(src, dst.shape).flat;
-		for (let i of dst.keys()) {
-			dst.data[i] = flat.next().value;
+		let flat = broadcast_to(src, dst.shape).flat[Symbol.iterator]();
+		let { data, shape, strides, offset } = dst;
+		for (let idx of ndoffset(shape, strides, offset)) {
+			data[idx] = flat.next().value;
 		}
 	}
 }

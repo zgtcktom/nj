@@ -1,22 +1,8 @@
+/**
+ * @module bitwise
+ */
+
 import { tester, array, NDArray, wrapper_map, wrapper_map2 } from './core.mjs';
-
-/**
- * ~x
- * @function
- * @param {NDArray} x
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const bitwise_not = wrapper_map('bitwise_not', x => ~x);
-
-/**
- * Alias of {@link bitwise_not}
- * @function
- * @param {NDArray} x
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const invert = bitwise_not;
 
 /**
  * x1 & x2
@@ -47,6 +33,24 @@ export const bitwise_or = wrapper_map2('bitwise_or', (x1, x2) => x1 | x2);
  * @returns {NDArray}
  */
 export const bitwise_xor = wrapper_map2('bitwise_xor', (x1, x2) => x1 ^ x2);
+
+/**
+ * ~x
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const bitwise_not = wrapper_map('bitwise_not', x => ~x);
+
+/**
+ * Alias of {@link bitwise_not}
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const invert = bitwise_not;
 
 /**
  * x1 << x2

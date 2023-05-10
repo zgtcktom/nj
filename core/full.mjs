@@ -1,4 +1,4 @@
-import { tester, empty, copyto, NDArray, Dtype, guessType, array, array_equal, empty_like } from './core.mjs';
+import { tester, empty, copyto, NDArray, Dtype, guessType, array, array_equal, shape } from './core.mjs';
 
 /**
  * @param {number[]} shape
@@ -19,9 +19,7 @@ export function full(shape, fill_value, dtype = undefined) {
  * @returns {NDArray}
  */
 export function full_like(a, fill_value, dtype = undefined) {
-	let out = empty_like(a, dtype ?? guessType(fill_value));
-	copyto(out, fill_value);
-	return out;
+	return full(shape(a), fill_value, dtype);
 }
 
 tester

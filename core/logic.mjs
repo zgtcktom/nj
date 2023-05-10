@@ -1,4 +1,96 @@
-import { array, tester, NDArray, wrapper_reduce, wrapper_map } from './core.mjs';
+/**
+ * @module logic
+ */
+
+import {
+	array,
+	tester,
+	NDArray,
+	wrapper_reduce,
+	wrapper_map,
+	wrapper_map2,
+	arange,
+	greater,
+	less,
+} from './core.mjs';
+
+/**
+ * x1 && x2
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const logical_and = wrapper_map2('logical_and', (x1, x2) => !!(x1 && x2));
+
+/**
+ * Alias of {@link logical_and}
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const and = logical_and;
+
+/**
+ * x1 || x2
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const logical_or = wrapper_map2('logical_or', (x1, x2) => !!(x1 || x2));
+
+/**
+ * Alias of {@link logical_or}
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const or = logical_or;
+
+/**
+ * !x
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const logical_not = wrapper_map('logical_not', x => !x);
+
+/**
+ * Alias of {@link logical_not}
+ * @function
+ * @param {NDArray} x
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const not = logical_not;
+
+/**
+ * !x1 != !x2
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const logical_xor = wrapper_map2('logical_xor', (x1, x2) => !x1 != !x2);
+
+/**
+ * Alias of {@link logical_xor}
+ * @function
+ * @param {NDArray} x1
+ * @param {NDArray} x2
+ * @param {null|NDArray} [out = null]
+ * @returns {NDArray}
+ */
+export const xor = logical_xor;
 
 /**
  * accum && !!value
@@ -36,16 +128,13 @@ export const any = wrapper_reduce('any', (accum, value) => accum || !!value, fal
 export const isfinite = wrapper_map('isfinite', Number.isFinite);
 
 /**
- * n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
+ * n == Infinity || n == -Infinity
  * @function
  * @param {NDArray} x
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isinf = wrapper_map(
-	'isinf',
-	n => n == Number.POSITIVE_INFINITY || n == Number.NEGATIVE_INFINITY
-);
+export const isinf = wrapper_map('isinf', n => n == Infinity || n == -Infinity);
 
 /**
  * Number.isNaN
@@ -57,22 +146,47 @@ export const isinf = wrapper_map(
 export const isna = wrapper_map('isna', Number.isNaN);
 
 /**
- * n == Number.NEGATIVE_INFINITY
+ * n == -Infinity
  * @function
  * @param {NDArray} x
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isneginf = wrapper_map('isneginf', n => n == Number.NEGATIVE_INFINITY);
+export const isneginf = wrapper_map('isneginf', n => n == -Infinity);
 
 /**
- * n == Number.POSITIVE_INFINITY
+ * n == Infinity
  * @function
  * @param {NDArray} x
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isposinf = wrapper_map('isposinf', n => n == Number.POSITIVE_INFINITY);
+export const isposinf = wrapper_map('isposinf', n => n == Infinity);
+
+tester
+	.add(
+		logical_and,
+		() => logical_and(true, false),
+		() => false
+	)
+	.add(
+		logical_and,
+		() => logical_and([true, false], [false, false]),
+		() => array([false, false])
+	)
+	.add(
+		logical_and,
+		() => {
+			let x = arange(5);
+			return logical_and(greater(x, 1), less(x, 4));
+		},
+		() => array([false, false, true, true, false])
+	)
+	.add(
+		logical_and,
+		() => logical_and(array([true, false]), array([false, false])),
+		() => array([false, false])
+	);
 
 tester
 	.add(

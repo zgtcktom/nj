@@ -45,6 +45,11 @@ import {
 	NdoffsetIterator,
 	greater_equal,
 	where,
+	add,
+	subtract,
+	multiply,
+	divide,
+	mod,
 } from './core.mjs';
 
 /**
@@ -323,6 +328,66 @@ export class NDArray {
 			shape = shape[0];
 		}
 		return reshape(this, shape);
+	}
+
+	// non-inplace
+
+	/**
+	 * Returns add(this, x, out)
+	 * @function
+	 * @param {NDArray} x
+	 * @param {null|NDArray} [out = null]
+	 * @returns {NDArray}
+	 * @example
+	 * x.add(a, x)
+	 * // in-place add
+	 */
+	add(x, out = null) {
+		return add(this, x, out);
+	}
+
+	/**
+	 * Returns subtract(this, x, out)
+	 * @function
+	 * @param {NDArray} x
+	 * @param {null|NDArray} [out = null]
+	 * @returns {NDArray}
+	 */
+	sub(x, out = null) {
+		return subtract(this, x, out);
+	}
+
+	/**
+	 * Returns multiply(this, x, out)
+	 * @function
+	 * @param {NDArray} x
+	 * @param {null|NDArray} [out = null]
+	 * @returns {NDArray}
+	 */
+	mul(x, out = null) {
+		return multiply(this, x, out);
+	}
+
+	/**
+	 * Returns divide(this, x, out)
+	 * @function
+	 * @param {NDArray} x
+	 * @param {null|NDArray} [out = null]
+	 * @returns {NDArray}
+	 */
+	div(x, out = null) {
+		return divide(this, x, out);
+	}
+
+	/**
+	 * Returns mod(this, x, out)
+	 * @function
+	 * @param {NDArray} x
+	 * @param {null|NDArray} [out = null]
+	 * @returns {NDArray}
+	 */
+	mod(x, out = null) {
+		return mod(this, x, out);
 	}
 
 	// ndarray.[]

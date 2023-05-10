@@ -111,7 +111,7 @@ export class Flatiter extends NdoffsetIterator {
 	 * @returns {NDArray}
 	 */
 	copy() {
-		return array([...this], this.base.dtype);
+		return this.base.flatten();
 	}
 }
 

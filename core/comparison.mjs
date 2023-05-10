@@ -1,3 +1,7 @@
+/**
+ * @module comparison
+ */
+
 import { arange, array, ones, tester, NDArray, wrapper_map2 } from './core.mjs';
 
 /**

@@ -1,3 +1,7 @@
+/**
+ * @module math
+ */
+
 import {
 	arange,
 	array,
@@ -477,22 +481,6 @@ export const copysign = wrapper_map2('copysign', (x1, x2) => (x2 < 0 ? -Math.abs
  */
 export const ldexp = wrapper_map2('ldexp', (x1, x2) => x1 * 2 ** x2);
 
-/**
- * @function
- * @param {NDArray} x
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const positive = wrapper_map('positive', x => +x);
-
-/**
- * @function
- * @param {NDArray} x
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const negative = wrapper_map('negative', x => -x);
-
 function _gcd(a, b) {
 	while (b != 0) {
 		let tmp = b;
@@ -523,23 +511,6 @@ export const lcm = wrapper_map2('lcm', _lcm);
  * @returns {NDArray}
  */
 export const gcd = wrapper_map2('gcd', _gcd);
-
-/**
- * @function
- * @param {NDArray} x
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const reciprocal = wrapper_map('reciprocal', x => 1 / x);
-
-/**
- * @function
- * @param {NDArray} x1
- * @param {NDArray} x2
- * @param {null|NDArray} [out = null]
- * @returns {NDArray}
- */
-export const fmod = wrapper_map2('fmod', (x1, x2) => x1 - ((x1 / x2) | 0) * x2);
 
 /**
  * @function
@@ -668,18 +639,6 @@ tester
 				[1, 2],
 				[0.5, 2],
 			])
-	);
-
-tester
-	.add(
-		fmod,
-		() => fmod([-3, -2, -1, 1, 2, 3], 2),
-		() => array([-1, 0, -1, 1, 0, 1])
-	)
-	.add(
-		fmod,
-		() => remainder([-3, -2, -1, 1, 2, 3], 2),
-		() => array([1, 0, 1, 1, 0, 1])
 	);
 
 tester

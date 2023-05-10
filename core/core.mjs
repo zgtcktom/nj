@@ -71,7 +71,6 @@ export * from './ix_.mjs';
 
 export * from './in1d.mjs';
 export * from './packbits.mjs';
-export * from './unpackbits.mjs';
 
 export * from './stack.mjs';
 export * from './vstack.mjs';

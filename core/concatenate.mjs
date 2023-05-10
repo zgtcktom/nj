@@ -12,7 +12,7 @@ import {
 
 /**
  * @param {NDArray[]} arrays
- * @param {number|null} [axis]
+ * @param {null|number} [axis]
  * @param {NDArray} [out]
  * @returns {NDArray}
  */
