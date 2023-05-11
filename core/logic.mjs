@@ -143,7 +143,7 @@ export const isinf = wrapper_map('isinf', n => n == Infinity || n == -Infinity);
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const isna = wrapper_map('isna', Number.isNaN);
+export const isnan = wrapper_map('isnan', Number.isNaN);
 
 /**
  * n == -Infinity

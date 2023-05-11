@@ -50,6 +50,7 @@ import {
 	multiply,
 	divide,
 	mod,
+	asarray,
 } from './core.mjs';
 
 /**
@@ -223,10 +224,8 @@ export class NDArray {
 	}
 
 	/**
-	 * Throw an error if advanced indexing (i.e. number[] and boolean[] index) is used.
-	 *
 	 * `.set(value)` is equivalent to `.set(['...'], value)`, but faster
-	 * @param  {Array<number|Slice|string|null>} indices
+	 * @param  {Array<number|Slice|string|null|number[]|boolean[]>} indices
 	 * @param  {any} [value]
 	 * @returns {NDArray}
 	 */
@@ -237,7 +236,10 @@ export class NDArray {
 		}
 
 		if (use_advanced_indexing(indices)) {
-			return this.set(where(indices, value, this));
+			if (indices.length > 1) {
+				throw new Error('indices.length > 1 is not supported yet in advanced indexing');
+			}
+			return this.set(where(indices[0], value, this));
 
 			// console.log(indices);
 			// throw new Error('cannot use advanced indexing in .set()');
@@ -920,7 +922,7 @@ function basic_indexing(a, indices) {
 }
 
 /**
- * @param {Array<number|Slice|string|null|number[]|boolean[]>} indices
+ * @param {NDArray|Array<number|Slice|string|null|number[]|boolean[]>} indices
  * @returns {boolean}
  * @ignore
  */
@@ -941,6 +943,16 @@ function array_indexing(indices) {
 	let simple = true;
 	let start = 0;
 	let stop = indices.length - 1;
+	indices = indices.map(index => {
+		let a = asarray(index);
+		if (typeof a.item(0) == 'boolean') {
+			if (a.ndim > 1) {
+				throw new Error('>1d boolean array is not supported yet');
+			}
+			index = nonzero(a)[0];
+		}
+		return index;
+	});
 	let mask = indices.map(index => index instanceof Slice);
 	for (; start < stop && mask[start]; start++);
 	for (; stop > start && mask[stop]; stop--);
@@ -1353,7 +1365,7 @@ tester
 		'ndarray.set',
 		() => {
 			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
-			a.set(greater_equal(a, 10), -1);
+			a.set([greater_equal(a, 10)], -1);
 			return a;
 		},
 		() =>

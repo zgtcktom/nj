@@ -112,3 +112,6 @@ export * from './ravel_multi_index.mjs';
 export * from './evaluate.mjs';
 
 export * from './cumulative.mjs';
+
+export * from './isclose.mjs';
+export * from './linalg.mjs';

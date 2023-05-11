@@ -1,6 +1,14 @@
 import { broadcast_shapes, asarray, tester, array, empty, broadcast_to, get_size, NDArray } from './core.mjs';
 
 /**
+ * @param  {...NDArray} arrays
+ * @returns {Broadcast}
+ */
+export function broadcast(...arrays) {
+	return new Broadcast(arrays.map(a => asarray(a)));
+}
+
+/**
  * @class
  */
 export class Broadcast {
@@ -51,14 +59,6 @@ export class Broadcast {
 		/** @member {number} */
 		this.index = 0;
 	}
-}
-
-/**
- * @param  {...NDArray} arrays
- * @returns {Broadcast}
- */
-export function broadcast(...arrays) {
-	return new Broadcast(arrays.map(a => asarray(a)));
 }
 
 tester

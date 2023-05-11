@@ -1,4 +1,4 @@
-import { tester, NDArray, asarray, array } from './core.mjs';
+import { tester, NDArray, asarray, array, broadcast_shapes } from './core.mjs';
 
 /**
  * @param {NDArray} a array-like
@@ -22,6 +22,16 @@ export function broadcast_to(a, shape) {
 	}
 
 	return a.as_strided(shape, new_strides);
+}
+
+/**
+ * @param  {...NDArray} arrays
+ * @returns {NDArray[]}
+ */
+export function broadcast_arrays(...arrays) {
+	arrays = arrays.map(a => asarray(a));
+	let shape = broadcast_shapes(...arrays.map(a => a.shape));
+	return arrays.map(a => broadcast_to(a, shape));
 }
 
 tester.add(
