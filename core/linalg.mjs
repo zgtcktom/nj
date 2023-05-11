@@ -20,12 +20,7 @@ import {
  * @returns {NDArray}
  */
 export function solve(a, b) {
-	let ab = dot(a, transpose([b]));
-	ab = ab.toarray();
-	console.log(a, b);
-
-	let [p, l, u] = lu(ab);
-	return LUPSolve(l, u, p, ab);
+	return lu_solve(lu_factor(a), b);
 }
 
 const LUPSolve = (L, U, P, b) => {
@@ -117,17 +112,142 @@ export function lu(a) {
 	return [p, l, u];
 }
 
+/**
+ * @param {number[][]} a (M, N) array
+ * @returns {Array<number[][], number[]>}
+ */
+export function lu_factor(a) {
+	let n = a.length;
+	let piv = Array(n)
+		.fill()
+		.map((_, i) => i);
+
+	let lu = a.map(row => row.slice());
+
+	for (let i = 0; i < n; i++) {
+		let maxValue = 0;
+		let maxIndex = -1;
+		for (let j = i; j < n; j++) {
+			let value = Math.abs(lu[j][i]);
+			if (value > maxValue) {
+				maxIndex = j;
+				maxValue = value;
+			}
+		}
+		piv[i] = maxIndex;
+		if (maxIndex != i) {
+			[lu[i], lu[maxIndex]] = [lu[maxIndex], lu[i]];
+		}
+		for (let j = i + 1; j < n; j++) {
+			let factor = (lu[j][i] /= lu[i][i]);
+			for (let k = i + 1; k < n; k++) {
+				lu[j][k] -= factor * lu[i][k];
+			}
+		}
+	}
+
+	return [lu, piv];
+}
+
+/**
+ * @param {Array<number[][], number[]>} lu_and_piv
+ * @param {number[]} b
+ * @returns {number[]}
+ */
+export function lu_solve(lu_and_piv, b) {
+	let [lu, piv] = lu_and_piv;
+	let n = lu.length;
+
+	let x = b.slice();
+
+	for (let i = 0; i < n; i++) {
+		if (piv[i] !== i) {
+			[x[i], x[piv[i]]] = [x[piv[i]], x[i]];
+		}
+	}
+
+	for (let i = 0; i < n; i++) {
+		for (let j = 0; j < i; j++) {
+			x[i] -= lu[i][j] * x[j];
+		}
+	}
+
+	for (let i = n - 1; i >= 0; i--) {
+		for (let j = i + 1; j < n; j++) {
+			x[i] -= lu[i][j] * x[j];
+		}
+		x[i] /= lu[i][i];
+	}
+
+	return x;
+}
+
 tester.add(
-	solve,
-	() =>
-		solve(
-			[
+	lu_factor,
+	() => {
+		let [lu, piv] = lu_factor([
+			[2, 5, 8, 7],
+			[5, 2, 2, 8],
+			[7, 5, 6, 6],
+			[5, 4, 4, 8],
+		]);
+		return [
+			allclose(lu, [
+				[7, 5, 6, 6],
+				[0.28571429, 3.57142857, 6.28571429, 5.28571429],
+				[0.71428571, 0.12, -1.04, 3.08],
+				[0.71428571, -0.44, -0.46153846, 7.46153846],
+			]),
+			allclose(piv, [2, 2, 3, 3]),
+		];
+	},
+	() => [true, true]
+);
+
+tester
+	.add(
+		solve,
+		() => {
+			let a = [
+				[3, 2, 0],
+				[1, -1, 0],
+				[0, 5, 1],
+			];
+			let b = [2, 4, -1];
+			let x = solve(a, b);
+			return allclose(x, [2, -2, 9]);
+		},
+		() => true
+	)
+	.add(
+		solve,
+		() => {
+			let a = [
 				[1, 2],
 				[3, 5],
-			],
-			[1, 2]
-		),
-	() => array([-1, 1])
+			];
+			let b = [1, 2];
+			let x = solve(a, b);
+			return allclose(x, [-1, 1]);
+		},
+		() => true
+	);
+
+tester.add(
+	lu_solve,
+	() => {
+		let A = [
+			[2, 5, 8, 7],
+			[5, 2, 2, 8],
+			[7, 5, 6, 6],
+			[5, 4, 4, 8],
+		];
+		let b = [1, 1, 1, 1];
+		let [lu, piv] = lu_factor(A);
+		let x = lu_solve([lu, piv], b);
+		return allclose(x, [0.05154639, -0.08247423, 0.08247423, 0.09278351]);
+	},
+	() => true
 );
 
 tester.add(
