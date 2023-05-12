@@ -12,6 +12,7 @@ import {
 	dot,
 	transpose,
 	matmul,
+	reshape,
 } from './core.mjs';
 
 /**
@@ -22,38 +23,6 @@ import {
 export function solve(a, b) {
 	return lu_solve(lu_factor(a), b);
 }
-
-const LUPSolve = (L, U, P, b) => {
-	const n = L.length;
-	const y = new Array(n).fill(0);
-	const x = new Array(n).fill(0);
-
-	// Apply permutation to b
-	const bp = new Array(n).fill(0);
-	for (let i = 0; i < n; i++) {
-		bp[i] = b[P[i]];
-	}
-
-	// Solve Ly = Pb for y
-	for (let i = 0; i < n; i++) {
-		let sum = 0;
-		for (let j = 0; j < i; j++) {
-			sum += L[i][j] * y[j];
-		}
-		y[i] = bp[i] - sum;
-	}
-
-	// Solve Ux = y for x
-	for (let i = n - 1; i >= 0; i--) {
-		let sum = 0;
-		for (let j = i + 1; j < n; j++) {
-			sum += U[i][j] * x[j];
-		}
-		x[i] = (y[i] - sum) / U[i][i];
-	}
-
-	return x;
-};
 
 /**
  * @param {number[][]} a
@@ -117,31 +86,82 @@ export function lu(a) {
  * @returns {Array<number[][], number[]>}
  */
 export function lu_factor(a) {
-	let n = a.length;
-	let piv = Array(n)
-		.fill()
-		.map((_, i) => i);
+	let [M, N] = [a.length, a[0].length];
+	let [lu, piv] = lu_factor_(a.flat(), M, N);
+	lu = reshape(lu, [M, N]).toarray();
+	return [lu, piv];
+	// let n = a.length;
+	// let piv = Array(n)
+	// 	.fill()
+	// 	.map((_, i) => i);
 
-	let lu = a.map(row => row.slice());
+	// let lu = a.map(row => row.slice());
 
-	for (let i = 0; i < n; i++) {
-		let maxValue = 0;
+	// for (let i = 0; i < n; i++) {
+	// 	let maxValue = 0;
+	// 	let maxIndex = -1;
+	// 	for (let j = i; j < n; j++) {
+	// 		let value = Math.abs(lu[j][i]);
+	// 		if (value > maxValue) {
+	// 			maxIndex = j;
+	// 			maxValue = value;
+	// 		}
+	// 	}
+	// 	piv[i] = maxIndex;
+	// 	if (maxIndex != i) {
+	// 		// console.log('maxIndex', maxIndex);
+	// 		[lu[i], lu[maxIndex]] = [lu[maxIndex], lu[i]];
+	// 		// console.log(lu, piv);
+	// 	}
+	// 	for (let j = i + 1; j < n; j++) {
+	// 		let factor = (lu[j][i] /= lu[i][i]);
+	// 		for (let k = i + 1; k < n; k++) {
+	// 			lu[j][k] -= factor * lu[i][k];
+	// 		}
+	// 	}
+	// }
+
+	// return [lu, piv];
+}
+
+/**
+ * @param {number[][]} a (M, N) array
+ * @param {number} M
+ * @param {number} N
+ * @returns {Array<number[][], number[]>}
+ */
+export function lu_factor_(a, M, N) {
+	let lu = a.slice();
+	let piv = Array(N);
+
+	for (let j = 0; j < N; j++) {
+		let maxValue = -1;
 		let maxIndex = -1;
-		for (let j = i; j < n; j++) {
-			let value = Math.abs(lu[j][i]);
+		for (let i = j; i < M; i++) {
+			let value = Math.abs(lu[i * N + j]);
 			if (value > maxValue) {
-				maxIndex = j;
+				maxIndex = i;
 				maxValue = value;
 			}
 		}
-		piv[i] = maxIndex;
-		if (maxIndex != i) {
-			[lu[i], lu[maxIndex]] = [lu[maxIndex], lu[i]];
+		if (maxIndex == -1) {
+			piv[j] = j;
+			continue;
 		}
-		for (let j = i + 1; j < n; j++) {
-			let factor = (lu[j][i] /= lu[i][i]);
-			for (let k = i + 1; k < n; k++) {
-				lu[j][k] -= factor * lu[i][k];
+		piv[j] = maxIndex;
+		if (maxIndex != j) {
+			for (let k = 0; k < N; k++) {
+				let s = j * N + k,
+					t = maxIndex * N + k;
+				let tmp = lu[s];
+				lu[s] = lu[t];
+				lu[t] = tmp;
+			}
+		}
+		for (let i = j + 1; i < M; i++) {
+			let factor = (lu[i * N + j] /= lu[j * N + j]);
+			for (let k = j + 1; k < N; k++) {
+				lu[i * N + k] -= factor * lu[j * N + k];
 			}
 		}
 	}
@@ -150,12 +170,12 @@ export function lu_factor(a) {
 }
 
 /**
- * @param {Array<number[][], number[]>} lu_and_piv
+ * @param {Array<number[][], number[]>} lu_piv
  * @param {number[]} b
  * @returns {number[]}
  */
-export function lu_solve(lu_and_piv, b) {
-	let [lu, piv] = lu_and_piv;
+export function lu_solve(lu_piv, b) {
+	let [lu, piv] = lu_piv;
 	let n = lu.length;
 
 	let x = b.slice();
@@ -203,6 +223,84 @@ tester.add(
 	},
 	() => [true, true]
 );
+
+// tester
+// 	.add(
+// 		lu_factor_,
+// 		() => {
+// 			let [lu, piv] = lu_factor_(
+// 				array([
+// 					[2, 5, 8, 7],
+// 					[0, 0, 0, 0],
+// 					[5, 2, 2, 8],
+// 					[7, 5, 6, 6],
+// 				])
+// 					.flatten()
+// 					.toarray(),
+// 				4,
+// 				4
+// 			);
+// 			console.log(lu, piv);
+// 		},
+// 		() => [true, true]
+// 	)
+// 	.add(
+// 		lu_factor_,
+// 		() => {
+// 			let [lu, piv] = lu_factor_(
+// 				array([
+// 					[2, 5, 8, 7],
+// 					[5, 2, 2, 8],
+// 					[7, 5, 6, 6],
+// 					[5, 4, 4, 8],
+// 				])
+// 					.flatten()
+// 					.toarray(),
+// 				4,
+// 				4
+// 			);
+// 			console.log(lu, piv);
+// 		},
+// 		() => [true, true]
+// 	)
+// 	.add(
+// 		lu_factor_,
+// 		() => {
+// 			let [lu, piv] = lu_factor_(
+// 				array([
+// 					[2, 5, 8, 7],
+// 					[5, 2, 2, 8],
+// 					[7, 5, 6, 6],
+// 					[5, 4, 4, 8],
+// 					[5, 4, 4, 8],
+// 				])
+// 					.flatten()
+// 					.toarray(),
+// 				5,
+// 				4
+// 			);
+// 			console.log(lu, piv);
+// 		},
+// 		() => [true, true]
+// 	)
+// 	.add(
+// 		lu_factor_,
+// 		() => {
+// 			let [lu, piv] = lu_factor_(
+// 				array([
+// 					[2, 5, 8, 7],
+// 					[5, 2, 2, 8],
+// 					[7, 5, 6, 6],
+// 				])
+// 					.flatten()
+// 					.toarray(),
+// 				3,
+// 				4
+// 			);
+// 			console.log(lu, piv);
+// 		},
+// 		() => [true, true]
+// 	);
 
 tester
 	.add(
