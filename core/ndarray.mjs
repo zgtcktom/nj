@@ -51,6 +51,8 @@ import {
 	divide,
 	mod,
 	asarray,
+	ones,
+	get,
 } from './core.mjs';
 
 /**
@@ -218,7 +220,10 @@ export class NDArray {
 	 * @returns {NDArray}
 	 */
 	get(indices) {
-		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
+		if (use_advanced_indexing(indices)) {
+			// return get(this, indices);
+			return array_indexing.call(this, indices);
+		}
 
 		return basic_indexing(this, indices);
 	}
@@ -295,21 +300,44 @@ export class NDArray {
 	/**
 	 * @returns {any[]|any}
 	 */
-	toarray() {
-		let { ndim, strides, itemsize, offset, data, shape } = this;
+	array() {
+		let { ndim } = this;
 		if (ndim == 0) {
-			return data[offset];
+			return this.data[this.offset];
 		}
 
-		let dim = shape[0];
-		if (ndim == 1 && strides[0] == itemsize) {
-			return Array.prototype.slice.call(data, offset, offset + dim);
+		let { shape, size } = this;
+		let array;
+		if (size == 0) {
+			if (ndim == 1) return [];
+
+			let length = 1;
+			let axis = 0;
+			for (let dim; axis < ndim && (dim = shape[axis]); axis++) {
+				length *= dim;
+			}
+			ndim = axis;
+			array = Array.from({ length }, () => []);
+		} else {
+			array = [...this.flat];
 		}
-		let array = [];
-		for (let i = 0; i < dim; i++) {
-			array.push(this.at(i).toarray());
+
+		for (let i = ndim - 1; i > 0; i--) {
+			let dim = shape[i];
+			let nested = [];
+			for (let j = 0; j < array.length; j += dim) {
+				nested.push(array.slice(j, j + dim));
+			}
+			array = nested;
 		}
 		return array;
+	}
+
+	/**
+	 * @returns {any[]|any}
+	 */
+	toarray() {
+		return this.array();
 	}
 
 	/**
@@ -317,7 +345,7 @@ export class NDArray {
 	 * @returns {any[]|any}
 	 */
 	tolist() {
-		return this.toarray();
+		return this.array();
 	}
 
 	/**
@@ -1316,6 +1344,14 @@ tester
 				],
 			])
 	);
+// .add(
+// 	'ndarray.get',
+// 	() =>
+// 		arange(2 * 3 * 4)
+// 			.reshape(2, 3, 4)
+// 			.at([1, 0], 0).shape,
+// 	() => [2, 4]
+// );
 
 tester.add(
 	'ndarray.item',
@@ -1347,6 +1383,41 @@ tester.add(
 		[1, 0, 9],
 	]
 );
+
+tester
+	.add(
+		'ndarray.array',
+		() => array(1).array(),
+		() => 1
+	)
+	.add(
+		'ndarray.array',
+		() => array([1]).array(),
+		() => [1]
+	)
+	.add(
+		'ndarray.array',
+		() => array([]).array(),
+		() => []
+	)
+	.add(
+		'ndarray.array',
+		() => array([[[]]]).array(),
+		() => [[[]]]
+	)
+	.add(
+		'ndarray.array',
+		() => array([[], [], []]).array(),
+		() => [[], [], []]
+	)
+	.add(
+		'ndarray.array',
+		() => ones([2, 3, 0, 2, 1]).array(),
+		() => [
+			[[], [], []],
+			[[], [], []],
+		]
+	);
 
 tester
 	.add(

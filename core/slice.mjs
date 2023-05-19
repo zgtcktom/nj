@@ -91,6 +91,11 @@ export class Slice {
 	}
 }
 
+import util from 'util';
+Slice.prototype[util?.inspect?.custom] = function () {
+	return this.toString();
+};
+
 /** @class */
 class SliceIterator {
 	/** @type {number} */

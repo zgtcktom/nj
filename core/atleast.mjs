@@ -100,15 +100,7 @@ tester
 			let y = x.at(0);
 			let z = atleast_1d(y);
 			z.set([0], -96);
-			return [
-				x.toarray(),
-				y.toarray(),
-				z.toarray(),
-				x.base === null,
-				y.base === null,
-				z.base != y,
-				z.base,
-			];
+			return [x.array(), y.array(), z.array(), x.base === null, y.base === null, z.base != y, z.base];
 		},
 		() => [array([1]), 1, array([-96]), true, false, true, array(-96)]
 	);

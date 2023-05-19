@@ -215,7 +215,7 @@ tester
 				[12, 13, 14],
 				[18, 19, 20],
 				[24, 25, 26],
-			]).toarray(),
+			]).array(),
 			true,
 			true,
 			false,

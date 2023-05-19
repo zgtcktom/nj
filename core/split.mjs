@@ -20,7 +20,7 @@ import {
 export function split(ary, indices_or_sections, axis = 0) {
 	ary = asarray(ary);
 	axis = normalize_axis_index(axis, ary.ndim);
-	if (indices_or_sections.shape != null) indices_or_sections = indices_or_sections.toarray();
+	if (indices_or_sections.shape != null) indices_or_sections = indices_or_sections.array();
 
 	if (indices_or_sections.length == undefined) {
 		let sections = indices_or_sections;

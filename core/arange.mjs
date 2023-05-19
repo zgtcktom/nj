@@ -5,7 +5,7 @@ import { tester, array, NDArray, empty } from './core.mjs';
  * @param {number} start
  * @param {number} [stop]
  * @param {number} [step]
- * @returns {NDArray<number>}
+ * @returns {NDArray}
  * @example
  * arange(2) // array([0, 1])
  * @example

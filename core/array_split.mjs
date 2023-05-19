@@ -28,7 +28,7 @@ export function array_split(a, indices_or_sections, axis = 0) {
 			...Array(n_sections - extras).fill(n_each_section),
 		];
 
-		div_points = array(section_sizes).cumsum().toarray();
+		div_points = array(section_sizes).cumsum().array();
 	} else {
 		n_sections = indices_or_sections.length + 1;
 		div_points = [0, ...indices_or_sections, n_total];

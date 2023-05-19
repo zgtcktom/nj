@@ -88,7 +88,7 @@ export function lu(a) {
 export function lu_factor(a) {
 	let [M, N] = [a.length, a[0].length];
 	let [lu, piv] = lu_factor_(a.flat(), M, N);
-	lu = reshape(lu, [M, N]).toarray();
+	lu = reshape(lu, [M, N]).array();
 	return [lu, piv];
 	// let n = a.length;
 	// let piv = Array(n)

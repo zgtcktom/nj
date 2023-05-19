@@ -36,7 +36,7 @@ export function broadcast_arrays(...arrays) {
 
 tester.add(
 	'broadcast_to',
-	() => broadcast_to(array([1, 2, 3]).reshape(3), [3, 3]).toarray(),
+	() => broadcast_to(array([1, 2, 3]).reshape(3), [3, 3]).array(),
 	() => [
 		[1, 2, 3],
 		[1, 2, 3],
@@ -46,7 +46,7 @@ tester.add(
 
 tester.add(
 	'broadcast_to',
-	() => broadcast_to(array([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).toarray(),
+	() => broadcast_to(array([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).array(),
 	() => [
 		[
 			[1, 1, 1, 1],

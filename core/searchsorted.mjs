@@ -7,7 +7,7 @@ import { tester, array, asarray, NDArray, empty_like } from './core.mjs';
  * @returns {NDArray}
  */
 export function searchsorted(a, v, side = 'left') {
-	if (a instanceof NDArray) a = a.toarray();
+	if (a instanceof NDArray) a = a.array();
 
 	v = asarray(v);
 
