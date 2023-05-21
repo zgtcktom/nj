@@ -19,7 +19,7 @@ export function interp(x, xp, fp, left = null, right = null, period = null) {
 		x = mod(x, period);
 		xp = mod(xp, period);
 		let asort_xp = argsort(xp);
-		console.log(xp, asort_xp);
+		// console.log(xp, asort_xp);
 		xp = xp.at(asort_xp);
 		fp = fp.at(asort_xp);
 		xp = concatenate([subtract(xp.at(slice(-1)), period), xp, add(xp.at(slice(0, 1)), period)]);

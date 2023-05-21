@@ -41,6 +41,8 @@ export function isclose(a, b, rtol = 1e-5, atol = 1e-8, equal_nan = false) {
 	let infinite = not(finite);
 	let cond = zeros_like(finite);
 
+	// console.log(a, b, within_tol(a.at(finite), b.at(finite), atol, rtol), finite, a.at(finite), b.at(finite));
+
 	cond.set([finite], within_tol(a.at(finite), b.at(finite), atol, rtol));
 	cond.set([infinite], equal(a.at(infinite), b.at(infinite)));
 

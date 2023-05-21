@@ -11,6 +11,7 @@ import {
 	cumprod,
 	broadcast_shapes,
 	ravel,
+	Dtype,
 } from './core.mjs';
 
 /**
@@ -161,21 +162,23 @@ export function wrapper_(name, fn, ...args) {
 /**
  * @param {string} name
  * @param {mapCallback} fn
+ * @param {Object} [args = null]
  * @returns {mapWrappedFunction}
  * @ignore
  */
-export function wrapper_map(name, fn) {
-	return Object.defineProperty(map_.bind(null, fn), 'name', { value: name });
+export function wrapper_map(name, fn, args = null) {
+	return Object.defineProperty(map_.bind(args, fn), 'name', { value: name });
 }
 
 /**
  * @param {string} name
  * @param {map2Callback} fn
+ * @param {Object} [args = null]
  * @returns {map2WrappedFunction}
  * @ignore
  */
-export function wrapper_map2(name, fn) {
-	return Object.defineProperty(map2_.bind(null, fn), 'name', { value: name });
+export function wrapper_map2(name, fn, args = null) {
+	return Object.defineProperty(map2_.bind(args, fn), 'name', { value: name });
 }
 
 /**
@@ -192,24 +195,26 @@ export function wrapper_reduce(name, fn, defaultinitial = undefined) {
 /**
  * @param {string} name
  * @param {accumulateCallback} fn
+ * @param {Object} [args = null]
  * @returns {accumulateWrappedFunction}
  * @ignore
  */
-export function wrapper_accumulate(name, fn) {
-	return Object.defineProperty(accumulate_.bind(null, fn), 'name', { value: name });
+export function wrapper_accumulate(name, fn, args = null) {
+	return Object.defineProperty(accumulate_.bind(args, fn), 'name', { value: name });
 }
 
 /**
  * @param {mapCallback} fn
  * @param {NDArray} x
  * @param {null|NDArray} [out = null]
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  * @ignore
  */
-export function map_(fn, x, out = null) {
+export function map_(fn, x, out = null, dtype = this?.dtype) {
 	x = asarray(x);
 	if (out == null) {
-		out = empty(x.shape);
+		out = empty(x.shape, dtype);
 	} else {
 		x = broadcast_to(x, out.shape);
 	}
@@ -222,17 +227,18 @@ export function map_(fn, x, out = null) {
  * @param {NDArray} x1
  * @param {NDArray} x2
  * @param {null|NDArray} [out = null]
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  * @ignore
  */
-export function map2_(fn, x1, x2, out = null) {
+export function map2_(fn, x1, x2, out = null, dtype = this?.dtype) {
 	x1 = asarray(x1);
 	x2 = asarray(x2);
 
 	let shape;
 	if (out == null) {
 		shape = broadcast_shapes(x1.shape, x2.shape);
-		out = empty(shape);
+		out = empty(shape, dtype);
 	} else {
 		shape = out.shape;
 	}
@@ -252,6 +258,7 @@ export function map2_(fn, x1, x2, out = null) {
  * @param {boolean} [keepdims = false]
  * @param {any} [initial = undefined]
  * @param {boolean} [return_scalar = true]
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  * @ignore
  */
@@ -262,7 +269,8 @@ export function reduce_(
 	out = null,
 	keepdims = false,
 	initial = this?.defaultinitial,
-	return_scalar = true
+	return_scalar = true,
+	dtype = this?.dtype
 ) {
 	x = asarray(x);
 	let axes = normalize_axes(axis, x.ndim);
@@ -276,7 +284,7 @@ export function reduce_(
 	}
 
 	if (out == null) {
-		out = empty(outshape);
+		out = empty(outshape, dtype);
 	} else if (!shallow_array_equal(outshape, out.shape)) {
 		throw new Error(`unmatch shape`);
 	}
@@ -296,10 +304,11 @@ export function reduce_(
  * @param {NDArray} x
  * @param {null|number|number[]} [axis = null]
  * @param {null|NDArray} [out = null]
+ * @param {Dtype} [dtype]
  * @returns {NDArray}
  * @ignore
  */
-export function accumulate_(fn, x, axis = null, out = null) {
+export function accumulate_(fn, x, axis = null, out = null, dtype = this?.dtype) {
 	x = asarray(x);
 
 	if (axis == null) {
@@ -309,7 +318,7 @@ export function accumulate_(fn, x, axis = null, out = null) {
 	let axes = normalize_axes(axis, x.ndim);
 
 	if (out == null) {
-		out = empty(x.shape);
+		out = empty(x.shape, dtype);
 	} else if (!shallow_array_equal(x.shape, out.shape)) {
 		throw new Error(`unmatch shape`);
 	}

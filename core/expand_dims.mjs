@@ -1,4 +1,4 @@
-import { NDArray, array, asarray, tester } from './core.mjs';
+import { NDArray, array, asarray, normalize_axis_tuple, tester } from './core.mjs';
 
 /**
  * @param {NDArray} a
@@ -7,15 +7,15 @@ import { NDArray, array, asarray, tester } from './core.mjs';
  */
 export function expand_dims(a, axis) {
 	a = asarray(a);
-	if (typeof axis == 'number') axis = [axis];
-	let length = axis.length;
-	axis = new Set(axis);
-	if (axis.size != length) throw 'repeated axis';
 
-	let newndim = a.ndim + length;
+	if (typeof axis == 'number') axis = [axis];
+
+	let newndim = a.ndim + axis.length;
+	axis = normalize_axis_tuple(axis, newndim, false);
+
 	let newshape = [];
 	for (let i = 0, j = 0; i < newndim; i++) {
-		newshape.push(axis.has(i) ? 1 : a.shape[j++]);
+		newshape.push(axis.includes(i) ? 1 : a.shape[j++]);
 	}
 	return a.reshape(newshape);
 }

@@ -53,6 +53,8 @@ import {
 	asarray,
 	ones,
 	get,
+	scatter,
+	set,
 } from './core.mjs';
 
 /**
@@ -221,7 +223,7 @@ export class NDArray {
 	 */
 	get(indices) {
 		if (use_advanced_indexing(indices)) {
-			// return get(this, indices);
+			return get(this, indices);
 			return array_indexing.call(this, indices);
 		}
 
@@ -241,6 +243,9 @@ export class NDArray {
 		}
 
 		if (use_advanced_indexing(indices)) {
+			return set(this, indices, value);
+			scatter(this, indices).set(value);
+			return this;
 			if (indices.length > 1) {
 				throw new Error('indices.length > 1 is not supported yet in advanced indexing');
 			}
@@ -1450,6 +1455,91 @@ tester
 					[-1, -1, -1, -1],
 					[-1, -1, -1, -1],
 					[-1, -1, -1, -1],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set([':', [true, false, true]], [-1, -2, -3, -4]);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[-1, -2, -3, -4],
+					[4, 5, 6, 7],
+					[-1, -2, -3, -4],
+				],
+				[
+					[-1, -2, -3, -4],
+					[16, 17, 18, 19],
+					[-1, -2, -3, -4],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set(
+				[
+					':',
+					[
+						[true, false, true, false],
+						[false, false, true, true],
+						[false, true, true, true],
+					],
+				],
+				[1, 2, 3, 4, 5, 6, 7]
+			);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[1, 1, 2, 3],
+					[4, 5, 3, 4],
+					[8, 5, 6, 7],
+				],
+
+				[
+					[1, 13, 2, 15],
+					[16, 17, 3, 4],
+					[20, 5, 6, 7],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set(
+				[
+					':',
+					[
+						[true, false, true, false],
+						[false, false, true, true],
+						[false, true, true, true],
+					],
+				],
+				-1
+			);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[-1, 1, -1, 3],
+					[4, 5, -1, -1],
+					[8, -1, -1, -1],
+				],
+
+				[
+					[-1, 13, -1, 15],
+					[16, 17, -1, -1],
+					[20, -1, -1, -1],
 				],
 			])
 	);

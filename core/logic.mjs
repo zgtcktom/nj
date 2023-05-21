@@ -22,7 +22,7 @@ import {
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const logical_and = wrapper_map2('logical_and', (x1, x2) => !!(x1 && x2));
+export const logical_and = wrapper_map2('logical_and', (x1, x2) => x1 && x2, { dtype: 'boolean' });
 
 /**
  * Alias of {@link logical_and}
@@ -42,7 +42,7 @@ export const and = logical_and;
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const logical_or = wrapper_map2('logical_or', (x1, x2) => !!(x1 || x2));
+export const logical_or = wrapper_map2('logical_or', (x1, x2) => x1 || x2, { dtype: 'boolean' });
 
 /**
  * Alias of {@link logical_or}
@@ -61,7 +61,7 @@ export const or = logical_or;
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const logical_not = wrapper_map('logical_not', x => !x);
+export const logical_not = wrapper_map('logical_not', x => !x, { dtype: 'boolean' });
 
 /**
  * Alias of {@link logical_not}
@@ -80,7 +80,7 @@ export const not = logical_not;
  * @param {null|NDArray} [out = null]
  * @returns {NDArray}
  */
-export const logical_xor = wrapper_map2('logical_xor', (x1, x2) => !x1 != !x2);
+export const logical_xor = wrapper_map2('logical_xor', (x1, x2) => !x1 != !x2, { dtype: 'boolean' });
 
 /**
  * Alias of {@link logical_xor}
