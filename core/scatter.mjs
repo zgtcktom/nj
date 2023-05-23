@@ -3,32 +3,25 @@ import {
 	arange,
 	array,
 	asarray,
-	ones,
-	zeros,
 	slice,
 	NDArray,
-	amax,
 	Slice,
 	dtype,
 	broadcast_to,
 	broadcast_shapes,
-	concatenate,
-	get_size,
 	empty,
 	copyto,
-	ndindex,
 	NdindexIterator,
-	expand_dims,
-	atleast_1d,
 } from './core.mjs';
 
 /**
  *
  * @param {NDArray} a
  * @param {Array<number|Slice|string|null|number[]|boolean[]|NDArray>} indices
- * @returns {}
+ * @param {number} [axis = 0]
+ * @returns {ViewIterator}
  */
-export function scatter(a, indices) {
+export function scatter(a, indices, axis = 0) {
 	a = asarray(a);
 
 	let mask = [];
@@ -36,7 +29,10 @@ export function scatter(a, indices) {
 	let shapes = [];
 	let newIndices = [];
 	for (let index of indices) {
-		if (typeof index == 'string' || index == null) {
+		if (index == null) {
+			newIndices.push(null);
+			mask.push(false);
+		} else if (typeof index == 'string') {
 			newIndices.push(slice(index));
 			mask.push(false);
 		} else if (index instanceof Slice) {
@@ -78,14 +74,12 @@ export function scatter(a, indices) {
 	}
 
 	let outer = [];
-	let outShape;
-	let axis = 0;
+	let outShape = [];
 	if (adjacent) {
 		// advanced indexes are all adjacent
-		outShape = [];
 		for (let i = 0; i < n; ) {
 			if (mask[i]) {
-				axis = i;
+				axis += i;
 				outShape.push(...shape);
 				i = lastIndex + 1;
 			} else {
@@ -96,12 +90,17 @@ export function scatter(a, indices) {
 			}
 		}
 	} else {
-		outShape = shape.slice();
+		outShape.push(...shape);
 		for (let i = 0; i < n; i++) {
 			if (!mask[i]) {
-				let dim = newIndices[i].indices(a.shape[i]).slicelength;
-				outer.push(dim);
-				outShape.push(dim);
+				if (newIndices[i] == null) {
+					outer.push(1);
+					outShape.push(1);
+				} else {
+					let dim = newIndices[i].indices(a.shape[i]).slicelength;
+					outer.push(dim);
+					outShape.push(dim);
+				}
 			}
 		}
 	}
@@ -112,56 +111,7 @@ export function scatter(a, indices) {
 		outer.push(dim);
 	}
 
-	// console.log('asd', outShape, axis);
-
-	// let size = get_size(shape);
-	// let views = Array(size);
-	// for(let i=0;i<size;i++){
-	// 	views[i]=a.at
-	// }
-
 	return new ViewIterator(a, shape, newIndices, axis, outShape);
-
-	// return {
-	// 	size,
-	// 	axis,
-	// 	inner: shape,
-	// 	shape: outShape,
-	// 	indices: newIndices,
-	// 	base: a,
-	// 	[Symbol.iterator]() {
-	// 		this.index = 0;
-	// 		this.done = false;
-	// 		return this;
-	// 	},
-	// 	next() {
-	// 		if (this.done) return { done: true };
-
-	// 		let { base, size, indices, index } = this;
-
-	// 		let value = [...indices.map(ind => (ind instanceof NDArray ? ind.item(index) : ind))];
-
-	// 		this.done = ++this.index >= size;
-	// 		return { value, done: false };
-	// 	},
-
-	// 	/**
-	// 	 * @param {NDArray} value
-	// 	 */
-	// 	set(value) {
-	// 		let { base, shape, inner } = this;
-	// 		value = broadcast_to(value, shape);
-	// 		let it = ndindex(inner)[Symbol.iterator]();
-
-	// 		let prefix = Array(axis).fill(slice(':'));
-	// 		for (let indices of this) {
-	// 			let ind = prefix.concat(it.next().value);
-	// 			let x = value.get(ind);
-	// 			// console.log(ind, indices);
-	// 			copyto(base.get(indices), x);
-	// 		}
-	// 	},
-	// };
 }
 
 /**
@@ -170,19 +120,19 @@ export function scatter(a, indices) {
  */
 class ViewIterator extends NdindexIterator {
 	/**
-	 *
 	 * @param {NDArray} base
 	 * @param {number[]} shape
-	 * @param {Array.<Slice|NDArray>} indices
+	 * @param {Array<Slice|NDArray>} indices
 	 * @param {number} axis
-	 * @param {number[]} viewShape
+	 * @param {number[]} outShape
 	 */
-	constructor(base, shape, indices, axis, viewShape) {
+	constructor(base, shape, indices, axis, outShape) {
 		super(shape);
 		this.base = asarray(base);
 		this.indices = indices;
 		this.axis = axis;
-		this.viewShape = viewShape;
+		this.outShape = outShape;
+		this._indices = [...indices];
 	}
 
 	/**
@@ -190,9 +140,15 @@ class ViewIterator extends NdindexIterator {
 	 */
 	next() {
 		if (this.done) return { done: true };
-		let { base, indices, index } = this;
+		let { base, indices, index, _indices } = this;
 
-		let value = base.get(indices.map(ind => (ind instanceof NDArray ? ind.item(index) : ind)));
+		for (let i = 0; i < indices.length; i++) {
+			if (indices[i] instanceof NDArray) {
+				_indices[i] = indices[i].item(index);
+			}
+		}
+
+		let value = base.get(_indices);
 
 		super.next();
 		return { value, done: false };
@@ -202,28 +158,25 @@ class ViewIterator extends NdindexIterator {
 	 * @returns {NDArray}
 	 */
 	get() {
-		let out = empty(this.viewShape, this.base.dtype);
+		let { axis, coords, outShape, base } = this;
+		let out = empty(outShape, base.dtype);
 
-		let prefix = Array(this.axis).fill(slice(':'));
 		for (let view of this) {
-			let indices = prefix.concat(this.coords);
-			copyto(out.get(indices), view);
+			copyto(out.get(coords, axis), view);
 		}
+
 		return out;
-		// let views = [...this].map(view => expand_dims(view, -1));
-		// return concatenate(views, this.axis).reshape(this.viewShape);
 	}
 
 	/**
 	 * @param {NDArray} value array-like
 	 */
 	set(value) {
-		value = broadcast_to(value, this.viewShape);
+		let { axis, coords, outShape } = this;
+		value = broadcast_to(value, outShape);
 
-		let prefix = Array(this.axis).fill(slice(':'));
 		for (let view of this) {
-			let indices = prefix.concat(this.coords);
-			copyto(view, value.get(indices));
+			copyto(view, value.get(coords, axis));
 		}
 	}
 }
@@ -235,19 +188,6 @@ class ViewIterator extends NdindexIterator {
  */
 export function get(a, indices) {
 	return scatter(a, indices).get();
-	// a = asarray(a);
-	// let { size, shape, indices: _indices, axis } = scatter(a, indices);
-	// indices = _indices;
-
-	// let copies = Array(size);
-	// for (let i = 0; i < copies.length; i++) {
-	// 	copies[i] = a.at(...indices.map(index => (index instanceof NDArray ? index.item(i) : index)), null);
-	// }
-
-	// // let out = empty(shape, a.dtype);
-
-	// // console.log(copies, axis, shape);
-	// return concatenate(copies, axis).reshape(shape);
 }
 
 export function set(a, indices, value) {

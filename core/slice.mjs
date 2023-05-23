@@ -40,6 +40,10 @@ export class Slice {
 	 * slice(0, 10, 2).indices(7).slicelength
 	 */
 	indices(length = null) {
+		if (this == Slice.ellipsis) {
+			throw new Error(`ellipsis does not support .indices()`);
+		}
+
 		let { start, stop, step } = this;
 
 		step ??= 1;
@@ -201,7 +205,8 @@ export function slice(start = null, stop = null, step = null) {
 		if (Object.hasOwn(lookup, start)) return lookup[start];
 		let args = start.split(':');
 
-		if (args.length == 0 || args.length > 3) throw new Error(`invalid string slice representation ${start}`);
+		if (args.length == 0 || args.length > 3)
+			throw new Error(`invalid string slice representation ${start}`);
 
 		start = _sliceArg(args[0]);
 		stop = args.length > 1 ? _sliceArg(args[1]) : null;

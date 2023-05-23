@@ -117,3 +117,5 @@ export * from './isclose.mjs';
 export * from './linalg.mjs';
 
 export * from './scatter.mjs';
+
+export * from './argmax.mjs';

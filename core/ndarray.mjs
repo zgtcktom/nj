@@ -55,7 +55,13 @@ import {
 	get,
 	scatter,
 	set,
+	argmax,
+	argmin,
 } from './core.mjs';
+
+export function toArray(obj) {
+	return obj instanceof NDArray ? obj.array() : obj;
+}
 
 /**
  * @class
@@ -207,9 +213,11 @@ export class NDArray {
 		return offset;
 	}
 
+	// Array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
 	/**
 	 * `.at(0)` is is equivalent to `.get([0])`
-	 * @param  {...number|Slice|string|null|number[]|boolean[]} indices
+	 * @param  {...number|Slice|string|null|number[]|boolean[]|NDArray} indices
 	 * @returns {NDArray}
 	 */
 	at(...indices) {
@@ -217,45 +225,42 @@ export class NDArray {
 	}
 
 	/**
-	 * `.get(indices)` is is equivalent to `.at(...indices)`
-	 * @param  {Array<number|Slice|string|null|number[]|boolean[]>} indices
+	 *
+	 * @param {number|null} [start = null]
+	 * @param {number|null} [end = null]
 	 * @returns {NDArray}
 	 */
-	get(indices) {
-		if (use_advanced_indexing(indices)) {
-			return get(this, indices);
-			return array_indexing.call(this, indices);
-		}
+	slice(start = null, end = null) {
+		return this.at(slice(start, end));
+	}
 
-		return basic_indexing(this, indices);
+	/**
+	 * `.get(indices)` is is equivalent to `.at(...indices)`
+	 * @param  {Array<number|Slice|string|null|number[]|boolean[]|NDArray>} indices
+	 * @param {number} [axis = 0]
+	 * @returns {NDArray}
+	 */
+	get(indices, axis = 0) {
+		if (checkBasicIndexing(indices)) {
+			return basicIndexing(this, indices, axis);
+		}
+		return scatter(this, indices, axis).get();
 	}
 
 	/**
 	 * `.set(value)` is equivalent to `.set(['...'], value)`, but faster
-	 * @param  {Array<number|Slice|string|null|number[]|boolean[]>} indices
+	 * @param  {Array<number|Slice|string|null|number[]|boolean[]|NDArray>} indices
 	 * @param  {any} [value]
 	 * @returns {NDArray}
 	 */
 	set(indices, value) {
 		if (arguments.length == 1) {
 			copyto(this, indices);
-			return this;
-		}
-
-		if (use_advanced_indexing(indices)) {
-			return set(this, indices, value);
+		} else if (checkBasicIndexing(indices)) {
+			copyto(basicIndexing(this, indices), value);
+		} else {
 			scatter(this, indices).set(value);
-			return this;
-			if (indices.length > 1) {
-				throw new Error('indices.length > 1 is not supported yet in advanced indexing');
-			}
-			return this.set(where(indices[0], value, this));
-
-			// console.log(indices);
-			// throw new Error('cannot use advanced indexing in .set()');
 		}
-
-		copyto(basic_indexing(this, indices), value);
 		return this;
 	}
 
@@ -451,12 +456,24 @@ export class NDArray {
 		return any(this, axis, out, keepdims, initial, return_scalar);
 	}
 
+	/**
+	 * @param {number|null} [axis = null]
+	 * @param {NDArray|null} [out = null]
+	 * @param {boolean} [keepdims = false]
+	 * @returns {NDArray}
+	 */
 	argmax(axis = null, out = null, keepdims = false) {
-		throw `not implemented`;
+		return argmax(this, axis, out, keepdims);
 	}
 
+	/**
+	 * @param {number|null} [axis = null]
+	 * @param {NDArray|null} [out = null]
+	 * @param {boolean} [keepdims = false]
+	 * @returns {NDArray}
+	 */
 	argmin(axis = null, out = null, keepdims = false) {
-		throw `not implemented`;
+		return argmin(this, axis, out, keepdims);
 	}
 
 	argpartition(kth, axis = -1, kind = 'introselect', order = null) {
@@ -883,152 +900,104 @@ function get_indices(index, shape, ndim, size) {
 }
 
 /**
- * @param {NDArray} a
- * @param {Array<number|Slice|string|null>} indices
- * @returns {NDArray}
- * @ignore
- */
-function basic_indexing(a, indices) {
-	let { shape, ndim, strides, offset, data, itemsize, base, dtype } = a;
-
-	let nnewaxis = 0;
-	let ellipsisIndex = -1;
-	for (let i = 0; i < indices.length; i++) {
-		let index = indices[i];
-		if (index == Slice.newaxis) {
-			nnewaxis++;
-		} else if (index == Slice.ellipsis) {
-			if (ellipsisIndex != -1) {
-				throw new Error(`an index can only have a single ellipsis ('...')`);
-			}
-			ellipsisIndex = i;
-		}
-	}
-
-	if (ellipsisIndex != -1) {
-		let colons = Array(ndim + nnewaxis - indices.length + 1).fill(Slice.colon);
-		let before = indices.slice(0, ellipsisIndex);
-		let after = indices.slice(ellipsisIndex + 1);
-		indices = [].concat(before, colons, after);
-	}
-
-	if (indices.length - nnewaxis > ndim) {
-		throw new Error(`too many indices for array`);
-	}
-
-	shape = [...shape];
-	strides = [...strides];
-
-	let i = 0;
-	for (let index of indices) {
-		if (index == null) {
-			shape.splice(i, 0, 1);
-			strides.splice(i, 0, 1);
-			i++;
-			continue;
-		}
-
-		if (typeof index == 'string') {
-			index = slice(index);
-		} else if (!(index instanceof Slice)) {
-			let idx = index;
-			if (idx < 0) idx += shape[i];
-			if (idx < 0 || idx > shape[i]) {
-				throw new Error(`index ${index} out of bound for dimension size ${shape[i]}`);
-			}
-			offset += strides[i] * idx;
-			shape.splice(i, 1);
-			strides.splice(i, 1);
-			continue;
-		}
-
-		if (index != Slice.colon) {
-			let { start, step, slicelength } = index.indices(shape[i]);
-			offset += strides[i] * start;
-			shape.splice(i, 1, slicelength);
-			strides.splice(i, 1, strides[i] * step);
-		}
-		i++;
-	}
-
-	return new NDArray(shape, data, dtype, base ?? a, strides, offset, itemsize);
-}
-
-/**
- * @param {NDArray|Array<number|Slice|string|null|number[]|boolean[]>} indices
+ * @param {Array<number|Slice|string|null|number[]|boolean[]|NDArray>} indices
  * @returns {boolean}
  * @ignore
  */
-function use_advanced_indexing(indices) {
+function checkBasicIndexing(indices) {
 	for (let index of indices) {
-		if (
-			index != null &&
-			typeof index == 'object' &&
-			(Array.isArray(index) || (index instanceof NDArray && index.ndim > 0))
-		) {
-			return true;
+		if (index != null && typeof index == 'object' && index.length != undefined) {
+			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
-function array_indexing(indices) {
-	let simple = true;
-	let start = 0;
-	let stop = indices.length - 1;
-	indices = indices.map(index => {
-		let a = asarray(index);
-		if (typeof a.item(0) == 'boolean') {
-			if (a.ndim > 1) {
-				throw new Error('>1d boolean array is not supported yet');
+/**
+ * @param {NDArray} a
+ * @param {Array<number|Slice|string|null>} indices
+ * @param {number} [axis = 0]
+ * @returns {NDArray}
+ * @ignore
+ */
+
+function basicIndexing(a, indices, axis = 0) {
+	let { ndim, shape, strides, offset } = a;
+
+	let newaxes = 0;
+	let ellipsisIndex = -1;
+	for (let i = 0; i < indices.length; i++) {
+		let index = indices[i];
+		if (index == Slice.ellipsis || index == '...') {
+			if (ellipsisIndex != -1) {
+				throw new Error(`can only have a single ellipsis '...'`);
 			}
-			index = nonzero(a)[0];
-		}
-		return index;
-	});
-	let mask = indices.map(index => index instanceof Slice);
-	for (; start < stop && mask[start]; start++);
-	for (; stop > start && mask[stop]; stop--);
-
-	for (let i = start + 1; i < stop; i++) {
-		if (mask[i]) {
-			simple = false;
-			break;
-		}
-	}
-	let before, after;
-	let array_indices;
-	let shape = this.shape.map((dim, i) => (mask[i] ? indices[i].indices(dim).slicelength : indices[i]));
-
-	if (simple) {
-		before = shape.slice(0, start);
-		after = shape.slice(stop + 1);
-		array_indices = indices.slice(start, stop + 1);
-	} else {
-		before = [];
-		after = shape.filter((_, i) => mask[i]);
-		array_indices = [];
-		for (let i = start; i <= stop; i++) {
-			if (!mask[i]) array_indices.push(indices[i]);
+			ellipsisIndex = i;
+		} else if (index == null) {
+			newaxes++;
 		}
 	}
 
-	let b = broadcast(...array_indices);
-	let outshape = [...before, ...b.shape, ...after];
-	indices = indices.slice();
-
-	// let data = [];
-	let arrays = [];
-	for (let ind of b) {
-		for (let i = 0, j = 0; i < indices.length; i++) {
-			if (!mask[i]) indices[i] = ind[j++];
-		}
-		// console.log('asd', [...indices, null], this);
-		arrays.push(this.at(...indices, null));
-		// data.push(...this.get(...indices).flat);
+	let skipDims = 0;
+	if (ellipsisIndex != -1) {
+		skipDims = ndim - axis - (indices.length - newaxes - 1);
 	}
 
-	return new NDArray(outshape, concatenate(arrays, before.length).data);
+	if (axis + (indices.length - newaxes - (ellipsisIndex != -1)) > ndim) {
+		throw new Error(`too many indices`);
+	}
+
+	let outShape = [];
+	let outStrides = [];
+
+	for (let i = 0; i < axis; i++) {
+		outShape.push(shape[i]);
+		outStrides.push(strides[i]);
+	}
+
+	for (let index of indices) {
+		if (index == null) {
+			outShape.push(1);
+			outStrides.push(0);
+		} else {
+			if (typeof index == 'string') index = slice(index);
+			else if (!(index instanceof Slice)) {
+				let _index = index;
+				if (index < 0) index += shape[axis];
+				if (index < 0 || index > shape[axis]) {
+					throw new Error(`index ${_index} out of bound for dimension size ${shape[axis]}`);
+				}
+				offset += strides[axis] * index;
+				axis++;
+				continue;
+			}
+
+			if (index == Slice.ellipsis) {
+				for (let i = 0; i < skipDims; i++) {
+					outShape.push(shape[axis + i]);
+					outStrides.push(strides[axis + i]);
+				}
+				axis += skipDims;
+			} else if (index == Slice.colon) {
+				outShape.push(shape[axis]);
+				outStrides.push(strides[axis]);
+				axis++;
+			} else {
+				let { start, step, slicelength } = index.indices(shape[axis]);
+				offset += strides[axis] * start;
+				outShape.push(slicelength);
+				outStrides.push(strides[axis] * step);
+				axis++;
+			}
+		}
+	}
+
+	for (let i = axis; i < ndim; i++) {
+		outShape.push(shape[i]);
+		outStrides.push(strides[i]);
+	}
+
+	return a.as_strided(outShape, outStrides, offset);
 }
 
 tester.onload(() => {
@@ -1348,15 +1317,15 @@ tester
 					[20, 22],
 				],
 			])
+	)
+	.add(
+		'ndarray.get',
+		() =>
+			arange(2 * 3 * 4)
+				.reshape(2, 3, 4)
+				.at([1, 0], 0).shape,
+		() => [2, 4]
 	);
-// .add(
-// 	'ndarray.get',
-// 	() =>
-// 		arange(2 * 3 * 4)
-// 			.reshape(2, 3, 4)
-// 			.at([1, 0], 0).shape,
-// 	() => [2, 4]
-// );
 
 tester.add(
 	'ndarray.item',
