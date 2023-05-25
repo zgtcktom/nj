@@ -119,3 +119,4 @@ export * from './linalg.mjs';
 export * from './scatter.mjs';
 
 export * from './argmax.mjs';
+export * from './unique.mjs';
