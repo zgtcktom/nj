@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<script src="../dist/bundle.min.js"></script>
+		<script>
+			console.log(nj);
+			let a = nj.arange(10).reshape(2, -1);
+			console.log(a);
+			console.log(a.tolist());
+
+			document.write(JSON.stringify(a));
+		</script>
+	</head>
+</html>
