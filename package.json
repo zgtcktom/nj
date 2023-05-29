@@ -1,10 +1,12 @@
 {
   "name": "@irreg/nj",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "numpy in js",
   "main": "./core/core.mjs",
+  "types": "./types/core.d.mts",
+  "type": "module",
   "scripts": {
-    "build": "npx webpack build && npx babel --plugins @babel/plugin-transform-modules-commonjs  ./dist/bundle.mjs --out-dir ./dist",
+    "build": "npx tsc && npx webpack build && npx babel --plugins @babel/plugin-transform-modules-commonjs  ./dist/bundle.mjs --out-dir ./dist",
     "test": "node ./NDArray.mjs",
     "jsdoc": "npx jsdoc ./core -c ./jsdoc_conf.json -d ./docs/"
   },
@@ -23,6 +25,7 @@
     "@babel/core": "^7.21.3",
     "@babel/plugin-transform-modules-commonjs": "^7.21.2",
     "jsdoc": "^4.0.2",
+    "typescript": "^5.0.4",
     "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1"
   }

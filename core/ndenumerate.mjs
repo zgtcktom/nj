@@ -23,7 +23,7 @@ export class NdenumerateIterator extends Flatiter {
 
 	/**
 	 * @typedef {Object} NdenumerateResult
-	 * @property {[number[], any]} value
+	 * @property {Array.<number[], any>} value
 	 * @property {boolean} done
 	 */
 

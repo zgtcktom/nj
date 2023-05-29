@@ -79,7 +79,17 @@
 	divide,
 	mod,
 	asarray,
+	ones,
+	get,
+	scatter,
+	set,
+	argmax,
+	argmin,
 } from './core.mjs';
+
+export function toArray(obj) {
+	return obj instanceof NDArray ? obj.array() : obj;
+}
 
 /**
  * @class
@@ -231,9 +241,11 @@ export class NDArray {
 		return offset;
 	}
 
+	// Array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
 	/**
 	 * `.at(0)` is is equivalent to `.get([0])`
-	 * @param  {...number|Slice|string|null|number[]|boolean[]} indices
+	 * @param  {...number|Slice|string|null|number[]|boolean[]|NDArray} indices
 	 * @returns {NDArray}
 	 */
 	at(...indices) {
@@ -241,39 +253,42 @@ export class NDArray {
 	}
 
 	/**
-	 * `.get(indices)` is is equivalent to `.at(...indices)`
-	 * @param  {Array&lt;number|Slice|string|null|number[]|boolean[]>} indices
+	 *
+	 * @param {number|null} [start = null]
+	 * @param {number|null} [end = null]
 	 * @returns {NDArray}
 	 */
-	get(indices) {
-		if (use_advanced_indexing(indices)) return array_indexing.call(this, indices);
+	slice(start = null, end = null) {
+		return this.at(slice(start, end));
+	}
 
-		return basic_indexing(this, indices);
+	/**
+	 * `.get(indices)` is is equivalent to `.at(...indices)`
+	 * @param  {Array&lt;number|Slice|string|null|number[]|boolean[]|NDArray>} indices
+	 * @param {number} [axis = 0]
+	 * @returns {NDArray}
+	 */
+	get(indices, axis = 0) {
+		if (checkBasicIndexing(indices)) {
+			return basicIndexing(this, indices, axis);
+		}
+		return scatter(this, indices, axis).get();
 	}
 
 	/**
 	 * `.set(value)` is equivalent to `.set(['...'], value)`, but faster
-	 * @param  {Array&lt;number|Slice|string|null|number[]|boolean[]>} indices
+	 * @param  {Array&lt;number|Slice|string|null|number[]|boolean[]|NDArray>} indices
 	 * @param  {any} [value]
 	 * @returns {NDArray}
 	 */
 	set(indices, value) {
 		if (arguments.length == 1) {
 			copyto(this, indices);
-			return this;
+		} else if (checkBasicIndexing(indices)) {
+			copyto(basicIndexing(this, indices), value);
+		} else {
+			scatter(this, indices).set(value);
 		}
-
-		if (use_advanced_indexing(indices)) {
-			if (indices.length > 1) {
-				throw new Error('indices.length > 1 is not supported yet in advanced indexing');
-			}
-			return this.set(where(indices[0], value, this));
-
-			// console.log(indices);
-			// throw new Error('cannot use advanced indexing in .set()');
-		}
-
-		copyto(basic_indexing(this, indices), value);
 		return this;
 	}
 
@@ -323,21 +338,44 @@ export class NDArray {
 	/**
 	 * @returns {any[]|any}
 	 */
-	toarray() {
-		let { ndim, strides, itemsize, offset, data, shape } = this;
+	array() {
+		let { ndim } = this;
 		if (ndim == 0) {
-			return data[offset];
+			return this.data[this.offset];
 		}
 
-		let dim = shape[0];
-		if (ndim == 1 &amp;&amp; strides[0] == itemsize) {
-			return Array.prototype.slice.call(data, offset, offset + dim);
+		let { shape, size } = this;
+		let array;
+		if (size == 0) {
+			if (ndim == 1) return [];
+
+			let length = 1;
+			let axis = 0;
+			for (let dim; axis &lt; ndim &amp;&amp; (dim = shape[axis]); axis++) {
+				length *= dim;
+			}
+			ndim = axis;
+			array = Array.from({ length }, () => []);
+		} else {
+			array = [...this.flat];
 		}
-		let array = [];
-		for (let i = 0; i &lt; dim; i++) {
-			array.push(this.at(i).toarray());
+
+		for (let i = ndim - 1; i > 0; i--) {
+			let dim = shape[i];
+			let nested = [];
+			for (let j = 0; j &lt; array.length; j += dim) {
+				nested.push(array.slice(j, j + dim));
+			}
+			array = nested;
 		}
 		return array;
+	}
+
+	/**
+	 * @returns {any[]|any}
+	 */
+	toarray() {
+		return this.array();
 	}
 
 	/**
@@ -345,7 +383,7 @@ export class NDArray {
 	 * @returns {any[]|any}
 	 */
 	tolist() {
-		return this.toarray();
+		return this.array();
 	}
 
 	/**
@@ -446,12 +484,24 @@ export class NDArray {
 		return any(this, axis, out, keepdims, initial, return_scalar);
 	}
 
+	/**
+	 * @param {number|null} [axis = null]
+	 * @param {NDArray|null} [out = null]
+	 * @param {boolean} [keepdims = false]
+	 * @returns {NDArray}
+	 */
 	argmax(axis = null, out = null, keepdims = false) {
-		throw `not implemented`;
+		return argmax(this, axis, out, keepdims);
 	}
 
+	/**
+	 * @param {number|null} [axis = null]
+	 * @param {NDArray|null} [out = null]
+	 * @param {boolean} [keepdims = false]
+	 * @returns {NDArray}
+	 */
 	argmin(axis = null, out = null, keepdims = false) {
-		throw `not implemented`;
+		return argmin(this, axis, out, keepdims);
 	}
 
 	argpartition(kth, axis = -1, kind = 'introselect', order = null) {
@@ -878,152 +928,104 @@ function get_indices(index, shape, ndim, size) {
 }
 
 /**
- * @param {NDArray} a
- * @param {Array&lt;number|Slice|string|null>} indices
- * @returns {NDArray}
- * @ignore
- */
-function basic_indexing(a, indices) {
-	let { shape, ndim, strides, offset, data, itemsize, base, dtype } = a;
-
-	let nnewaxis = 0;
-	let ellipsisIndex = -1;
-	for (let i = 0; i &lt; indices.length; i++) {
-		let index = indices[i];
-		if (index == Slice.newaxis) {
-			nnewaxis++;
-		} else if (index == Slice.ellipsis) {
-			if (ellipsisIndex != -1) {
-				throw new Error(`an index can only have a single ellipsis ('...')`);
-			}
-			ellipsisIndex = i;
-		}
-	}
-
-	if (ellipsisIndex != -1) {
-		let colons = Array(ndim + nnewaxis - indices.length + 1).fill(Slice.colon);
-		let before = indices.slice(0, ellipsisIndex);
-		let after = indices.slice(ellipsisIndex + 1);
-		indices = [].concat(before, colons, after);
-	}
-
-	if (indices.length - nnewaxis > ndim) {
-		throw new Error(`too many indices for array`);
-	}
-
-	shape = [...shape];
-	strides = [...strides];
-
-	let i = 0;
-	for (let index of indices) {
-		if (index == null) {
-			shape.splice(i, 0, 1);
-			strides.splice(i, 0, 1);
-			i++;
-			continue;
-		}
-
-		if (typeof index == 'string') {
-			index = slice(index);
-		} else if (!(index instanceof Slice)) {
-			let idx = index;
-			if (idx &lt; 0) idx += shape[i];
-			if (idx &lt; 0 || idx > shape[i]) {
-				throw new Error(`index ${index} out of bound for dimension size ${shape[i]}`);
-			}
-			offset += strides[i] * idx;
-			shape.splice(i, 1);
-			strides.splice(i, 1);
-			continue;
-		}
-
-		if (index != Slice.colon) {
-			let { start, step, slicelength } = index.indices(shape[i]);
-			offset += strides[i] * start;
-			shape.splice(i, 1, slicelength);
-			strides.splice(i, 1, strides[i] * step);
-		}
-		i++;
-	}
-
-	return new NDArray(shape, data, dtype, base ?? a, strides, offset, itemsize);
-}
-
-/**
- * @param {NDArray|Array&lt;number|Slice|string|null|number[]|boolean[]>} indices
+ * @param {Array&lt;number|Slice|string|null|number[]|boolean[]|NDArray>} indices
  * @returns {boolean}
  * @ignore
  */
-function use_advanced_indexing(indices) {
+function checkBasicIndexing(indices) {
 	for (let index of indices) {
-		if (
-			index != null &amp;&amp;
-			typeof index == 'object' &amp;&amp;
-			(Array.isArray(index) || (index instanceof NDArray &amp;&amp; index.ndim > 0))
-		) {
-			return true;
+		if (index != null &amp;&amp; typeof index == 'object' &amp;&amp; index.length != undefined) {
+			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
-function array_indexing(indices) {
-	let simple = true;
-	let start = 0;
-	let stop = indices.length - 1;
-	indices = indices.map(index => {
-		let a = asarray(index);
-		if (typeof a.item(0) == 'boolean') {
-			if (a.ndim > 1) {
-				throw new Error('>1d boolean array is not supported yet');
+/**
+ * @param {NDArray} a
+ * @param {Array&lt;number|Slice|string|null>} indices
+ * @param {number} [axis = 0]
+ * @returns {NDArray}
+ * @ignore
+ */
+
+function basicIndexing(a, indices, axis = 0) {
+	let { ndim, shape, strides, offset } = a;
+
+	let newaxes = 0;
+	let ellipsisIndex = -1;
+	for (let i = 0; i &lt; indices.length; i++) {
+		let index = indices[i];
+		if (index == Slice.ellipsis || index == '...') {
+			if (ellipsisIndex != -1) {
+				throw new Error(`can only have a single ellipsis '...'`);
 			}
-			index = nonzero(a)[0];
-		}
-		return index;
-	});
-	let mask = indices.map(index => index instanceof Slice);
-	for (; start &lt; stop &amp;&amp; mask[start]; start++);
-	for (; stop > start &amp;&amp; mask[stop]; stop--);
-
-	for (let i = start + 1; i &lt; stop; i++) {
-		if (mask[i]) {
-			simple = false;
-			break;
-		}
-	}
-	let before, after;
-	let array_indices;
-	let shape = this.shape.map((dim, i) => (mask[i] ? indices[i].indices(dim).slicelength : indices[i]));
-
-	if (simple) {
-		before = shape.slice(0, start);
-		after = shape.slice(stop + 1);
-		array_indices = indices.slice(start, stop + 1);
-	} else {
-		before = [];
-		after = shape.filter((_, i) => mask[i]);
-		array_indices = [];
-		for (let i = start; i &lt;= stop; i++) {
-			if (!mask[i]) array_indices.push(indices[i]);
+			ellipsisIndex = i;
+		} else if (index == null) {
+			newaxes++;
 		}
 	}
 
-	let b = broadcast(...array_indices);
-	let outshape = [...before, ...b.shape, ...after];
-	indices = indices.slice();
-
-	// let data = [];
-	let arrays = [];
-	for (let ind of b) {
-		for (let i = 0, j = 0; i &lt; indices.length; i++) {
-			if (!mask[i]) indices[i] = ind[j++];
-		}
-		// console.log('asd', [...indices, null], this);
-		arrays.push(this.at(...indices, null));
-		// data.push(...this.get(...indices).flat);
+	let skipDims = 0;
+	if (ellipsisIndex != -1) {
+		skipDims = ndim - axis - (indices.length - newaxes - 1);
 	}
 
-	return new NDArray(outshape, concatenate(arrays, before.length).data);
+	if (axis + (indices.length - newaxes - (ellipsisIndex != -1)) > ndim) {
+		throw new Error(`too many indices`);
+	}
+
+	let outShape = [];
+	let outStrides = [];
+
+	for (let i = 0; i &lt; axis; i++) {
+		outShape.push(shape[i]);
+		outStrides.push(strides[i]);
+	}
+
+	for (let index of indices) {
+		if (index == null) {
+			outShape.push(1);
+			outStrides.push(0);
+		} else {
+			if (typeof index == 'string') index = slice(index);
+			else if (!(index instanceof Slice)) {
+				let _index = index;
+				if (index &lt; 0) index += shape[axis];
+				if (index &lt; 0 || index > shape[axis]) {
+					throw new Error(`index ${_index} out of bound for dimension size ${shape[axis]}`);
+				}
+				offset += strides[axis] * index;
+				axis++;
+				continue;
+			}
+
+			if (index == Slice.ellipsis) {
+				for (let i = 0; i &lt; skipDims; i++) {
+					outShape.push(shape[axis + i]);
+					outStrides.push(strides[axis + i]);
+				}
+				axis += skipDims;
+			} else if (index == Slice.colon) {
+				outShape.push(shape[axis]);
+				outStrides.push(strides[axis]);
+				axis++;
+			} else {
+				let { start, step, slicelength } = index.indices(shape[axis]);
+				offset += strides[axis] * start;
+				outShape.push(slicelength);
+				outStrides.push(strides[axis] * step);
+				axis++;
+			}
+		}
+	}
+
+	for (let i = axis; i &lt; ndim; i++) {
+		outShape.push(shape[i]);
+		outStrides.push(strides[i]);
+	}
+
+	return a.as_strided(outShape, outStrides, offset);
 }
 
 tester.onload(() => {
@@ -1343,6 +1345,14 @@ tester
 					[20, 22],
 				],
 			])
+	)
+	.add(
+		'ndarray.get',
+		() =>
+			arange(2 * 3 * 4)
+				.reshape(2, 3, 4)
+				.at([1, 0], 0).shape,
+		() => [2, 4]
 	);
 
 tester.add(
@@ -1378,6 +1388,41 @@ tester.add(
 
 tester
 	.add(
+		'ndarray.array',
+		() => array(1).array(),
+		() => 1
+	)
+	.add(
+		'ndarray.array',
+		() => array([1]).array(),
+		() => [1]
+	)
+	.add(
+		'ndarray.array',
+		() => array([]).array(),
+		() => []
+	)
+	.add(
+		'ndarray.array',
+		() => array([[[]]]).array(),
+		() => [[[]]]
+	)
+	.add(
+		'ndarray.array',
+		() => array([[], [], []]).array(),
+		() => [[], [], []]
+	)
+	.add(
+		'ndarray.array',
+		() => ones([2, 3, 0, 2, 1]).array(),
+		() => [
+			[[], [], []],
+			[[], [], []],
+		]
+	);
+
+tester
+	.add(
 		'ndarray.set',
 		() => {
 			let a = new NDArray([2, 5], [...Array(10).keys()]);
@@ -1407,6 +1452,91 @@ tester
 					[-1, -1, -1, -1],
 					[-1, -1, -1, -1],
 					[-1, -1, -1, -1],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set([':', [true, false, true]], [-1, -2, -3, -4]);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[-1, -2, -3, -4],
+					[4, 5, 6, 7],
+					[-1, -2, -3, -4],
+				],
+				[
+					[-1, -2, -3, -4],
+					[16, 17, 18, 19],
+					[-1, -2, -3, -4],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set(
+				[
+					':',
+					[
+						[true, false, true, false],
+						[false, false, true, true],
+						[false, true, true, true],
+					],
+				],
+				[1, 2, 3, 4, 5, 6, 7]
+			);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[1, 1, 2, 3],
+					[4, 5, 3, 4],
+					[8, 5, 6, 7],
+				],
+
+				[
+					[1, 13, 2, 15],
+					[16, 17, 3, 4],
+					[20, 5, 6, 7],
+				],
+			])
+	)
+	.add(
+		'ndarray.set',
+		() => {
+			let a = arange(2 * 3 * 4).reshape(2, 3, 4);
+			a.set(
+				[
+					':',
+					[
+						[true, false, true, false],
+						[false, false, true, true],
+						[false, true, true, true],
+					],
+				],
+				-1
+			);
+			return a;
+		},
+		() =>
+			array([
+				[
+					[-1, 1, -1, 3],
+					[4, 5, -1, -1],
+					[8, -1, -1, -1],
+				],
+
+				[
+					[-1, 13, -1, 15],
+					[16, 17, -1, -1],
+					[20, -1, -1, -1],
 				],
 			])
 	);
@@ -1527,13 +1657,13 @@ tester
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-bitwise.html">bitwise</a></li><li><a href="module-bitwise_packing.html">bitwise/packing</a></li><li><a href="module-comparison.html">comparison</a></li><li><a href="module-logic.html">logic</a></li><li><a href="module-math.html">math</a></li><li><a href="module-math_arithmetic.html">math/arithmetic</a></li></ul><h3>Classes</h3><ul><li><a href="Broadcast.html">Broadcast</a></li><li><a href="Dtype.html">Dtype</a></li><li><a href="Flatiter.html">Flatiter</a></li><li><a href="Generator.html">Generator</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="NdenumerateIterator.html">NdenumerateIterator</a></li><li><a href="NdindexIterator.html">NdindexIterator</a></li><li><a href="Nditer.html">Nditer</a></li><li><a href="NdoffsetIterator.html">NdoffsetIterator</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#allclose">allclose</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#argsort">argsort</a></li><li><a href="global.html#argwhere">argwhere</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_equal">array_equal</a></li><li><a href="global.html#array_equiv">array_equiv</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_split">array_split</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#ascontiguousarray">ascontiguousarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#average">average</a></li><li><a href="global.html#bincount">bincount</a></li><li><a href="global.html#broadcast">broadcast</a></li><li><a href="global.html#broadcast_arrays">broadcast_arrays</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#broadcast_to">broadcast_to</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#column_stack">column_stack</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#concatenate">concatenate</a></li><li><a href="global.html#convolve">convolve</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#count_nonzero">count_nonzero</a></li><li><a href="global.html#cross">cross</a></li><li><a href="global.html#cumprod">cumprod</a></li><li><a href="global.html#cumsum">cumsum</a></li><li><a href="global.html#diag">diag</a></li><li><a href="global.html#diagonal">diagonal</a></li><li><a href="global.html#dot">dot</a></li><li><a href="global.html#dstack">dstack</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#empty_like">empty_like</a></li><li><a href="global.html#expand_dims">expand_dims</a></li><li><a href="global.html#extract">extract</a></li><li><a href="global.html#eye">eye</a></li><li><a href="global.html#flatnonzero">flatnonzero</a></li><li><a href="global.html#flip">flip</a></li><li><a href="global.html#fliplr">fliplr</a></li><li><a href="global.html#flipud">flipud</a></li><li><a href="global.html#fromfunction">fromfunction</a></li><li><a href="global.html#fromiter">fromiter</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#full_like">full_like</a></li><li><a href="global.html#hstack">hstack</a></li><li><a href="global.html#identity">identity</a></li><li><a href="global.html#index_exp">index_exp</a></li><li><a href="global.html#indices">indices</a></li><li><a href="global.html#interp">interp</a></li><li><a href="global.html#isclose">isclose</a></li><li><a href="global.html#isscalar">isscalar</a></li><li><a href="global.html#ix_">ix_</a></li><li><a href="global.html#linspace">linspace</a></li><li><a href="global.html#lu">lu</a></li><li><a href="global.html#lu_factor">lu_factor</a></li><li><a href="global.html#map">map</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#nancumprod">nancumprod</a></li><li><a href="global.html#nancumsum">nancumsum</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#nditer">nditer</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#ogrid">ogrid</a></li><li><a href="global.html#ones">ones</a></li><li><a href="global.html#ones_like">ones_like</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#ptp">ptp</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#random">random</a></li><li><a href="global.html#ravel">ravel</a></li><li><a href="global.html#ravel_multi_index">ravel_multi_index</a></li><li><a href="global.html#reduce">reduce</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#resize">resize</a></li><li><a href="global.html#roll">roll</a></li><li><a href="global.html#row_stack">row_stack</a></li><li><a href="global.html#s_">s_</a></li><li><a href="global.html#searchsorted">searchsorted</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#solve">solve</a></li><li><a href="global.html#sort">sort</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#squeeze">squeeze</a></li><li><a href="global.html#stack">stack</a></li><li><a href="global.html#std">std</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#tile">tile</a></li><li><a href="global.html#transpose">transpose</a></li><li><a href="global.html#trapz">trapz</a></li><li><a href="global.html#unravel_index">unravel_index</a></li><li><a href="global.html#variance">variance</a></li><li><a href="global.html#vstack">vstack</a></li><li><a href="global.html#where">where</a></li><li><a href="global.html#zeros">zeros</a></li><li><a href="global.html#zeros_like">zeros_like</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-bitwise.html">bitwise</a></li><li><a href="module-bitwise_packing.html">bitwise/packing</a></li><li><a href="module-comparison.html">comparison</a></li><li><a href="module-logic.html">logic</a></li><li><a href="module-math.html">math</a></li><li><a href="module-math_arithmetic.html">math/arithmetic</a></li></ul><h3>Classes</h3><ul><li><a href="Broadcast.html">Broadcast</a></li><li><a href="Dtype.html">Dtype</a></li><li><a href="Flatiter.html">Flatiter</a></li><li><a href="Generator.html">Generator</a></li><li><a href="NDArray.html">NDArray</a></li><li><a href="NdenumerateIterator.html">NdenumerateIterator</a></li><li><a href="NdindexIterator.html">NdindexIterator</a></li><li><a href="Nditer.html">Nditer</a></li><li><a href="NdoffsetIterator.html">NdoffsetIterator</a></li><li><a href="Slice.html">Slice</a></li><li><a href="SliceIterator.html">SliceIterator</a></li><li><a href="ViewIterator.html">ViewIterator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#allclose">allclose</a></li><li><a href="global.html#arange">arange</a></li><li><a href="global.html#argmax">argmax</a></li><li><a href="global.html#argmin">argmin</a></li><li><a href="global.html#argsort">argsort</a></li><li><a href="global.html#argwhere">argwhere</a></li><li><a href="global.html#array">array</a></li><li><a href="global.html#array2string">array2string</a></li><li><a href="global.html#array_equal">array_equal</a></li><li><a href="global.html#array_equiv">array_equiv</a></li><li><a href="global.html#array_repr">array_repr</a></li><li><a href="global.html#array_split">array_split</a></li><li><a href="global.html#array_str">array_str</a></li><li><a href="global.html#asarray">asarray</a></li><li><a href="global.html#ascontiguousarray">ascontiguousarray</a></li><li><a href="global.html#atleast_1d">atleast_1d</a></li><li><a href="global.html#atleast_2d">atleast_2d</a></li><li><a href="global.html#atleast_3d">atleast_3d</a></li><li><a href="global.html#average">average</a></li><li><a href="global.html#bincount">bincount</a></li><li><a href="global.html#broadcast">broadcast</a></li><li><a href="global.html#broadcast_arrays">broadcast_arrays</a></li><li><a href="global.html#broadcast_shapes">broadcast_shapes</a></li><li><a href="global.html#broadcast_to">broadcast_to</a></li><li><a href="global.html#clip">clip</a></li><li><a href="global.html#column_stack">column_stack</a></li><li><a href="global.html#compress">compress</a></li><li><a href="global.html#concatenate">concatenate</a></li><li><a href="global.html#convolve">convolve</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#copyto">copyto</a></li><li><a href="global.html#count_nonzero">count_nonzero</a></li><li><a href="global.html#cross">cross</a></li><li><a href="global.html#cumprod">cumprod</a></li><li><a href="global.html#cumsum">cumsum</a></li><li><a href="global.html#diag">diag</a></li><li><a href="global.html#diagonal">diagonal</a></li><li><a href="global.html#dot">dot</a></li><li><a href="global.html#dstack">dstack</a></li><li><a href="global.html#dtype">dtype</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#empty_like">empty_like</a></li><li><a href="global.html#expand_dims">expand_dims</a></li><li><a href="global.html#extract">extract</a></li><li><a href="global.html#eye">eye</a></li><li><a href="global.html#flatnonzero">flatnonzero</a></li><li><a href="global.html#flip">flip</a></li><li><a href="global.html#fliplr">fliplr</a></li><li><a href="global.html#flipud">flipud</a></li><li><a href="global.html#fromfunction">fromfunction</a></li><li><a href="global.html#fromiter">fromiter</a></li><li><a href="global.html#full">full</a></li><li><a href="global.html#full_like">full_like</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#hstack">hstack</a></li><li><a href="global.html#identity">identity</a></li><li><a href="global.html#index_exp">index_exp</a></li><li><a href="global.html#indices">indices</a></li><li><a href="global.html#interp">interp</a></li><li><a href="global.html#isclose">isclose</a></li><li><a href="global.html#isscalar">isscalar</a></li><li><a href="global.html#ix_">ix_</a></li><li><a href="global.html#linspace">linspace</a></li><li><a href="global.html#lu">lu</a></li><li><a href="global.html#lu_factor">lu_factor</a></li><li><a href="global.html#lu_factor_">lu_factor_</a></li><li><a href="global.html#lu_solve">lu_solve</a></li><li><a href="global.html#map">map</a></li><li><a href="global.html#matmul">matmul</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#moveaxis">moveaxis</a></li><li><a href="global.html#nancumprod">nancumprod</a></li><li><a href="global.html#nancumsum">nancumsum</a></li><li><a href="global.html#ndenumerate">ndenumerate</a></li><li><a href="global.html#ndim">ndim</a></li><li><a href="global.html#ndindex">ndindex</a></li><li><a href="global.html#nditer">nditer</a></li><li><a href="global.html#ndoffset">ndoffset</a></li><li><a href="global.html#nonzero">nonzero</a></li><li><a href="global.html#ogrid">ogrid</a></li><li><a href="global.html#ones">ones</a></li><li><a href="global.html#ones_like">ones_like</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#ptp">ptp</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#random">random</a></li><li><a href="global.html#ravel">ravel</a></li><li><a href="global.html#ravel_multi_index">ravel_multi_index</a></li><li><a href="global.html#reduce">reduce</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#reshape">reshape</a></li><li><a href="global.html#resize">resize</a></li><li><a href="global.html#roll">roll</a></li><li><a href="global.html#row_stack">row_stack</a></li><li><a href="global.html#s_">s_</a></li><li><a href="global.html#scatter">scatter</a></li><li><a href="global.html#searchsorted">searchsorted</a></li><li><a href="global.html#shape">shape</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#solve">solve</a></li><li><a href="global.html#sort">sort</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#squeeze">squeeze</a></li><li><a href="global.html#stack">stack</a></li><li><a href="global.html#std">std</a></li><li><a href="global.html#swapaxes">swapaxes</a></li><li><a href="global.html#take">take</a></li><li><a href="global.html#tile">tile</a></li><li><a href="global.html#transpose">transpose</a></li><li><a href="global.html#trapz">trapz</a></li><li><a href="global.html#unique">unique</a></li><li><a href="global.html#unravel_index">unravel_index</a></li><li><a href="global.html#variance">variance</a></li><li><a href="global.html#vstack">vstack</a></li><li><a href="global.html#where">where</a></li><li><a href="global.html#zeros">zeros</a></li><li><a href="global.html#zeros_like">zeros_like</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu May 11 2023 19:23:12 GMT+0800 (Hong Kong Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon May 29 2023 14:57:23 GMT+0800 (Hong Kong Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

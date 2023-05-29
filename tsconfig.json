@@ -1,0 +1,11 @@
+{
+    "include": [
+        "./core/**/*.mjs"
+    ],
+    "compilerOptions": {
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "allowJs": true,
+        "outDir": "./types"
+    }
+}
