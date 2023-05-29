@@ -19,14 +19,15 @@ export function ogrid(...slices) {
 	return out;
 }
 
-tester
-	.add(
-		ogrid,
-		() => ogrid(slice('0:5'), slice('0:5')),
-		() => [array([[0], [1], [2], [3], [4]]), array([[0, 1, 2, 3, 4]])]
-	)
-	.add(
-		ogrid,
-		() => ogrid(slice('3:5'), slice('0:-5'), slice('0:1')),
-		() => [array([[[3]], [[4]]]), array([]).reshape([1, 0, 1]), array([[[0]]])]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			ogrid,
+			() => ogrid(slice('0:5'), slice('0:5')),
+			() => [array([[0], [1], [2], [3], [4]]), array([[0, 1, 2, 3, 4]])]
+		)
+		.add(
+			ogrid,
+			() => ogrid(slice('3:5'), slice('0:-5'), slice('0:1')),
+			() => [array([[[3]], [[4]]]), array([]).reshape([1, 0, 1]), array([[[0]]])]
+		);

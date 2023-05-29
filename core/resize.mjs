@@ -26,49 +26,50 @@ export function resize(a, new_shape) {
 	return reshape(a, new_shape);
 }
 
-tester
-	.add(
-		resize,
-		() =>
-			resize(
+process.env.PRODUCTION ||
+	tester
+		.add(
+			resize,
+			() =>
+				resize(
+					array([
+						[0, 1],
+						[2, 3],
+					]),
+					[2, 3]
+				),
+			() =>
 				array([
-					[0, 1],
-					[2, 3],
-				]),
-				[2, 3]
-			),
-		() =>
-			array([
-				[0, 1, 2],
-				[3, 0, 1],
-			])
-	)
-	.add(
-		resize,
-		() =>
-			resize(
-				array([
-					[0, 1],
-					[2, 3],
-				]),
-				[1, 4]
-			),
-		() => array([[0, 1, 2, 3]])
-	)
+					[0, 1, 2],
+					[3, 0, 1],
+				])
+		)
+		.add(
+			resize,
+			() =>
+				resize(
+					array([
+						[0, 1],
+						[2, 3],
+					]),
+					[1, 4]
+				),
+			() => array([[0, 1, 2, 3]])
+		)
 
-	.add(
-		resize,
-		() =>
-			resize(
+		.add(
+			resize,
+			() =>
+				resize(
+					array([
+						[0, 1],
+						[2, 3],
+					]),
+					[2, 4]
+				),
+			() =>
 				array([
-					[0, 1],
-					[2, 3],
-				]),
-				[2, 4]
-			),
-		() =>
-			array([
-				[0, 1, 2, 3],
-				[0, 1, 2, 3],
-			])
-	);
+					[0, 1, 2, 3],
+					[0, 1, 2, 3],
+				])
+		);

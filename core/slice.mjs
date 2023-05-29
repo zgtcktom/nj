@@ -205,8 +205,7 @@ export function slice(start = null, stop = null, step = null) {
 		if (Object.hasOwn(lookup, start)) return lookup[start];
 		let args = start.split(':');
 
-		if (args.length == 0 || args.length > 3)
-			throw new Error(`invalid string slice representation ${start}`);
+		if (args.length == 0 || args.length > 3) throw new Error(`invalid string slice representation ${start}`);
 
 		start = _sliceArg(args[0]);
 		stop = args.length > 1 ? _sliceArg(args[1]) : null;
@@ -235,29 +234,30 @@ slice.colon = Slice.colon;
 // 	console.log(slice(0, 10, 2).indices(7).slicelength);
 // });
 
-tester
-	.add(
-		slice,
-		() => slice(0, 1, 2).toString(),
-		() => '0:1:2'
-	)
-	.add(
-		slice,
-		() => slice(null, 1, 2).toString(),
-		() => ':1:2'
-	)
-	.add(
-		slice,
-		() => slice(0, null, 2).toString(),
-		() => '0::2'
-	)
-	.add(
-		slice,
-		() => slice(null, null, -1).toString(),
-		() => '::-1'
-	)
-	.add(
-		slice,
-		() => slice(null, null, null).toString(),
-		() => ':'
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			slice,
+			() => slice(0, 1, 2).toString(),
+			() => '0:1:2'
+		)
+		.add(
+			slice,
+			() => slice(null, 1, 2).toString(),
+			() => ':1:2'
+		)
+		.add(
+			slice,
+			() => slice(0, null, 2).toString(),
+			() => '0::2'
+		)
+		.add(
+			slice,
+			() => slice(null, null, -1).toString(),
+			() => '::-1'
+		)
+		.add(
+			slice,
+			() => slice(null, null, null).toString(),
+			() => ':'
+		);

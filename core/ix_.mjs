@@ -22,19 +22,20 @@ export function ix_(...args) {
 	return out;
 }
 
-tester
-	.add(
-		ix_,
-		() => ix_([0, 1], [2, 4]),
-		() => [array([[0], [1]]), array([[2, 4]])]
-	)
-	.add(
-		ix_,
-		() => ix_([true, true], [2, 4]),
-		() => [array([[0], [1]]), array([[2, 4]])]
-	)
-	.add(
-		ix_,
-		() => ix_([true, true], [false, false, true, false, true]),
-		() => [array([[0], [1]]), array([[2, 4]])]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			ix_,
+			() => ix_([0, 1], [2, 4]),
+			() => [array([[0], [1]]), array([[2, 4]])]
+		)
+		.add(
+			ix_,
+			() => ix_([true, true], [2, 4]),
+			() => [array([[0], [1]]), array([[2, 4]])]
+		)
+		.add(
+			ix_,
+			() => ix_([true, true], [false, false, true, false, true]),
+			() => [array([[0], [1]]), array([[2, 4]])]
+		);

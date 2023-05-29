@@ -45,19 +45,20 @@ function _bisectRight(arr, x) {
 	return left;
 }
 
-tester
-	.add(
-		searchsorted,
-		() => searchsorted([1, 2, 3, 4, 5], 3),
-		() => 2
-	)
-	.add(
-		searchsorted,
-		() => searchsorted([1, 2, 3, 4, 5], 3, 'right'),
-		() => 3
-	)
-	.add(
-		searchsorted,
-		() => searchsorted([1, 2, 3, 4, 5], [-10, 10, 2, 3]),
-		() => array([0, 5, 1, 2])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			searchsorted,
+			() => searchsorted([1, 2, 3, 4, 5], 3),
+			() => 2
+		)
+		.add(
+			searchsorted,
+			() => searchsorted([1, 2, 3, 4, 5], 3, 'right'),
+			() => 3
+		)
+		.add(
+			searchsorted,
+			() => searchsorted([1, 2, 3, 4, 5], [-10, 10, 2, 3]),
+			() => array([0, 5, 1, 2])
+		);

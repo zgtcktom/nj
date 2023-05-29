@@ -26,14 +26,15 @@ export function moveaxis(a, src, dst) {
 	return transpose(a, order);
 }
 
-tester
-	.add(
-		moveaxis,
-		() => moveaxis(zeros([3, 4, 5]), 0, -1).shape,
-		() => [4, 5, 3]
-	)
-	.add(
-		moveaxis,
-		() => moveaxis(zeros([3, 4, 5]), -1, 0).shape,
-		() => [5, 3, 4]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			moveaxis,
+			() => moveaxis(zeros([3, 4, 5]), 0, -1).shape,
+			() => [4, 5, 3]
+		)
+		.add(
+			moveaxis,
+			() => moveaxis(zeros([3, 4, 5]), -1, 0).shape,
+			() => [5, 3, 4]
+		);

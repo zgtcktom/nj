@@ -29,11 +29,12 @@ export function s_(...args) {
 	return index_exp(...args);
 }
 
-tester.add(
-	s_,
-	() =>
-		arange(8)
-			.reshape(2, 2, -1)
-			.get(s_(0, [0, -1], '::-1')),
-	() => array([[1, 0]])
-);
+process.env.PRODUCTION ||
+	tester.add(
+		s_,
+		() =>
+			arange(8)
+				.reshape(2, 2, -1)
+				.get(s_(0, [0, -1], '::-1')),
+		() => array([[1, 0]])
+	);

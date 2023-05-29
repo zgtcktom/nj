@@ -69,22 +69,23 @@ function _normalize_indices(indices, mode, size, throw_axis) {
 	throw `unexpected mode ${mode}`;
 }
 
-tester
-	.add(
-		put,
-		() => {
-			let a = arange(5);
-			put(a, [0, 2], [-44, -55]);
-			return a;
-		},
-		() => array([-44, 1, -55, 3, 4])
-	)
-	.add(
-		put,
-		() => {
-			let a = arange(5);
-			put(a, 22, -5, 'clip');
-			return a;
-		},
-		() => array([0, 1, 2, 3, -5])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			put,
+			() => {
+				let a = arange(5);
+				put(a, [0, 2], [-44, -55]);
+				return a;
+			},
+			() => array([-44, 1, -55, 3, 4])
+		)
+		.add(
+			put,
+			() => {
+				let a = arange(5);
+				put(a, 22, -5, 'clip');
+				return a;
+			},
+			() => array([0, 1, 2, 3, -5])
+		);

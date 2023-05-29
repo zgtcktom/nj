@@ -39,14 +39,15 @@ export function unravel_index(indices, shape) {
 	return unraveled_coords;
 }
 
-tester
-	.add(
-		unravel_index,
-		() => unravel_index([22, 41, 37], [7, 6]),
-		() => [array([3, 6, 6]), array([4, 5, 1])]
-	)
-	.add(
-		unravel_index,
-		() => unravel_index(1621, [6, 7, 8, 9]),
-		() => [3, 1, 4, 1]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			unravel_index,
+			() => unravel_index([22, 41, 37], [7, 6]),
+			() => [array([3, 6, 6]), array([4, 5, 1])]
+		)
+		.add(
+			unravel_index,
+			() => unravel_index(1621, [6, 7, 8, 9]),
+			() => [3, 1, 4, 1]
+		);

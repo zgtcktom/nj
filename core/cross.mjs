@@ -101,91 +101,92 @@ export function cross(a, b, axis = -1, axisa = axis, axisb = axis, axisc = axis)
 	return moveaxis(cp, -1, axisc);
 }
 
-tester
-	.add(
-		cross,
-		() => cross([1, 2, 3], [4, 5, 6]),
-		() => array([-3, 6, -3])
-	)
-	.add(
-		cross,
-		() => cross([1, 2], [4, 5, 6]),
-		() => array([12, -6, -3])
-	)
-	.add(
-		cross,
-		() => cross([1, 2, 0], [4, 5, 6]),
-		() => array([12, -6, -3])
-	)
-	.add(
-		cross,
-		() => cross([1, 2], [4, 5]),
-		() => array(-3)
-	)
-	.add(
-		cross,
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			let y = array([
-				[4, 5, 6],
-				[1, 2, 3],
-			]);
-			return cross(x, y);
-		},
-		() =>
-			array([
-				[-3, 6, -3],
-				[3, -6, 3],
-			])
-	)
-	.add(
-		cross,
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			let y = array([
-				[4, 5, 6],
-				[1, 2, 3],
-			]);
-			return cross(x, y, undefined, undefined, undefined, 0);
-		},
-		() =>
-			array([
-				[-3, 3],
-				[6, -6],
-				[-3, 3],
-			])
-	)
-	.add(
-		cross,
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-				[7, 8, 9],
-			]);
-			let y = array([
-				[7, 8, 9],
-				[4, 5, 6],
-				[1, 2, 3],
-			]);
-			return [cross(x, y), cross(x, y, undefined, 0, 0)];
-		},
-		() => [
-			array([
-				[-6, 12, -6],
-				[0, 0, 0],
-				[6, -12, 6],
-			]),
-			array([
-				[-24, 48, -24],
-				[-30, 60, -30],
-				[-36, 72, -36],
-			]),
-		]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			cross,
+			() => cross([1, 2, 3], [4, 5, 6]),
+			() => array([-3, 6, -3])
+		)
+		.add(
+			cross,
+			() => cross([1, 2], [4, 5, 6]),
+			() => array([12, -6, -3])
+		)
+		.add(
+			cross,
+			() => cross([1, 2, 0], [4, 5, 6]),
+			() => array([12, -6, -3])
+		)
+		.add(
+			cross,
+			() => cross([1, 2], [4, 5]),
+			() => array(-3)
+		)
+		.add(
+			cross,
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]);
+				let y = array([
+					[4, 5, 6],
+					[1, 2, 3],
+				]);
+				return cross(x, y);
+			},
+			() =>
+				array([
+					[-3, 6, -3],
+					[3, -6, 3],
+				])
+		)
+		.add(
+			cross,
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]);
+				let y = array([
+					[4, 5, 6],
+					[1, 2, 3],
+				]);
+				return cross(x, y, undefined, undefined, undefined, 0);
+			},
+			() =>
+				array([
+					[-3, 3],
+					[6, -6],
+					[-3, 3],
+				])
+		)
+		.add(
+			cross,
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+					[7, 8, 9],
+				]);
+				let y = array([
+					[7, 8, 9],
+					[4, 5, 6],
+					[1, 2, 3],
+				]);
+				return [cross(x, y), cross(x, y, undefined, 0, 0)];
+			},
+			() => [
+				array([
+					[-6, 12, -6],
+					[0, 0, 0],
+					[6, -12, 6],
+				]),
+				array([
+					[-24, 48, -24],
+					[-30, 60, -30],
+					[-36, 72, -36],
+				]),
+			]
+		);

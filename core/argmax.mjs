@@ -144,56 +144,58 @@ export function argmin(a, axis = null, out = null, keepdims = false) {
 	return out;
 }
 
-tester
-	.add(
-		argmax,
-		() => argmax(arange(6).reshape(2, 3)),
-		() => 5
-	)
-	.add(
-		argmax,
-		() => argmax(arange(6).reshape(2, 3), 0),
-		() => array([1, 1, 1])
-	)
-	.add(
-		argmax,
-		() => argmax(arange(6).reshape(2, 3), 1),
-		() => array([2, 2])
-	)
-	.add(
-		argmax,
-		() => argmax(array([0, 5, 2, 3, 4, 5])),
-		() => 1
-	)
-	.add(
-		argmax,
-		() => argmax(arange(24).reshape(2, 3, 4), 1, null, true),
-		() => array([[[2, 2, 2, 2]], [[2, 2, 2, 2]]])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			argmax,
+			() => argmax(arange(6).reshape(2, 3)),
+			() => 5
+		)
+		.add(
+			argmax,
+			() => argmax(arange(6).reshape(2, 3), 0),
+			() => array([1, 1, 1])
+		)
+		.add(
+			argmax,
+			() => argmax(arange(6).reshape(2, 3), 1),
+			() => array([2, 2])
+		)
+		.add(
+			argmax,
+			() => argmax(array([0, 5, 2, 3, 4, 5])),
+			() => 1
+		)
+		.add(
+			argmax,
+			() => argmax(arange(24).reshape(2, 3, 4), 1, null, true),
+			() => array([[[2, 2, 2, 2]], [[2, 2, 2, 2]]])
+		);
 
-tester
-	.add(
-		argmin,
-		() => argmin(arange(6).reshape(2, 3)),
-		() => 0
-	)
-	.add(
-		argmin,
-		() => argmin(arange(6).reshape(2, 3), 0),
-		() => array([0, 0, 0])
-	)
-	.add(
-		argmin,
-		() => argmin(arange(6).reshape(2, 3), 1),
-		() => array([0, 0])
-	)
-	.add(
-		argmin,
-		() => argmin(array([0, 5, 2, 3, 4, 5])),
-		() => 0
-	)
-	.add(
-		argmin,
-		() => argmin(arange(24).reshape(2, 3, 4), 1, null, true),
-		() => array([[[0, 0, 0, 0]], [[0, 0, 0, 0]]])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			argmin,
+			() => argmin(arange(6).reshape(2, 3)),
+			() => 0
+		)
+		.add(
+			argmin,
+			() => argmin(arange(6).reshape(2, 3), 0),
+			() => array([0, 0, 0])
+		)
+		.add(
+			argmin,
+			() => argmin(arange(6).reshape(2, 3), 1),
+			() => array([0, 0])
+		)
+		.add(
+			argmin,
+			() => argmin(array([0, 5, 2, 3, 4, 5])),
+			() => 0
+		)
+		.add(
+			argmin,
+			() => argmin(arange(24).reshape(2, 3, 4), 1, null, true),
+			() => array([[[0, 0, 0, 0]], [[0, 0, 0, 0]]])
+		);

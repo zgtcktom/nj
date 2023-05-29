@@ -15,39 +15,40 @@ export function swapaxes(a, axis1, axis2) {
 	return transpose(a, axes);
 }
 
-tester
-	.add(
-		swapaxes,
-		() => {
-			let x = array([[1, 2, 3]]);
-			return swapaxes(x, 0, 1);
-		},
-		() => array([[1], [2], [3]])
-	)
-	.add(
-		swapaxes,
-		() => {
-			let x = array([
-				[
-					[0, 1],
-					[2, 3],
-				],
-				[
-					[4, 5],
-					[6, 7],
-				],
-			]);
-			return swapaxes(x, 0, 2);
-		},
-		() =>
-			array([
-				[
-					[0, 4],
-					[2, 6],
-				],
-				[
-					[1, 5],
-					[3, 7],
-				],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			swapaxes,
+			() => {
+				let x = array([[1, 2, 3]]);
+				return swapaxes(x, 0, 1);
+			},
+			() => array([[1], [2], [3]])
+		)
+		.add(
+			swapaxes,
+			() => {
+				let x = array([
+					[
+						[0, 1],
+						[2, 3],
+					],
+					[
+						[4, 5],
+						[6, 7],
+					],
+				]);
+				return swapaxes(x, 0, 2);
+			},
+			() =>
+				array([
+					[
+						[0, 4],
+						[2, 6],
+					],
+					[
+						[1, 5],
+						[3, 7],
+					],
+				])
+		);

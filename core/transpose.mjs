@@ -53,32 +53,33 @@ function normalize_axes(axes, ndim) {
 	return newaxes;
 }
 
-tester
-	.add(
-		transpose,
-		() => {
-			let x = arange(4).reshape([2, 2]);
-			return transpose(x);
-		},
-		() =>
-			array([
-				[0, 2],
-				[1, 3],
-			])
-	)
-	.add(
-		transpose,
-		() => {
-			let x = ones([1, 2, 3]);
-			return transpose(x, [1, 0, 2]);
-		},
-		() => array([[[1, 1, 1]], [[1, 1, 1]]])
-	)
-	.add(
-		transpose,
-		() => {
-			let x = ones([2, 3, 4, 5]);
-			return transpose(x).shape;
-		},
-		() => [5, 4, 3, 2]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			transpose,
+			() => {
+				let x = arange(4).reshape([2, 2]);
+				return transpose(x);
+			},
+			() =>
+				array([
+					[0, 2],
+					[1, 3],
+				])
+		)
+		.add(
+			transpose,
+			() => {
+				let x = ones([1, 2, 3]);
+				return transpose(x, [1, 0, 2]);
+			},
+			() => array([[[1, 1, 1]], [[1, 1, 1]]])
+		)
+		.add(
+			transpose,
+			() => {
+				let x = ones([2, 3, 4, 5]);
+				return transpose(x).shape;
+			},
+			() => [5, 4, 3, 2]
+		);

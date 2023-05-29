@@ -121,65 +121,66 @@ export class Product {
 	}
 }
 
-tester.add(
-	roll,
-	() => [
-		...(function* () {
-			let x = arange(10);
-			yield roll(x, 2);
-			yield roll(x, -2);
-			let x2 = x.reshape([2, 5]);
-			yield x2;
-			yield roll(x2, 1);
-			yield roll(x2, -1);
-			yield roll(x2, 1, 0);
-			yield roll(x2, -1, 0);
-			yield roll(x2, 1, 1);
-			yield roll(x2, -1, 1);
-			yield roll(x2, [1, 1], [1, 0]);
-			yield roll(x2, [2, 1], [1, 0]);
-		})(),
-	],
-	() => [
-		...(function* () {
-			yield array([8, 9, 0, 1, 2, 3, 4, 5, 6, 7]);
-			yield array([2, 3, 4, 5, 6, 7, 8, 9, 0, 1]);
-			yield array([
-				[0, 1, 2, 3, 4],
-				[5, 6, 7, 8, 9],
-			]);
-			yield array([
-				[9, 0, 1, 2, 3],
-				[4, 5, 6, 7, 8],
-			]);
-			yield array([
-				[1, 2, 3, 4, 5],
-				[6, 7, 8, 9, 0],
-			]);
-			yield array([
-				[5, 6, 7, 8, 9],
-				[0, 1, 2, 3, 4],
-			]);
-			yield array([
-				[5, 6, 7, 8, 9],
-				[0, 1, 2, 3, 4],
-			]);
-			yield array([
-				[4, 0, 1, 2, 3],
-				[9, 5, 6, 7, 8],
-			]);
-			yield array([
-				[1, 2, 3, 4, 0],
-				[6, 7, 8, 9, 5],
-			]);
-			yield array([
-				[9, 5, 6, 7, 8],
-				[4, 0, 1, 2, 3],
-			]);
-			yield array([
-				[8, 9, 5, 6, 7],
-				[3, 4, 0, 1, 2],
-			]);
-		})(),
-	]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		roll,
+		() => [
+			...(function* () {
+				let x = arange(10);
+				yield roll(x, 2);
+				yield roll(x, -2);
+				let x2 = x.reshape([2, 5]);
+				yield x2;
+				yield roll(x2, 1);
+				yield roll(x2, -1);
+				yield roll(x2, 1, 0);
+				yield roll(x2, -1, 0);
+				yield roll(x2, 1, 1);
+				yield roll(x2, -1, 1);
+				yield roll(x2, [1, 1], [1, 0]);
+				yield roll(x2, [2, 1], [1, 0]);
+			})(),
+		],
+		() => [
+			...(function* () {
+				yield array([8, 9, 0, 1, 2, 3, 4, 5, 6, 7]);
+				yield array([2, 3, 4, 5, 6, 7, 8, 9, 0, 1]);
+				yield array([
+					[0, 1, 2, 3, 4],
+					[5, 6, 7, 8, 9],
+				]);
+				yield array([
+					[9, 0, 1, 2, 3],
+					[4, 5, 6, 7, 8],
+				]);
+				yield array([
+					[1, 2, 3, 4, 5],
+					[6, 7, 8, 9, 0],
+				]);
+				yield array([
+					[5, 6, 7, 8, 9],
+					[0, 1, 2, 3, 4],
+				]);
+				yield array([
+					[5, 6, 7, 8, 9],
+					[0, 1, 2, 3, 4],
+				]);
+				yield array([
+					[4, 0, 1, 2, 3],
+					[9, 5, 6, 7, 8],
+				]);
+				yield array([
+					[1, 2, 3, 4, 0],
+					[6, 7, 8, 9, 5],
+				]);
+				yield array([
+					[9, 5, 6, 7, 8],
+					[4, 0, 1, 2, 3],
+				]);
+				yield array([
+					[8, 9, 5, 6, 7],
+					[3, 4, 0, 1, 2],
+				]);
+			})(),
+		]
+	);

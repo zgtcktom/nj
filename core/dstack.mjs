@@ -10,29 +10,30 @@ export function dstack(arrays) {
 	return concatenate(arrays, 2);
 }
 
-tester
-	.add(
-		dstack,
-		() => {
-			let a = array([1, 2, 3]);
-			let b = array([2, 3, 4]);
-			return dstack([a, b]);
-		},
-		() =>
-			array([
-				[
-					[1, 2],
-					[2, 3],
-					[3, 4],
-				],
-			])
-	)
-	.add(
-		dstack,
-		() => {
-			let a = array([[1], [2], [3]]);
-			let b = array([[2], [3], [4]]);
-			return dstack([a, b]);
-		},
-		() => array([[[1, 2]], [[2, 3]], [[3, 4]]])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			dstack,
+			() => {
+				let a = array([1, 2, 3]);
+				let b = array([2, 3, 4]);
+				return dstack([a, b]);
+			},
+			() =>
+				array([
+					[
+						[1, 2],
+						[2, 3],
+						[3, 4],
+					],
+				])
+		)
+		.add(
+			dstack,
+			() => {
+				let a = array([[1], [2], [3]]);
+				let b = array([[2], [3], [4]]);
+				return dstack([a, b]);
+			},
+			() => array([[[1, 2]], [[2, 3]], [[3, 4]]])
+		);

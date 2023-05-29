@@ -4,7 +4,7 @@ export function compile(fn, params = {}) {
 	console.log(fn.toString());
 }
 
-// tester.add(
+// process.env.PRODUCTION || tester(
 // 	compile,
 // 	() => {
 // 		console.log([...ndoffset([1, 2, 3], [-2, -1, 1], 0)]);

@@ -62,26 +62,27 @@ export function concatenate(arrays, axis = 0, out = undefined) {
 	return out;
 }
 
-tester.add(
-	concatenate,
-	() => {
-		let a = array([
-			[1, 2],
-			[3, 4],
-		]);
-		let b = array([[5, 6]]);
-		return [concatenate([a, b], 0), concatenate([a, b.T], 1), concatenate([a, b], null)];
-	},
-	() => [
-		array([
-			[1, 2],
-			[3, 4],
-			[5, 6],
-		]),
-		array([
-			[1, 2, 5],
-			[3, 4, 6],
-		]),
-		array([1, 2, 3, 4, 5, 6]),
-	]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		concatenate,
+		() => {
+			let a = array([
+				[1, 2],
+				[3, 4],
+			]);
+			let b = array([[5, 6]]);
+			return [concatenate([a, b], 0), concatenate([a, b.T], 1), concatenate([a, b], null)];
+		},
+		() => [
+			array([
+				[1, 2],
+				[3, 4],
+				[5, 6],
+			]),
+			array([
+				[1, 2, 5],
+				[3, 4, 6],
+			]),
+			array([1, 2, 3, 4, 5, 6]),
+		]
+	);

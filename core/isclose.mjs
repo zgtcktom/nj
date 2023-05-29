@@ -81,49 +81,50 @@ export function allclose(a, b, rtol = 1e-5, atol = 1e-8, equal_nan = false) {
 	return all(isclose(a, b, rtol, atol, equal_nan));
 }
 
-tester
-	.add(
-		isclose,
-		() => isclose([1e10, 1e-7], [1.00001e10, 1e-8]),
-		() => [true, false]
-	)
-	.add(
-		isclose,
-		() => isclose([1e10, 1e-8], [1.00001e10, 1e-9]),
-		() => [true, true]
-	)
-	.add(
-		isclose,
-		() => isclose([1e10, 1e-8], [1.0001e10, 1e-9]),
-		() => [false, true]
-	)
-	.add(
-		isclose,
-		() => isclose([1.0, NaN], [1.0, NaN]),
-		() => [true, false]
-	)
-	.add(
-		isclose,
-		() => isclose([1.0, NaN], [1.0, NaN], undefined, undefined, true),
-		() => [true, true]
-	)
-	.add(
-		isclose,
-		() => isclose([1e-8, 1e-7], [0.0, 0.0]),
-		() => [true, false]
-	)
-	.add(
-		isclose,
-		() => isclose([1e-100, 1e-7], [0.0, 0.0], undefined, 0.0),
-		() => [false, false]
-	)
-	.add(
-		isclose,
-		() => isclose([1e-10, 1e-10], [1e-20, 0.0]),
-		() => [true, true]
-	)
-	.add(
-		isclose,
-		() => isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], undefined, 0.0),
-		() => [false, true]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			isclose,
+			() => isclose([1e10, 1e-7], [1.00001e10, 1e-8]),
+			() => [true, false]
+		)
+		.add(
+			isclose,
+			() => isclose([1e10, 1e-8], [1.00001e10, 1e-9]),
+			() => [true, true]
+		)
+		.add(
+			isclose,
+			() => isclose([1e10, 1e-8], [1.0001e10, 1e-9]),
+			() => [false, true]
+		)
+		.add(
+			isclose,
+			() => isclose([1.0, NaN], [1.0, NaN]),
+			() => [true, false]
+		)
+		.add(
+			isclose,
+			() => isclose([1.0, NaN], [1.0, NaN], undefined, undefined, true),
+			() => [true, true]
+		)
+		.add(
+			isclose,
+			() => isclose([1e-8, 1e-7], [0.0, 0.0]),
+			() => [true, false]
+		)
+		.add(
+			isclose,
+			() => isclose([1e-100, 1e-7], [0.0, 0.0], undefined, 0.0),
+			() => [false, false]
+		)
+		.add(
+			isclose,
+			() => isclose([1e-10, 1e-10], [1e-20, 0.0]),
+			() => [true, true]
+		)
+		.add(
+			isclose,
+			() => isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], undefined, 0.0),
+			() => [false, true]
+		);

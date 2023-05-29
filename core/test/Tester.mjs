@@ -38,7 +38,7 @@ function _print(a) {
 	return a;
 }
 
-export class Tester {
+class Tester {
 	compare = default_compare;
 	constructor() {
 		this.tasks = {};

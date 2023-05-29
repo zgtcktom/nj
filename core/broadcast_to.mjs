@@ -34,29 +34,31 @@ export function broadcast_arrays(...arrays) {
 	return arrays.map(a => broadcast_to(a, shape));
 }
 
-tester.add(
-	'broadcast_to',
-	() => broadcast_to(array([1, 2, 3]).reshape(3), [3, 3]).array(),
-	() => [
-		[1, 2, 3],
-		[1, 2, 3],
-		[1, 2, 3],
-	]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		'broadcast_to',
+		() => broadcast_to(array([1, 2, 3]).reshape(3), [3, 3]).array(),
+		() => [
+			[1, 2, 3],
+			[1, 2, 3],
+			[1, 2, 3],
+		]
+	);
 
-tester.add(
-	'broadcast_to',
-	() => broadcast_to(array([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).array(),
-	() => [
-		[
-			[1, 1, 1, 1],
-			[2, 2, 2, 2],
-			[3, 3, 3, 3],
-		],
-		[
-			[1, 1, 1, 1],
-			[2, 2, 2, 2],
-			[3, 3, 3, 3],
-		],
-	]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		'broadcast_to',
+		() => broadcast_to(array([1, 2, 3]).reshape(1, 3, 1), [2, 3, 4]).array(),
+		() => [
+			[
+				[1, 1, 1, 1],
+				[2, 2, 2, 2],
+				[3, 3, 3, 3],
+			],
+			[
+				[1, 1, 1, 1],
+				[2, 2, 2, 2],
+				[3, 3, 3, 3],
+			],
+		]
+	);

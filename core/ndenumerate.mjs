@@ -37,21 +37,22 @@ export class NdenumerateIterator extends Flatiter {
 	}
 }
 
-tester.add(
-	ndenumerate,
-	() => {
-		{
-			let a;
-			a = array([
-				[1, 2],
-				[3, 4],
-			]);
-			let out = [];
-			for (let [index, x] of ndenumerate(a)) {
-				out.push(index.slice(), x);
+process.env.PRODUCTION ||
+	tester.add(
+		ndenumerate,
+		() => {
+			{
+				let a;
+				a = array([
+					[1, 2],
+					[3, 4],
+				]);
+				let out = [];
+				for (let [index, x] of ndenumerate(a)) {
+					out.push(index.slice(), x);
+				}
+				return out;
 			}
-			return out;
-		}
-	},
-	() => [[0, 0], 1, [0, 1], 2, [1, 0], 3, [1, 1], 4]
-);
+		},
+		() => [[0, 0], 1, [0, 1], 2, [1, 0], 3, [1, 1], 4]
+	);

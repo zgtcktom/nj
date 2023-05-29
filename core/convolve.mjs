@@ -50,24 +50,25 @@ export function convolve(a, v, mode = 'full') {
 	return array(data);
 }
 
-tester
-	.add(
-		convolve,
-		() => convolve([1, 2, 3], [0, 1, 0.5]),
-		() => array([0, 1, 2.5, 4, 1.5])
-	)
-	.add(
-		convolve,
-		() => convolve([1, 2, 3], [1, 0.5], 'full'),
-		() => array([1, 2.5, 4, 1.5])
-	)
-	.add(
-		convolve,
-		() => convolve([1, 2, 3], [0, 1, 0.5], 'same'),
-		() => array([1, 2.5, 4])
-	)
-	.add(
-		convolve,
-		() => convolve([1, 2, 3], [0, 1, 0.5], 'valid'),
-		() => array([2.5])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			convolve,
+			() => convolve([1, 2, 3], [0, 1, 0.5]),
+			() => array([0, 1, 2.5, 4, 1.5])
+		)
+		.add(
+			convolve,
+			() => convolve([1, 2, 3], [1, 0.5], 'full'),
+			() => array([1, 2.5, 4, 1.5])
+		)
+		.add(
+			convolve,
+			() => convolve([1, 2, 3], [0, 1, 0.5], 'same'),
+			() => array([1, 2.5, 4])
+		)
+		.add(
+			convolve,
+			() => convolve([1, 2, 3], [0, 1, 0.5], 'valid'),
+			() => array([2.5])
+		);

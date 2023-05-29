@@ -56,44 +56,45 @@ export function shape(a) {
 export const _shape = shape;
 export const shape_ = shape;
 
-tester
-	.add(
-		'shape',
-		() => shape([[[3, 9]], [[3, 9, 3]], [[3, 9]]]),
-		() => [3, 1]
-	)
-	.add(
-		'shape',
-		() => shape([1, 2, 3, [1, 3]]),
-		() => [4]
-	)
-	.add(
-		'shape',
-		() => shape([0]),
-		() => [1]
-	)
-	.add(
-		'shape',
-		() => shape(0),
-		() => []
-	)
-	.add(
-		'shape',
-		() =>
-			shape([
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
-			]),
-		() => [3, 1, 2]
-	)
-	.add(
-		'shape',
-		() =>
-			shape([
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
-				arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
-			]),
-		() => [3, 1, 2, 3, 4]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'shape',
+			() => shape([[[3, 9]], [[3, 9, 3]], [[3, 9]]]),
+			() => [3, 1]
+		)
+		.add(
+			'shape',
+			() => shape([1, 2, 3, [1, 3]]),
+			() => [4]
+		)
+		.add(
+			'shape',
+			() => shape([0]),
+			() => [1]
+		)
+		.add(
+			'shape',
+			() => shape(0),
+			() => []
+		)
+		.add(
+			'shape',
+			() =>
+				shape([
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3 * 4),
+				]),
+			() => [3, 1, 2]
+		)
+		.add(
+			'shape',
+			() =>
+				shape([
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
+					arange(1 * 2 * 3 * 4).reshape(1, 2, 3, 4),
+				]),
+			() => [3, 1, 2, 3, 4]
+		);

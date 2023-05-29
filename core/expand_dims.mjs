@@ -20,32 +20,33 @@ export function expand_dims(a, axis) {
 	return a.reshape(newshape);
 }
 
-tester
-	.add(
-		expand_dims,
-		() => expand_dims(array([1, 2]), 0),
-		() => array([[1, 2]])
-	)
-	.add(
-		expand_dims,
-		() => expand_dims(array([1, 2]), 1),
-		() => array([[1], [2]])
-	)
-	.add(
-		expand_dims,
-		() => expand_dims(array([1, 2]), [0, 1]),
-		() => array([[[1, 2]]])
-	)
-	.add(
-		expand_dims,
-		() => expand_dims(array([1, 2]), [2, 0]),
-		() => array([[[1], [2]]])
-	)
-	.add(
-		expand_dims,
-		() => {
-			let x = array([1, 2]);
-			return expand_dims(x, [2, 0]).base === x;
-		},
-		() => true
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			expand_dims,
+			() => expand_dims(array([1, 2]), 0),
+			() => array([[1, 2]])
+		)
+		.add(
+			expand_dims,
+			() => expand_dims(array([1, 2]), 1),
+			() => array([[1], [2]])
+		)
+		.add(
+			expand_dims,
+			() => expand_dims(array([1, 2]), [0, 1]),
+			() => array([[[1, 2]]])
+		)
+		.add(
+			expand_dims,
+			() => expand_dims(array([1, 2]), [2, 0]),
+			() => array([[[1], [2]]])
+		)
+		.add(
+			expand_dims,
+			() => {
+				let x = array([1, 2]);
+				return expand_dims(x, [2, 0]).base === x;
+			},
+			() => true
+		);

@@ -76,56 +76,57 @@ export function repeat(a, repeats, axis = null) {
 	return out.astype(a.dtype);
 }
 
-tester
-	.add(
-		repeat,
-		() => repeat(3, 4),
-		() => array([3, 3, 3, 3])
-	)
-	.add(
-		repeat,
-		() =>
-			repeat(
+process.env.PRODUCTION ||
+	tester
+		.add(
+			repeat,
+			() => repeat(3, 4),
+			() => array([3, 3, 3, 3])
+		)
+		.add(
+			repeat,
+			() =>
+				repeat(
+					array([
+						[1, 2],
+						[3, 4],
+					]),
+					2
+				),
+			() => array([1, 1, 2, 2, 3, 3, 4, 4])
+		)
+		.add(
+			repeat,
+			() =>
+				repeat(
+					array([
+						[1, 2],
+						[3, 4],
+					]),
+					3,
+					1
+				),
+			() =>
+				array([
+					[1, 1, 1, 2, 2, 2],
+					[3, 3, 3, 4, 4, 4],
+				])
+		)
+		.add(
+			repeat,
+			() =>
+				repeat(
+					array([
+						[1, 2],
+						[3, 4],
+					]),
+					[1, 2],
+					0
+				),
+			() =>
 				array([
 					[1, 2],
 					[3, 4],
-				]),
-				2
-			),
-		() => array([1, 1, 2, 2, 3, 3, 4, 4])
-	)
-	.add(
-		repeat,
-		() =>
-			repeat(
-				array([
-					[1, 2],
 					[3, 4],
-				]),
-				3,
-				1
-			),
-		() =>
-			array([
-				[1, 1, 1, 2, 2, 2],
-				[3, 3, 3, 4, 4, 4],
-			])
-	)
-	.add(
-		repeat,
-		() =>
-			repeat(
-				array([
-					[1, 2],
-					[3, 4],
-				]),
-				[1, 2],
-				0
-			),
-		() =>
-			array([
-				[1, 2],
-				[3, 4],
-				[3, 4],
-			])
-	);
+				])
+		);

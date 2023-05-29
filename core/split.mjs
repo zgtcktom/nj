@@ -46,154 +46,158 @@ export function vsplit(ary, indices_or_sections) {
 	return split(ary, indices_or_sections, 0);
 }
 
-tester
-	.add(
-		split,
-		() => split(arange(9.0), 3),
-		() => [array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8])]
-	)
-	.add(
-		split,
-		() => split(arange(8.0), [3, 5, 6, 10]),
-		() => [array([0, 1, 2]), array([3, 4]), array([5]), array([6, 7]), array([])]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			split,
+			() => split(arange(9.0), 3),
+			() => [array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8])]
+		)
+		.add(
+			split,
+			() => split(arange(8.0), [3, 5, 6, 10]),
+			() => [array([0, 1, 2]), array([3, 4]), array([5]), array([6, 7]), array([])]
+		);
 
-tester
-	.add(
-		dsplit,
-		() => dsplit(arange(16.0).reshape(2, 2, 4), 2),
-		() => [
-			array([
-				[
+process.env.PRODUCTION ||
+	tester
+		.add(
+			dsplit,
+			() => dsplit(arange(16.0).reshape(2, 2, 4), 2),
+			() => [
+				array([
+					[
+						[0, 1],
+						[4, 5],
+					],
+					[
+						[8, 9],
+						[12, 13],
+					],
+				]),
+				array([
+					[
+						[2, 3],
+						[6, 7],
+					],
+					[
+						[10, 11],
+						[14, 15],
+					],
+				]),
+			]
+		)
+		.add(
+			dsplit,
+			() => dsplit(arange(16.0).reshape(2, 2, 4), array([3, 6])),
+			() => [
+				array([
+					[
+						[0, 1, 2],
+						[4, 5, 6],
+					],
+					[
+						[8, 9, 10],
+						[12, 13, 14],
+					],
+				]),
+				array([
+					[[3], [7]],
+					[[11], [15]],
+				]),
+				empty([2, 2, 0]),
+			]
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			hsplit,
+			() => hsplit(arange(16.0).reshape(4, 4), 2),
+			() => [
+				array([
 					[0, 1],
 					[4, 5],
-				],
-				[
 					[8, 9],
 					[12, 13],
-				],
-			]),
-			array([
-				[
+				]),
+				array([
 					[2, 3],
 					[6, 7],
-				],
-				[
 					[10, 11],
 					[14, 15],
-				],
-			]),
-		]
-	)
-	.add(
-		dsplit,
-		() => dsplit(arange(16.0).reshape(2, 2, 4), array([3, 6])),
-		() => [
-			array([
-				[
+				]),
+			]
+		)
+		.add(
+			hsplit,
+			() => hsplit(arange(16.0).reshape(4, 4), array([3, 6])),
+			() => [
+				array([
 					[0, 1, 2],
 					[4, 5, 6],
-				],
-				[
 					[8, 9, 10],
 					[12, 13, 14],
-				],
-			]),
-			array([
-				[[3], [7]],
-				[[11], [15]],
-			]),
-			empty([2, 2, 0]),
-		]
-	);
+				]),
+				array([[3], [7], [11], [15]]),
+				empty([4, 0]),
+			]
+		)
+		.add(
+			hsplit,
+			() => hsplit(arange(8.0).reshape(2, 2, 2), 2),
+			() => [array([[[0, 1]], [[4, 5]]]), array([[[2, 3]], [[6, 7]]])]
+		)
+		.add(
+			hsplit,
+			() => hsplit(array([0, 1, 2, 3, 4, 5]), 2),
+			() => [array([0, 1, 2]), array([3, 4, 5])]
+		);
 
-tester
-	.add(
-		hsplit,
-		() => hsplit(arange(16.0).reshape(4, 4), 2),
-		() => [
-			array([
-				[0, 1],
-				[4, 5],
-				[8, 9],
-				[12, 13],
-			]),
-			array([
-				[2, 3],
-				[6, 7],
-				[10, 11],
-				[14, 15],
-			]),
-		]
-	)
-	.add(
-		hsplit,
-		() => hsplit(arange(16.0).reshape(4, 4), array([3, 6])),
-		() => [
-			array([
-				[0, 1, 2],
-				[4, 5, 6],
-				[8, 9, 10],
-				[12, 13, 14],
-			]),
-			array([[3], [7], [11], [15]]),
-			empty([4, 0]),
-		]
-	)
-	.add(
-		hsplit,
-		() => hsplit(arange(8.0).reshape(2, 2, 2), 2),
-		() => [array([[[0, 1]], [[4, 5]]]), array([[[2, 3]], [[6, 7]]])]
-	)
-	.add(
-		hsplit,
-		() => hsplit(array([0, 1, 2, 3, 4, 5]), 2),
-		() => [array([0, 1, 2]), array([3, 4, 5])]
-	);
-
-tester
-	.add(
-		vsplit,
-		() => vsplit(arange(16.0).reshape(4, 4), 2),
-		() => [
-			array([
-				[0, 1, 2, 3],
-				[4, 5, 6, 7],
-			]),
-			array([
-				[8, 9, 10, 11],
-				[12, 13, 14, 15],
-			]),
-		]
-	)
-	.add(
-		vsplit,
-		() => vsplit(arange(16.0).reshape(4, 4), array([3, 6])),
-		() => [
-			array([
-				[0, 1, 2, 3],
-				[4, 5, 6, 7],
-				[8, 9, 10, 11],
-			]),
-			array([[12, 13, 14, 15]]),
-			empty([0, 4]),
-		]
-	)
-	.add(
-		vsplit,
-		() => vsplit(arange(8.0).reshape(2, 2, 2), 2),
-		() => [
-			array([
-				[
-					[0, 1],
-					[2, 3],
-				],
-			]),
-			array([
-				[
-					[4, 5],
-					[6, 7],
-				],
-			]),
-		]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			vsplit,
+			() => vsplit(arange(16.0).reshape(4, 4), 2),
+			() => [
+				array([
+					[0, 1, 2, 3],
+					[4, 5, 6, 7],
+				]),
+				array([
+					[8, 9, 10, 11],
+					[12, 13, 14, 15],
+				]),
+			]
+		)
+		.add(
+			vsplit,
+			() => vsplit(arange(16.0).reshape(4, 4), array([3, 6])),
+			() => [
+				array([
+					[0, 1, 2, 3],
+					[4, 5, 6, 7],
+					[8, 9, 10, 11],
+				]),
+				array([[12, 13, 14, 15]]),
+				empty([0, 4]),
+			]
+		)
+		.add(
+			vsplit,
+			() => vsplit(arange(8.0).reshape(2, 2, 2), 2),
+			() => [
+				array([
+					[
+						[0, 1],
+						[2, 3],
+					],
+				]),
+				array([
+					[
+						[4, 5],
+						[6, 7],
+					],
+				]),
+			]
+		);

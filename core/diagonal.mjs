@@ -50,42 +50,43 @@ export function diagonal(a, offset = 0, axis1 = 0, axis2 = 1) {
 	);
 }
 
-tester
-	.add(
-		diagonal,
-		() => diagonal(arange(4).reshape(2, 2)),
-		() => array([0, 3])
-	)
-	.add(
-		diagonal,
-		() => diagonal(arange(4).reshape(2, 2), 1),
-		() => array([1])
-	)
-	.add(
-		diagonal,
-		() => diagonal(arange(8).reshape(2, 2, 2), 0, 0, 1),
-		() =>
-			array([
-				[0, 6],
-				[1, 7],
-			])
-	)
-	.add(
-		diagonal,
-		() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 0), 0, 0, 1),
-		() => array([0, 6])
-	)
-	.add(
-		diagonal,
-		() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 1), 0, 0, 1),
-		() => array([1, 7])
-	)
-	.add(
-		diagonal,
-		() => {
-			let a = arange(8);
-			diagonal(a.reshape(2, 2, 2), 0, 0, 1).set(-1);
-			return a;
-		},
-		() => array([-1, -1, 2, 3, 4, 5, -1, -1])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			diagonal,
+			() => diagonal(arange(4).reshape(2, 2)),
+			() => array([0, 3])
+		)
+		.add(
+			diagonal,
+			() => diagonal(arange(4).reshape(2, 2), 1),
+			() => array([1])
+		)
+		.add(
+			diagonal,
+			() => diagonal(arange(8).reshape(2, 2, 2), 0, 0, 1),
+			() =>
+				array([
+					[0, 6],
+					[1, 7],
+				])
+		)
+		.add(
+			diagonal,
+			() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 0), 0, 0, 1),
+			() => array([0, 6])
+		)
+		.add(
+			diagonal,
+			() => diagonal(arange(8).reshape(2, 2, 2).at(slice(':'), slice(':'), 1), 0, 0, 1),
+			() => array([1, 7])
+		)
+		.add(
+			diagonal,
+			() => {
+				let a = arange(8);
+				diagonal(a.reshape(2, 2, 2), 0, 0, 1).set(-1);
+				return a;
+			},
+			() => array([-1, -1, 2, 3, 4, 5, -1, -1])
+		);

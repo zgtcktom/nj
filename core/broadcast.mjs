@@ -61,11 +61,12 @@ export class Broadcast {
 	}
 }
 
-tester
-	.add(
-		broadcast,
-		() => {
-			`
+process.env.PRODUCTION ||
+	tester
+		.add(
+			broadcast,
+			() => {
+				`
         out = np.empty(b.shape)
         out.flat = [u+v for (u,v) in b]
         out
@@ -73,28 +74,28 @@ tester
                [6.,  7.,  8.],
                [7.,  8.,  9.]])
         `;
-			let x = array([[1], [2], [3]]),
-				y = array([4, 5, 6]),
-				b = broadcast(x, y);
-			let out = empty(b.shape);
-			let flat = [];
-			for (let [u, v] of b) {
-				flat.push(u + v);
-			}
-			out.flat = flat;
-			return out;
-		},
-		() =>
-			array([
-				[5, 6, 7],
-				[6, 7, 8],
-				[7, 8, 9],
-			])
-	)
-	.add(
-		broadcast,
-		() => {
-			`
+				let x = array([[1], [2], [3]]),
+					y = array([4, 5, 6]),
+					b = broadcast(x, y);
+				let out = empty(b.shape);
+				let flat = [];
+				for (let [u, v] of b) {
+					flat.push(u + v);
+				}
+				out.flat = flat;
+				return out;
+			},
+			() =>
+				array([
+					[5, 6, 7],
+					[6, 7, 8],
+					[7, 8, 9],
+				])
+		)
+		.add(
+			broadcast,
+			() => {
+				`
             >>> x = np.array([1, 2, 3])
             >>> y = np.array([[4], [5], [6]])
             >>> b = np.broadcast(x, y)
@@ -108,16 +109,16 @@ tester
             >>> b.index
             0
             `;
-			let out = [];
-			let x = array([1, 2, 3]),
-				y = array([[4], [5], [6]]),
-				b = broadcast(x, y);
-			out.push(b.index);
-			out.push(b.next().value, b.next().value, b.next().value);
-			out.push(b.index);
-			b.reset();
-			out.push(b.index);
-			return out;
-		},
-		() => [0, [1, 4], [2, 4], [3, 4], 3, 0]
-	);
+				let out = [];
+				let x = array([1, 2, 3]),
+					y = array([[4], [5], [6]]),
+					b = broadcast(x, y);
+				out.push(b.index);
+				out.push(b.next().value, b.next().value, b.next().value);
+				out.push(b.index);
+				b.reset();
+				out.push(b.index);
+				return out;
+			},
+			() => [0, [1, 4], [2, 4], [3, 4], 3, 0]
+		);

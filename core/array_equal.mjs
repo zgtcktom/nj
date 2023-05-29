@@ -64,88 +64,90 @@ function broadcastable(...shapes) {
 	return true;
 }
 
-tester
-	.add(
-		array_equal,
-		() => array_equal([1, 2], [1, 2]),
-		() => true
-	)
-	.add(
-		array_equal,
-		() => array_equal(array([1, 2]), array([1, 2])),
-		() => true
-	)
-	.add(
-		array_equal,
-		() => array_equal([1, 2], [1, 2, 3]),
-		() => false
-	)
-	.add(
-		array_equal,
-		() => array_equal([1, 2], [1, 4]),
-		() => false
-	)
-	.add(
-		array_equal,
-		() => {
-			let a = array([1, NaN]);
-			return array_equal(a, a);
-		},
-		() => false
-	)
-	.add(
-		array_equal,
-		() => {
-			let a = array([1, NaN]);
-			return array_equal(a, a, true);
-		},
-		() => true
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			array_equal,
+			() => array_equal([1, 2], [1, 2]),
+			() => true
+		)
+		.add(
+			array_equal,
+			() => array_equal(array([1, 2]), array([1, 2])),
+			() => true
+		)
+		.add(
+			array_equal,
+			() => array_equal([1, 2], [1, 2, 3]),
+			() => false
+		)
+		.add(
+			array_equal,
+			() => array_equal([1, 2], [1, 4]),
+			() => false
+		)
+		.add(
+			array_equal,
+			() => {
+				let a = array([1, NaN]);
+				return array_equal(a, a);
+			},
+			() => false
+		)
+		.add(
+			array_equal,
+			() => {
+				let a = array([1, NaN]);
+				return array_equal(a, a, true);
+			},
+			() => true
+		);
 
-tester
-	.add(
-		array_equiv,
-		() => array_equiv([1, 2], [1, 2]),
-		() => true
-	)
-	.add(
-		array_equiv,
-		() => array_equiv([1, 2], [1, 3]),
-		() => false
-	)
-	.add(
-		array_equiv,
-		() =>
-			array_equiv(
-				[1, 2],
-				[
+process.env.PRODUCTION ||
+	tester
+		.add(
+			array_equiv,
+			() => array_equiv([1, 2], [1, 2]),
+			() => true
+		)
+		.add(
+			array_equiv,
+			() => array_equiv([1, 2], [1, 3]),
+			() => false
+		)
+		.add(
+			array_equiv,
+			() =>
+				array_equiv(
 					[1, 2],
+					[
+						[1, 2],
+						[1, 2],
+					]
+				),
+			() => true
+		)
+		.add(
+			array_equiv,
+			() =>
+				array_equiv(
 					[1, 2],
-				]
-			),
-		() => true
-	)
-	.add(
-		array_equiv,
-		() =>
-			array_equiv(
-				[1, 2],
-				[
-					[1, 2, 1, 2],
-					[1, 2, 1, 2],
-				]
-			),
-		() => false
-	)
-	.add(
-		array_equiv,
-		() =>
-			array_equiv(
-				[1, 2],
-				[
+					[
+						[1, 2, 1, 2],
+						[1, 2, 1, 2],
+					]
+				),
+			() => false
+		)
+		.add(
+			array_equiv,
+			() =>
+				array_equiv(
 					[1, 2],
-					[1, 3],
-				]
-			),
-		() => false
-	);
+					[
+						[1, 2],
+						[1, 3],
+					]
+				),
+			() => false
+		);

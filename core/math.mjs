@@ -608,473 +608,492 @@ export const nan_to_num = wrapper_map('nan_to_num', x => {
 	return x;
 });
 
-tester
-	.add(
-		amax,
-		() => amax(arange(4).reshape(2, 2)),
-		() => 3
-	)
-	.add(
-		amax,
-		() => amax(arange(4).reshape(2, 2), 0),
-		() => array([2, 3])
-	)
-	.add(
-		amax,
-		() => amax(arange(4).reshape(2, 2), 1),
-		() => array([1, 3])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			amax,
+			() => amax(arange(4).reshape(2, 2)),
+			() => 3
+		)
+		.add(
+			amax,
+			() => amax(arange(4).reshape(2, 2), 0),
+			() => array([2, 3])
+		)
+		.add(
+			amax,
+			() => amax(arange(4).reshape(2, 2), 1),
+			() => array([1, 3])
+		);
 
-tester
-	.add(
-		maximum,
-		() => maximum([2, 3, 4], [1, 5, 2]),
-		() => array([2, 5, 4])
-	)
-	.add(
-		maximum,
-		() => maximum(eye(2), [0.5, 2]),
-		() =>
-			array([
-				[1, 2],
-				[0.5, 2],
-			])
-	);
-
-tester
-	.add(
-		gcd,
-		() => gcd(12, 20),
-		() => 4
-	)
-	.add(
-		gcd,
-		() => gcd(arange(6), 20),
-		() => array([20, 1, 2, 1, 4, 5])
-	);
-
-tester
-	.add(
-		lcm,
-		() => lcm(12, 20),
-		() => 60
-	)
-	.add(
-		lcm,
-		() => lcm(arange(6), 20),
-		() => array([0, 20, 20, 60, 20, 20])
-	);
-
-tester
-	.add(
-		copysign,
-		() => copysign(1.3, -1),
-		() => -1.3
-	)
-	.add(
-		copysign,
-		() => 1 / copysign(0, 1),
-		() => Infinity
-	)
-	.add(
-		copysign,
-		() => 1 / copysign(0, -1),
-		() => -Infinity
-	);
-
-tester
-	.add(
-		signbit,
-		() => signbit(-1.2),
-		() => true
-	)
-	.add(
-		signbit,
-		() => signbit(array([1, -2.3, 2.1])),
-		() => array([false, true, false])
-	);
-
-tester.add(
-	logaddexp,
-	() => {
-		let prob1 = log(1e-50);
-		let prob2 = log(2.5e-50);
-		let prob12 = logaddexp(prob1, prob2);
-		return prob12;
-	},
-	() => -113.87649168120691
-);
-
-tester
-	.add(
-		unwrap,
-		() => unwrap([0, 1, 2, -1, 0], 4),
-		() => array([0, 1, 2, 3, 4])
-	)
-	.add(
-		unwrap,
-		() => unwrap([1, 2, 3, 4, 5, 6, 1, 2, 3], 6),
-		() => array([1, 2, 3, 4, 5, 6, 7, 8, 9])
-	)
-	.add(
-		unwrap,
-		() => unwrap([2, 3, 4, 5, 2, 3, 4, 5], 4),
-		() => array([2, 3, 4, 5, 6, 7, 8, 9])
-	);
-
-tester
-	.add(
-		around,
-		() => around([0.37, 1.64]),
-		() => array([0, 2])
-	)
-	.add(
-		around,
-		() => around([0.37, 1.64], 1),
-		() => array([0.4, 1.6])
-	)
-	.add(
-		around,
-		() => around([0.5, 1.5, 2.5, 3.5, 4.5]),
-		() => array([0, 2, 2, 4, 4])
-	)
-	.add(
-		around,
-		() => around([5, 15, 25, 35, 45], -1),
-		() => array([0, 20, 20, 40, 40])
-	)
-	.add(
-		around,
-		() => around([-5, -15, -25, -35, -45], -1),
-		() => array([0, -20, -20, -40, -40])
-	)
-	.add(
-		around,
-		() => around([1, 2, 3, 11], 1),
-		() => array([1, 2, 3, 11])
-	)
-	.add(
-		around,
-		() => around([1, 2, 3, 11], -1),
-		() => array([0, 0, 0, 10])
-	);
-
-tester.add(
-	rint,
-	() => rint(array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])),
-	() => array([-2, -2, -0, 0, 2, 2, 2])
-);
-
-tester
-	.add(
-		fix,
-		() => fix(3.14),
-		() => 3
-	)
-	.add(
-		fix,
-		() => fix(3),
-		() => 3
-	)
-	.add(
-		fix,
-		() => fix([2.1, 2.9, -2.1, -2.9]),
-		() => array([2, 2, -2, -2])
-	);
-
-tester
-	.add(
-		prod,
-		() => prod([]),
-		() => 1
-	)
-	.add(
-		prod,
-		() => prod([1, 2]),
-		() => 2.0
-	)
-	.add(
-		prod,
-		() =>
-			prod(
+process.env.PRODUCTION ||
+	tester
+		.add(
+			maximum,
+			() => maximum([2, 3, 4], [1, 5, 2]),
+			() => array([2, 5, 4])
+		)
+		.add(
+			maximum,
+			() => maximum(eye(2), [0.5, 2]),
+			() =>
 				array([
 					[1, 2],
-					[3, 4],
+					[0.5, 2],
 				])
-			),
-		() => 24.0
-	)
-	.add(
-		prod,
-		() =>
-			prod(
-				array([
-					[1, 2],
-					[3, 4],
-				]),
-				1
-			),
-		() => array([2, 12])
-	)
-	.add(
-		prod,
-		() =>
-			prod(
-				array([
-					[1, 2],
-					[3, 4],
-				]),
-				0
-			),
-		() => array([3, 8])
-	)
-	.add(
-		prod,
-		() => prod([1, 2], null, null, null, 5),
-		() => 10
-	);
+		);
 
-tester
-	.add(
-		sum,
-		() => sum([0.5, 1.5]),
-		() => 2.0
-	)
-	.add(
-		sum,
-		() =>
-			sum([
-				[0, 1],
-				[0, 5],
-			]),
-		() => 6
-	)
-	.add(
-		sum,
-		() =>
-			sum(
-				[
-					[0, 1],
-					[0, 5],
-				],
-				0
-			),
-		() => array([0, 6])
-	)
-	.add(
-		sum,
-		() =>
-			sum(
-				[
-					[0, 1],
-					[0, 5],
-				],
-				1
-			),
-		() => array([1, 5])
-	)
-	.add(
-		sum,
-		() => sum([10], null, null, null, 5),
-		() => 15
-	)
-	.add(
-		sum,
-		// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
-		// np.sum(a, (0, -1))
-		() => sum(arange(100).reshape(5, -1, 1).at(slice('::-2'), slice('2:7')), [0, -1]),
-		() => array([126, 129, 132, 135, 138])
-	)
-	.add(
-		sum,
-		// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
-		// np.sum(a, (0, -1))
+process.env.PRODUCTION ||
+	tester
+		.add(
+			gcd,
+			() => gcd(12, 20),
+			() => 4
+		)
+		.add(
+			gcd,
+			() => gcd(arange(6), 20),
+			() => array([20, 1, 2, 1, 4, 5])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			lcm,
+			() => lcm(12, 20),
+			() => 60
+		)
+		.add(
+			lcm,
+			() => lcm(arange(6), 20),
+			() => array([0, 20, 20, 60, 20, 20])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			copysign,
+			() => copysign(1.3, -1),
+			() => -1.3
+		)
+		.add(
+			copysign,
+			() => 1 / copysign(0, 1),
+			() => Infinity
+		)
+		.add(
+			copysign,
+			() => 1 / copysign(0, -1),
+			() => -Infinity
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			signbit,
+			() => signbit(-1.2),
+			() => true
+		)
+		.add(
+			signbit,
+			() => signbit(array([1, -2.3, 2.1])),
+			() => array([false, true, false])
+		);
+
+process.env.PRODUCTION ||
+	tester.add(
+		logaddexp,
 		() => {
-			let a = arange(100);
-			a = a.at(slice(20, -20)).reshape([2, 1, -1, 2]).at(slice('...'), slice('::-1'));
-			return sum(a, [1, -2], null, true, -99);
+			let prob1 = log(1e-50);
+			let prob2 = log(2.5e-50);
+			let prob12 = logaddexp(prob1, prob2);
+			return prob12;
 		},
-		() => array([[[[426, 411]]], [[[876, 861]]]])
+		() => -113.87649168120691
 	);
 
-tester
-	.add(
-		nanprod,
-		() => nanprod(1),
-		() => 1
-	)
-	.add(
-		nanprod,
-		() => nanprod([1]),
-		() => 1
-	)
-	.add(
-		nanprod,
-		() => nanprod([1, nan]),
-		() => 1.0
-	)
-	.add(
-		nanprod,
-		() =>
-			nanprod(
-				array([
-					[1, 2],
-					[3, nan],
-				])
-			),
-		() => 6.0
-	)
-	.add(
-		nanprod,
-		() =>
-			nanprod(
-				array([
-					[1, 2],
-					[3, nan],
+process.env.PRODUCTION ||
+	tester
+		.add(
+			unwrap,
+			() => unwrap([0, 1, 2, -1, 0], 4),
+			() => array([0, 1, 2, 3, 4])
+		)
+		.add(
+			unwrap,
+			() => unwrap([1, 2, 3, 4, 5, 6, 1, 2, 3], 6),
+			() => array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+		)
+		.add(
+			unwrap,
+			() => unwrap([2, 3, 4, 5, 2, 3, 4, 5], 4),
+			() => array([2, 3, 4, 5, 6, 7, 8, 9])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			around,
+			() => around([0.37, 1.64]),
+			() => array([0, 2])
+		)
+		.add(
+			around,
+			() => around([0.37, 1.64], 1),
+			() => array([0.4, 1.6])
+		)
+		.add(
+			around,
+			() => around([0.5, 1.5, 2.5, 3.5, 4.5]),
+			() => array([0, 2, 2, 4, 4])
+		)
+		.add(
+			around,
+			() => around([5, 15, 25, 35, 45], -1),
+			() => array([0, 20, 20, 40, 40])
+		)
+		.add(
+			around,
+			() => around([-5, -15, -25, -35, -45], -1),
+			() => array([0, -20, -20, -40, -40])
+		)
+		.add(
+			around,
+			() => around([1, 2, 3, 11], 1),
+			() => array([1, 2, 3, 11])
+		)
+		.add(
+			around,
+			() => around([1, 2, 3, 11], -1),
+			() => array([0, 0, 0, 10])
+		);
+
+process.env.PRODUCTION ||
+	tester.add(
+		rint,
+		() => rint(array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])),
+		() => array([-2, -2, -0, 0, 2, 2, 2])
+	);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			fix,
+			() => fix(3.14),
+			() => 3
+		)
+		.add(
+			fix,
+			() => fix(3),
+			() => 3
+		)
+		.add(
+			fix,
+			() => fix([2.1, 2.9, -2.1, -2.9]),
+			() => array([2, 2, -2, -2])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			prod,
+			() => prod([]),
+			() => 1
+		)
+		.add(
+			prod,
+			() => prod([1, 2]),
+			() => 2.0
+		)
+		.add(
+			prod,
+			() =>
+				prod(
+					array([
+						[1, 2],
+						[3, 4],
+					])
+				),
+			() => 24.0
+		)
+		.add(
+			prod,
+			() =>
+				prod(
+					array([
+						[1, 2],
+						[3, 4],
+					]),
+					1
+				),
+			() => array([2, 12])
+		)
+		.add(
+			prod,
+			() =>
+				prod(
+					array([
+						[1, 2],
+						[3, 4],
+					]),
+					0
+				),
+			() => array([3, 8])
+		)
+		.add(
+			prod,
+			() => prod([1, 2], null, null, null, 5),
+			() => 10
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			sum,
+			() => sum([0.5, 1.5]),
+			() => 2.0
+		)
+		.add(
+			sum,
+			() =>
+				sum([
+					[0, 1],
+					[0, 5],
 				]),
-				0
-			),
-		() => array([3, 2])
-	);
+			() => 6
+		)
+		.add(
+			sum,
+			() =>
+				sum(
+					[
+						[0, 1],
+						[0, 5],
+					],
+					0
+				),
+			() => array([0, 6])
+		)
+		.add(
+			sum,
+			() =>
+				sum(
+					[
+						[0, 1],
+						[0, 5],
+					],
+					1
+				),
+			() => array([1, 5])
+		)
+		.add(
+			sum,
+			() => sum([10], null, null, null, 5),
+			() => 15
+		)
+		.add(
+			sum,
+			// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
+			// np.sum(a, (0, -1))
+			() => sum(arange(100).reshape(5, -1, 1).at(slice('::-2'), slice('2:7')), [0, -1]),
+			() => array([126, 129, 132, 135, 138])
+		)
+		.add(
+			sum,
+			// a = np.arange(100).reshape(5, -1, 1)[::-2, 2:7]
+			// np.sum(a, (0, -1))
+			() => {
+				let a = arange(100);
+				a = a.at(slice(20, -20)).reshape([2, 1, -1, 2]).at(slice('...'), slice('::-1'));
+				return sum(a, [1, -2], null, true, -99);
+			},
+			() => array([[[[426, 411]]], [[[876, 861]]]])
+		);
 
-tester
-	.add(
-		nansum,
-		() => nansum(1),
-		() => 1
-	)
-	.add(
-		nansum,
-		() => nansum([1]),
-		() => 1
-	)
-	.add(
-		nansum,
-		() => nansum([1, nan]),
-		() => 1.0
-	)
-	.add(
-		nansum,
-		() =>
-			nansum(
+process.env.PRODUCTION ||
+	tester
+		.add(
+			nanprod,
+			() => nanprod(1),
+			() => 1
+		)
+		.add(
+			nanprod,
+			() => nanprod([1]),
+			() => 1
+		)
+		.add(
+			nanprod,
+			() => nanprod([1, nan]),
+			() => 1.0
+		)
+		.add(
+			nanprod,
+			() =>
+				nanprod(
+					array([
+						[1, 2],
+						[3, nan],
+					])
+				),
+			() => 6.0
+		)
+		.add(
+			nanprod,
+			() =>
+				nanprod(
+					array([
+						[1, 2],
+						[3, nan],
+					]),
+					0
+				),
+			() => array([3, 2])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			nansum,
+			() => nansum(1),
+			() => 1
+		)
+		.add(
+			nansum,
+			() => nansum([1]),
+			() => 1
+		)
+		.add(
+			nansum,
+			() => nansum([1, nan]),
+			() => 1.0
+		)
+		.add(
+			nansum,
+			() =>
+				nansum(
+					array([
+						[1, 1],
+						[1, nan],
+					])
+				),
+			() => 3.0
+		)
+		.add(
+			nansum,
+			() =>
+				nansum(
+					array([
+						[1, 1],
+						[1, nan],
+					]),
+					0
+				),
+			() => array([2, 1])
+		)
+		.add(
+			nansum,
+			() => nansum([1, nan, inf]),
+			() => inf
+		)
+		.add(
+			nansum,
+			() => nansum([1, nan, NINF]),
+			() => -inf
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			diff,
+			() => diff(array([1, 2, 4, 7, 0])),
+			() => array([1, 2, 3, -7])
+		)
+		.add(
+			diff,
+			() => diff(array([1, 2, 4, 7, 0]), 2),
+			() => array([1, 1, -10])
+		)
+		.add(
+			diff,
+			() =>
+				diff(
+					array([
+						[1, 3, 6, 10],
+						[0, 5, 6, 8],
+					])
+				),
+			() =>
 				array([
-					[1, 1],
-					[1, nan],
+					[2, 3, 4],
+					[5, 1, 2],
 				])
-			),
-		() => 3.0
-	)
-	.add(
-		nansum,
-		() =>
-			nansum(
-				array([
-					[1, 1],
-					[1, nan],
+		)
+		.add(
+			diff,
+			() =>
+				diff(
+					array([
+						[1, 3, 6, 10],
+						[0, 5, 6, 8],
+					]),
+					1,
+					0
+				),
+			() => array([[-1, 2, 0, -2]])
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			ediff1d,
+			() => ediff1d(array([1, 2, 4, 7, 0])),
+			() => array([1, 2, 3, -7])
+		)
+		.add(
+			ediff1d,
+			() => ediff1d(array([1, 2, 4, 7, 0]), array([88, 99]), -99),
+			() => array([-99, 1, 2, 3, -7, 88, 99])
+		)
+		.add(
+			ediff1d,
+			() =>
+				ediff1d([
+					[1, 2, 4],
+					[1, 6, 24],
 				]),
-				0
-			),
-		() => array([2, 1])
-	)
-	.add(
-		nansum,
-		() => nansum([1, nan, inf]),
-		() => inf
-	)
-	.add(
-		nansum,
-		() => nansum([1, nan, NINF]),
-		() => -inf
+			() => array([1, 2, -3, 5, 18])
+		);
+
+process.env.PRODUCTION ||
+	tester.add(
+		abs,
+		() => abs(array([-1.2, 1.2])),
+		() => array([1.2, 1.2])
 	);
 
-tester
-	.add(
-		diff,
-		() => diff(array([1, 2, 4, 7, 0])),
-		() => array([1, 2, 3, -7])
-	)
-	.add(
-		diff,
-		() => diff(array([1, 2, 4, 7, 0]), 2),
-		() => array([1, 1, -10])
-	)
-	.add(
-		diff,
-		() =>
-			diff(
-				array([
-					[1, 3, 6, 10],
-					[0, 5, 6, 8],
-				])
-			),
+process.env.PRODUCTION ||
+	tester.add(
+		sin,
+		() => sin(arange(30).reshape(2, 5, 1, -1, 1)).shape,
 		() =>
 			array([
-				[2, 3, 4],
-				[5, 1, 2],
-			])
-	)
-	.add(
-		diff,
-		() =>
-			diff(
-				array([
-					[1, 3, 6, 10],
-					[0, 5, 6, 8],
-				]),
-				1,
-				0
-			),
-		() => array([[-1, 2, 0, -2]])
+				[
+					[[[0.0], [0.8414709848078965], [0.9092974268256817]]],
+					[[[0.1411200080598672], [-0.7568024953079282], [-0.9589242746631385]]],
+					[[[-0.27941549819892586], [0.6569865987187891], [0.9893582466233818]]],
+					[[[0.4121184852417566], [-0.5440211108893698], [-0.9999902065507035]]],
+					[[[-0.5365729180004349], [0.4201670368266409], [0.9906073556948704]]],
+				],
+				[
+					[[[0.6502878401571168], [-0.2879033166650653], [-0.9613974918795568]]],
+					[[[-0.7509872467716762], [0.14987720966295234], [0.9129452507276277]]],
+					[[[0.8366556385360561], [-0.008851309290403876], [-0.8462204041751706]]],
+					[[[-0.9055783620066238], [-0.13235175009777303], [0.7625584504796028]]],
+					[[[0.956375928404503], [0.27090578830786904], [-0.6636338842129675]]],
+				],
+			]).shape
 	);
-
-tester
-	.add(
-		ediff1d,
-		() => ediff1d(array([1, 2, 4, 7, 0])),
-		() => array([1, 2, 3, -7])
-	)
-	.add(
-		ediff1d,
-		() => ediff1d(array([1, 2, 4, 7, 0]), array([88, 99]), -99),
-		() => array([-99, 1, 2, 3, -7, 88, 99])
-	)
-	.add(
-		ediff1d,
-		() =>
-			ediff1d([
-				[1, 2, 4],
-				[1, 6, 24],
-			]),
-		() => array([1, 2, -3, 5, 18])
-	);
-
-tester.add(
-	abs,
-	() => abs(array([-1.2, 1.2])),
-	() => array([1.2, 1.2])
-);
-
-tester.add(
-	sin,
-	() => sin(arange(30).reshape(2, 5, 1, -1, 1)).shape,
-	() =>
-		array([
-			[
-				[[[0.0], [0.8414709848078965], [0.9092974268256817]]],
-				[[[0.1411200080598672], [-0.7568024953079282], [-0.9589242746631385]]],
-				[[[-0.27941549819892586], [0.6569865987187891], [0.9893582466233818]]],
-				[[[0.4121184852417566], [-0.5440211108893698], [-0.9999902065507035]]],
-				[[[-0.5365729180004349], [0.4201670368266409], [0.9906073556948704]]],
-			],
-			[
-				[[[0.6502878401571168], [-0.2879033166650653], [-0.9613974918795568]]],
-				[[[-0.7509872467716762], [0.14987720966295234], [0.9129452507276277]]],
-				[[[0.8366556385360561], [-0.008851309290403876], [-0.8462204041751706]]],
-				[[[-0.9055783620066238], [-0.13235175009777303], [0.7625584504796028]]],
-				[[[0.956375928404503], [0.27090578830786904], [-0.6636338842129675]]],
-			],
-		]).shape
-);
 
 // console.log(add2.toString(), add.toString());
 

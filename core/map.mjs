@@ -673,20 +673,23 @@ tester.onload(() => {
 	// console.log(map_(x => x ** 2, arange(10), x));
 });
 
-tester.add(
-	map,
-	() => map(arange(10).reshape(-1, 2), element => element ** 2),
-	() => power(arange(10).reshape(-1, 2), 2)
-);
+process.env.PRODUCTION ||
+	tester.add(
+		map,
+		() => map(arange(10).reshape(-1, 2), element => element ** 2),
+		() => power(arange(10).reshape(-1, 2), 2)
+	);
 
-tester.add(
-	reduce,
-	() => reduce_((x1, x2) => x1 * x2, arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3], null, false),
-	() => prod(arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3])
-);
+process.env.PRODUCTION ||
+	tester.add(
+		reduce,
+		() => reduce_((x1, x2) => x1 * x2, arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3], null, false),
+		() => prod(arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3])
+	);
 
-tester.add(
-	reduce,
-	() => accumulate_((x1, x2) => x1 * x2, arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3], null),
-	() => cumprod(arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3])
-);
+process.env.PRODUCTION ||
+	tester.add(
+		reduce,
+		() => accumulate_((x1, x2) => x1 * x2, arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3], null),
+		() => cumprod(arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5), [1, 3])
+	);

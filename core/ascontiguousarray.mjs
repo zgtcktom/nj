@@ -29,81 +29,82 @@ export function contiguous(a) {
 	return true;
 }
 
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([3, 1, 5]).at(slice(), slice([, , 3]), slice());
-		// console.log(a.shape, a.strides, a.itemsize);
-		return ascontiguousarray(a) === a;
-	},
-	() => true
-);
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([3, 4, 5]).at(slice(), slice([, , 1]), slice());
-		return ascontiguousarray(a) === a;
-	},
-	() => true
-);
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([3, 4, 5]).at(slice(), slice(), slice(1));
-		return ascontiguousarray(a) === a;
-	},
-	() => false
-);
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([3]).at(slice([, , -3]));
-		return ascontiguousarray(a) === a;
-	},
-	() => true
-);
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([2]).at(slice([, , 2]));
-		return ascontiguousarray(a) === a;
-	},
-	() => true
-);
-tester.add(
-	ascontiguousarray,
-	() => {
-		let a = ones([3]).at(slice([, , 2]));
-		return ascontiguousarray(a) === a;
-	},
-	() => false
-);
-tester
-	.add(
-		ascontiguousarray,
-		() => {
-			let a = ones([3]).at(slice([1, 2]));
-			return ascontiguousarray(a) === a;
-		},
-		() => true
-	)
-	.add(
-		ascontiguousarray,
-		() => {
-			let x, y;
-			x = array([]);
-			y = ascontiguousarray(x);
-			return x === y;
-		},
-		() => true
-	)
-	.add(
-		ascontiguousarray,
-		() => {
-			let x, y;
-			x = array(5);
-			y = ascontiguousarray(x);
-			return x === y;
-		},
-		() => false
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3, 1, 5]).at(slice(), slice([, , 3]), slice());
+				// console.log(a.shape, a.strides, a.itemsize);
+				return ascontiguousarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3, 4, 5]).at(slice(), slice([, , 1]), slice());
+				return ascontiguousarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3, 4, 5]).at(slice(), slice(), slice(1));
+				return ascontiguousarray(a) === a;
+			},
+			() => false
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3]).at(slice([, , -3]));
+				return ascontiguousarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([2]).at(slice([, , 2]));
+				return ascontiguousarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3]).at(slice([, , 2]));
+				return ascontiguousarray(a) === a;
+			},
+			() => false
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let a = ones([3]).at(slice([1, 2]));
+				return ascontiguousarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let x, y;
+				x = array([]);
+				y = ascontiguousarray(x);
+				return x === y;
+			},
+			() => true
+		)
+		.add(
+			ascontiguousarray,
+			() => {
+				let x, y;
+				x = array(5);
+				y = ascontiguousarray(x);
+				return x === y;
+			},
+			() => false
+		);

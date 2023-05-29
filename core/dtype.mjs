@@ -110,19 +110,20 @@ export function dtype(dtype = 'object', array = undefined, name = undefined) {
 
 export const dtype_ = dtype;
 
-tester
-	.add(
-		dtype,
-		() => dtype('number'),
-		() => dtype('number')
-	)
-	.add(
-		dtype,
-		() => dtype(Number),
-		() => dtype('number')
-	)
-	.add(
-		dtype,
-		() => dtype(Int16Array),
-		() => dtype('int16')
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			dtype,
+			() => dtype('number'),
+			() => dtype('number')
+		)
+		.add(
+			dtype,
+			() => dtype(Number),
+			() => dtype('number')
+		)
+		.add(
+			dtype,
+			() => dtype(Int16Array),
+			() => dtype('int16')
+		);

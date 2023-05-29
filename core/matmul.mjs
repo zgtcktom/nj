@@ -77,54 +77,55 @@ export function matmul(x1, x2, out = null) {
 	return out;
 }
 
-tester
-	.add(
-		matmul,
-		() => {
-			let a = array([
-				[1, 0],
-				[0, 1],
-			]);
-			let b = array([
-				[4, 1],
-				[2, 2],
-			]);
-			return matmul(a, b);
-		},
-		() =>
-			array([
-				[4, 1],
-				[2, 2],
-			])
-	)
-	.add(
-		matmul,
-		() => {
-			let a = array([
-				[1, 0],
-				[0, 1],
-			]);
-			let b = array([1, 2]);
-			return [matmul(a, b), matmul(b, a)];
-		},
-		() => [array([1, 2]), array([1, 2])]
-	)
-	.add(
-		matmul,
-		() => {
-			let a = arange(2 * 2 * 4).reshape([2, 2, 4]);
-			let b = arange(2 * 2 * 4).reshape([2, 4, 2]);
-			return matmul(a, b);
-		},
-		() =>
-			array([
-				[
-					[28, 34],
-					[76, 98],
-				],
-				[
-					[428, 466],
-					[604, 658],
-				],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			matmul,
+			() => {
+				let a = array([
+					[1, 0],
+					[0, 1],
+				]);
+				let b = array([
+					[4, 1],
+					[2, 2],
+				]);
+				return matmul(a, b);
+			},
+			() =>
+				array([
+					[4, 1],
+					[2, 2],
+				])
+		)
+		.add(
+			matmul,
+			() => {
+				let a = array([
+					[1, 0],
+					[0, 1],
+				]);
+				let b = array([1, 2]);
+				return [matmul(a, b), matmul(b, a)];
+			},
+			() => [array([1, 2]), array([1, 2])]
+		)
+		.add(
+			matmul,
+			() => {
+				let a = arange(2 * 2 * 4).reshape([2, 2, 4]);
+				let b = arange(2 * 2 * 4).reshape([2, 4, 2]);
+				return matmul(a, b);
+			},
+			() =>
+				array([
+					[
+						[28, 34],
+						[76, 98],
+					],
+					[
+						[428, 466],
+						[604, 658],
+					],
+				])
+		);

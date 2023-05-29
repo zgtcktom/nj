@@ -49,34 +49,35 @@ export function trapz(y, x = null, dx = 1.0, axis = -1) {
 	return sum(tmp, axis);
 }
 
-tester
-	.add(
-		trapz,
-		() => trapz([1, 2, 3]),
-		() => 4.0
-	)
-	.add(
-		trapz,
-		() => trapz([1, 2, 3], [4, 6, 8]),
-		() => 8.0
-	)
-	.add(
-		trapz,
-		() => trapz([1, 2, 3], null, 2),
-		() => 8.0
-	)
-	.add(
-		trapz,
-		() => trapz([1, 2, 3], [8, 6, 4]),
-		() => -8.0
-	)
-	.add(
-		trapz,
-		() => trapz(arange(6).reshape(2, 3), undefined, undefined, 0),
-		() => array([1.5, 2.5, 3.5])
-	)
-	.add(
-		trapz,
-		() => trapz(arange(6).reshape(2, 3), undefined, undefined, 1),
-		() => array([2, 8])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			trapz,
+			() => trapz([1, 2, 3]),
+			() => 4.0
+		)
+		.add(
+			trapz,
+			() => trapz([1, 2, 3], [4, 6, 8]),
+			() => 8.0
+		)
+		.add(
+			trapz,
+			() => trapz([1, 2, 3], null, 2),
+			() => 8.0
+		)
+		.add(
+			trapz,
+			() => trapz([1, 2, 3], [8, 6, 4]),
+			() => -8.0
+		)
+		.add(
+			trapz,
+			() => trapz(arange(6).reshape(2, 3), undefined, undefined, 0),
+			() => array([1.5, 2.5, 3.5])
+		)
+		.add(
+			trapz,
+			() => trapz(arange(6).reshape(2, 3), undefined, undefined, 1),
+			() => array([2, 8])
+		);

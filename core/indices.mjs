@@ -23,24 +23,25 @@ export function indices(dimensions, sparse = false) {
 	return res;
 }
 
-tester
-	.add(
-		indices,
-		() => indices([2, 3]),
-		() =>
-			array([
-				[
-					[0, 0, 0],
-					[1, 1, 1],
-				],
-				[
-					[0, 1, 2],
-					[0, 1, 2],
-				],
-			])
-	)
-	.add(
-		indices,
-		() => indices([2, 3], true),
-		() => [array([[0], [1]]), array([[0, 1, 2]])]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			indices,
+			() => indices([2, 3]),
+			() =>
+				array([
+					[
+						[0, 0, 0],
+						[1, 1, 1],
+					],
+					[
+						[0, 1, 2],
+						[0, 1, 2],
+					],
+				])
+		)
+		.add(
+			indices,
+			() => indices([2, 3], true),
+			() => [array([[0], [1]]), array([[0, 1, 2]])]
+		);

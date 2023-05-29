@@ -13,27 +13,28 @@ export function asarray(a, dtype = undefined) {
 	return array(a, dtype);
 }
 
-tester
-	.add(
-		'asarray',
-		() => {
-			let a = array([
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'asarray',
+			() => {
+				let a = array([
+					[1, 2],
+					[3, 4],
+				]);
+				return asarray(a) === a;
+			},
+			() => true
+		)
+		.add(
+			'asarray',
+			() =>
+				asarray([
+					[1, 2],
+					[3, 4],
+				]),
+			() => [
 				[1, 2],
 				[3, 4],
-			]);
-			return asarray(a) === a;
-		},
-		() => true
-	)
-	.add(
-		'asarray',
-		() =>
-			asarray([
-				[1, 2],
-				[3, 4],
-			]),
-		() => [
-			[1, 2],
-			[3, 4],
-		]
-	);
+			]
+		);

@@ -14,34 +14,35 @@ export function ndim(a) {
 
 export const _ndim = ndim;
 
-tester
-	.add(
-		'ndim',
-		() =>
-			ndim([
-				[1, 2, 3],
-				[4, 5, 6],
-			]),
-		() => 2
-	)
-	.add(
-		'ndim',
-		() =>
-			ndim(
-				asarray([
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'ndim',
+			() =>
+				ndim([
 					[1, 2, 3],
 					[4, 5, 6],
-				])
-			),
-		() => 2
-	)
-	.add(
-		'ndim',
-		() => ndim(1),
-		() => 0
-	)
-	.add(
-		'ndim',
-		() => ndim(null),
-		() => 0
-	);
+				]),
+			() => 2
+		)
+		.add(
+			'ndim',
+			() =>
+				ndim(
+					asarray([
+						[1, 2, 3],
+						[4, 5, 6],
+					])
+				),
+			() => 2
+		)
+		.add(
+			'ndim',
+			() => ndim(1),
+			() => 0
+		)
+		.add(
+			'ndim',
+			() => ndim(null),
+			() => 0
+		);

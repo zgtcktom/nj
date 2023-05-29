@@ -163,101 +163,104 @@ export const isneginf = wrapper_map('isneginf', n => n == -Infinity);
  */
 export const isposinf = wrapper_map('isposinf', n => n == Infinity);
 
-tester
-	.add(
-		logical_and,
-		() => logical_and(true, false),
-		() => false
-	)
-	.add(
-		logical_and,
-		() => logical_and([true, false], [false, false]),
-		() => array([false, false])
-	)
-	.add(
-		logical_and,
-		() => {
-			let x = arange(5);
-			return logical_and(greater(x, 1), less(x, 4));
-		},
-		() => array([false, false, true, true, false])
-	)
-	.add(
-		logical_and,
-		() => logical_and(array([true, false]), array([false, false])),
-		() => array([false, false])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			logical_and,
+			() => logical_and(true, false),
+			() => false
+		)
+		.add(
+			logical_and,
+			() => logical_and([true, false], [false, false]),
+			() => array([false, false])
+		)
+		.add(
+			logical_and,
+			() => {
+				let x = arange(5);
+				return logical_and(greater(x, 1), less(x, 4));
+			},
+			() => array([false, false, true, true, false])
+		)
+		.add(
+			logical_and,
+			() => logical_and(array([true, false]), array([false, false])),
+			() => array([false, false])
+		);
 
-tester
-	.add(
-		all,
-		() =>
-			all([
-				[true, false],
-				[true, true],
-			]) == false,
-		() => true
-	)
-	.add(
-		all,
-		() =>
-			all(
-				[
+process.env.PRODUCTION ||
+	tester
+		.add(
+			all,
+			() =>
+				all([
 					[true, false],
 					[true, true],
-				],
-				0
-			),
-		() => array([true, false])
-	)
-	.add(
-		all,
-		() => all([-1, 4, 5]),
-		() => true
-	)
-	.add(
-		all,
-		() => {
-			let o = array(false);
-			return [all([-1, 4, 5], null, o) == o, o];
-		},
-		() => [true, array(true)]
-	)
-	.add(
-		all,
-		() => all([]),
-		() => true
-	);
+				]) == false,
+			() => true
+		)
+		.add(
+			all,
+			() =>
+				all(
+					[
+						[true, false],
+						[true, true],
+					],
+					0
+				),
+			() => array([true, false])
+		)
+		.add(
+			all,
+			() => all([-1, 4, 5]),
+			() => true
+		)
+		.add(
+			all,
+			() => {
+				let o = array(false);
+				return [all([-1, 4, 5], null, o) == o, o];
+			},
+			() => [true, array(true)]
+		)
+		.add(
+			all,
+			() => all([]),
+			() => true
+		);
 
-tester
-	.add(
-		any,
-		() =>
-			any([
-				[true, false],
-				[true, true],
-			]),
-		() => true
-	)
-	.add(
-		any,
-		() =>
-			any(
-				[
+process.env.PRODUCTION ||
+	tester
+		.add(
+			any,
+			() =>
+				any([
 					[true, false],
-					[false, false],
-				],
-				0
-			),
-		() => array([true, false])
-	)
-	.add(
-		any,
-		() => any([-1, 0, 5]),
-		() => true
-	)
-	.add(
-		any,
-		() => any(NaN),
-		() => false
-	);
+					[true, true],
+				]),
+			() => true
+		)
+		.add(
+			any,
+			() =>
+				any(
+					[
+						[true, false],
+						[false, false],
+					],
+					0
+				),
+			() => array([true, false])
+		)
+		.add(
+			any,
+			() => any([-1, 0, 5]),
+			() => true
+		)
+		.add(
+			any,
+			() => any(NaN),
+			() => false
+		);

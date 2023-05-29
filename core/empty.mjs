@@ -41,41 +41,43 @@ export function tuple_(value) {
 	return [value];
 }
 
-tester
-	.add(
-		'empty',
-		() => empty([2, 2]),
-		() => [
-			[, ,],
-			[, ,],
-		]
-	)
-	.add(
-		'empty',
-		() => empty(0),
-		() => []
-	)
-	.add(
-		'empty',
-		() => empty([]),
-		() => undefined
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'empty',
+			() => empty([2, 2]),
+			() => [
+				[, ,],
+				[, ,],
+			]
+		)
+		.add(
+			'empty',
+			() => empty(0),
+			() => []
+		)
+		.add(
+			'empty',
+			() => empty([]),
+			() => undefined
+		);
 
-tester
-	.add(
-		'empty_like',
-		() =>
-			empty_like([
-				[1, 2, 3],
-				[4, 5, 6],
-			]),
-		() => [
-			[, , ,],
-			[, , ,],
-		]
-	)
-	.add(
-		'empty_like',
-		() => empty_like([1, 2, 3, [1, 3]]),
-		() => [, , , ,]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'empty_like',
+			() =>
+				empty_like([
+					[1, 2, 3],
+					[4, 5, 6],
+				]),
+			() => [
+				[, , ,],
+				[, , ,],
+			]
+		)
+		.add(
+			'empty_like',
+			() => empty_like([1, 2, 3, [1, 3]]),
+			() => [, , , ,]
+		);

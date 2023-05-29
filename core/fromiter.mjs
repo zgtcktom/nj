@@ -23,33 +23,34 @@ export function fromiter(iter, count = -1, dtype = undefined) {
 	return array(a, dtype ?? guessType(a));
 }
 
-tester
-	.add(
-		fromiter,
-		() => {
-			return fromiter({
-				*[Symbol.iterator]() {
-					for (let x = 0; x < 5; x++) yield x * x;
-				},
-			});
-		},
-		() => array([0, 1, 4, 9, 16])
-	)
-	.add(
-		fromiter,
-		() => {
-			return fromiter({
-				*[Symbol.iterator]() {
-					for (let x = 0; x < 5; x++) yield [x + 1, x + 2];
-				},
-			});
-		},
-		() =>
-			array([
-				[1, 2],
-				[2, 3],
-				[3, 4],
-				[4, 5],
-				[5, 6],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			fromiter,
+			() => {
+				return fromiter({
+					*[Symbol.iterator]() {
+						for (let x = 0; x < 5; x++) yield x * x;
+					},
+				});
+			},
+			() => array([0, 1, 4, 9, 16])
+		)
+		.add(
+			fromiter,
+			() => {
+				return fromiter({
+					*[Symbol.iterator]() {
+						for (let x = 0; x < 5; x++) yield [x + 1, x + 2];
+					},
+				});
+			},
+			() =>
+				array([
+					[1, 2],
+					[2, 3],
+					[3, 4],
+					[4, 5],
+					[5, 6],
+				])
+		);

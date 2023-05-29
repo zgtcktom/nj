@@ -26,26 +26,27 @@ export function vstack(arrays) {
 	return concatenate(arrays, 0);
 }
 
-tester
-	.add(
-		vstack,
-		() => {
-			let a = array([1, 2, 3]);
-			let b = array([4, 5, 6]);
-			return vstack([a, b]);
-		},
-		() =>
-			array([
-				[1, 2, 3],
-				[4, 5, 6],
-			])
-	)
-	.add(
-		vstack,
-		() => {
-			let a = array([[1], [2], [3]]);
-			let b = array([[4], [5], [6]]);
-			return vstack([a, b]);
-		},
-		() => array([[1], [2], [3], [4], [5], [6]])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			vstack,
+			() => {
+				let a = array([1, 2, 3]);
+				let b = array([4, 5, 6]);
+				return vstack([a, b]);
+			},
+			() =>
+				array([
+					[1, 2, 3],
+					[4, 5, 6],
+				])
+		)
+		.add(
+			vstack,
+			() => {
+				let a = array([[1], [2], [3]]);
+				let b = array([[4], [5], [6]]);
+				return vstack([a, b]);
+			},
+			() => array([[1], [2], [3], [4], [5], [6]])
+		);

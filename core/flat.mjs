@@ -115,137 +115,141 @@ export class Flatiter extends NdoffsetIterator {
 	}
 }
 
-tester.add(
-	'Flatiter',
-	() => {
-		let arr = array([0, 1, 2, 3, 4, 5]).reshape(2, 3);
-		let a = new Flatiter(arr);
-		let out = [];
-		// console.log(a.next());
-		for (let item of a) {
-			out.push(item);
-		}
-		return out;
-	},
-	() => [0, 1, 2, 3, 4, 5]
-);
-
-tester
-	.add(
-		'Flatiter.get',
-		() =>
-			new Flatiter(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				])
-			).at(3),
-		() => 4
-	)
-	.add(
-		'Flatiter.get',
-		() =>
-			new Flatiter(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				])
-			).at(slice(2, -2)),
-		() => array([3, 4])
-	)
-	.add(
-		'Flatiter.get',
-		() =>
-			new Flatiter(
-				array([
-					[1, 2, 3],
-					[4, 5, 6],
-				])
-			).get([3, 4, -1]),
-		() => [4, 5, 6]
+process.env.PRODUCTION ||
+	tester.add(
+		'Flatiter',
+		() => {
+			let arr = array([0, 1, 2, 3, 4, 5]).reshape(2, 3);
+			let a = new Flatiter(arr);
+			let out = [];
+			// console.log(a.next());
+			for (let item of a) {
+				out.push(item);
+			}
+			return out;
+		},
+		() => [0, 1, 2, 3, 4, 5]
 	);
 
-tester
-	.add(
-		'Flatiter.set',
-		() => {
-			let x = array([
-				[3, 3, 3],
-				[3, 3, 3],
-			]);
-			new Flatiter(x).set([1, -1], [[1], [2]]);
-			return x;
-		},
-		() => [
-			[3, 1, 3],
-			[3, 3, 2],
-		]
-	)
-	.add(
-		'Flatiter.set',
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			x.flat.set(
-				[1, 0, 1],
-				[
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'Flatiter.get',
+			() =>
+				new Flatiter(
+					array([
+						[1, 2, 3],
+						[4, 5, 6],
+					])
+				).at(3),
+			() => 4
+		)
+		.add(
+			'Flatiter.get',
+			() =>
+				new Flatiter(
+					array([
+						[1, 2, 3],
+						[4, 5, 6],
+					])
+				).at(slice(2, -2)),
+			() => array([3, 4])
+		)
+		.add(
+			'Flatiter.get',
+			() =>
+				new Flatiter(
+					array([
+						[1, 2, 3],
+						[4, 5, 6],
+					])
+				).get([3, 4, -1]),
+			() => [4, 5, 6]
+		);
+
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'Flatiter.set',
+			() => {
+				let x = array([
+					[3, 3, 3],
+					[3, 3, 3],
+				]);
+				new Flatiter(x).set([1, -1], [[1], [2]]);
+				return x;
+			},
+			() => [
+				[3, 1, 3],
+				[3, 3, 2],
+			]
+		)
+		.add(
+			'Flatiter.set',
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]);
+				x.flat.set(
+					[1, 0, 1],
+					[
+						[1, 2, 3],
+						[5, 6, 7],
+					]
+				);
+				return x;
+			},
+			() =>
+				array([
+					[2, 3, 3],
+					[4, 5, 6],
+				])
+		)
+		.add(
+			'Flatiter.set',
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]);
+				x.flat.set(slice(1, -1), [
 					[1, 2, 3],
 					[5, 6, 7],
-				]
-			);
-			return x;
-		},
-		() =>
-			array([
-				[2, 3, 3],
-				[4, 5, 6],
-			])
-	)
-	.add(
-		'Flatiter.set',
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			x.flat.set(slice(1, -1), [
-				[1, 2, 3],
-				[5, 6, 7],
-			]);
-			return x;
-		},
-		() =>
-			array([
-				[1, 1, 2],
-				[3, 5, 6],
-			])
-	)
-	.add(
-		'Flatiter.set',
-		() => {
-			let x = array([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			x.flat.set(':', [[1, 2]]);
-			return x;
-		},
-		() =>
-			array([
-				[1, 2, 1],
-				[2, 1, 2],
-			])
-	);
+				]);
+				return x;
+			},
+			() =>
+				array([
+					[1, 1, 2],
+					[3, 5, 6],
+				])
+		)
+		.add(
+			'Flatiter.set',
+			() => {
+				let x = array([
+					[1, 2, 3],
+					[4, 5, 6],
+				]);
+				x.flat.set(':', [[1, 2]]);
+				return x;
+			},
+			() =>
+				array([
+					[1, 2, 1],
+					[2, 1, 2],
+				])
+		);
 
-tester.add(
-	'Flatiter.copy',
-	() =>
-		new Flatiter(
-			array([0, 1, 2, 3, 4, 5])
-				.reshape(2, 3)
-				.at(slice([, , -1]))
-		).copy(),
-	() => [3, 4, 5, 0, 1, 2]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		'Flatiter.copy',
+		() =>
+			new Flatiter(
+				array([0, 1, 2, 3, 4, 5])
+					.reshape(2, 3)
+					.at(slice([, , -1]))
+			).copy(),
+		() => [3, 4, 5, 0, 1, 2]
+	);

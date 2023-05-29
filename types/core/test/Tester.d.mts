@@ -9,7 +9,8 @@ export function timeit(run: any, { name, setup, duration, warmup, cycle, cycle_d
     repeat?: string;
     verbose?: boolean;
 }): number;
-export class Tester {
+export let tester: Tester;
+declare class Tester {
     compare: typeof default_compare;
     tasks: {};
     _onload: any[];
@@ -17,6 +18,5 @@ export class Tester {
     add(name: any, test: any, expected: any, compare?: typeof default_compare): Tester;
     run(name: any): any;
 }
-export let tester: Tester;
 declare function default_compare(a: any, b: any): boolean;
 export {};

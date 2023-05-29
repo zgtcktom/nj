@@ -28,29 +28,30 @@ export function arange(start, stop = undefined, step = 1) {
 	return out;
 }
 
-tester
-	.add(
-		'arange',
-		() => arange(3),
-		() => array([0, 1, 2])
-	)
-	.add(
-		'arange',
-		() => arange(-10, 10),
-		() => array([-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-	)
-	.add(
-		'arange',
-		() => arange(-10, 10, -1),
-		() => array([])
-	)
-	.add(
-		'arange',
-		() => arange(3, 7, 2),
-		() => array([3, 5])
-	)
-	.add(
-		'arange',
-		() => arange(0, -10, -1),
-		() => array([0, -1, -2, -3, -4, -5, -6, -7, -8, -9])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'arange',
+			() => arange(3),
+			() => array([0, 1, 2])
+		)
+		.add(
+			'arange',
+			() => arange(-10, 10),
+			() => array([-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		)
+		.add(
+			'arange',
+			() => arange(-10, 10, -1),
+			() => array([])
+		)
+		.add(
+			'arange',
+			() => arange(3, 7, 2),
+			() => array([3, 5])
+		)
+		.add(
+			'arange',
+			() => arange(0, -10, -1),
+			() => array([0, -1, -2, -3, -4, -5, -6, -7, -8, -9])
+		);

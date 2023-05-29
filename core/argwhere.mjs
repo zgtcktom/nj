@@ -23,20 +23,21 @@ export function argwhere(a) {
 	return transpose(nonzero(a));
 }
 
-tester
-	.add(
-		argwhere,
-		() => argwhere(55).shape,
-		() => [1, 0]
-	)
-	.add(
-		argwhere,
-		() => argwhere(greater(arange(6).reshape(2, 3), 1)),
-		() =>
-			array([
-				[0, 2],
-				[1, 0],
-				[1, 1],
-				[1, 2],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			argwhere,
+			() => argwhere(55).shape,
+			() => [1, 0]
+		)
+		.add(
+			argwhere,
+			() => argwhere(greater(arange(6).reshape(2, 3), 1)),
+			() =>
+				array([
+					[0, 2],
+					[1, 0],
+					[1, 1],
+					[1, 2],
+				])
+		);

@@ -19,37 +19,38 @@ export function nonzero(a) {
 	return indices.map(a => asarray(a));
 }
 
-tester
-	.add(
-		nonzero,
-		() => {
-			let x;
-			x = array([
-				[3, 0, 0],
-				[0, 4, 0],
-				[5, 6, 0],
-			]).at(slice('...'), null);
-			return nonzero(x);
-		},
-		() => [array([0, 1, 2, 2]), array([0, 1, 0, 1]), array([0, 0, 0, 0])]
-	)
-	.add(
-		nonzero,
-		() => {
-			return nonzero(
-				array([
-					[false, false, false],
-					[true, true, true],
-					[true, true, true],
-				])
-			);
-		},
-		() => [array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2])]
-	)
-	.add(
-		nonzero,
-		() => {
-			return nonzero(55);
-		},
-		() => [array([0])]
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			nonzero,
+			() => {
+				let x;
+				x = array([
+					[3, 0, 0],
+					[0, 4, 0],
+					[5, 6, 0],
+				]).at(slice('...'), null);
+				return nonzero(x);
+			},
+			() => [array([0, 1, 2, 2]), array([0, 1, 0, 1]), array([0, 0, 0, 0])]
+		)
+		.add(
+			nonzero,
+			() => {
+				return nonzero(
+					array([
+						[false, false, false],
+						[true, true, true],
+						[true, true, true],
+					])
+				);
+			},
+			() => [array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2])]
+		)
+		.add(
+			nonzero,
+			() => {
+				return nonzero(55);
+			},
+			() => [array([0])]
+		);

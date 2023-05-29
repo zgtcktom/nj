@@ -15,34 +15,35 @@ export function isscalar(element) {
 	return false;
 }
 
-tester
-	.add(
-		'isscalar',
-		() => isscalar(3.1),
-		() => true
-	)
-	.add(
-		'isscalar',
-		() => isscalar(array(3.1)),
-		() => false
-	)
-	.add(
-		'isscalar',
-		() => isscalar([3.1]),
-		() => false
-	)
-	.add(
-		'isscalar',
-		() => isscalar(false),
-		() => true
-	)
-	.add(
-		'isscalar',
-		() => isscalar('numpy'),
-		() => true
-	)
-	.add(
-		'isscalar',
-		() => isscalar(Number()),
-		() => true
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'isscalar',
+			() => isscalar(3.1),
+			() => true
+		)
+		.add(
+			'isscalar',
+			() => isscalar(array(3.1)),
+			() => false
+		)
+		.add(
+			'isscalar',
+			() => isscalar([3.1]),
+			() => false
+		)
+		.add(
+			'isscalar',
+			() => isscalar(false),
+			() => true
+		)
+		.add(
+			'isscalar',
+			() => isscalar('numpy'),
+			() => true
+		)
+		.add(
+			'isscalar',
+			() => isscalar(Number()),
+			() => true
+		);

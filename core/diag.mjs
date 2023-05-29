@@ -22,29 +22,30 @@ export function diag(v, k = 0) {
 	return diagonal(v, k);
 }
 
-tester
-	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3])),
-		() => array([0, 4, 8])
-	)
-	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3]), 1),
-		() => array([1, 5])
-	)
-	.add(
-		diag,
-		() => diag(arange(9).reshape([3, 3]), -1),
-		() => array([3, 7])
-	)
-	.add(
-		diag,
-		() => diag(diag(arange(9).reshape([3, 3]))),
-		() =>
-			array([
-				[0, 0, 0],
-				[0, 4, 0],
-				[0, 0, 8],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			diag,
+			() => diag(arange(9).reshape([3, 3])),
+			() => array([0, 4, 8])
+		)
+		.add(
+			diag,
+			() => diag(arange(9).reshape([3, 3]), 1),
+			() => array([1, 5])
+		)
+		.add(
+			diag,
+			() => diag(arange(9).reshape([3, 3]), -1),
+			() => array([3, 7])
+		)
+		.add(
+			diag,
+			() => diag(diag(arange(9).reshape([3, 3]))),
+			() =>
+				array([
+					[0, 0, 0],
+					[0, 4, 0],
+					[0, 0, 8],
+				])
+		);

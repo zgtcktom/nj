@@ -79,19 +79,20 @@ export function guessType(array) {
 	return 'object';
 }
 
-tester
-	.add(
-		'array',
-		() => array([3.1, 9]),
-		() => [3.1, 9]
-	)
-	.add(
-		'array',
-		() => array([[9, 6], 3.1, 9]).shape,
-		() => [3]
-	)
-	.add(
-		'array',
-		() => array(5),
-		() => 5
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			'array',
+			() => array([3.1, 9]),
+			() => [3.1, 9]
+		)
+		.add(
+			'array',
+			() => array([[9, 6], 3.1, 9]).shape,
+			() => [3]
+		)
+		.add(
+			'array',
+			() => array(5),
+			() => 5
+		);

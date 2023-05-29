@@ -23,13 +23,15 @@ export function broadcast_shapes(...shapes) {
 	return broadcasted;
 }
 
-tester.add(
-	'broadcast_shapes',
-	() => broadcast_shapes([1, 2], [3, 1], [3, 2]),
-	() => [3, 2]
-);
-tester.add(
-	'broadcast_shapes',
-	() => broadcast_shapes([6, 7], [5, 6, 1], [7], [5, 1, 7]),
-	() => [5, 6, 7]
-);
+process.env.PRODUCTION ||
+	tester.add(
+		'broadcast_shapes',
+		() => broadcast_shapes([1, 2], [3, 1], [3, 2]),
+		() => [3, 2]
+	);
+process.env.PRODUCTION ||
+	tester.add(
+		'broadcast_shapes',
+		() => broadcast_shapes([6, 7], [5, 6, 1], [7], [5, 1, 7]),
+		() => [5, 6, 7]
+	);

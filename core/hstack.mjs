@@ -11,27 +11,28 @@ export function hstack(arrays) {
 	return concatenate(arrays, 1);
 }
 
-tester
-	.add(
-		hstack,
-		() => {
-			let a = array([1, 2, 3]);
-			let b = array([4, 5, 6]);
-			return hstack([a, b]);
-		},
-		() => array([1, 2, 3, 4, 5, 6])
-	)
-	.add(
-		hstack,
-		() => {
-			let a = array([[1], [2], [3]]);
-			let b = array([[4], [5], [6]]);
-			return hstack([a, b]);
-		},
-		() =>
-			array([
-				[1, 4],
-				[2, 5],
-				[3, 6],
-			])
-	);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			hstack,
+			() => {
+				let a = array([1, 2, 3]);
+				let b = array([4, 5, 6]);
+				return hstack([a, b]);
+			},
+			() => array([1, 2, 3, 4, 5, 6])
+		)
+		.add(
+			hstack,
+			() => {
+				let a = array([[1], [2], [3]]);
+				let b = array([[4], [5], [6]]);
+				return hstack([a, b]);
+			},
+			() =>
+				array([
+					[1, 4],
+					[2, 5],
+					[3, 6],
+				])
+		);

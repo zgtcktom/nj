@@ -56,47 +56,48 @@ export function sort(a, axis = -1, key = null) {
 	return out;
 }
 
-tester
-	.add(
-		sort,
-		() =>
-			sort(
+process.env.PRODUCTION ||
+	tester
+		.add(
+			sort,
+			() =>
+				sort(
+					array([
+						[1, 4],
+						[3, 1],
+					])
+				),
+			() =>
 				array([
 					[1, 4],
-					[3, 1],
+					[1, 3],
 				])
-			),
-		() =>
-			array([
-				[1, 4],
-				[1, 3],
-			])
-	)
-	.add(
-		sort,
-		() =>
-			sort(
+		)
+		.add(
+			sort,
+			() =>
+				sort(
+					array([
+						[1, 4],
+						[3, 1],
+					]),
+					null
+				),
+			() => array([1, 1, 3, 4])
+		)
+		.add(
+			sort,
+			() =>
+				sort(
+					array([
+						[1, 4],
+						[3, 1],
+					]),
+					0
+				),
+			() =>
 				array([
-					[1, 4],
-					[3, 1],
-				]),
-				null
-			),
-		() => array([1, 1, 3, 4])
-	)
-	.add(
-		sort,
-		() =>
-			sort(
-				array([
-					[1, 4],
-					[3, 1],
-				]),
-				0
-			),
-		() =>
-			array([
-				[1, 1],
-				[3, 4],
-			])
-	);
+					[1, 1],
+					[3, 4],
+				])
+		);

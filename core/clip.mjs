@@ -43,28 +43,29 @@ export function clip(a, a_min, a_max, out = null) {
 	return out;
 }
 
-tester
-	.add(
-		clip,
-		() => clip(arange(10), 1, 8),
-		() => array([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])
-	)
-	.add(
-		clip,
-		() => clip(arange(10), 8, 1),
-		() => array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-	)
-	.add(
-		clip,
-		() => {
-			let a = arange(10);
+process.env.PRODUCTION ||
+	tester
+		.add(
+			clip,
+			() => clip(arange(10), 1, 8),
+			() => array([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])
+		)
+		.add(
+			clip,
+			() => clip(arange(10), 8, 1),
+			() => array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+		)
+		.add(
+			clip,
+			() => {
+				let a = arange(10);
 
-			return [clip(a, 3, 6, a), a];
-		},
-		() => [array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6]), array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])]
-	)
-	.add(
-		clip,
-		() => clip(arange(10), [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8),
-		() => array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
-	);
+				return [clip(a, 3, 6, a), a];
+			},
+			() => [array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6]), array([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])]
+		)
+		.add(
+			clip,
+			() => clip(arange(10), [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8),
+			() => array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
+		);

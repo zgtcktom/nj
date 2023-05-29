@@ -14,17 +14,18 @@ export function column_stack(arrs) {
 	return concatenate(arrays, 1);
 }
 
-tester.add(
-	column_stack,
-	() => {
-		let a = array([1, 2, 3]);
-		let b = array([2, 3, 4]);
-		return column_stack([a, b]);
-	},
-	() =>
-		array([
-			[1, 2],
-			[2, 3],
-			[3, 4],
-		])
-);
+process.env.PRODUCTION ||
+	tester.add(
+		column_stack,
+		() => {
+			let a = array([1, 2, 3]);
+			let b = array([2, 3, 4]);
+			return column_stack([a, b]);
+		},
+		() =>
+			array([
+				[1, 2],
+				[2, 3],
+				[3, 4],
+			])
+	);
