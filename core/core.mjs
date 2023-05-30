@@ -45,8 +45,6 @@ export * from './array_equal.mjs';
 export * from './concatenate.mjs';
 export * from './moveaxis.mjs';
 
-export * from './func.mjs';
-
 export * from './arithmetic.mjs';
 export * from './logic.mjs';
 export * from './math.mjs';
@@ -62,7 +60,14 @@ export * from './clip.mjs';
 export * from './argsort.mjs';
 export * from './sort.mjs';
 export * from './interp.mjs';
-export * from './random.mjs';
+
+// random
+export * from './random.choice.mjs';
+export * from './random.random_sample.mjs';
+export * from './random.rand.mjs';
+export * from './random.pick.mjs';
+export * from './random.Generator.mjs';
+
 export * from './where.mjs';
 export * from './ogrid.mjs';
 export * from './statistics.mjs';
@@ -120,3 +125,5 @@ export * from './scatter.mjs';
 
 export * from './argmax.mjs';
 export * from './unique.mjs';
+
+export * from './random.mjs';

@@ -3,13 +3,15 @@ import { asarray, nonzero, take, tester, array, NDArray } from './core.mjs';
 /**
  * @param {boolean[]} condition
  * @param {NDArray} a
- * @param {number} [axis]
- * @param {NDArray} [out]
+ * @param {number|null} [axis = null]
+ * @param {NDArray|null} [out = null]
  * @returns {NDArray}
  */
 export function compress(condition, a, axis = null, out = null) {
 	condition = asarray(condition);
-	if (condition.ndim != 1) throw 'condition must be a 1-d array';
+	if (condition.ndim != 1) {
+		throw new Error('condition must be a 1-d array');
+	}
 	return take(a, nonzero(condition)[0], axis, out);
 }
 

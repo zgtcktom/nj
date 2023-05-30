@@ -7,9 +7,7 @@ import { asarray, shape, tester } from './core.mjs';
  */
 export function ndim(a) {
 	if (a == null || typeof a != 'object') return 0;
-	if (a.ndim != undefined) return a.ndim;
-
-	return shape(a).length;
+	return a.ndim ?? shape(a).length;
 }
 
 export const _ndim = ndim;

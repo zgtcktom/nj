@@ -1000,22 +1000,6 @@ function basicIndexing(a, indices, axis = 0) {
 	return a.as_strided(outShape, outStrides, offset);
 }
 
-tester.onload(() => {
-	// console.log(arange(0, 10));
-	// console.log(array([0, 'strss', 6.3]));
-	// console.log(array([false, 2.3, 3, 4, { ok: 5 }], 'int8'));
-	// console.dir(array([false, true]).dtype == _dtype('boolean'));
-	// console.log(
-	// 	arange(2 * 3 * 4 * 5)
-	// 		.reshape(2, 3, 4, 5)
-	// 		.at(0, 0, 0, 0, null)
-	// );
-	// let a = {};
-	// a[array(12)] = 55;
-	// a[12] = 51;
-	// console.log(a);
-});
-
 process.env.PRODUCTION ||
 	tester
 		.add(
