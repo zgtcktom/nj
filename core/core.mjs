@@ -114,8 +114,6 @@ export * from './ndenumerate.mjs';
 export * from './unravel_index.mjs';
 export * from './ravel_multi_index.mjs';
 
-export * from './evaluate.mjs';
-
 export * from './cumulative.mjs';
 
 export * from './isclose.mjs';
@@ -127,3 +125,5 @@ export * from './argmax.mjs';
 export * from './unique.mjs';
 
 export * from './random.mjs';
+
+export * from './evaluate.mjs';
